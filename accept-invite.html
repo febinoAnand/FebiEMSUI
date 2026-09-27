@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accept invitation · Energy Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="auth">
+  <div class="auth-shell">
+    <!-- ================= VISUAL PANEL ================= -->
+    <aside class="auth-visual" aria-hidden="true">
+      <a href="login.html" class="brand" style="padding:0">
+        <span class="brand__logo"><i class="ic i-bolt-fill"></i></span>
+        <span><span class="brand__name">Energy Dashboard</span><br /><span class="brand__tag">Smart Energy Cloud</span></span>
+      </a>
+
+      <div class="energy-core">
+        <span class="ring"></span>
+        <span class="ring"></span>
+        <span class="ring"></span>
+        <span class="ring ring--spin" style="inset:6%"></span>
+        <span class="energy-core__center"><i class="ic i-bolt-fill"></i></span>
+
+        <div class="float-chip float-chip--1">
+          <span class="icon-tile"><i class="ic i-bolt"></i></span>
+          <span><strong>125.4 kW</strong>Live demand</span>
+        </div>
+        <div class="float-chip float-chip--2">
+          <span class="icon-tile icon-tile--amber"><i class="ic i-rupee"></i></span>
+          <span><strong>₹5,472</strong>Cost today</span>
+        </div>
+        <div class="float-chip float-chip--3">
+          <span class="icon-tile icon-tile--violet"><i class="ic i-leaf"></i></span>
+          <span><strong>−18.6%</strong>CO₂ vs last month</span>
+        </div>
+      </div>
+
+      <div class="auth-hero">
+        <h1>Every kilowatt, <span class="gradient-text">visible &amp; accountable.</span></h1>
+        <p>Multi-tenant energy monitoring for plants, campuses and buildings — meters, sub-meters, shifts and teams in one place.</p>
+        <div class="auth-points">
+          <div><i class="ic i-shield"></i> Tenant-isolated data</div>
+          <div><i class="ic i-layers"></i> Unlimited sub-meters</div>
+          <div><i class="ic i-activity"></i> 15-second telemetry</div>
+        </div>
+      </div>
+
+      <svg class="auth-wave" viewBox="0 0 600 120" preserveAspectRatio="none">
+        <path class="w1" d="M0,80 C60,40 120,110 180,70 S300,20 360,60 S480,110 600,50" />
+        <path class="w2" d="M0,100 C80,70 140,120 220,90 S340,50 420,85 S540,110 600,80" />
+      </svg>
+    </aside>
+
+    <!-- ================= FORM PANEL ================= -->
+    <main class="auth-panel">
+      <p class="auth-top-link">Already have an account?<a href="login.html">Sign in</a></p>
+
+      <section class="auth-card">
+        <h2 class="auth-title">You're invited!</h2>
+        <p class="auth-sub">Finish setting up your account to join the workspace.</p>
+
+        <div class="invite-card">
+          <span class="tenant-switch__logo" style="width:48px;height:48px;border-radius:14px;font-size:15px">FS</span>
+          <div style="flex:1">
+            <strong>Febino Solutions Pvt Ltd</strong>
+            <div class="small muted">Invited by Vijay Kumar · <span class="mono">ORG-FEB-2048</span></div>
+          </div>
+          <span class="badge badge--violet"><i class="ic i-shield"></i> Operator</span>
+        </div>
+
+        <form class="auth-form" action="dashboard.html" method="get">
+          <div class="form-grid">
+            <div class="field"><label>First name <span class="req">*</span></label><input class="input" value="Priya" required /></div>
+            <div class="field"><label>Last name</label><input class="input" value="Sharma" /></div>
+            <div class="field full"><label>Email</label><div class="input-icon"><i class="ic i-mail"></i><input class="input" value="priya.sharma@febinosolutions.com" readonly /></div></div>
+            <div class="field full"><label>Mobile</label><div class="input-icon"><i class="ic i-phone"></i><input type="tel" class="input" placeholder="+91 98xxx xxxxx" /></div></div>
+            <div class="field full pw-field">
+              <label>Create password <span class="req">*</span></label>
+              <div class="input-icon"><i class="ic i-lock"></i><input type="password" class="input" placeholder=" " required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" /></div>
+              <div class="strength"><span></span><span></span><span></span><span></span></div>
+              <ul class="rules"><li>At least 8 characters</li><li>One uppercase letter</li><li>One lowercase letter</li><li>One number</li></ul>
+            </div>
+          </div>
+          <div class="callout"><i class="ic i-clock"></i><span>You're assigned to <b>Shift A (06:00 – 14:00)</b>. Your supervisor can change this later.</span></div>
+          <label class="check"><input type="checkbox" required /> I accept the <a href="#close">Terms</a> and <a href="#close">Privacy Policy</a></label>
+          <button type="submit" class="btn btn--primary btn--lg btn--block">Join workspace <i class="ic i-arrow-right"></i></button>
+        </form>
+      </section>
+      <p class="auth-legal" style="margin-top:34px;justify-content:center">
+        <span>© 2026 Energy Dashboard</span><a href="#close">Privacy</a><a href="#close">Terms</a><a href="#close">Status</a>
+      </p>
+    </main>
+  </div>
+</body>
+</html>

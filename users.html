@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Users · Energy Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="app">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
+
+  <div class="app-shell">
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar" aria-label="Primary">
+      <a href="dashboard.html" class="brand">
+        <span class="brand__logo"><i class="ic i-bolt-fill"></i></span>
+        <span>
+          <span class="brand__name">Energy Dashboard</span><br />
+          <span class="brand__tag">Smart Energy Cloud</span>
+        </span>
+      </a>
+
+      <a href="#switch-org" class="tenant-switch" title="Switch organisation">
+        <span class="tenant-switch__logo">FS</span>
+        <span class="tenant-switch__meta">
+          <strong>Febino Solutions Pvt Ltd</strong>
+          <span>ORG-FEB-2048</span>
+        </span>
+        <i class="ic i-swap muted"></i>
+      </a>
+
+      <nav class="nav">
+        <div class="nav__section">Monitor</div>
+        <a href="dashboard.html" class="nav__link"><i class="ic i-grid"></i><span>Dashboard</span></a>
+        <a href="meters.html" class="nav__link"><i class="ic i-gauge"></i><span>Energy Meters</span><em class="nav__badge nav__badge--green">38</em></a>
+        <a href="analytics.html" class="nav__link"><i class="ic i-chart"></i><span>Analytics</span></a>
+        <a href="alerts.html" class="nav__link"><i class="ic i-bell"></i><span>Alerts</span><em class="nav__badge">5</em></a>
+
+        <div class="nav__section">Operations</div>
+        <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift Management</span></a>
+
+        <div class="nav__section">Administration</div>
+        <a href="users.html" class="nav__link is-active"><i class="ic i-users"></i><span>Users</span></a>
+        <a href="roles.html" class="nav__link"><i class="ic i-shield"></i><span>Roles &amp; Permissions</span></a>
+        <a href="settings.html" class="nav__link"><i class="ic i-settings"></i><span>Settings</span></a>
+      </nav>
+
+      <div class="sidebar__live">
+        <div class="eyebrow"><span class="dot dot--live" style="--c: var(--green)"></span> Live load</div>
+        <div class="sidebar__live-value">125.4 <small>kW</small></div>
+        <div class="small muted">Peak today 150.2 kW at 14:05</div>
+        <div class="eq" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="sidebar__foot"><span>v2.4.0</span><a href="#close" class="muted">Help &amp; docs</a></div>
+    </aside>
+    <label for="nav-toggle" class="nav-scrim" aria-hidden="true"></label>
+
+    <!-- ================= MAIN ================= -->
+    <div class="main">
+      <header class="topbar">
+        <label for="nav-toggle" class="icon-btn burger" aria-label="Open menu"><i class="ic i-menu"></i></label>
+
+        <div class="topbar__crumbs">
+          <small>Febino Solutions / Administration</small>
+          <strong>Users</strong>
+        </div>
+
+        <label class="search">
+          <i class="ic i-search"></i>
+          <input type="search" placeholder="Search meters, users, alerts…" aria-label="Search" />
+          <kbd>Ctrl K</kbd>
+        </label>
+
+        <div class="topbar__actions">
+          <span class="live-pill"><span class="dot dot--live" style="--c: var(--green)"></span> Live</span>
+
+          <details class="dropdown">
+            <summary class="icon-btn" aria-label="Notifications"><i class="ic i-bell"></i><span class="ping"></span></summary>
+            <div class="dropdown__panel dropdown__panel--wide">
+              <div class="dropdown__head"><strong>Notifications</strong><span class="badge badge--danger">5 new</span></div>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: rgba(244,63,94,.14); color: var(--rose)"><i class="ic i-alert"></i></span>
+                <span><p><b>HVAC Chiller-2</b> crossed 95% of rated load</p><small>2 min ago · Critical</small></span>
+              </a>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: rgba(251,191,36,.14); color: var(--amber)"><i class="ic i-activity"></i></span>
+                <span><p>Power factor dropped to <b>0.86</b> on Main Incomer</p><small>18 min ago · Warning</small></span>
+              </a>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: rgba(34,211,238,.14); color: var(--cyan)"><i class="ic i-wifi"></i></span>
+                <span><p>Sub-meter <b>SM-1004-02</b> went offline</p><small>42 min ago · Info</small></span>
+              </a>
+              <div class="dropdown__sep"></div>
+              <a href="alerts.html" class="dropdown__item" style="justify-content:center;color:var(--green);font-weight:700">View all alerts</a>
+            </div>
+          </details>
+
+          <details class="dropdown">
+            <summary class="user-chip">
+              <span class="avatar av-1">VK</span>
+              <span class="user-chip__meta"><strong>Vijay</strong><small>Tenant Admin</small></span>
+              <i class="ic i-chev-down"></i>
+            </summary>
+            <div class="dropdown__panel">
+              <div class="dropdown__head" style="justify-content:flex-start;gap:12px">
+                <span class="avatar av-1">VK</span>
+                <span><strong>Vijay Kumar</strong><br /><small class="muted">vijay@febinosolutions.com</small></span>
+              </div>
+              <div class="dropdown__sep"></div>
+              <a href="#profile" class="dropdown__item"><i class="ic i-user"></i> My profile</a>
+              <a href="#change-password" class="dropdown__item"><i class="ic i-key"></i> Change password</a>
+              <a href="#switch-org" class="dropdown__item"><i class="ic i-swap"></i> Switch organisation</a>
+              <a href="settings.html" class="dropdown__item"><i class="ic i-settings"></i> Settings</a>
+              <div class="dropdown__sep"></div>
+              <a href="#logout" class="dropdown__item dropdown__item--danger"><i class="ic i-logout"></i> Sign out</a>
+            </div>
+          </details>
+        </div>
+      </header>
+
+      <main class="page">
+        <section class="page-head">
+          <div>
+            <h1 class="page-title">Users</h1>
+            <p class="page-sub">Everyone with access to <b>Febino Solutions</b> (<span class="mono">ORG-FEB-2048</span>).</p>
+          </div>
+          <div class="page-actions">
+            <a href="#close" class="btn btn--sm"><i class="ic i-upload"></i> Bulk import</a>
+            <a href="#close" class="btn btn--sm"><i class="ic i-download"></i> Export</a>
+            <a href="#add-user" class="btn btn--sm btn--primary"><i class="ic i-user-plus"></i> Invite user</a>
+          </div>
+        </section>
+
+        <section class="grid grid-4">
+          <div class="card stat"><span class="stat__icon"><i class="ic i-users"></i></span><div><strong>18</strong><span>Total users · 50 seat plan</span></div></div>
+          <div class="card stat"><span class="stat__icon" style="--c:var(--cyan)"><i class="ic i-activity"></i></span><div><strong>14</strong><span>Active</span></div></div>
+          <div class="card stat"><span class="stat__icon" style="--c:var(--violet)"><i class="ic i-send"></i></span><div><strong>2</strong><span>Pending invitations</span></div></div>
+          <div class="card stat"><span class="stat__icon" style="--c:var(--rose)"><i class="ic i-lock"></i></span><div><strong>2</strong><span>Inactive / suspended</span></div></div>
+        </section>
+
+        <section class="card paged">
+          <input type="radio" class="pg-input" name="us-pg" id="us-p1" value="1" checked aria-label="Page 1" />
+<input type="radio" class="pg-input" name="us-pg" id="us-p2" value="2" aria-label="Page 2" />
+<input type="radio" class="pg-input" name="us-pg" id="us-p3" value="3" aria-label="Page 3" />
+          <div class="toolbar">
+            <label class="search"><i class="ic i-search"></i><input type="search" placeholder="Search name, email, employee ID…" aria-label="Search users" /></label>
+            <select class="input input--sm" aria-label="Role"><option>All roles</option><option>Tenant Admin</option><option>Energy Manager</option><option>Supervisor</option><option>Operator</option><option>Technician</option><option>Viewer</option></select>
+            <select class="input input--sm" aria-label="Shift"><option>All shifts</option><option>Shift A</option><option>Shift B</option><option>Shift C</option><option>General</option></select>
+            <select class="input input--sm" aria-label="Status"><option>Any status</option><option>Active</option><option>Invited</option><option>Inactive</option><option>Suspended</option></select>
+            <span class="spacer"></span>
+            <a href="#close" class="btn btn--sm btn--ghost"><i class="ic i-filter"></i> More filters</a>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th class="check-col"><label class="check"><input type="checkbox" aria-label="Select all" /></label></th><th>User</th><th>Role</th><th>Shift</th><th>Department</th><th>Status</th><th>Last active</th><th>Actions</th></tr></thead>
+<tbody data-page="1">
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select Vijay Kumar" /></label></td>
+    <td><div class="cell-user"><span class="avatar av-1">VK</span><div><strong>Vijay Kumar <span class="tag" style="margin-left:4px">EMP-001</span></strong><small>vijay@febinosolutions.com</small></div></div></td>
+    <td><span class="badge badge--violet"><i class="ic i-shield"></i> Tenant Admin</span></td>
+    <td><span class="shift-pill shift--g"><i class="ic i-clock"></i> General</span></td>
+    <td>Management</td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
+    <td class="small muted nowrap">Just now</td>
+    <td><div class="actions"><a href="#view-user" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-user" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-user" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select Priya Sharma" /></label></td>
+    <td><div class="cell-user"><span class="avatar av-2">PS</span><div><strong>Priya Sharma <span class="tag" style="margin-left:4px">EMP-014</span></strong><small>priya.sharma@febinosolutions.com</small></div></div></td>
+    <td><span class="badge badge--info"><i class="ic i-shield"></i> Operator</span></td>
+    <td><span class="shift-pill shift--a"><i class="ic i-sun"></i> Shift A</span></td>
+    <td>Production</td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
+    <td class="small muted nowrap">12 min ago</td>
+    <td><div class="actions"><a href="#view-user" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-user" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-user" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select Arjun Nair" /></label></td>
+    <td><div class="cell-user"><span class="avatar av-3">AN</span><div><strong>Arjun Nair <span class="tag" style="margin-left:4px">EMP-022</span></strong><small>arjun.nair@febinosolutions.com</small></div></div></td>
+    <td><span class="badge badge--success"><i class="ic i-shield"></i> Energy Manager</span></td>
+    <td><span class="shift-pill shift--g"><i class="ic i-clock"></i> General</span></td>
+    <td>Utilities</td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
+    <td class="small muted nowrap">1 h ago</td>
+    <td><div class="actions"><a href="#view-user" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-user" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-user" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select Meera Iyer" /></label></td>
+    <td><div class="cell-user"><span class="avatar av-4">MI</span><div><strong>Meera Iyer <span class="tag" style="margin-left:4px">EMP-031</span></strong><small>meera.iyer@febinosolutions.com</small></div></div></td>
+    <td><span class="badge badge--blue"><i class="ic i-shield"></i> Supervisor</span></td>
+    <td><span class="shift-pill shift--b"><i class="ic i-sunset"></i> Shift B</span></td>
+    <td>Production</td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
+    <td class="small muted nowrap">3 h ago</td>
+    <td><div class="actions"><a href="#view-user" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-user" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-user" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select Rahul Verma" /></label></td>
+    <td><div class="cell-user"><span class="avatar av-5">RV</span><div><strong>Rahul Verma <span class="tag" style="margin-left:4px">EMP-037</span></strong><small>rahul.verma@febinosolutions.com</small></div></div></td>
+    <td><span class="badge badge--orange"><i class="ic i-shield"></i> Technician</span></td>
+    <td><span class="shift-pill shift--c"><i class="ic i-moon"></i> Shift C</span></td>
+    <td>Maintenance</td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
+    <td class="small muted nowrap">Yesterday</td>
+    <td><div class="actions"><a href="#view-user" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-user" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-user" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select Sneha Reddy" /></label></td>
+    <td><div class="cell-user"><span class="avatar av-6">SR</span><div><strong>Sneha Reddy <span class="tag" style="margin-left:4px">EMP-040</span></strong><small>sneha.reddy@febinosolutions.com</small></div></div></td>
+    <td><span class="badge badge--warn"><i class="ic i-shield"></i> Viewer</span></td>
+    <td><span class="shift-pill shift--g"><i class="ic i-clock"></i> General</span></td>
+    <td>Finance</td>
+    <td><span class="badge badge--info"><span class="dot"></span> Invited</span></td>
+    <td class="small muted nowrap">—</td>
+    <td><div class="actions"><a href="#view-user" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-user" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-user" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+</tbody>
+<tbody data-page="2">
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select Karthik Rao" /></label></td>
+    <td><div class="cell-user"><span class="avatar av-1">KR</span><div><strong>Karthik Rao <span class="tag" style="margin-left:4px">EMP-043</span></strong><small>karthik.rao@febinosolutions.com</small></div></div></td>
+    <td><span class="badge badge--info"><i class="ic i-shield"></i> Operator</span></td>
+    <td><span class="shift-pill shift--b"><i class="ic i-sunset"></i> Shift B</span></td>
+    <td>Production</td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
+    <td class="small muted nowrap">2 h ago</td>
+    <td><div class="actions"><a href="#view-user" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-user" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-user" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select Ananya Das" /></label></td>
+    <td><div class="cell-user"><span class="avatar av-2">AD</span><div><strong>Ananya Das <span class="tag" style="margin-left:4px">EMP-046</span></strong><small>ananya.das@febinosolutions.com</small></div></div></td>
+    <td><span class="badge badge--success"><i class="ic i-shield"></i> Energy Manager</span></td>
+    <td><span class="shift-pill shift--g"><i class="ic i-clock"></i> General</span></td>
+    <td>Sustainability</td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
+    <td class="small muted nowrap">5 h ago</td>
+    <td><div class="actions"><a href="#view-user" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-user" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-user" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select Mohammed Irfan" /></label></td>
+    <td><div class="cell-user"><span class="avatar av-3">MI</span><div><strong>Mohammed Irfan <span class="tag" style="margin-left:4px">EMP-051</span></strong><small>irfan.m@febinosolutions.com</small></div></div></td>
+    <td><span class="badge badge--orange"><i class="ic i-shield"></i> Technician</span></td>
+    <td><span class="shift-pill shift--a"><i class="ic i-sun"></i> Shift A</span></td>
+    <td>Maintenance</td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
+    <td class="small muted nowrap">30 min ago</td>
+    <td><div class="actions"><a href="#view-user" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-user" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-user" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select Divya Menon" /></label></td>
+    <td><div class="cell-user"><span class="avatar av-4">DM</span><div><strong>Divya Menon <span class="tag" style="margin-left:4px">EMP-055</span></strong><small>divya.menon@febinosolutions.com</small></div></div></td>
+    <td><span class="badge badge--blue"><i class="ic i-shield"></i> Supervisor</span></td>
+    <td><span class="shift-pill shift--a"><i class="ic i-sun"></i> Shift A</span></td>
+    <td>Production</td>
+    <td><span class="badge badge--warn"><span class="dot"></span> Inactive</span></td>
+    <td class="small muted nowrap">12 days ago</td>
+    <td><div class="actions"><a href="#view-user" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-user" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-user" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select Suresh Babu" /></label></td>
+    <td><div class="cell-user"><span class="avatar av-5">SB</span><div><strong>Suresh Babu <span class="tag" style="margin-left:4px">EMP-058</span></strong><small>suresh.babu@febinosolutions.com</small></div></div></td>
+    <td><span class="badge badge--info"><i class="ic i-shield"></i> Operator</span></td>
+    <td><span class="shift-pill shift--c"><i class="ic i-moon"></i> Shift C</span></td>
+    <td>Utilities</td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
+    <td class="small muted nowrap">6 h ago</td>
+    <td><div class="actions"><a href="#view-user" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-user" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-user" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select Lakshmi Pillai" /></label></td>
+    <td><div class="cell-user"><span class="avatar av-6">LP</span><div><strong>Lakshmi Pillai <span class="tag" style="margin-left:4px">EMP-062</span></strong><small>lakshmi.p@febinosolutions.com</small></div></div></td>
+    <td><span class="badge badge--warn"><i class="ic i-shield"></i> Viewer</span></td>
+    <td><span class="shift-pill shift--g"><i class="ic i-clock"></i> General</span></td>
+    <td>Admin</td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
+    <td class="small muted nowrap">2 days ago</td>
+    <td><div class="actions"><a href="#view-user" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-user" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-user" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+</tbody>
+<tbody data-page="3">
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select Rohit Singh" /></label></td>
+    <td><div class="cell-user"><span class="avatar av-1">RS</span><div><strong>Rohit Singh <span class="tag" style="margin-left:4px">EMP-066</span></strong><small>rohit.singh@febinosolutions.com</small></div></div></td>
+    <td><span class="badge badge--info"><i class="ic i-shield"></i> Operator</span></td>
+    <td><span class="shift-pill shift--a"><i class="ic i-sun"></i> Shift A</span></td>
+    <td>Production</td>
+    <td><span class="badge badge--danger"><span class="dot"></span> Suspended</span></td>
+    <td class="small muted nowrap">1 month ago</td>
+    <td><div class="actions"><a href="#view-user" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-user" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-user" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select Neha Gupta" /></label></td>
+    <td><div class="cell-user"><span class="avatar av-2">NG</span><div><strong>Neha Gupta <span class="tag" style="margin-left:4px">EMP-070</span></strong><small>neha.gupta@febinosolutions.com</small></div></div></td>
+    <td><span class="badge badge--violet"><i class="ic i-shield"></i> Auditor</span></td>
+    <td><span class="shift-pill shift--g"><i class="ic i-clock"></i> General</span></td>
+    <td>Finance</td>
+    <td><span class="badge badge--info"><span class="dot"></span> Invited</span></td>
+    <td class="small muted nowrap">—</td>
+    <td><div class="actions"><a href="#view-user" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-user" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-user" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select Aditya Joshi" /></label></td>
+    <td><div class="cell-user"><span class="avatar av-3">AJ</span><div><strong>Aditya Joshi <span class="tag" style="margin-left:4px">EMP-073</span></strong><small>aditya.joshi@febinosolutions.com</small></div></div></td>
+    <td><span class="badge badge--orange"><i class="ic i-shield"></i> Technician</span></td>
+    <td><span class="shift-pill shift--b"><i class="ic i-sunset"></i> Shift B</span></td>
+    <td>Maintenance</td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
+    <td class="small muted nowrap">4 h ago</td>
+    <td><div class="actions"><a href="#view-user" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-user" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-user" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select Kavya Krishnan" /></label></td>
+    <td><div class="cell-user"><span class="avatar av-4">KK</span><div><strong>Kavya Krishnan <span class="tag" style="margin-left:4px">EMP-077</span></strong><small>kavya.k@febinosolutions.com</small></div></div></td>
+    <td><span class="badge badge--info"><i class="ic i-shield"></i> Operator</span></td>
+    <td><span class="shift-pill shift--c"><i class="ic i-moon"></i> Shift C</span></td>
+    <td>Production</td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
+    <td class="small muted nowrap">8 h ago</td>
+    <td><div class="actions"><a href="#view-user" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-user" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-user" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select Imran Sheikh" /></label></td>
+    <td><div class="cell-user"><span class="avatar av-5">IS</span><div><strong>Imran Sheikh <span class="tag" style="margin-left:4px">EMP-081</span></strong><small>imran.sheikh@febinosolutions.com</small></div></div></td>
+    <td><span class="badge badge--blue"><i class="ic i-shield"></i> Supervisor</span></td>
+    <td><span class="shift-pill shift--c"><i class="ic i-moon"></i> Shift C</span></td>
+    <td>Utilities</td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
+    <td class="small muted nowrap">Yesterday</td>
+    <td><div class="actions"><a href="#view-user" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-user" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-user" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select Pooja Hegde" /></label></td>
+    <td><div class="cell-user"><span class="avatar av-6">PH</span><div><strong>Pooja Hegde <span class="tag" style="margin-left:4px">EMP-085</span></strong><small>pooja.hegde@febinosolutions.com</small></div></div></td>
+    <td><span class="badge badge--warn"><i class="ic i-shield"></i> Viewer</span></td>
+    <td><span class="shift-pill shift--g"><i class="ic i-clock"></i> General</span></td>
+    <td>HR</td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
+    <td class="small muted nowrap">3 days ago</td>
+    <td><div class="actions"><a href="#view-user" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-user" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-user" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+</tbody>
+            </table>
+          </div>
+          <div class="pager">
+  <div class="pager__info">Showing <span data-when="1"><strong>1–6</strong></span><span data-when="2"><strong>7–12</strong></span><span data-when="3"><strong>13–18</strong></span> of <strong>18</strong> users</div>
+  <div class="pager__size">Rows per page <select class="input" aria-label="Rows per page"><option>6</option><option>12</option><option>24</option></select></div>
+  <div class="pager__nav"><span class="pg-btn is-disabled" data-when="1" aria-hidden="true"><i class="ic i-chev-left"></i></span><label for="us-p1" data-when="2" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="us-p2" data-when="3" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="us-p1" data-p="1">1</label><label for="us-p2" data-p="2">2</label><label for="us-p3" data-p="3">3</label><label for="us-p2" data-when="1" aria-label="Next page"><i class="ic i-chev-right"></i></label><label for="us-p3" data-when="2" aria-label="Next page"><i class="ic i-chev-right"></i></label><span class="pg-btn is-disabled" data-when="3" aria-hidden="true"><i class="ic i-chev-right"></i></span></div>
+</div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>© 2026 Energy Dashboard · Tenant <span class="mono">ORG-FEB-2048</span></span>
+        <span>Data refreshed every 15 s · IST (UTC+05:30)</span>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ================= SHARED MODALS ================= -->
+  <div class="modal" id="profile" role="dialog" aria-modal="true" aria-labelledby="profile-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog">
+      <div class="modal__head">
+        <span class="modal__icon"><i class="ic i-user"></i></span>
+        <div><h3 id="profile-title">My profile</h3><p>Your personal details in this organisation.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body">
+        <div class="row" style="gap:16px;margin-bottom:20px">
+          <span class="avatar avatar--lg av-1">VK</span>
+          <div>
+            <strong style="font-size:17px">Vijay Kumar</strong>
+            <div class="small muted">Tenant Admin · Member since Jan 2026</div>
+            <label class="btn btn--sm" style="margin-top:8px"><i class="ic i-upload"></i> Change photo<input type="file" accept="image/*" hidden /></label>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label>First name</label><input class="input" value="Vijay" /></div>
+          <div class="field"><label>Last name</label><input class="input" value="Kumar" /></div>
+          <div class="field"><label>Email</label><input class="input" type="email" value="vijay@febinosolutions.com" /></div>
+          <div class="field"><label>Phone</label><input class="input" type="tel" value="+91 98450 12345" /></div>
+          <div class="field"><label>Language</label><select class="input"><option>English (India)</option><option>हिन्दी</option><option>தமிழ்</option></select></div>
+          <div class="field"><label>Time zone</label><select class="input"><option>Asia/Kolkata (UTC+05:30)</option><option>Asia/Dubai (UTC+04:00)</option></select></div>
+        </div>
+      </div>
+      <div class="modal__foot">
+        <a href="#close" class="btn btn--ghost">Cancel</a>
+        <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save profile</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="change-password" role="dialog" aria-modal="true" aria-labelledby="cp-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="modal__head">
+        <span class="modal__icon modal__icon--violet"><i class="ic i-key"></i></span>
+        <div><h3 id="cp-title">Change password</h3><p>Use at least 8 characters with a number.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body" style="display:grid;gap:16px">
+        <div class="field"><label>Current password</label><div class="input-icon"><i class="ic i-lock"></i><input class="input" type="password" placeholder="••••••••" /></div></div>
+        <div class="field pw-field"><label>New password</label>
+          <div class="input-icon"><i class="ic i-key"></i><input class="input" type="password" placeholder=" " minlength="8" pattern="(?=.*\d)(?=.*[A-Za-z]).{8,}" /></div>
+          <div class="strength"><span></span><span></span><span></span><span></span></div>
+          <span class="hint hint--rule">8+ characters, letters and at least one number</span>
+          <span class="hint hint--ok">Strong password ✓</span>
+        </div>
+        <div class="field"><label>Confirm new password</label><div class="input-icon"><i class="ic i-key"></i><input class="input" type="password" placeholder="••••••••" /></div></div>
+      </div>
+      <div class="modal__foot">
+        <a href="#close" class="btn btn--ghost">Cancel</a>
+        <a href="#saved" class="btn btn--primary">Update password</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="switch-org" role="dialog" aria-modal="true" aria-labelledby="so-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="modal__head">
+        <span class="modal__icon modal__icon--cyan"><i class="ic i-building"></i></span>
+        <div><h3 id="so-title">Switch organisation</h3><p>You belong to 3 tenants.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body" style="display:grid;gap:10px">
+        <label class="radio-card"><input type="radio" name="org" checked /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo">FS</span><span style="flex:1"><strong>Febino Solutions Pvt Ltd</strong><br /><small class="mono muted">ORG-FEB-2048 · Tenant Admin</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+        <label class="radio-card"><input type="radio" name="org" /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo" style="background:var(--grad-warm)">SP</span><span style="flex:1"><strong>Sunrise Plastics Ltd</strong><br /><small class="mono muted">ORG-SUN-1177 · Manager</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+        <label class="radio-card"><input type="radio" name="org" /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo" style="background:var(--grad)">GT</span><span style="flex:1"><strong>GreenTech Campus</strong><br /><small class="mono muted">ORG-GTC-0931 · Viewer</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+      </div>
+      <div class="modal__foot">
+        <a href="register.html" class="btn btn--ghost left"><i class="ic i-plus"></i> New tenant</a>
+        <a href="dashboard.html" class="btn btn--primary">Switch</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal modal--danger" id="logout" role="dialog" aria-modal="true" aria-labelledby="lo-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="confirm">
+        <span class="modal__icon modal__icon--rose"><i class="ic i-logout"></i></span>
+        <h3 id="lo-title">Sign out?</h3>
+        <p>You'll need your Organisation ID and password to sign in again.</p>
+      </div>
+      <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+        <a href="#close" class="btn">Stay signed in</a>
+        <a href="login.html" class="btn btn--danger"><i class="ic i-logout"></i> Sign out</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="add-user" role="dialog" aria-modal="true" aria-labelledby="add-user-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--lg">
+    <div class="modal__head">
+      <span class="modal__icon"><i class="ic i-user-plus"></i></span>
+      <div><h3 id="add-user-t">Invite user</h3><p>They'll get an email with your Organisation ID and a link to set a password.</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-grid">
+        <div class="field"><label>First name <span class="req">*</span></label><input class="input" placeholder="Priya" /></div>
+        <div class="field"><label>Last name</label><input class="input" placeholder="Sharma" /></div>
+        <div class="field"><label>Work email <span class="req">*</span></label><div class="input-icon"><i class="ic i-mail"></i><input type="email" class="input" placeholder="name@febinosolutions.com" /></div></div>
+        <div class="field"><label>Mobile</label><div class="input-icon"><i class="ic i-phone"></i><input type="tel" class="input" placeholder="+91 98xxx xxxxx" /></div></div>
+        <div class="field"><label>Employee ID</label><input class="input mono" value="EMP-089" /></div>
+        <div class="field"><label>Department</label><select class="input"><option>Production</option><option>Utilities</option><option>Maintenance</option><option>Finance</option><option>Sustainability</option><option>Admin</option></select></div>
+        <div class="field"><label>Role <span class="req">*</span></label><select class="input"><option>Operator</option><option>Technician</option><option>Supervisor</option><option>Energy Manager</option><option>Viewer</option><option>Auditor</option><option>Tenant Admin</option></select></div>
+        <div class="field"><label>Shift</label><select class="input"><option>Shift A · 06:00–14:00</option><option>Shift B · 14:00–22:00</option><option>Shift C · 22:00–06:00</option><option>General · 09:30–18:30</option></select></div>
+        <div class="field full"><label>Site access</label>
+          <div class="row wrap" style="gap:18px">
+            <label class="check"><input type="checkbox" checked /> Plant 1 · Bengaluru</label>
+            <label class="check"><input type="checkbox" /> Plant 2 · Hosur</label>
+            <label class="check"><input type="checkbox" /> Corporate Office</label>
+          </div>
+        </div>
+        <label class="switch full"><input type="checkbox" checked /> Require two-factor authentication on first login</label>
+      </div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#invited" class="btn btn--primary"><i class="ic i-check"></i> Send invitation</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal" id="edit-user" role="dialog" aria-modal="true" aria-labelledby="edit-user-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--lg">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--cyan"><i class="ic i-edit"></i></span>
+      <div><h3 id="edit-user-t">Edit user</h3><p>Priya Sharma · EMP-014</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="row" style="gap:16px;margin-bottom:20px">
+        <span class="avatar avatar--lg av-2">PS</span>
+        <div style="flex:1"><strong style="font-size:16px">Priya Sharma</strong><div class="small muted">Joined Feb 12, 2026 · Last login 12 min ago</div></div>
+        <a href="#saved" class="btn btn--sm"><i class="ic i-key"></i> Send password reset</a>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>First name</label><input class="input" value="Priya" /></div>
+        <div class="field"><label>Last name</label><input class="input" value="Sharma" /></div>
+        <div class="field"><label>Work email</label><div class="input-icon"><i class="ic i-mail"></i><input type="email" class="input" value="priya.sharma@febinosolutions.com" /></div></div>
+        <div class="field"><label>Mobile</label><div class="input-icon"><i class="ic i-phone"></i><input type="tel" class="input" value="+91 99001 23456" /></div></div>
+        <div class="field"><label>Employee ID</label><input class="input mono" value="EMP-014" /></div>
+        <div class="field"><label>Department</label><select class="input"><option selected>Production</option><option>Utilities</option><option>Maintenance</option></select></div>
+        <div class="field"><label>Role</label><select class="input"><option selected>Operator</option><option>Technician</option><option>Supervisor</option><option>Energy Manager</option><option>Viewer</option></select></div>
+        <div class="field"><label>Shift</label><select class="input"><option selected>Shift A · 06:00–14:00</option><option>Shift B · 14:00–22:00</option><option>Shift C · 22:00–06:00</option><option>General · 09:30–18:30</option></select></div>
+        <div class="field"><label>Status</label><select class="input"><option selected>Active</option><option>Inactive</option><option>Suspended</option></select></div>
+        <div class="field"><label>Reports to</label><select class="input"><option selected>Meera Iyer · Supervisor</option><option>Arjun Nair · Energy Manager</option></select></div>
+        <label class="switch full"><input type="checkbox" checked /> Two-factor authentication enforced</label>
+      </div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save changes</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal" id="view-user" role="dialog" aria-modal="true" aria-labelledby="view-user-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--violet"><i class="ic i-user"></i></span>
+      <div><h3 id="view-user-t">User details</h3><p>Read-only summary</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="row" style="gap:16px;margin-bottom:20px">
+        <span class="avatar avatar--lg av-2">PS</span>
+        <div><strong style="font-size:17px">Priya Sharma</strong><div class="small muted">priya.sharma@febinosolutions.com</div><div class="row" style="margin-top:8px"><span class="badge badge--info"><i class="ic i-shield"></i> Operator</span><span class="shift-pill shift--a"><i class="ic i-sun"></i> Shift A</span></div></div>
+      </div>
+      <dl class="kv">
+        <dt>Employee ID</dt><dd class="mono">EMP-014</dd>
+        <dt>Department</dt><dd>Production</dd>
+        <dt>Reports to</dt><dd>Meera Iyer</dd>
+        <dt>Sites</dt><dd>Plant 1 · Bengaluru</dd>
+        <dt>2FA</dt><dd class="tc-green">Enabled</dd>
+        <dt>Alerts acknowledged (30 d)</dt><dd class="mono">46</dd>
+      </dl>
+      <div class="form-section" style="margin-top:20px">Recent activity</div>
+      <div class="timeline">
+        <div class="timeline__item"><strong>Acknowledged "Voltage imbalance"</strong><time>Today 13:12</time></div>
+        <div class="timeline__item" style="--c:var(--cyan)"><strong>Signed in from Chrome · Windows</strong><time>Today 05:54</time></div>
+        <div class="timeline__item" style="--c:var(--violet)"><strong>Exported Shift A report</strong><time>Yesterday 13:48</time></div>
+      </div>
+    </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Close</a>
+      <a href="#edit-user" class="btn btn--primary"><i class="ic i-edit"></i> Edit user</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal modal--danger" id="delete-user" role="dialog" aria-modal="true" aria-labelledby="delete-user-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--sm">
+    <div class="confirm">
+      <span class="modal__icon modal__icon--rose"><i class="ic i-trash"></i></span>
+      <h3 id="delete-user-t">Remove this user?</h3>
+      <p>They'll lose access to ORG-FEB-2048 immediately. Their activity history is kept for audit.</p>
+    </div>
+    <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+      <a href="#close" class="btn">Cancel</a>
+      <a href="#deleted" class="btn btn--danger"><i class="ic i-trash"></i> Yes, delete</a>
+    </div>
+  </div>
+</div>
+
+
+  <!-- ================= TOASTS ================= -->
+  <div class="toast" id="saved" role="status"><span class="toast__icon"><i class="ic i-check"></i></span><div><strong>Changes saved</strong><span>Your updates were saved successfully.</span></div></div>
+  <div class="toast" id="created" role="status"><span class="toast__icon"><i class="ic i-plus"></i></span><div><strong>Record created</strong><span>The new record has been added.</span></div></div>
+  <div class="toast" id="invited" role="status"><span class="toast__icon"><i class="ic i-send"></i></span><div><strong>Invitation sent</strong><span>An invite email is on its way.</span></div></div>
+  <div class="toast toast--danger" id="deleted" role="status"><span class="toast__icon"><i class="ic i-trash"></i></span><div><strong>Record deleted</strong><span>The item was removed permanently.</span></div></div>
+</body>
+</html>

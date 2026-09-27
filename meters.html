@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Energy Meters · Energy Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="app">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
+
+  <div class="app-shell">
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar" aria-label="Primary">
+      <a href="dashboard.html" class="brand">
+        <span class="brand__logo"><i class="ic i-bolt-fill"></i></span>
+        <span>
+          <span class="brand__name">Energy Dashboard</span><br />
+          <span class="brand__tag">Smart Energy Cloud</span>
+        </span>
+      </a>
+
+      <a href="#switch-org" class="tenant-switch" title="Switch organisation">
+        <span class="tenant-switch__logo">FS</span>
+        <span class="tenant-switch__meta">
+          <strong>Febino Solutions Pvt Ltd</strong>
+          <span>ORG-FEB-2048</span>
+        </span>
+        <i class="ic i-swap muted"></i>
+      </a>
+
+      <nav class="nav">
+        <div class="nav__section">Monitor</div>
+        <a href="dashboard.html" class="nav__link"><i class="ic i-grid"></i><span>Dashboard</span></a>
+        <a href="meters.html" class="nav__link is-active"><i class="ic i-gauge"></i><span>Energy Meters</span><em class="nav__badge nav__badge--green">38</em></a>
+        <a href="analytics.html" class="nav__link"><i class="ic i-chart"></i><span>Analytics</span></a>
+        <a href="alerts.html" class="nav__link"><i class="ic i-bell"></i><span>Alerts</span><em class="nav__badge">5</em></a>
+
+        <div class="nav__section">Operations</div>
+        <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift Management</span></a>
+
+        <div class="nav__section">Administration</div>
+        <a href="users.html" class="nav__link"><i class="ic i-users"></i><span>Users</span></a>
+        <a href="roles.html" class="nav__link"><i class="ic i-shield"></i><span>Roles &amp; Permissions</span></a>
+        <a href="settings.html" class="nav__link"><i class="ic i-settings"></i><span>Settings</span></a>
+      </nav>
+
+      <div class="sidebar__live">
+        <div class="eyebrow"><span class="dot dot--live" style="--c: var(--green)"></span> Live load</div>
+        <div class="sidebar__live-value">125.4 <small>kW</small></div>
+        <div class="small muted">Peak today 150.2 kW at 14:05</div>
+        <div class="eq" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="sidebar__foot"><span>v2.4.0</span><a href="#close" class="muted">Help &amp; docs</a></div>
+    </aside>
+    <label for="nav-toggle" class="nav-scrim" aria-hidden="true"></label>
+
+    <!-- ================= MAIN ================= -->
+    <div class="main">
+      <header class="topbar">
+        <label for="nav-toggle" class="icon-btn burger" aria-label="Open menu"><i class="ic i-menu"></i></label>
+
+        <div class="topbar__crumbs">
+          <small>Febino Solutions / Monitor</small>
+          <strong>Energy Meters</strong>
+        </div>
+
+        <label class="search">
+          <i class="ic i-search"></i>
+          <input type="search" placeholder="Search meters, users, alerts…" aria-label="Search" />
+          <kbd>Ctrl K</kbd>
+        </label>
+
+        <div class="topbar__actions">
+          <span class="live-pill"><span class="dot dot--live" style="--c: var(--green)"></span> Live</span>
+
+          <details class="dropdown">
+            <summary class="icon-btn" aria-label="Notifications"><i class="ic i-bell"></i><span class="ping"></span></summary>
+            <div class="dropdown__panel dropdown__panel--wide">
+              <div class="dropdown__head"><strong>Notifications</strong><span class="badge badge--danger">5 new</span></div>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: rgba(244,63,94,.14); color: var(--rose)"><i class="ic i-alert"></i></span>
+                <span><p><b>HVAC Chiller-2</b> crossed 95% of rated load</p><small>2 min ago · Critical</small></span>
+              </a>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: rgba(251,191,36,.14); color: var(--amber)"><i class="ic i-activity"></i></span>
+                <span><p>Power factor dropped to <b>0.86</b> on Main Incomer</p><small>18 min ago · Warning</small></span>
+              </a>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: rgba(34,211,238,.14); color: var(--cyan)"><i class="ic i-wifi"></i></span>
+                <span><p>Sub-meter <b>SM-1004-02</b> went offline</p><small>42 min ago · Info</small></span>
+              </a>
+              <div class="dropdown__sep"></div>
+              <a href="alerts.html" class="dropdown__item" style="justify-content:center;color:var(--green);font-weight:700">View all alerts</a>
+            </div>
+          </details>
+
+          <details class="dropdown">
+            <summary class="user-chip">
+              <span class="avatar av-1">VK</span>
+              <span class="user-chip__meta"><strong>Vijay</strong><small>Tenant Admin</small></span>
+              <i class="ic i-chev-down"></i>
+            </summary>
+            <div class="dropdown__panel">
+              <div class="dropdown__head" style="justify-content:flex-start;gap:12px">
+                <span class="avatar av-1">VK</span>
+                <span><strong>Vijay Kumar</strong><br /><small class="muted">vijay@febinosolutions.com</small></span>
+              </div>
+              <div class="dropdown__sep"></div>
+              <a href="#profile" class="dropdown__item"><i class="ic i-user"></i> My profile</a>
+              <a href="#change-password" class="dropdown__item"><i class="ic i-key"></i> Change password</a>
+              <a href="#switch-org" class="dropdown__item"><i class="ic i-swap"></i> Switch organisation</a>
+              <a href="settings.html" class="dropdown__item"><i class="ic i-settings"></i> Settings</a>
+              <div class="dropdown__sep"></div>
+              <a href="#logout" class="dropdown__item dropdown__item--danger"><i class="ic i-logout"></i> Sign out</a>
+            </div>
+          </details>
+        </div>
+      </header>
+
+      <main class="page">
+        <section class="page-head">
+          <div>
+            <h1 class="page-title">Energy <span class="gradient-text">Meters</span></h1>
+            <p class="page-sub">Devices and their sub-meters. Click <i class="ic i-chev-right"></i> on any device to expand its sub-meter tree.</p>
+          </div>
+          <div class="page-actions">
+            <a href="#close" class="btn btn--sm"><i class="ic i-download"></i> Export CSV</a>
+            <a href="#add-submeter" class="btn btn--sm btn--soft"><i class="ic i-layers"></i> Add sub-meter</a>
+            <a href="#add-device" class="btn btn--sm btn--primary"><i class="ic i-plus"></i> Add device</a>
+          </div>
+        </section>
+
+        <section class="grid grid-4">
+          <div class="card stat"><span class="stat__icon" style="--c:var(--cyan)"><i class="ic i-cpu"></i></span><div><strong>12</strong><span>Devices</span></div></div>
+          <div class="card stat"><span class="stat__icon" style="--c:var(--violet)"><i class="ic i-layers"></i></span><div><strong>38</strong><span>Sub-meters</span></div></div>
+          <div class="card stat"><span class="stat__icon"><i class="ic i-wifi"></i></span><div><strong>44 <small class="muted" style="font-size:13px">/ 50</small></strong><span>Reporting online</span></div></div>
+          <div class="card stat"><span class="stat__icon" style="--c:var(--rose)"><i class="ic i-alert"></i></span><div><strong>6</strong><span>Offline / maintenance</span></div></div>
+        </section>
+
+        <section class="card paged">
+          <input type="radio" class="pg-input" name="mt-pg" id="mt-p1" value="1" checked aria-label="Page 1" />
+<input type="radio" class="pg-input" name="mt-pg" id="mt-p2" value="2" aria-label="Page 2" />
+<input type="radio" class="pg-input" name="mt-pg" id="mt-p3" value="3" aria-label="Page 3" />
+          <div class="card__head">
+            <div><h3 class="card__title"><i class="ic i-gauge"></i> Device tree</h3><p class="card__sub">Parent devices with their sub-meters · live values refresh every 15 s</p></div>
+          </div>
+          <div class="toolbar">
+            <label class="search"><i class="ic i-search"></i><input type="search" placeholder="Search device or sub-meter ID…" aria-label="Search meters" /></label>
+            <select class="input input--sm" aria-label="Site"><option>All sites</option><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option></select>
+            <select class="input input--sm" aria-label="Status"><option>Any status</option><option>Online</option><option>Idle</option><option>Offline</option><option>Maintenance</option></select>
+            <span class="spacer"></span>
+            <span class="chip is-active">All</span><span class="chip"><i class="ic i-bolt"></i> Consumers</span><span class="chip"><i class="ic i-sun"></i> Generators</span>
+          </div>
+          <div class="table-wrap">
+            <table class="table table--tree">
+              <thead><tr><th style="width:56px"></th><th>Device / Sub-meter</th><th>Location</th><th>Type</th><th class="num">Power</th><th class="num">Energy (kWh)</th><th>Load</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody class="device" data-page="1">
+  <tr class="device-row">
+    <td><input type="checkbox" class="tree-toggle" id="dev-1001" checked aria-label="Show sub-meters of Main Incomer" /><label for="dev-1001" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-cpu"></i></span><div><strong>Main Incomer</strong><small>DEV-1001 · Schneider PM5560</small></div></div></td>
+    <td>Main LT Panel</td>
+    <td><label for="dev-1001" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 4 sub-meters</label></td>
+    <td class="num">65.2 kW</td><td class="num">8,450</td><td><div class="bar-cell"><div class="bar"><span style="--w:72%"></span></div><small>72%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">10 s ago</div></td>
+    <td><div class="actions"><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Feeder A · Production Line 1</strong><small>SM-1001-01</small></div></div></td>
+    <td class="small">↳ Main Incomer</td>
+    <td><span class="tag">CT 400/5</span></td>
+    <td class="num">24.8 kW</td><td class="num">3,120</td><td><div class="bar-cell"><div class="bar"><span style="--w:78%"></span></div><small>78%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Feeder B · Production Line 2</strong><small>SM-1001-02</small></div></div></td>
+    <td class="small">↳ Main Incomer</td>
+    <td><span class="tag">CT 400/5</span></td>
+    <td class="num">21.6 kW</td><td class="num">2,840</td><td><div class="bar-cell"><div class="bar"><span style="--w:70%"></span></div><small>70%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Feeder C · Tool Room</strong><small>SM-1001-03</small></div></div></td>
+    <td class="small">↳ Main Incomer</td>
+    <td><span class="tag">CT 200/5</span></td>
+    <td class="num">11.4 kW</td><td class="num">1,560</td><td><div class="bar-cell"><div class="bar"><span style="--w:57%"></span></div><small>57%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Feeder D · Welding Bay</strong><small>SM-1001-04</small></div></div></td>
+    <td class="small">↳ Main Incomer</td>
+    <td><span class="tag">CT 200/5</span></td>
+    <td class="num">7.4 kW</td><td class="num">930</td><td><div class="bar-cell"><div class="bar"><span style="--w:41%"></span></div><small>41%</small></div></td>
+    <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row sub-row--add"><td></td><td colspan="8"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to Main Incomer</a></td></tr>
+</tbody>
+<tbody class="device" data-page="1">
+  <tr class="device-row">
+    <td><input type="checkbox" class="tree-toggle" id="dev-1002" aria-label="Show sub-meters of HVAC" /><label for="dev-1002" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-thermo"></i></span><div><strong>HVAC</strong><small>DEV-1002 · Secure Elite 440</small></div></div></td>
+    <td>Utility Block</td>
+    <td><label for="dev-1002" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 3 sub-meters</label></td>
+    <td class="num">22.0 kW</td><td class="num">2,180</td><td><div class="bar-cell"><div class="bar bar--rose"><span style="--w:91%"></span></div><small>91%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">12 s ago</div></td>
+    <td><div class="actions"><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Chiller-1</strong><small>SM-1002-01</small></div></div></td>
+    <td class="small">↳ HVAC</td>
+    <td><span class="tag">Direct 63 A</span></td>
+    <td class="num">8.6 kW</td><td class="num">860</td><td><div class="bar-cell"><div class="bar bar--amber"><span style="--w:86%"></span></div><small>86%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Chiller-2</strong><small>SM-1002-02</small></div></div></td>
+    <td class="small">↳ HVAC</td>
+    <td><span class="tag">Direct 63 A</span></td>
+    <td class="num">9.5 kW</td><td class="num">905</td><td><div class="bar-cell"><div class="bar bar--rose"><span style="--w:95%"></span></div><small>95%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>AHU · Level 1–3</strong><small>SM-1002-03</small></div></div></td>
+    <td class="small">↳ HVAC</td>
+    <td><span class="tag">CT 100/5</span></td>
+    <td class="num">3.9 kW</td><td class="num">415</td><td><div class="bar-cell"><div class="bar"><span style="--w:52%"></span></div><small>52%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row sub-row--add"><td></td><td colspan="8"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to HVAC</a></td></tr>
+</tbody>
+<tbody class="device" data-page="1">
+  <tr class="device-row">
+    <td><input type="checkbox" class="tree-toggle" id="dev-1003" aria-label="Show sub-meters of Office" /><label for="dev-1003" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--amber)"><i class="ic i-building"></i></span><div><strong>Office</strong><small>DEV-1003 · L&T WL4405</small></div></div></td>
+    <td>Admin Building</td>
+    <td><label for="dev-1003" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 5 sub-meters</label></td>
+    <td class="num">12.0 kW</td><td class="num">980</td><td><div class="bar-cell"><div class="bar"><span style="--w:28%"></span></div><small>28%</small></div></td>
+    <td><span class="badge badge--warn"><span class="dot"></span> Idle</span><div class="small muted" style="margin-top:4px">15 s ago</div></td>
+    <td><div class="actions"><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Ground floor DB</strong><small>SM-1003-01</small></div></div></td>
+    <td class="small">↳ Office</td>
+    <td><span class="tag">Direct 32 A</span></td>
+    <td class="num">3.1 kW</td><td class="num">260</td><td><div class="bar-cell"><div class="bar"><span style="--w:31%"></span></div><small>31%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>First floor DB</strong><small>SM-1003-02</small></div></div></td>
+    <td class="small">↳ Office</td>
+    <td><span class="tag">Direct 32 A</span></td>
+    <td class="num">2.8 kW</td><td class="num">240</td><td><div class="bar-cell"><div class="bar"><span style="--w:28%"></span></div><small>28%</small></div></td>
+    <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Second floor DB</strong><small>SM-1003-03</small></div></div></td>
+    <td class="small">↳ Office</td>
+    <td><span class="tag">Direct 32 A</span></td>
+    <td class="num">2.4 kW</td><td class="num">205</td><td><div class="bar-cell"><div class="bar"><span style="--w:24%"></span></div><small>24%</small></div></td>
+    <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Conference wing</strong><small>SM-1003-04</small></div></div></td>
+    <td class="small">↳ Office</td>
+    <td><span class="tag">Direct 16 A</span></td>
+    <td class="num">1.9 kW</td><td class="num">140</td><td><div class="bar-cell"><div class="bar"><span style="--w:38%"></span></div><small>38%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Office UPS</strong><small>SM-1003-05</small></div></div></td>
+    <td class="small">↳ Office</td>
+    <td><span class="tag">Direct 32 A</span></td>
+    <td class="num">1.8 kW</td><td class="num">135</td><td><div class="bar-cell"><div class="bar"><span style="--w:20%"></span></div><small>20%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row sub-row--add"><td></td><td colspan="8"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to Office</a></td></tr>
+</tbody>
+<tbody class="device" data-page="1">
+  <tr class="device-row">
+    <td><input type="checkbox" class="tree-toggle" id="dev-1004" aria-label="Show sub-meters of Data Centre" /><label for="dev-1004" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--violet)"><i class="ic i-wifi"></i></span><div><strong>Data Centre</strong><small>DEV-1004 · Schneider PM2220</small></div></div></td>
+    <td>Server Room · L2</td>
+    <td><label for="dev-1004" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 4 sub-meters</label></td>
+    <td class="num">12.4 kW</td><td class="num">3,020</td><td><div class="bar-cell"><div class="bar"><span style="--w:64%"></span></div><small>64%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">8 s ago</div></td>
+    <td><div class="actions"><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>UPS-A feeder</strong><small>SM-1004-01</small></div></div></td>
+    <td class="small">↳ Data Centre</td>
+    <td><span class="tag">CT 100/5</span></td>
+    <td class="num">6.2 kW</td><td class="num">1,480</td><td><div class="bar-cell"><div class="bar"><span style="--w:62%"></span></div><small>62%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>UPS-B feeder</strong><small>SM-1004-02</small></div></div></td>
+    <td class="small">↳ Data Centre</td>
+    <td><span class="tag">CT 100/5</span></td>
+    <td class="num">0.0 kW</td><td class="num">1,110</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
+    <td><span class="badge badge--danger"><span class="dot"></span> Offline</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Precision AC</strong><small>SM-1004-03</small></div></div></td>
+    <td class="small">↳ Data Centre</td>
+    <td><span class="tag">Direct 32 A</span></td>
+    <td class="num">4.1 kW</td><td class="num">330</td><td><div class="bar-cell"><div class="bar"><span style="--w:68%"></span></div><small>68%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Rack lighting</strong><small>SM-1004-04</small></div></div></td>
+    <td class="small">↳ Data Centre</td>
+    <td><span class="tag">Direct 10 A</span></td>
+    <td class="num">0.3 kW</td><td class="num">100</td><td><div class="bar-cell"><div class="bar"><span style="--w:22%"></span></div><small>22%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row sub-row--add"><td></td><td colspan="8"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to Data Centre</a></td></tr>
+</tbody>
+<tbody class="device" data-page="2">
+  <tr class="device-row">
+    <td><input type="checkbox" class="tree-toggle" id="dev-1005" aria-label="Show sub-meters of Lighting" /><label for="dev-1005" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--amber)"><i class="ic i-sun"></i></span><div><strong>Lighting</strong><small>DEV-1005 · Elmeasure LG+ 1129</small></div></div></td>
+    <td>Plant-wide</td>
+    <td><label for="dev-1005" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 6 sub-meters</label></td>
+    <td class="num">13.8 kW</td><td class="num">1,410</td><td><div class="bar-cell"><div class="bar"><span style="--w:55%"></span></div><small>55%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">11 s ago</div></td>
+    <td><div class="actions"><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Shop floor high-bays</strong><small>SM-1005-01</small></div></div></td>
+    <td class="small">↳ Lighting</td>
+    <td><span class="tag">CT 60/5</span></td>
+    <td class="num">6.4 kW</td><td class="num">640</td><td><div class="bar-cell"><div class="bar"><span style="--w:64%"></span></div><small>64%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Street lights</strong><small>SM-1005-02</small></div></div></td>
+    <td class="small">↳ Lighting</td>
+    <td><span class="tag">Direct 32 A</span></td>
+    <td class="num">2.1 kW</td><td class="num">180</td><td><div class="bar-cell"><div class="bar"><span style="--w:42%"></span></div><small>42%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Warehouse</strong><small>SM-1005-03</small></div></div></td>
+    <td class="small">↳ Lighting</td>
+    <td><span class="tag">Direct 32 A</span></td>
+    <td class="num">2.6 kW</td><td class="num">260</td><td><div class="bar-cell"><div class="bar"><span style="--w:52%"></span></div><small>52%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Admin corridors</strong><small>SM-1005-04</small></div></div></td>
+    <td class="small">↳ Lighting</td>
+    <td><span class="tag">Direct 16 A</span></td>
+    <td class="num">1.2 kW</td><td class="num">130</td><td><div class="bar-cell"><div class="bar"><span style="--w:40%"></span></div><small>40%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Security & gate</strong><small>SM-1005-05</small></div></div></td>
+    <td class="small">↳ Lighting</td>
+    <td><span class="tag">Direct 10 A</span></td>
+    <td class="num">0.7 kW</td><td class="num">90</td><td><div class="bar-cell"><div class="bar"><span style="--w:35%"></span></div><small>35%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Emergency lighting</strong><small>SM-1005-06</small></div></div></td>
+    <td class="small">↳ Lighting</td>
+    <td><span class="tag">Direct 10 A</span></td>
+    <td class="num">0.8 kW</td><td class="num">110</td><td><div class="bar-cell"><div class="bar"><span style="--w:26%"></span></div><small>26%</small></div></td>
+    <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row sub-row--add"><td></td><td colspan="8"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to Lighting</a></td></tr>
+</tbody>
+<tbody class="device" data-page="2">
+  <tr class="device-row">
+    <td><input type="checkbox" class="tree-toggle" id="dev-1006" aria-label="Show sub-meters of Compressor House" /><label for="dev-1006" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--green)"><i class="ic i-plug"></i></span><div><strong>Compressor House</strong><small>DEV-1006 · Schneider PM5560</small></div></div></td>
+    <td>Utility Block</td>
+    <td><label for="dev-1006" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 3 sub-meters</label></td>
+    <td class="num">0.0 kW</td><td class="num">4,112</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
+    <td><span class="badge badge--danger"><span class="dot"></span> Offline</span><div class="small muted" style="margin-top:4px">38 min ago</div></td>
+    <td><div class="actions"><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Screw compressor 1</strong><small>SM-1006-01</small></div></div></td>
+    <td class="small">↳ Compressor House</td>
+    <td><span class="tag">CT 200/5</span></td>
+    <td class="num">0.0 kW</td><td class="num">2,210</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
+    <td><span class="badge badge--danger"><span class="dot"></span> Offline</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Screw compressor 2</strong><small>SM-1006-02</small></div></div></td>
+    <td class="small">↳ Compressor House</td>
+    <td><span class="tag">CT 200/5</span></td>
+    <td class="num">0.0 kW</td><td class="num">1,640</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
+    <td><span class="badge badge--danger"><span class="dot"></span> Offline</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Air dryer</strong><small>SM-1006-03</small></div></div></td>
+    <td class="small">↳ Compressor House</td>
+    <td><span class="tag">Direct 32 A</span></td>
+    <td class="num">0.0 kW</td><td class="num">262</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
+    <td><span class="badge badge--danger"><span class="dot"></span> Offline</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row sub-row--add"><td></td><td colspan="8"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to Compressor House</a></td></tr>
+</tbody>
+<tbody class="device" data-page="2">
+  <tr class="device-row">
+    <td><input type="checkbox" class="tree-toggle" id="dev-1007" aria-label="Show sub-meters of Rooftop Solar" /><label for="dev-1007" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--blue)"><i class="ic i-sun"></i></span><div><strong>Rooftop Solar</strong><small>DEV-1007 · Fronius Smart Meter</small></div></div></td>
+    <td>Roof · Block A</td>
+    <td><label for="dev-1007" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 2 sub-meters</label></td>
+    <td class="num">−18.6 kW</td><td class="num">1,284</td><td><div class="bar-cell"><div class="bar"><span style="--w:62%"></span></div><small>62%</small></div></td>
+    <td><span class="badge badge--info"><span class="dot dot--live"></span> Generating</span><div class="small muted" style="margin-top:4px">9 s ago</div></td>
+    <td><div class="actions"><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Inverter 1 · 25 kWp</strong><small>SM-1007-01</small></div></div></td>
+    <td class="small">↳ Rooftop Solar</td>
+    <td><span class="tag">Direct 63 A</span></td>
+    <td class="num">−10.2 kW</td><td class="num">704</td><td><div class="bar-cell"><div class="bar"><span style="--w:68%"></span></div><small>68%</small></div></td>
+    <td><span class="badge badge--info"><span class="dot dot--live"></span> Generating</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Inverter 2 · 20 kWp</strong><small>SM-1007-02</small></div></div></td>
+    <td class="small">↳ Rooftop Solar</td>
+    <td><span class="tag">Direct 63 A</span></td>
+    <td class="num">−8.4 kW</td><td class="num">580</td><td><div class="bar-cell"><div class="bar"><span style="--w:56%"></span></div><small>56%</small></div></td>
+    <td><span class="badge badge--info"><span class="dot dot--live"></span> Generating</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row sub-row--add"><td></td><td colspan="8"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to Rooftop Solar</a></td></tr>
+</tbody>
+<tbody class="device" data-page="2">
+  <tr class="device-row">
+    <td><input type="checkbox" class="tree-toggle" id="dev-1008" aria-label="Show sub-meters of DG Set 1" /><label for="dev-1008" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--rose)"><i class="ic i-battery"></i></span><div><strong>DG Set 1</strong><small>DEV-1008 · Deepsea DSE7320</small></div></div></td>
+    <td>DG Yard</td>
+    <td><label for="dev-1008" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 1 sub-meters</label></td>
+    <td class="num">0.0 kW</td><td class="num">212</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
+    <td><span class="badge badge--warn"><span class="dot"></span> Standby</span><div class="small muted" style="margin-top:4px">1 min ago</div></td>
+    <td><div class="actions"><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>DG output · 250 kVA</strong><small>SM-1008-01</small></div></div></td>
+    <td class="small">↳ DG Set 1</td>
+    <td><span class="tag">CT 400/5</span></td>
+    <td class="num">0.0 kW</td><td class="num">212</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
+    <td><span class="badge badge--warn"><span class="dot"></span> Standby</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row sub-row--add"><td></td><td colspan="8"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to DG Set 1</a></td></tr>
+</tbody>
+<tbody class="device" data-page="3">
+  <tr class="device-row">
+    <td><input type="checkbox" class="tree-toggle" id="dev-1009" aria-label="Show sub-meters of Water Pumps" /><label for="dev-1009" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-activity"></i></span><div><strong>Water Pumps</strong><small>DEV-1009 · Elmeasure LG+ 5310</small></div></div></td>
+    <td>Pump House</td>
+    <td><label for="dev-1009" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 4 sub-meters</label></td>
+    <td class="num">8.6 kW</td><td class="num">1,066</td><td><div class="bar-cell"><div class="bar"><span style="--w:47%"></span></div><small>47%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">14 s ago</div></td>
+    <td><div class="actions"><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Borewell pump</strong><small>SM-1009-01</small></div></div></td>
+    <td class="small">↳ Water Pumps</td>
+    <td><span class="tag">Direct 32 A</span></td>
+    <td class="num">3.2 kW</td><td class="num">410</td><td><div class="bar-cell"><div class="bar"><span style="--w:58%"></span></div><small>58%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Transfer pump</strong><small>SM-1009-02</small></div></div></td>
+    <td class="small">↳ Water Pumps</td>
+    <td><span class="tag">Direct 32 A</span></td>
+    <td class="num">2.4 kW</td><td class="num">300</td><td><div class="bar-cell"><div class="bar"><span style="--w:48%"></span></div><small>48%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Fire hydrant jockey</strong><small>SM-1009-03</small></div></div></td>
+    <td class="small">↳ Water Pumps</td>
+    <td><span class="tag">Direct 16 A</span></td>
+    <td class="num">0.8 kW</td><td class="num">96</td><td><div class="bar-cell"><div class="bar"><span style="--w:20%"></span></div><small>20%</small></div></td>
+    <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>STP blowers</strong><small>SM-1009-04</small></div></div></td>
+    <td class="small">↳ Water Pumps</td>
+    <td><span class="tag">Direct 32 A</span></td>
+    <td class="num">2.2 kW</td><td class="num">260</td><td><div class="bar-cell"><div class="bar"><span style="--w:44%"></span></div><small>44%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row sub-row--add"><td></td><td colspan="8"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to Water Pumps</a></td></tr>
+</tbody>
+<tbody class="device" data-page="3">
+  <tr class="device-row">
+    <td><input type="checkbox" class="tree-toggle" id="dev-1010" aria-label="Show sub-meters of Canteen" /><label for="dev-1010" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--violet)"><i class="ic i-building"></i></span><div><strong>Canteen</strong><small>DEV-1010 · L&T WL4405</small></div></div></td>
+    <td>Amenities Block</td>
+    <td><label for="dev-1010" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 3 sub-meters</label></td>
+    <td class="num">4.2 kW</td><td class="num">540</td><td><div class="bar-cell"><div class="bar"><span style="--w:35%"></span></div><small>35%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">13 s ago</div></td>
+    <td><div class="actions"><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Kitchen equipment</strong><small>SM-1010-01</small></div></div></td>
+    <td class="small">↳ Canteen</td>
+    <td><span class="tag">Direct 32 A</span></td>
+    <td class="num">2.6 kW</td><td class="num">330</td><td><div class="bar-cell"><div class="bar"><span style="--w:43%"></span></div><small>43%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Cold storage</strong><small>SM-1010-02</small></div></div></td>
+    <td class="small">↳ Canteen</td>
+    <td><span class="tag">Direct 16 A</span></td>
+    <td class="num">1.1 kW</td><td class="num">150</td><td><div class="bar-cell"><div class="bar"><span style="--w:55%"></span></div><small>55%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Dining hall</strong><small>SM-1010-03</small></div></div></td>
+    <td class="small">↳ Canteen</td>
+    <td><span class="tag">Direct 16 A</span></td>
+    <td class="num">0.5 kW</td><td class="num">60</td><td><div class="bar-cell"><div class="bar"><span style="--w:12%"></span></div><small>12%</small></div></td>
+    <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row sub-row--add"><td></td><td colspan="8"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to Canteen</a></td></tr>
+</tbody>
+<tbody class="device" data-page="3">
+  <tr class="device-row">
+    <td><input type="checkbox" class="tree-toggle" id="dev-1011" aria-label="Show sub-meters of EV Charging" /><label for="dev-1011" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--green)"><i class="ic i-plug"></i></span><div><strong>EV Charging</strong><small>DEV-1011 · Secure Elite 440</small></div></div></td>
+    <td>Parking · P1</td>
+    <td><label for="dev-1011" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 2 sub-meters</label></td>
+    <td class="num">7.4 kW</td><td class="num">388</td><td><div class="bar-cell"><div class="bar"><span style="--w:49%"></span></div><small>49%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">10 s ago</div></td>
+    <td><div class="actions"><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Charger 1 · 7.4 kW AC</strong><small>SM-1011-01</small></div></div></td>
+    <td class="small">↳ EV Charging</td>
+    <td><span class="tag">Direct 32 A</span></td>
+    <td class="num">7.4 kW</td><td class="num">240</td><td><div class="bar-cell"><div class="bar bar--rose"><span style="--w:100%"></span></div><small>100%</small></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Charger 2 · 7.4 kW AC</strong><small>SM-1011-02</small></div></div></td>
+    <td class="small">↳ EV Charging</td>
+    <td><span class="tag">Direct 32 A</span></td>
+    <td class="num">0.0 kW</td><td class="num">148</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
+    <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row sub-row--add"><td></td><td colspan="8"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to EV Charging</a></td></tr>
+</tbody>
+<tbody class="device" data-page="3">
+  <tr class="device-row">
+    <td><input type="checkbox" class="tree-toggle" id="dev-1012" aria-label="Show sub-meters of Paint Shop" /><label for="dev-1012" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--rose)"><i class="ic i-cpu"></i></span><div><strong>Paint Shop</strong><small>DEV-1012 · Schneider PM5560</small></div></div></td>
+    <td>Block C</td>
+    <td><label for="dev-1012" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 3 sub-meters</label></td>
+    <td class="num">0.0 kW</td><td class="num">2,905</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
+    <td><span class="badge badge--orange"><span class="dot"></span> Maintenance</span><div class="small muted" style="margin-top:4px">2 h ago</div></td>
+    <td><div class="actions"><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Spray booth</strong><small>SM-1012-01</small></div></div></td>
+    <td class="small">↳ Paint Shop</td>
+    <td><span class="tag">CT 200/5</span></td>
+    <td class="num">0.0 kW</td><td class="num">1,420</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
+    <td><span class="badge badge--orange"><span class="dot"></span> Maintenance</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Curing oven</strong><small>SM-1012-02</small></div></div></td>
+    <td class="small">↳ Paint Shop</td>
+    <td><span class="tag">CT 200/5</span></td>
+    <td class="num">0.0 kW</td><td class="num">1,210</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
+    <td><span class="badge badge--orange"><span class="dot"></span> Maintenance</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Exhaust fans</strong><small>SM-1012-03</small></div></div></td>
+    <td class="small">↳ Paint Shop</td>
+    <td><span class="tag">Direct 32 A</span></td>
+    <td class="num">0.0 kW</td><td class="num">275</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
+    <td><span class="badge badge--orange"><span class="dot"></span> Maintenance</span></td>
+    <td><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row sub-row--add"><td></td><td colspan="8"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to Paint Shop</a></td></tr>
+</tbody>
+            </table>
+          </div>
+          <div class="pager">
+  <div class="pager__info">Showing <span data-when="1"><strong>1–4</strong></span><span data-when="2"><strong>5–8</strong></span><span data-when="3"><strong>9–12</strong></span> of <strong>12</strong> devices</div>
+  <div class="pager__size">Rows per page <select class="input" aria-label="Rows per page"><option>4</option><option>8</option><option>16</option></select></div>
+  <div class="pager__nav"><span class="pg-btn is-disabled" data-when="1" aria-hidden="true"><i class="ic i-chev-left"></i></span><label for="mt-p1" data-when="2" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="mt-p2" data-when="3" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="mt-p1" data-p="1">1</label><label for="mt-p2" data-p="2">2</label><label for="mt-p3" data-p="3">3</label><label for="mt-p2" data-when="1" aria-label="Next page"><i class="ic i-chev-right"></i></label><label for="mt-p3" data-when="2" aria-label="Next page"><i class="ic i-chev-right"></i></label><span class="pg-btn is-disabled" data-when="3" aria-hidden="true"><i class="ic i-chev-right"></i></span></div>
+</div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>© 2026 Energy Dashboard · Tenant <span class="mono">ORG-FEB-2048</span></span>
+        <span>Data refreshed every 15 s · IST (UTC+05:30)</span>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ================= SHARED MODALS ================= -->
+  <div class="modal" id="profile" role="dialog" aria-modal="true" aria-labelledby="profile-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog">
+      <div class="modal__head">
+        <span class="modal__icon"><i class="ic i-user"></i></span>
+        <div><h3 id="profile-title">My profile</h3><p>Your personal details in this organisation.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body">
+        <div class="row" style="gap:16px;margin-bottom:20px">
+          <span class="avatar avatar--lg av-1">VK</span>
+          <div>
+            <strong style="font-size:17px">Vijay Kumar</strong>
+            <div class="small muted">Tenant Admin · Member since Jan 2026</div>
+            <label class="btn btn--sm" style="margin-top:8px"><i class="ic i-upload"></i> Change photo<input type="file" accept="image/*" hidden /></label>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label>First name</label><input class="input" value="Vijay" /></div>
+          <div class="field"><label>Last name</label><input class="input" value="Kumar" /></div>
+          <div class="field"><label>Email</label><input class="input" type="email" value="vijay@febinosolutions.com" /></div>
+          <div class="field"><label>Phone</label><input class="input" type="tel" value="+91 98450 12345" /></div>
+          <div class="field"><label>Language</label><select class="input"><option>English (India)</option><option>हिन्दी</option><option>தமிழ்</option></select></div>
+          <div class="field"><label>Time zone</label><select class="input"><option>Asia/Kolkata (UTC+05:30)</option><option>Asia/Dubai (UTC+04:00)</option></select></div>
+        </div>
+      </div>
+      <div class="modal__foot">
+        <a href="#close" class="btn btn--ghost">Cancel</a>
+        <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save profile</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="change-password" role="dialog" aria-modal="true" aria-labelledby="cp-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="modal__head">
+        <span class="modal__icon modal__icon--violet"><i class="ic i-key"></i></span>
+        <div><h3 id="cp-title">Change password</h3><p>Use at least 8 characters with a number.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body" style="display:grid;gap:16px">
+        <div class="field"><label>Current password</label><div class="input-icon"><i class="ic i-lock"></i><input class="input" type="password" placeholder="••••••••" /></div></div>
+        <div class="field pw-field"><label>New password</label>
+          <div class="input-icon"><i class="ic i-key"></i><input class="input" type="password" placeholder=" " minlength="8" pattern="(?=.*\d)(?=.*[A-Za-z]).{8,}" /></div>
+          <div class="strength"><span></span><span></span><span></span><span></span></div>
+          <span class="hint hint--rule">8+ characters, letters and at least one number</span>
+          <span class="hint hint--ok">Strong password ✓</span>
+        </div>
+        <div class="field"><label>Confirm new password</label><div class="input-icon"><i class="ic i-key"></i><input class="input" type="password" placeholder="••••••••" /></div></div>
+      </div>
+      <div class="modal__foot">
+        <a href="#close" class="btn btn--ghost">Cancel</a>
+        <a href="#saved" class="btn btn--primary">Update password</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="switch-org" role="dialog" aria-modal="true" aria-labelledby="so-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="modal__head">
+        <span class="modal__icon modal__icon--cyan"><i class="ic i-building"></i></span>
+        <div><h3 id="so-title">Switch organisation</h3><p>You belong to 3 tenants.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body" style="display:grid;gap:10px">
+        <label class="radio-card"><input type="radio" name="org" checked /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo">FS</span><span style="flex:1"><strong>Febino Solutions Pvt Ltd</strong><br /><small class="mono muted">ORG-FEB-2048 · Tenant Admin</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+        <label class="radio-card"><input type="radio" name="org" /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo" style="background:var(--grad-warm)">SP</span><span style="flex:1"><strong>Sunrise Plastics Ltd</strong><br /><small class="mono muted">ORG-SUN-1177 · Manager</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+        <label class="radio-card"><input type="radio" name="org" /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo" style="background:var(--grad)">GT</span><span style="flex:1"><strong>GreenTech Campus</strong><br /><small class="mono muted">ORG-GTC-0931 · Viewer</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+      </div>
+      <div class="modal__foot">
+        <a href="register.html" class="btn btn--ghost left"><i class="ic i-plus"></i> New tenant</a>
+        <a href="dashboard.html" class="btn btn--primary">Switch</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal modal--danger" id="logout" role="dialog" aria-modal="true" aria-labelledby="lo-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="confirm">
+        <span class="modal__icon modal__icon--rose"><i class="ic i-logout"></i></span>
+        <h3 id="lo-title">Sign out?</h3>
+        <p>You'll need your Organisation ID and password to sign in again.</p>
+      </div>
+      <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+        <a href="#close" class="btn">Stay signed in</a>
+        <a href="login.html" class="btn btn--danger"><i class="ic i-logout"></i> Sign out</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="add-device" role="dialog" aria-modal="true" aria-labelledby="add-device-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--lg">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--cyan"><i class="ic i-cpu"></i></span>
+      <div><h3 id="add-device-t">Add device</h3><p>Register a new parent meter. You can attach sub-meters right away.</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-section">Device</div>
+      <div class="form-grid form-grid--3">
+        <div class="field"><label>Device name <span class="req">*</span></label><input class="input" placeholder="e.g. Compressor House" /></div>
+        <div class="field"><label>Device ID</label><input class="input mono" value="DEV-1013" /></div>
+        <div class="field"><label>Category</label><select class="input"><option>Incomer</option><option>HVAC</option><option>Lighting</option><option>Process</option><option>Utility</option><option>Generation (Solar/DG)</option></select></div>
+        <div class="field"><label>Make &amp; model</label><input class="input" placeholder="Schneider PM5560" /></div>
+        <div class="field"><label>Site</label><select class="input"><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option></select></div>
+        <div class="field"><label>Location / panel</label><input class="input" placeholder="Main LT Panel" /></div>
+      </div>
+      <div class="form-section" style="margin-top:18px">Communication</div>
+      <div class="form-grid form-grid--3">
+        <div class="field"><label>Protocol</label><select class="input"><option>Modbus RTU</option><option>Modbus TCP</option><option>MQTT</option></select></div>
+        <div class="field"><label>Gateway / IP</label><input class="input mono" placeholder="192.168.1.40" /></div>
+        <div class="field"><label>Slave ID</label><input class="input mono" placeholder="1" /></div>
+        <div class="field"><label>Rated load</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" placeholder="90" /><span class="suffix">kW</span></div></div>
+        <div class="field"><label>CT ratio</label><input class="input mono" placeholder="400/5" /></div>
+        <div class="field"><label>Polling interval</label><select class="input"><option>15 s</option><option>30 s</option><option>1 min</option><option>5 min</option></select></div>
+      </div>
+      <div class="form-section" style="margin-top:18px">Sub-meters <span class="count-pill" style="letter-spacing:0;text-transform:none">optional</span></div>
+      <div class="sub-editor">
+        <div class="sub-editor__row"><span class="n">01</span><input class="input input--sm" placeholder="Sub-meter name" aria-label="Sub-meter name" /><input class="input input--sm mono" value="SM-1013-01" aria-label="Sub-meter ID" /><select class="input input--sm" aria-label="CT ratio"><option>CT 100/5</option><option>CT 200/5</option><option>Direct 32 A</option></select><div class="actions"><a href="#add-device" class="act act--del" title="Remove"><i class="ic i-trash"></i></a></div></div>
+        <div class="sub-editor__row"><span class="n">02</span><input class="input input--sm" placeholder="Sub-meter name" aria-label="Sub-meter name" /><input class="input input--sm mono" value="SM-1013-02" aria-label="Sub-meter ID" /><select class="input input--sm" aria-label="CT ratio"><option>CT 100/5</option><option>CT 200/5</option><option>Direct 32 A</option></select><div class="actions"><a href="#add-device" class="act act--del" title="Remove"><i class="ic i-trash"></i></a></div></div>
+        <a href="#add-device" class="link-add" style="margin-left:0;justify-content:center"><i class="ic i-plus"></i> Add another sub-meter</a>
+      </div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#created" class="btn btn--primary"><i class="ic i-check"></i> Create device</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal" id="edit-device" role="dialog" aria-modal="true" aria-labelledby="edit-device-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--lg">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--cyan"><i class="ic i-edit"></i></span>
+      <div><h3 id="edit-device-t">Edit device</h3><p>Main Incomer · DEV-1001 · 4 sub-meters</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-grid form-grid--3">
+        <div class="field"><label>Device name</label><input class="input" value="Main Incomer" /></div>
+        <div class="field"><label>Device ID</label><input class="input mono" value="DEV-1001" readonly /></div>
+        <div class="field"><label>Category</label><select class="input"><option selected>Incomer</option><option>HVAC</option><option>Lighting</option><option>Process</option></select></div>
+        <div class="field"><label>Make &amp; model</label><input class="input" value="Schneider PM5560" /></div>
+        <div class="field"><label>Location / panel</label><input class="input" value="Main LT Panel" /></div>
+        <div class="field"><label>Status</label><select class="input"><option selected>Online</option><option>Maintenance</option><option>Disabled</option></select></div>
+        <div class="field"><label>Rated load</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" value="90" /><span class="suffix">kW</span></div></div>
+        <div class="field"><label>CT ratio</label><input class="input mono" value="400/5" /></div>
+        <div class="field"><label>Gateway / IP</label><input class="input mono" value="192.168.1.21" /></div>
+      </div>
+      <div class="form-section" style="margin-top:18px">Sub-meters (4)</div>
+      <div class="sub-editor">
+<div class="sub-editor__row"><span class="n">01</span><input class="input input--sm" value="Feeder A · Production Line 1" aria-label="Sub-meter name" /><input class="input input--sm mono" value="SM-1001-01" aria-label="Sub-meter ID" /><select class="input input--sm" aria-label="CT ratio"><option>CT 400/5</option><option>CT 100/5</option><option>Direct 63 A</option></select><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Remove"><i class="ic i-trash"></i></a></div></div>
+<div class="sub-editor__row"><span class="n">02</span><input class="input input--sm" value="Feeder B · Production Line 2" aria-label="Sub-meter name" /><input class="input input--sm mono" value="SM-1001-02" aria-label="Sub-meter ID" /><select class="input input--sm" aria-label="CT ratio"><option>CT 400/5</option><option>CT 100/5</option><option>Direct 63 A</option></select><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Remove"><i class="ic i-trash"></i></a></div></div>
+<div class="sub-editor__row"><span class="n">03</span><input class="input input--sm" value="Feeder C · Tool Room" aria-label="Sub-meter name" /><input class="input input--sm mono" value="SM-1001-03" aria-label="Sub-meter ID" /><select class="input input--sm" aria-label="CT ratio"><option>CT 200/5</option><option>CT 100/5</option><option>Direct 63 A</option></select><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Remove"><i class="ic i-trash"></i></a></div></div>
+<div class="sub-editor__row"><span class="n">04</span><input class="input input--sm" value="Feeder D · Welding Bay" aria-label="Sub-meter name" /><input class="input input--sm mono" value="SM-1001-04" aria-label="Sub-meter ID" /><select class="input input--sm" aria-label="CT ratio"><option>CT 200/5</option><option>CT 100/5</option><option>Direct 63 A</option></select><div class="actions"><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Remove"><i class="ic i-trash"></i></a></div></div>
+        <a href="#add-submeter" class="link-add" style="margin-left:0;justify-content:center"><i class="ic i-plus"></i> Add sub-meter</a>
+      </div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save device</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal" id="add-submeter" role="dialog" aria-modal="true" aria-labelledby="add-submeter-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--violet"><i class="ic i-layers"></i></span>
+      <div><h3 id="add-submeter-t">Add sub-meter</h3><p>Attach a sub-meter to an existing device.</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-grid">
+        <div class="field full"><label>Parent device <span class="req">*</span></label><select class="input"><option>Main Incomer · DEV-1001</option><option>HVAC · DEV-1002</option><option>Office · DEV-1003</option><option>Data Centre · DEV-1004</option><option>Lighting · DEV-1005</option><option>Compressor House · DEV-1006</option><option>Rooftop Solar · DEV-1007</option><option>Water Pumps · DEV-1009</option></select></div>
+        <div class="field"><label>Sub-meter name <span class="req">*</span></label><input class="input" placeholder="Feeder E · Packing line" /></div>
+        <div class="field"><label>Sub-meter ID</label><input class="input mono" value="SM-1001-05" /></div>
+        <div class="field"><label>Connection</label><select class="input"><option>CT 100/5</option><option>CT 200/5</option><option>CT 400/5</option><option>Direct 32 A</option><option>Direct 63 A</option></select></div>
+        <div class="field"><label>Rated load</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" placeholder="20" /><span class="suffix">kW</span></div></div>
+        <div class="field"><label>Cost centre</label><select class="input"><option>CC-PROD</option><option>CC-UTIL</option><option>CC-ADMIN</option><option>CC-IT</option></select></div>
+        <div class="field"><label>Modbus register offset</label><input class="input mono" placeholder="3000" /></div>
+        <label class="switch full"><input type="checkbox" checked /> Include in parent's total (roll-up)</label>
+      </div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#created" class="btn btn--primary"><i class="ic i-check"></i> Add sub-meter</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal" id="edit-submeter" role="dialog" aria-modal="true" aria-labelledby="edit-submeter-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--violet"><i class="ic i-edit"></i></span>
+      <div><h3 id="edit-submeter-t">Edit sub-meter</h3><p>Feeder A · Production Line 1 · SM-1001-01</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-grid">
+        <div class="field full"><label>Parent device</label><select class="input"><option selected>Main Incomer · DEV-1001</option><option>HVAC · DEV-1002</option><option>Office · DEV-1003</option></select><span class="hint">Move this sub-meter to another device by changing its parent.</span></div>
+        <div class="field"><label>Sub-meter name</label><input class="input" value="Feeder A · Production Line 1" /></div>
+        <div class="field"><label>Sub-meter ID</label><input class="input mono" value="SM-1001-01" readonly /></div>
+        <div class="field"><label>Connection</label><select class="input"><option selected>CT 400/5</option><option>CT 200/5</option><option>Direct 63 A</option></select></div>
+        <div class="field"><label>Rated load</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" value="32" /><span class="suffix">kW</span></div></div>
+        <div class="field"><label>Cost centre</label><select class="input"><option selected>CC-PROD</option><option>CC-UTIL</option><option>CC-ADMIN</option></select></div>
+        <div class="field"><label>Status</label><select class="input"><option selected>Online</option><option>Maintenance</option><option>Disabled</option></select></div>
+        <label class="switch full"><input type="checkbox" checked /> Include in parent's total (roll-up)</label>
+      </div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save sub-meter</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal modal--danger" id="delete-device" role="dialog" aria-modal="true" aria-labelledby="delete-device-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--sm">
+    <div class="confirm">
+      <span class="modal__icon modal__icon--rose"><i class="ic i-trash"></i></span>
+      <h3 id="delete-device-t">Delete device &amp; sub-meters?</h3>
+      <p>Main Incomer (DEV-1001) and its 4 sub-meters will be removed. Historical readings are kept for 90 days.</p>
+    </div>
+    <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+      <a href="#close" class="btn">Cancel</a>
+      <a href="#deleted" class="btn btn--danger"><i class="ic i-trash"></i> Yes, delete</a>
+    </div>
+  </div>
+</div>
+  <div class="modal modal--danger" id="delete-submeter" role="dialog" aria-modal="true" aria-labelledby="delete-submeter-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--sm">
+    <div class="confirm">
+      <span class="modal__icon modal__icon--rose"><i class="ic i-trash"></i></span>
+      <h3 id="delete-submeter-t">Delete sub-meter?</h3>
+      <p>The sub-meter will be detached from its parent device and stop reporting.</p>
+    </div>
+    <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+      <a href="#close" class="btn">Cancel</a>
+      <a href="#deleted" class="btn btn--danger"><i class="ic i-trash"></i> Yes, delete</a>
+    </div>
+  </div>
+</div>
+
+
+  <!-- ================= TOASTS ================= -->
+  <div class="toast" id="saved" role="status"><span class="toast__icon"><i class="ic i-check"></i></span><div><strong>Changes saved</strong><span>Your updates were saved successfully.</span></div></div>
+  <div class="toast" id="created" role="status"><span class="toast__icon"><i class="ic i-plus"></i></span><div><strong>Record created</strong><span>The new record has been added.</span></div></div>
+  <div class="toast" id="invited" role="status"><span class="toast__icon"><i class="ic i-send"></i></span><div><strong>Invitation sent</strong><span>An invite email is on its way.</span></div></div>
+  <div class="toast toast--danger" id="deleted" role="status"><span class="toast__icon"><i class="ic i-trash"></i></span><div><strong>Record deleted</strong><span>The item was removed permanently.</span></div></div>
+</body>
+</html>

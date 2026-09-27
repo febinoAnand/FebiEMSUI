@@ -3,265 +3,156 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Energy Dashboard – Login</title>
-  <style>
-    :root {
-      --bg: #0f172a;
-      --card: #1e293b;
-      --border: #334155;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --accent: #22c55e;
-      --accent-hover: #16a34a;
-      --error: #f87171;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      background: radial-gradient(circle at top, #1e3a2f 0%, var(--bg) 60%);
-      color: var(--text);
-    }
-
-    .login-card {
-      width: 100%;
-      max-width: 380px;
-      padding: 32px 28px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-
-    .brand svg { width: 32px; height: 32px; color: var(--accent); }
-
-    h1 { font-size: 1.4rem; font-weight: 600; }
-
-    .subtitle {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin-bottom: 24px;
-    }
-
-    .field { margin-bottom: 18px; }
-
-    label {
-      display: block;
-      font-size: 0.85rem;
-      margin-bottom: 6px;
-      color: var(--muted);
-    }
-
-    .input-wrap { position: relative; }
-
-    input[type="text"],
-    input[type="password"] {
-      width: 100%;
-      padding: 11px 12px;
-      font-size: 0.95rem;
-      color: var(--text);
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      outline: none;
-      transition: border-color 0.15s;
-    }
-
-    input:focus { border-color: var(--accent); }
-    input.invalid { border-color: var(--error); }
-
-    .toggle-pw {
-      position: absolute;
-      right: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-size: 0.8rem;
-      cursor: pointer;
-      padding: 4px 6px;
-    }
-
-    .toggle-pw:hover { color: var(--text); }
-
-    .error-msg {
-      color: var(--error);
-      font-size: 0.8rem;
-      margin-top: 6px;
-      min-height: 1em;
-    }
-
-    .options {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.85rem;
-      margin-bottom: 22px;
-      color: var(--muted);
-    }
-
-    .options label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin: 0;
-      cursor: pointer;
-    }
-
-    .options a { color: var(--accent); text-decoration: none; }
-    .options a:hover { text-decoration: underline; }
-
-    button[type="submit"] {
-      width: 100%;
-      padding: 12px;
-      font-size: 1rem;
-      font-weight: 600;
-      color: #0f172a;
-      background: var(--accent);
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-
-    button[type="submit"]:hover { background: var(--accent-hover); }
-    button[type="submit"]:disabled { opacity: 0.6; cursor: not-allowed; }
-
-    .form-status {
-      text-align: center;
-      font-size: 0.85rem;
-      margin-top: 14px;
-      min-height: 1.2em;
-    }
-
-    .form-status.error { color: var(--error); }
-    .form-status.success { color: var(--accent); }
-  </style>
+  <title>Sign in · Energy Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
-<body>
-  <main class="login-card">
-    <div class="brand">
-      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z" />
-      </svg>
-      <h1>Energy Dashboard</h1>
-    </div>
-    <p class="subtitle">Sign in to continue</p>
+<body class="auth">
+  <div class="auth-shell">
+    <!-- ================= VISUAL PANEL ================= -->
+    <aside class="auth-visual" aria-hidden="true">
+      <a href="login.html" class="brand" style="padding:0">
+        <span class="brand__logo"><i class="ic i-bolt-fill"></i></span>
+        <span><span class="brand__name">Energy Dashboard</span><br /><span class="brand__tag">Smart Energy Cloud</span></span>
+      </a>
 
-    <form id="loginForm" novalidate>
-      <div class="field">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" autocomplete="username" required />
-        <div class="error-msg" id="usernameError"></div>
-      </div>
+      <div class="energy-core">
+        <span class="ring"></span>
+        <span class="ring"></span>
+        <span class="ring"></span>
+        <span class="ring ring--spin" style="inset:6%"></span>
+        <span class="energy-core__center"><i class="ic i-bolt-fill"></i></span>
 
-      <div class="field">
-        <label for="password">Password</label>
-        <div class="input-wrap">
-          <input type="password" id="password" name="password" autocomplete="current-password" required />
-          <button type="button" class="toggle-pw" id="togglePw" aria-label="Show password">Show</button>
+        <div class="float-chip float-chip--1">
+          <span class="icon-tile"><i class="ic i-bolt"></i></span>
+          <span><strong>125.4 kW</strong>Live demand</span>
         </div>
-        <div class="error-msg" id="passwordError"></div>
+        <div class="float-chip float-chip--2">
+          <span class="icon-tile icon-tile--amber"><i class="ic i-rupee"></i></span>
+          <span><strong>₹5,472</strong>Cost today</span>
+        </div>
+        <div class="float-chip float-chip--3">
+          <span class="icon-tile icon-tile--violet"><i class="ic i-leaf"></i></span>
+          <span><strong>−18.6%</strong>CO₂ vs last month</span>
+        </div>
       </div>
 
-      <div class="options">
-        <label><input type="checkbox" id="remember" /> Remember me</label>
-        <a href="#">Forgot password?</a>
+      <div class="auth-hero">
+        <h1>Every kilowatt, <span class="gradient-text">visible &amp; accountable.</span></h1>
+        <p>Multi-tenant energy monitoring for plants, campuses and buildings — meters, sub-meters, shifts and teams in one place.</p>
+        <div class="auth-points">
+          <div><i class="ic i-shield"></i> Tenant-isolated data</div>
+          <div><i class="ic i-layers"></i> Unlimited sub-meters</div>
+          <div><i class="ic i-activity"></i> 15-second telemetry</div>
+        </div>
       </div>
 
-      <button type="submit" id="submitBtn">Sign In</button>
-      <p class="form-status" id="formStatus" role="status"></p>
-    </form>
-  </main>
+      <svg class="auth-wave" viewBox="0 0 600 120" preserveAspectRatio="none">
+        <path class="w1" d="M0,80 C60,40 120,110 180,70 S300,20 360,60 S480,110 600,50" />
+        <path class="w2" d="M0,100 C80,70 140,120 220,90 S340,50 420,85 S540,110 600,80" />
+      </svg>
+    </aside>
 
-  <script>
-    const form = document.getElementById("loginForm");
-    const username = document.getElementById("username");
-    const password = document.getElementById("password");
-    const togglePw = document.getElementById("togglePw");
-    const submitBtn = document.getElementById("submitBtn");
-    const formStatus = document.getElementById("formStatus");
+    <!-- ================= FORM PANEL ================= -->
+    <main class="auth-panel">
+      <p class="auth-top-link">New to Energy Dashboard?<a href="register.html">Register tenant</a></p>
 
-    togglePw.addEventListener("click", () => {
-      const hidden = password.type === "password";
-      password.type = hidden ? "text" : "password";
-      togglePw.textContent = hidden ? "Hide" : "Show";
-      togglePw.setAttribute("aria-label", hidden ? "Hide password" : "Show password");
-    });
+      <section class="auth-card">
+        <h2 class="auth-title">Welcome back <span aria-hidden="true">👋</span></h2>
+        <p class="auth-sub">Sign in to your organisation's energy workspace.</p>
 
-    function setError(input, message) {
-      document.getElementById(input.id + "Error").textContent = message;
-      input.classList.toggle("invalid", Boolean(message));
-    }
+        <div class="tabs">
+          <input type="radio" class="tab-input" name="login-mode" id="lm-1" value="1" checked />
+          <input type="radio" class="tab-input" name="login-mode" id="lm-2" value="2" />
 
-    function validate() {
-      let ok = true;
-      if (!username.value.trim()) {
-        setError(username, "Username is required.");
-        ok = false;
-      } else {
-        setError(username, "");
-      }
-      if (!password.value) {
-        setError(password, "Password is required.");
-        ok = false;
-      } else if (password.value.length < 6) {
-        setError(password, "Password must be at least 6 characters.");
-        ok = false;
-      } else {
-        setError(password, "");
-      }
-      return ok;
-    }
+          <div class="tab-list tab-list--block" style="margin-bottom:22px">
+            <label for="lm-1" data-t="1"><i class="ic i-lock"></i> Password</label>
+            <label for="lm-2" data-t="2"><i class="ic i-phone"></i> One-time code</label>
+          </div>
 
-    [username, password].forEach((el) =>
-      el.addEventListener("input", () => setError(el, ""))
-    );
+          <!-- Password login -->
+          <!-- Autofill: username + current-password let browsers / password managers fill saved logins.
+               Inputs have ids but no name, so values never end up in the URL of this GET demo form. -->
+          <form class="tab-panel auth-form" data-tab="1" action="dashboard.html" method="get" autocomplete="on">
+            <div class="field">
+              <label for="org-id">Organisation ID <span class="req">*</span></label>
+              <div class="input-icon">
+                <i class="ic i-building"></i>
+                <input id="org-id" class="input mono" placeholder="ORG-XXX-0000" required pattern="[A-Za-z]{3}-[A-Za-z]{3}-\d{4}" list="recent-orgs" autocomplete="off" autocapitalize="characters" spellcheck="false" />
+              </div>
+              <span class="org-hint">Format <span class="tag">ORG-FEB-2048</span> · found in your welcome email</span>
+            </div>
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      formStatus.textContent = "";
-      formStatus.className = "form-status";
-      if (!validate()) return;
+            <div class="field">
+              <label for="login-email">Email or username <span class="req">*</span></label>
+              <div class="input-icon">
+                <i class="ic i-mail"></i>
+                <input id="login-email" type="text" class="input" placeholder="you@company.com" required autocomplete="username" inputmode="email" autocapitalize="none" spellcheck="false" />
+              </div>
+            </div>
 
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Signing in…";
+            <div class="field">
+              <div class="label-row"><label for="login-pw" class="label">Password <span class="req" style="color:var(--rose)">*</span></label><a href="forgot-password.html">Forgot password?</a></div>
+              <div class="input-icon">
+                <i class="ic i-lock"></i>
+                <input id="login-pw" type="password" class="input" placeholder="••••••••" required minlength="6" autocomplete="current-password" />
+              </div>
+            </div>
 
-      try {
-        // TODO: replace with a real backend call, e.g.
-        // const res = await fetch("/api/login", {
-        //   method: "POST",
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify({ username: username.value.trim(), password: password.value }),
-        // });
-        // if (!res.ok) throw new Error("Invalid username or password.");
-        await new Promise((r) => setTimeout(r, 600));
+            <div class="auth-row">
+              <label class="check"><input type="checkbox" checked /> Keep me signed in</label>
+              <a href="forgot-password.html">Forgot Org ID?</a>
+            </div>
 
-        formStatus.textContent = "Login successful!";
-        formStatus.classList.add("success");
-        // window.location.href = "dashboard.html";
-      } catch (err) {
-        formStatus.textContent = err.message || "Login failed. Please try again.";
-        formStatus.classList.add("error");
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Sign In";
-      }
-    });
-  </script>
+            <button type="submit" class="btn btn--primary btn--lg btn--block">Sign in <i class="ic i-arrow-right"></i></button>
+          </form>
+
+          <!-- OTP login -->
+          <form class="tab-panel auth-form" data-tab="2" action="verify-otp.html" method="get" autocomplete="on">
+            <div class="field">
+              <label for="org-id-2">Organisation ID <span class="req">*</span></label>
+              <div class="input-icon"><i class="ic i-building"></i><input id="org-id-2" class="input mono" placeholder="ORG-XXX-0000" required pattern="[A-Za-z]{3}-[A-Za-z]{3}-\d{4}" list="recent-orgs" autocomplete="off" autocapitalize="characters" spellcheck="false" /></div>
+            </div>
+            <div class="field">
+              <label for="otp-phone">Registered mobile or email <span class="req">*</span></label>
+              <div class="input-icon"><i class="ic i-phone"></i><input id="otp-phone" type="text" class="input" placeholder="+91 98xxx xxxxx" required autocomplete="tel" inputmode="tel" /></div>
+              <span class="hint">We'll send a 6-digit code valid for 5 minutes.</span>
+            </div>
+            <button type="submit" class="btn btn--primary btn--lg btn--block"><i class="ic i-send"></i> Send code</button>
+          </form>
+
+          <!-- Org ID suggestions shown as a dropdown when the Organisation ID field is focused -->
+          <datalist id="recent-orgs">
+            <option value="ORG-FEB-2048">Febino Solutions Pvt Ltd</option>
+            <option value="ORG-SUN-1177">Sunrise Plastics Ltd</option>
+            <option value="ORG-GTC-0931">GreenTech Campus</option>
+          </datalist>
+        </div>
+
+        <div class="divider" style="margin:24px 0">or continue with</div>
+
+        <div class="sso">
+          <a href="dashboard.html" class="btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M12 10.2v3.9h5.5c-.2 1.3-1.6 3.8-5.5 3.8-3.3 0-6-2.7-6-6.1s2.7-6.1 6-6.1c1.9 0 3.1.8 3.8 1.5l2.6-2.5C16.8 3.2 14.6 2.2 12 2.2 6.6 2.2 2.2 6.6 2.2 12s4.4 9.8 9.8 9.8c5.7 0 9.4-4 9.4-9.6 0-.6-.1-1.1-.2-1.6H12z"/></svg>
+            Google
+          </a>
+          <a href="dashboard.html" class="btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#F25022" d="M2 2h9.5v9.5H2z"/><path fill="#7FBA00" d="M12.5 2H22v9.5h-9.5z"/><path fill="#00A4EF" d="M2 12.5h9.5V22H2z"/><path fill="#FFB900" d="M12.5 12.5H22V22h-9.5z"/></svg>
+            Microsoft
+          </a>
+        </div>
+
+        <p class="auth-foot">
+          Got an invite from your admin? <a href="accept-invite.html">Accept invitation</a><br />
+          Don't have a workspace yet? <a href="register.html">Create your organisation</a>
+        </p>
+      </section>
+      <p class="auth-legal" style="margin-top:34px;justify-content:center">
+        <span>© 2026 Energy Dashboard</span><a href="#close">Privacy</a><a href="#close">Terms</a><a href="#close">Status</a>
+      </p>
+    </main>
+  </div>
 </body>
 </html>

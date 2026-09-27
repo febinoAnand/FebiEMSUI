@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings · Energy Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="app">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
+
+  <div class="app-shell">
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar" aria-label="Primary">
+      <a href="dashboard.html" class="brand">
+        <span class="brand__logo"><i class="ic i-bolt-fill"></i></span>
+        <span>
+          <span class="brand__name">Energy Dashboard</span><br />
+          <span class="brand__tag">Smart Energy Cloud</span>
+        </span>
+      </a>
+
+      <a href="#switch-org" class="tenant-switch" title="Switch organisation">
+        <span class="tenant-switch__logo">FS</span>
+        <span class="tenant-switch__meta">
+          <strong>Febino Solutions Pvt Ltd</strong>
+          <span>ORG-FEB-2048</span>
+        </span>
+        <i class="ic i-swap muted"></i>
+      </a>
+
+      <nav class="nav">
+        <div class="nav__section">Monitor</div>
+        <a href="dashboard.html" class="nav__link"><i class="ic i-grid"></i><span>Dashboard</span></a>
+        <a href="meters.html" class="nav__link"><i class="ic i-gauge"></i><span>Energy Meters</span><em class="nav__badge nav__badge--green">38</em></a>
+        <a href="analytics.html" class="nav__link"><i class="ic i-chart"></i><span>Analytics</span></a>
+        <a href="alerts.html" class="nav__link"><i class="ic i-bell"></i><span>Alerts</span><em class="nav__badge">5</em></a>
+
+        <div class="nav__section">Operations</div>
+        <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift Management</span></a>
+
+        <div class="nav__section">Administration</div>
+        <a href="users.html" class="nav__link"><i class="ic i-users"></i><span>Users</span></a>
+        <a href="roles.html" class="nav__link"><i class="ic i-shield"></i><span>Roles &amp; Permissions</span></a>
+        <a href="settings.html" class="nav__link is-active"><i class="ic i-settings"></i><span>Settings</span></a>
+      </nav>
+
+      <div class="sidebar__live">
+        <div class="eyebrow"><span class="dot dot--live" style="--c: var(--green)"></span> Live load</div>
+        <div class="sidebar__live-value">125.4 <small>kW</small></div>
+        <div class="small muted">Peak today 150.2 kW at 14:05</div>
+        <div class="eq" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="sidebar__foot"><span>v2.4.0</span><a href="#close" class="muted">Help &amp; docs</a></div>
+    </aside>
+    <label for="nav-toggle" class="nav-scrim" aria-hidden="true"></label>
+
+    <!-- ================= MAIN ================= -->
+    <div class="main">
+      <header class="topbar">
+        <label for="nav-toggle" class="icon-btn burger" aria-label="Open menu"><i class="ic i-menu"></i></label>
+
+        <div class="topbar__crumbs">
+          <small>Febino Solutions / Administration</small>
+          <strong>Settings</strong>
+        </div>
+
+        <label class="search">
+          <i class="ic i-search"></i>
+          <input type="search" placeholder="Search meters, users, alerts…" aria-label="Search" />
+          <kbd>Ctrl K</kbd>
+        </label>
+
+        <div class="topbar__actions">
+          <span class="live-pill"><span class="dot dot--live" style="--c: var(--green)"></span> Live</span>
+
+          <details class="dropdown">
+            <summary class="icon-btn" aria-label="Notifications"><i class="ic i-bell"></i><span class="ping"></span></summary>
+            <div class="dropdown__panel dropdown__panel--wide">
+              <div class="dropdown__head"><strong>Notifications</strong><span class="badge badge--danger">5 new</span></div>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: rgba(244,63,94,.14); color: var(--rose)"><i class="ic i-alert"></i></span>
+                <span><p><b>HVAC Chiller-2</b> crossed 95% of rated load</p><small>2 min ago · Critical</small></span>
+              </a>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: rgba(251,191,36,.14); color: var(--amber)"><i class="ic i-activity"></i></span>
+                <span><p>Power factor dropped to <b>0.86</b> on Main Incomer</p><small>18 min ago · Warning</small></span>
+              </a>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: rgba(34,211,238,.14); color: var(--cyan)"><i class="ic i-wifi"></i></span>
+                <span><p>Sub-meter <b>SM-1004-02</b> went offline</p><small>42 min ago · Info</small></span>
+              </a>
+              <div class="dropdown__sep"></div>
+              <a href="alerts.html" class="dropdown__item" style="justify-content:center;color:var(--green);font-weight:700">View all alerts</a>
+            </div>
+          </details>
+
+          <details class="dropdown">
+            <summary class="user-chip">
+              <span class="avatar av-1">VK</span>
+              <span class="user-chip__meta"><strong>Vijay</strong><small>Tenant Admin</small></span>
+              <i class="ic i-chev-down"></i>
+            </summary>
+            <div class="dropdown__panel">
+              <div class="dropdown__head" style="justify-content:flex-start;gap:12px">
+                <span class="avatar av-1">VK</span>
+                <span><strong>Vijay Kumar</strong><br /><small class="muted">vijay@febinosolutions.com</small></span>
+              </div>
+              <div class="dropdown__sep"></div>
+              <a href="#profile" class="dropdown__item"><i class="ic i-user"></i> My profile</a>
+              <a href="#change-password" class="dropdown__item"><i class="ic i-key"></i> Change password</a>
+              <a href="#switch-org" class="dropdown__item"><i class="ic i-swap"></i> Switch organisation</a>
+              <a href="settings.html" class="dropdown__item"><i class="ic i-settings"></i> Settings</a>
+              <div class="dropdown__sep"></div>
+              <a href="#logout" class="dropdown__item dropdown__item--danger"><i class="ic i-logout"></i> Sign out</a>
+            </div>
+          </details>
+        </div>
+      </header>
+
+      <main class="page">
+        <section class="page-head">
+          <div>
+            <h1 class="page-title">Settings</h1>
+            <p class="page-sub">Tenant configuration for <b>Febino Solutions Pvt Ltd</b>.</p>
+          </div>
+        </section>
+
+        <section class="tabs tabs--side">
+          <input type="radio" class="tab-input" name="set" id="set-1" value="1" checked />
+          <input type="radio" class="tab-input" name="set" id="set-2" value="2" />
+          <input type="radio" class="tab-input" name="set" id="set-3" value="3" />
+          <input type="radio" class="tab-input" name="set" id="set-4" value="4" />
+          <input type="radio" class="tab-input" name="set" id="set-5" value="5" />
+          <input type="radio" class="tab-input" name="set" id="set-6" value="6" />
+          <nav class="tab-list card">
+            <label for="set-1" data-t="1"><i class="ic i-building"></i> Organisation</label>
+            <label for="set-2" data-t="2"><i class="ic i-pin"></i> Sites</label>
+            <label for="set-3" data-t="3"><i class="ic i-rupee"></i> Tariffs</label>
+            <label for="set-4" data-t="4"><i class="ic i-bell"></i> Notifications</label>
+            <label for="set-5" data-t="5"><i class="ic i-lock"></i> Security</label>
+            <label for="set-6" data-t="6"><i class="ic i-card"></i> Plan &amp; billing</label>
+          </nav>
+
+          <!-- Organisation -->
+          <div class="tab-panel stack" data-tab="1">
+            <article class="card">
+              <div class="card__head"><div><h3 class="card__title"><i class="ic i-building"></i> Organisation profile</h3><p class="card__sub">Shown on reports and invitations</p></div></div>
+              <div class="card__body">
+                <div class="row wrap" style="gap:18px;margin-bottom:22px">
+                  <span class="tenant-switch__logo" style="width:72px;height:72px;border-radius:20px;font-size:22px">FS</span>
+                  <label class="dropzone" style="flex:1;min-width:240px"><span class="icon-tile"><i class="ic i-upload"></i></span><span><strong>Upload logo</strong><br /><small class="muted">PNG or SVG, 512×512 recommended</small></span><input type="file" accept="image/*" /></label>
+                </div>
+                <div class="form-grid">
+                  <div class="field"><label>Organisation ID</label><div class="row"><span class="org-id" style="flex:1">ORG-FEB-2048 <i class="ic i-lock"></i></span><a href="#close" class="btn btn--icon" title="Copy"><i class="ic i-copy"></i></a></div><span class="hint">Used by your team to sign in. Can't be changed.</span></div>
+                  <div class="field"><label>Workspace URL</label><div class="input-group"><input class="input" value="febino" /><span class="addon">.energydash.io</span></div></div>
+                  <div class="field"><label>Legal name</label><input class="input" value="Febino Solutions Pvt Ltd" /></div>
+                  <div class="field"><label>GSTIN</label><input class="input mono" value="29ABCFE1234F1Z5" /></div>
+                  <div class="field"><label>Industry</label><select class="input"><option selected>Manufacturing</option><option>Commercial building</option></select></div>
+                  <div class="field"><label>Contact email</label><input class="input" value="energy@febinosolutions.com" /></div>
+                  <div class="field"><label>Time zone</label><select class="input"><option>Asia/Kolkata (UTC+05:30)</option></select></div>
+                  <div class="field"><label>Currency</label><select class="input"><option>INR · ₹</option><option>USD · $</option><option>AED · د.إ</option></select></div>
+                  <div class="field"><label>Energy unit</label><select class="input"><option>kWh</option><option>MWh</option></select></div>
+                  <div class="field"><label>CO₂ emission factor</label><div class="input-icon"><i class="ic i-leaf"></i><input class="input mono" value="0.82" /><span class="suffix">kg / kWh</span></div></div>
+                  <div class="field full"><label>Registered address</label><textarea class="input">Plot 12, Electronic City Phase 1, Bengaluru, Karnataka 560100</textarea></div>
+                </div>
+              </div>
+              <div class="card__foot row" style="justify-content:flex-end"><a href="#close" class="btn btn--ghost">Discard</a><a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save changes</a></div>
+            </article>
+            <article class="card" style="border-color:rgba(244,63,94,.3)">
+              <div class="card__head"><div><h3 class="card__title" style="color:var(--rose)"><i class="ic i-alert" style="color:var(--rose)"></i> Danger zone</h3><p class="card__sub">These actions affect every user in this tenant</p></div></div>
+              <div class="card__body">
+                <div class="setting-row"><div><strong>Transfer ownership</strong><span>Make another admin the tenant owner.</span></div><a href="#close" class="btn btn--sm">Transfer</a></div>
+                <div class="setting-row"><div><strong>Delete organisation</strong><span>Permanently delete all meters, readings and users.</span></div><a href="#delete-org" class="btn btn--sm btn--danger">Delete tenant</a></div>
+              </div>
+            </article>
+          </div>
+
+          <!-- Sites -->
+          <div class="tab-panel" data-tab="2">
+            <article class="card paged">
+              <input type="radio" class="pg-input" name="si-pg" id="si-p1" value="1" checked aria-label="Page 1" />
+<input type="radio" class="pg-input" name="si-pg" id="si-p2" value="2" aria-label="Page 2" />
+              <div class="card__head"><div><h3 class="card__title"><i class="ic i-pin"></i> Sites</h3><p class="card__sub">Physical locations with their own utility connection</p></div><a href="#add-site" class="btn btn--sm btn--primary"><i class="ic i-plus"></i> Add site</a></div>
+              <div class="table-wrap"><table class="table"><thead><tr><th>Site</th><th>Utility</th><th class="num">Contract demand</th><th class="num">Devices</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody data-page="1">
+  <tr><td><div class="cell-user"><span class="icon-tile icon-tile--blue" style="width:36px;height:36px"><i class="ic i-pin"></i></span><div><strong>Plant 1 · Bengaluru</strong><small>Electronic City, Bengaluru</small></div></div></td><td>BESCOM</td><td class="num">160 kVA</td><td class="num">12</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td><td><div class="actions"><a href="#edit-site" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-site" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+  <tr><td><div class="cell-user"><span class="icon-tile icon-tile--blue" style="width:36px;height:36px"><i class="ic i-pin"></i></span><div><strong>Plant 2 · Hosur</strong><small>SIPCOT Phase II, Hosur</small></div></div></td><td>TANGEDCO</td><td class="num">250 kVA</td><td class="num">9</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td><td><div class="actions"><a href="#edit-site" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-site" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+</tbody>
+<tbody data-page="2">
+  <tr><td><div class="cell-user"><span class="icon-tile icon-tile--blue" style="width:36px;height:36px"><i class="ic i-pin"></i></span><div><strong>Corporate Office</strong><small>MG Road, Bengaluru</small></div></div></td><td>BESCOM</td><td class="num">60 kVA</td><td class="num">4</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td><td><div class="actions"><a href="#edit-site" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-site" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+  <tr><td><div class="cell-user"><span class="icon-tile icon-tile--blue" style="width:36px;height:36px"><i class="ic i-pin"></i></span><div><strong>Warehouse · Chennai</strong><small>Sriperumbudur, Chennai</small></div></div></td><td>TANGEDCO</td><td class="num">80 kVA</td><td class="num">3</td><td><span class="badge badge--warn"><span class="dot"></span> Inactive</span></td><td><div class="actions"><a href="#edit-site" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-site" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+</tbody>
+              </table></div>
+              <div class="pager">
+  <div class="pager__info">Showing <span data-when="1"><strong>1–2</strong></span><span data-when="2"><strong>3–4</strong></span> of <strong>4</strong> sites</div>
+  <div class="pager__size">Rows per page <select class="input" aria-label="Rows per page"><option>2</option><option>4</option><option>8</option></select></div>
+  <div class="pager__nav"><span class="pg-btn is-disabled" data-when="1" aria-hidden="true"><i class="ic i-chev-left"></i></span><label for="si-p1" data-when="2" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="si-p1" data-p="1">1</label><label for="si-p2" data-p="2">2</label><label for="si-p2" data-when="1" aria-label="Next page"><i class="ic i-chev-right"></i></label><span class="pg-btn is-disabled" data-when="2" aria-hidden="true"><i class="ic i-chev-right"></i></span></div>
+</div>
+            </article>
+          </div>
+
+          <!-- Tariffs -->
+          <div class="tab-panel" data-tab="3">
+            <article class="card paged">
+              <input type="radio" class="pg-input" name="tf-pg" id="tf-p1" value="1" checked aria-label="Page 1" />
+<input type="radio" class="pg-input" name="tf-pg" id="tf-p2" value="2" aria-label="Page 2" />
+              <div class="card__head"><div><h3 class="card__title"><i class="ic i-rupee"></i> Tariff slabs</h3><p class="card__sub">Time-of-Day rates used for cost calculation</p></div><a href="#add-tariff" class="btn btn--sm btn--primary"><i class="ic i-plus"></i> Add tariff</a></div>
+              <div class="table-wrap"><table class="table"><thead><tr><th>Tariff</th><th>Time slot</th><th>Days</th><th class="num">Energy rate / kWh</th><th class="num">Demand charge</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody data-page="1">
+  <tr><td><strong>Peak (ToD)</strong></td><td class="mono small">18:00 – 22:00</td><td>Mon – Sat</td><td class="num">₹9.60</td><td class="num">₹350 / kVA</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Current</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+  <tr><td><strong>Normal</strong></td><td class="mono small">06:00 – 18:00</td><td>Mon – Sat</td><td class="num">₹8.00</td><td class="num">₹350 / kVA</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Current</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+  <tr><td><strong>Off-peak (night)</strong></td><td class="mono small">22:00 – 06:00</td><td>All days</td><td class="num">₹6.80</td><td class="num">₹350 / kVA</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Current</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+  <tr><td><strong>Sunday flat</strong></td><td class="mono small">00:00 – 24:00</td><td>Sunday</td><td class="num">₹7.20</td><td class="num">₹350 / kVA</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Current</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+</tbody>
+<tbody data-page="2">
+  <tr><td><strong>FY 2025-26 Normal</strong></td><td class="mono small">06:00 – 18:00</td><td>Mon – Sat</td><td class="num">₹7.60</td><td class="num">₹330 / kVA</td><td><span class="badge badge--warn"><span class="dot"></span> Expired</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+  <tr><td><strong>FY 2025-26 Peak</strong></td><td class="mono small">18:00 – 22:00</td><td>Mon – Sat</td><td class="num">₹9.10</td><td class="num">₹330 / kVA</td><td><span class="badge badge--warn"><span class="dot"></span> Expired</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+</tbody>
+              </table></div>
+              <div class="pager">
+  <div class="pager__info">Showing <span data-when="1"><strong>1–4</strong></span><span data-when="2"><strong>5–6</strong></span> of <strong>6</strong> tariffs</div>
+  <div class="pager__size">Rows per page <select class="input" aria-label="Rows per page"><option>4</option><option>8</option><option>16</option></select></div>
+  <div class="pager__nav"><span class="pg-btn is-disabled" data-when="1" aria-hidden="true"><i class="ic i-chev-left"></i></span><label for="tf-p1" data-when="2" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="tf-p1" data-p="1">1</label><label for="tf-p2" data-p="2">2</label><label for="tf-p2" data-when="1" aria-label="Next page"><i class="ic i-chev-right"></i></label><span class="pg-btn is-disabled" data-when="2" aria-hidden="true"><i class="ic i-chev-right"></i></span></div>
+</div>
+            </article>
+          </div>
+
+          <!-- Notifications -->
+          <div class="tab-panel" data-tab="4">
+            <article class="card">
+              <div class="card__head"><div><h3 class="card__title"><i class="ic i-bell"></i> Notification preferences</h3><p class="card__sub">Defaults for all users — people can override their own</p></div></div>
+              <div class="card__body">
+                <div class="setting-row"><div><strong>Critical alerts by SMS</strong><span>Overloads, device offline, over-current</span></div><label class="switch"><input type="checkbox" checked aria-label="Critical alerts by SMS" /></label></div>
+                <div class="setting-row"><div><strong>Email for warnings</strong><span>Power factor, imbalance, after-hours usage</span></div><label class="switch"><input type="checkbox" checked aria-label="Email for warnings" /></label></div>
+                <div class="setting-row"><div><strong>Daily energy digest</strong><span>Sent at 08:00 to Energy Managers</span></div><label class="switch"><input type="checkbox" checked aria-label="Daily digest" /></label></div>
+                <div class="setting-row"><div><strong>Shift-end report</strong><span>kWh per shift sent to the shift supervisor</span></div><label class="switch"><input type="checkbox" checked aria-label="Shift-end report" /></label></div>
+                <div class="setting-row"><div><strong>Weekly executive summary</strong><span>Monday 09:00 · cost, savings, CO₂</span></div><label class="switch"><input type="checkbox" aria-label="Weekly summary" /></label></div>
+                <div class="setting-row"><div><strong>WhatsApp notifications</strong><span>Requires WhatsApp Business number</span></div><label class="switch"><input type="checkbox" aria-label="WhatsApp" /></label></div>
+              </div>
+              <div class="card__foot row" style="justify-content:flex-end"><a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save preferences</a></div>
+            </article>
+          </div>
+
+          <!-- Security -->
+          <div class="tab-panel stack" data-tab="5">
+            <article class="card">
+              <div class="card__head"><div><h3 class="card__title"><i class="ic i-shield"></i> Sign-in &amp; password policy</h3></div></div>
+              <div class="card__body">
+                <div class="setting-row"><div><strong>Require two-factor authentication</strong><span>For all users in this tenant</span></div><label class="switch"><input type="checkbox" checked aria-label="Require 2FA" /></label></div>
+                <div class="setting-row"><div><strong>Single sign-on (SAML / OIDC)</strong><span>Available on Enterprise plan</span></div><span class="badge badge--violet">Enterprise</span></div>
+                <div class="setting-row"><div><strong>Password expiry</strong><span>Force a password change periodically</span></div><select class="input input--sm" style="width:auto" aria-label="Password expiry"><option>Never</option><option selected>90 days</option><option>180 days</option></select></div>
+                <div class="setting-row"><div><strong>Session timeout</strong><span>Sign out idle users</span></div><select class="input input--sm" style="width:auto" aria-label="Session timeout"><option>15 min</option><option selected>30 min</option><option>8 hours</option></select></div>
+                <div class="setting-row"><div><strong>IP allow-list</strong><span>Only allow sign-in from these networks</span></div><input class="input input--sm mono" style="max-width:220px" value="103.21.0.0/16" aria-label="IP allow-list" /></div>
+              </div>
+            </article>
+            <article class="card paged">
+              <input type="radio" class="pg-input" name="ss-pg" id="ss-p1" value="1" checked aria-label="Page 1" />
+<input type="radio" class="pg-input" name="ss-pg" id="ss-p2" value="2" aria-label="Page 2" />
+              <div class="card__head"><div><h3 class="card__title"><i class="ic i-globe"></i> Your active sessions</h3></div><a href="#deleted" class="btn btn--sm">Sign out other sessions</a></div>
+              <div class="table-wrap"><table class="table"><thead><tr><th>Device</th><th>Location</th><th>IP</th><th>Last active</th><th></th><th>Actions</th></tr></thead>
+<tbody data-page="1">
+  <tr><td><strong>Chrome · Windows 11</strong></td><td>Bengaluru, IN</td><td class="mono small">103.21.xx.xx</td><td class="small">Active now</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Current</span></td><td><div class="actions"><a href="#edit-session" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-session" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+  <tr><td><strong>Safari · iPhone 15</strong></td><td>Bengaluru, IN</td><td class="mono small">49.37.xx.xx</td><td class="small">2 h ago</td><td><span class="small muted">—</span></td><td><div class="actions"><a href="#edit-session" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-session" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+</tbody>
+<tbody data-page="2">
+  <tr><td><strong>Edge · Windows 10</strong></td><td>Hosur, IN</td><td class="mono small">117.200.xx.xx</td><td class="small">Yesterday</td><td><span class="small muted">—</span></td><td><div class="actions"><a href="#edit-session" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-session" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+  <tr><td><strong>Chrome · Android</strong></td><td>Chennai, IN</td><td class="mono small">157.51.xx.xx</td><td class="small">3 days ago</td><td><span class="small muted">—</span></td><td><div class="actions"><a href="#edit-session" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-session" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+</tbody>
+              </table></div>
+              <div class="pager">
+  <div class="pager__info">Showing <span data-when="1"><strong>1–2</strong></span><span data-when="2"><strong>3–4</strong></span> of <strong>4</strong> sessions</div>
+  <div class="pager__size">Rows per page <select class="input" aria-label="Rows per page"><option>2</option><option>4</option><option>8</option></select></div>
+  <div class="pager__nav"><span class="pg-btn is-disabled" data-when="1" aria-hidden="true"><i class="ic i-chev-left"></i></span><label for="ss-p1" data-when="2" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="ss-p1" data-p="1">1</label><label for="ss-p2" data-p="2">2</label><label for="ss-p2" data-when="1" aria-label="Next page"><i class="ic i-chev-right"></i></label><span class="pg-btn is-disabled" data-when="2" aria-hidden="true"><i class="ic i-chev-right"></i></span></div>
+</div>
+            </article>
+          </div>
+
+          <!-- Billing -->
+          <div class="tab-panel stack" data-tab="6">
+            <article class="card" style="overflow:hidden">
+              <div class="card__body row wrap" style="gap:24px;justify-content:space-between">
+                <div>
+                  <span class="eyebrow">Current plan</span>
+                  <h3 style="font-size:26px;margin-top:4px">Growth <span class="badge badge--success">Trial · 18 days left</span></h3>
+                  <p class="muted" style="margin-top:4px">₹4,999 / month · renews Oct 15, 2026</p>
+                </div>
+                <div class="row"><a href="#close" class="btn">Compare plans</a><a href="#saved" class="btn btn--primary"><i class="ic i-spark"></i> Upgrade to Enterprise</a></div>
+              </div>
+              <div class="card__foot grid grid-3" style="gap:24px">
+                <div><div class="row-between small"><span class="muted">Meters</span><span class="mono">12 / 100</span></div><div class="bar" style="margin-top:8px"><span style="--w:12%"></span></div></div>
+                <div><div class="row-between small"><span class="muted">Sub-meters</span><span class="mono">38 / ∞</span></div><div class="bar bar--violet" style="margin-top:8px"><span style="--w:8%"></span></div></div>
+                <div><div class="row-between small"><span class="muted">Users</span><span class="mono">18 / 50</span></div><div class="bar bar--cyan" style="margin-top:8px"><span style="--w:36%"></span></div></div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>© 2026 Energy Dashboard · Tenant <span class="mono">ORG-FEB-2048</span></span>
+        <span>Data refreshed every 15 s · IST (UTC+05:30)</span>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ================= SHARED MODALS ================= -->
+  <div class="modal" id="profile" role="dialog" aria-modal="true" aria-labelledby="profile-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog">
+      <div class="modal__head">
+        <span class="modal__icon"><i class="ic i-user"></i></span>
+        <div><h3 id="profile-title">My profile</h3><p>Your personal details in this organisation.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body">
+        <div class="row" style="gap:16px;margin-bottom:20px">
+          <span class="avatar avatar--lg av-1">VK</span>
+          <div>
+            <strong style="font-size:17px">Vijay Kumar</strong>
+            <div class="small muted">Tenant Admin · Member since Jan 2026</div>
+            <label class="btn btn--sm" style="margin-top:8px"><i class="ic i-upload"></i> Change photo<input type="file" accept="image/*" hidden /></label>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label>First name</label><input class="input" value="Vijay" /></div>
+          <div class="field"><label>Last name</label><input class="input" value="Kumar" /></div>
+          <div class="field"><label>Email</label><input class="input" type="email" value="vijay@febinosolutions.com" /></div>
+          <div class="field"><label>Phone</label><input class="input" type="tel" value="+91 98450 12345" /></div>
+          <div class="field"><label>Language</label><select class="input"><option>English (India)</option><option>हिन्दी</option><option>தமிழ்</option></select></div>
+          <div class="field"><label>Time zone</label><select class="input"><option>Asia/Kolkata (UTC+05:30)</option><option>Asia/Dubai (UTC+04:00)</option></select></div>
+        </div>
+      </div>
+      <div class="modal__foot">
+        <a href="#close" class="btn btn--ghost">Cancel</a>
+        <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save profile</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="change-password" role="dialog" aria-modal="true" aria-labelledby="cp-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="modal__head">
+        <span class="modal__icon modal__icon--violet"><i class="ic i-key"></i></span>
+        <div><h3 id="cp-title">Change password</h3><p>Use at least 8 characters with a number.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body" style="display:grid;gap:16px">
+        <div class="field"><label>Current password</label><div class="input-icon"><i class="ic i-lock"></i><input class="input" type="password" placeholder="••••••••" /></div></div>
+        <div class="field pw-field"><label>New password</label>
+          <div class="input-icon"><i class="ic i-key"></i><input class="input" type="password" placeholder=" " minlength="8" pattern="(?=.*\d)(?=.*[A-Za-z]).{8,}" /></div>
+          <div class="strength"><span></span><span></span><span></span><span></span></div>
+          <span class="hint hint--rule">8+ characters, letters and at least one number</span>
+          <span class="hint hint--ok">Strong password ✓</span>
+        </div>
+        <div class="field"><label>Confirm new password</label><div class="input-icon"><i class="ic i-key"></i><input class="input" type="password" placeholder="••••••••" /></div></div>
+      </div>
+      <div class="modal__foot">
+        <a href="#close" class="btn btn--ghost">Cancel</a>
+        <a href="#saved" class="btn btn--primary">Update password</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="switch-org" role="dialog" aria-modal="true" aria-labelledby="so-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="modal__head">
+        <span class="modal__icon modal__icon--cyan"><i class="ic i-building"></i></span>
+        <div><h3 id="so-title">Switch organisation</h3><p>You belong to 3 tenants.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body" style="display:grid;gap:10px">
+        <label class="radio-card"><input type="radio" name="org" checked /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo">FS</span><span style="flex:1"><strong>Febino Solutions Pvt Ltd</strong><br /><small class="mono muted">ORG-FEB-2048 · Tenant Admin</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+        <label class="radio-card"><input type="radio" name="org" /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo" style="background:var(--grad-warm)">SP</span><span style="flex:1"><strong>Sunrise Plastics Ltd</strong><br /><small class="mono muted">ORG-SUN-1177 · Manager</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+        <label class="radio-card"><input type="radio" name="org" /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo" style="background:var(--grad)">GT</span><span style="flex:1"><strong>GreenTech Campus</strong><br /><small class="mono muted">ORG-GTC-0931 · Viewer</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+      </div>
+      <div class="modal__foot">
+        <a href="register.html" class="btn btn--ghost left"><i class="ic i-plus"></i> New tenant</a>
+        <a href="dashboard.html" class="btn btn--primary">Switch</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal modal--danger" id="logout" role="dialog" aria-modal="true" aria-labelledby="lo-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="confirm">
+        <span class="modal__icon modal__icon--rose"><i class="ic i-logout"></i></span>
+        <h3 id="lo-title">Sign out?</h3>
+        <p>You'll need your Organisation ID and password to sign in again.</p>
+      </div>
+      <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+        <a href="#close" class="btn">Stay signed in</a>
+        <a href="login.html" class="btn btn--danger"><i class="ic i-logout"></i> Sign out</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="add-site" role="dialog" aria-modal="true" aria-labelledby="add-site-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--blue"><i class="ic i-pin"></i></span>
+      <div><h3 id="add-site-t">Add site</h3><p>A physical location with its own utility connection.</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-grid">
+        <div class="field full"><label>Site name <span class="req">*</span></label><input class="input" placeholder="Plant 3 · Pune" /></div>
+        <div class="field full"><label>Address</label><input class="input" placeholder="Chakan MIDC, Pune" /></div>
+        <div class="field"><label>Utility / DISCOM</label><input class="input" placeholder="MSEDCL" /></div>
+        <div class="field"><label>Consumer number</label><input class="input mono" placeholder="1700 2345 6789" /></div>
+        <div class="field"><label>Contract demand</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" placeholder="200" /><span class="suffix">kVA</span></div></div>
+        <div class="field"><label>Default tariff</label><select class="input"><option>Time of Day (ToD)</option><option>Flat</option></select></div>
+      </div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#created" class="btn btn--primary"><i class="ic i-check"></i> Add site</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal" id="edit-site" role="dialog" aria-modal="true" aria-labelledby="edit-site-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--cyan"><i class="ic i-edit"></i></span>
+      <div><h3 id="edit-site-t">Edit site</h3><p>Plant 1 · Bengaluru</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-grid">
+        <div class="field full"><label>Site name</label><input class="input" value="Plant 1 · Bengaluru" /></div>
+        <div class="field full"><label>Address</label><input class="input" value="Electronic City, Bengaluru" /></div>
+        <div class="field"><label>Utility / DISCOM</label><input class="input" value="BESCOM" /></div>
+        <div class="field"><label>Consumer number</label><input class="input mono" value="E2 1098 7766" /></div>
+        <div class="field"><label>Contract demand</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" value="160" /><span class="suffix">kVA</span></div></div>
+        <div class="field"><label>Status</label><select class="input"><option selected>Active</option><option>Inactive</option></select></div>
+      </div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save site</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal" id="add-tariff" role="dialog" aria-modal="true" aria-labelledby="add-tariff-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--amber"><i class="ic i-rupee"></i></span>
+      <div><h3 id="add-tariff-t">Add tariff slab</h3><p>Rates apply to all meters at the selected site.</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-grid">
+        <div class="field full"><label>Name <span class="req">*</span></label><input class="input" placeholder="Peak (ToD)" /></div>
+        <div class="field"><label>From</label><input type="time" class="input" value="18:00" /></div>
+        <div class="field"><label>To</label><input type="time" class="input" value="22:00" /></div>
+        <div class="field"><label>Energy rate</label><div class="input-icon"><i class="ic i-rupee"></i><input class="input mono" placeholder="9.60" /><span class="suffix">/ kWh</span></div></div>
+        <div class="field"><label>Demand charge</label><div class="input-icon"><i class="ic i-rupee"></i><input class="input mono" placeholder="350" /><span class="suffix">/ kVA</span></div></div>
+        <div class="field"><label>Days</label><select class="input"><option>Mon – Sat</option><option>All days</option><option>Sunday</option></select></div>
+        <div class="field"><label>Effective from</label><input type="date" class="input" value="2026-04-01" /></div>
+      </div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#created" class="btn btn--primary"><i class="ic i-check"></i> Add tariff</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal" id="edit-tariff" role="dialog" aria-modal="true" aria-labelledby="edit-tariff-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--cyan"><i class="ic i-edit"></i></span>
+      <div><h3 id="edit-tariff-t">Edit tariff slab</h3><p>Peak (ToD)</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-grid">
+        <div class="field full"><label>Name</label><input class="input" value="Peak (ToD)" /></div>
+        <div class="field"><label>From</label><input type="time" class="input" value="18:00" /></div>
+        <div class="field"><label>To</label><input type="time" class="input" value="22:00" /></div>
+        <div class="field"><label>Energy rate</label><div class="input-icon"><i class="ic i-rupee"></i><input class="input mono" value="9.60" /><span class="suffix">/ kWh</span></div></div>
+        <div class="field"><label>Demand charge</label><div class="input-icon"><i class="ic i-rupee"></i><input class="input mono" value="350" /><span class="suffix">/ kVA</span></div></div>
+        <div class="field"><label>Days</label><select class="input"><option selected>Mon – Sat</option><option>All days</option></select></div>
+        <div class="field"><label>Status</label><select class="input"><option selected>Current</option><option>Expired</option></select></div>
+      </div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save tariff</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal" id="edit-session" role="dialog" aria-modal="true" aria-labelledby="edit-session-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--sm">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--cyan"><i class="ic i-edit"></i></span>
+      <div><h3 id="edit-session-t">Session details</h3><p>Chrome · Windows 11</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <dl class="kv"><dt>Signed in</dt><dd>Today 09:12</dd><dt>Location</dt><dd>Bengaluru, IN</dd><dt>IP address</dt><dd class="mono">103.21.xx.xx</dd><dt>2FA method</dt><dd>Authenticator app</dd></dl>
+      <div class="field" style="margin-top:16px"><label>Device label</label><input class="input" value="Office laptop" /></div>
+      <label class="switch" style="margin-top:14px"><input type="checkbox" checked /> Trust this device for 30 days</label>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal modal--danger" id="delete-site" role="dialog" aria-modal="true" aria-labelledby="delete-site-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--sm">
+    <div class="confirm">
+      <span class="modal__icon modal__icon--rose"><i class="ic i-trash"></i></span>
+      <h3 id="delete-site-t">Delete this site?</h3>
+      <p>Devices at this site must be moved or deleted first.</p>
+    </div>
+    <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+      <a href="#close" class="btn">Cancel</a>
+      <a href="#deleted" class="btn btn--danger"><i class="ic i-trash"></i> Yes, delete</a>
+    </div>
+  </div>
+</div>
+  <div class="modal modal--danger" id="delete-tariff" role="dialog" aria-modal="true" aria-labelledby="delete-tariff-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--sm">
+    <div class="confirm">
+      <span class="modal__icon modal__icon--rose"><i class="ic i-trash"></i></span>
+      <h3 id="delete-tariff-t">Delete tariff slab?</h3>
+      <p>Cost for past readings is not recalculated.</p>
+    </div>
+    <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+      <a href="#close" class="btn">Cancel</a>
+      <a href="#deleted" class="btn btn--danger"><i class="ic i-trash"></i> Yes, delete</a>
+    </div>
+  </div>
+</div>
+  <div class="modal modal--danger" id="delete-session" role="dialog" aria-modal="true" aria-labelledby="delete-session-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--sm">
+    <div class="confirm">
+      <span class="modal__icon modal__icon--rose"><i class="ic i-trash"></i></span>
+      <h3 id="delete-session-t">Sign out this session?</h3>
+      <p>The device will need to sign in again with Organisation ID and password.</p>
+    </div>
+    <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+      <a href="#close" class="btn">Cancel</a>
+      <a href="#deleted" class="btn btn--danger"><i class="ic i-trash"></i> Yes, delete</a>
+    </div>
+  </div>
+</div>
+  <div class="modal modal--danger" id="delete-org" role="dialog" aria-modal="true" aria-labelledby="delete-org-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--sm">
+    <div class="confirm">
+      <span class="modal__icon modal__icon--rose"><i class="ic i-trash"></i></span>
+      <h3 id="delete-org-t">Delete the whole organisation?</h3>
+      <p>All meters, sub-meters, readings, users and shifts in ORG-FEB-2048 will be permanently deleted.</p>
+    </div>
+    <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+      <a href="#close" class="btn">Cancel</a>
+      <a href="#deleted" class="btn btn--danger"><i class="ic i-trash"></i> Yes, delete</a>
+    </div>
+  </div>
+</div>
+
+
+  <!-- ================= TOASTS ================= -->
+  <div class="toast" id="saved" role="status"><span class="toast__icon"><i class="ic i-check"></i></span><div><strong>Changes saved</strong><span>Your updates were saved successfully.</span></div></div>
+  <div class="toast" id="created" role="status"><span class="toast__icon"><i class="ic i-plus"></i></span><div><strong>Record created</strong><span>The new record has been added.</span></div></div>
+  <div class="toast" id="invited" role="status"><span class="toast__icon"><i class="ic i-send"></i></span><div><strong>Invitation sent</strong><span>An invite email is on its way.</span></div></div>
+  <div class="toast toast--danger" id="deleted" role="status"><span class="toast__icon"><i class="ic i-trash"></i></span><div><strong>Record deleted</strong><span>The item was removed permanently.</span></div></div>
+</body>
+</html>

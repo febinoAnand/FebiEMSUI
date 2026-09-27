@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alerts · Energy Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="app">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
+
+  <div class="app-shell">
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar" aria-label="Primary">
+      <a href="dashboard.html" class="brand">
+        <span class="brand__logo"><i class="ic i-bolt-fill"></i></span>
+        <span>
+          <span class="brand__name">Energy Dashboard</span><br />
+          <span class="brand__tag">Smart Energy Cloud</span>
+        </span>
+      </a>
+
+      <a href="#switch-org" class="tenant-switch" title="Switch organisation">
+        <span class="tenant-switch__logo">FS</span>
+        <span class="tenant-switch__meta">
+          <strong>Febino Solutions Pvt Ltd</strong>
+          <span>ORG-FEB-2048</span>
+        </span>
+        <i class="ic i-swap muted"></i>
+      </a>
+
+      <nav class="nav">
+        <div class="nav__section">Monitor</div>
+        <a href="dashboard.html" class="nav__link"><i class="ic i-grid"></i><span>Dashboard</span></a>
+        <a href="meters.html" class="nav__link"><i class="ic i-gauge"></i><span>Energy Meters</span><em class="nav__badge nav__badge--green">38</em></a>
+        <a href="analytics.html" class="nav__link"><i class="ic i-chart"></i><span>Analytics</span></a>
+        <a href="alerts.html" class="nav__link is-active"><i class="ic i-bell"></i><span>Alerts</span><em class="nav__badge">5</em></a>
+
+        <div class="nav__section">Operations</div>
+        <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift Management</span></a>
+
+        <div class="nav__section">Administration</div>
+        <a href="users.html" class="nav__link"><i class="ic i-users"></i><span>Users</span></a>
+        <a href="roles.html" class="nav__link"><i class="ic i-shield"></i><span>Roles &amp; Permissions</span></a>
+        <a href="settings.html" class="nav__link"><i class="ic i-settings"></i><span>Settings</span></a>
+      </nav>
+
+      <div class="sidebar__live">
+        <div class="eyebrow"><span class="dot dot--live" style="--c: var(--green)"></span> Live load</div>
+        <div class="sidebar__live-value">125.4 <small>kW</small></div>
+        <div class="small muted">Peak today 150.2 kW at 14:05</div>
+        <div class="eq" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="sidebar__foot"><span>v2.4.0</span><a href="#close" class="muted">Help &amp; docs</a></div>
+    </aside>
+    <label for="nav-toggle" class="nav-scrim" aria-hidden="true"></label>
+
+    <!-- ================= MAIN ================= -->
+    <div class="main">
+      <header class="topbar">
+        <label for="nav-toggle" class="icon-btn burger" aria-label="Open menu"><i class="ic i-menu"></i></label>
+
+        <div class="topbar__crumbs">
+          <small>Febino Solutions / Monitor</small>
+          <strong>Alerts</strong>
+        </div>
+
+        <label class="search">
+          <i class="ic i-search"></i>
+          <input type="search" placeholder="Search meters, users, alerts…" aria-label="Search" />
+          <kbd>Ctrl K</kbd>
+        </label>
+
+        <div class="topbar__actions">
+          <span class="live-pill"><span class="dot dot--live" style="--c: var(--green)"></span> Live</span>
+
+          <details class="dropdown">
+            <summary class="icon-btn" aria-label="Notifications"><i class="ic i-bell"></i><span class="ping"></span></summary>
+            <div class="dropdown__panel dropdown__panel--wide">
+              <div class="dropdown__head"><strong>Notifications</strong><span class="badge badge--danger">5 new</span></div>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: rgba(244,63,94,.14); color: var(--rose)"><i class="ic i-alert"></i></span>
+                <span><p><b>HVAC Chiller-2</b> crossed 95% of rated load</p><small>2 min ago · Critical</small></span>
+              </a>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: rgba(251,191,36,.14); color: var(--amber)"><i class="ic i-activity"></i></span>
+                <span><p>Power factor dropped to <b>0.86</b> on Main Incomer</p><small>18 min ago · Warning</small></span>
+              </a>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: rgba(34,211,238,.14); color: var(--cyan)"><i class="ic i-wifi"></i></span>
+                <span><p>Sub-meter <b>SM-1004-02</b> went offline</p><small>42 min ago · Info</small></span>
+              </a>
+              <div class="dropdown__sep"></div>
+              <a href="alerts.html" class="dropdown__item" style="justify-content:center;color:var(--green);font-weight:700">View all alerts</a>
+            </div>
+          </details>
+
+          <details class="dropdown">
+            <summary class="user-chip">
+              <span class="avatar av-1">VK</span>
+              <span class="user-chip__meta"><strong>Vijay</strong><small>Tenant Admin</small></span>
+              <i class="ic i-chev-down"></i>
+            </summary>
+            <div class="dropdown__panel">
+              <div class="dropdown__head" style="justify-content:flex-start;gap:12px">
+                <span class="avatar av-1">VK</span>
+                <span><strong>Vijay Kumar</strong><br /><small class="muted">vijay@febinosolutions.com</small></span>
+              </div>
+              <div class="dropdown__sep"></div>
+              <a href="#profile" class="dropdown__item"><i class="ic i-user"></i> My profile</a>
+              <a href="#change-password" class="dropdown__item"><i class="ic i-key"></i> Change password</a>
+              <a href="#switch-org" class="dropdown__item"><i class="ic i-swap"></i> Switch organisation</a>
+              <a href="settings.html" class="dropdown__item"><i class="ic i-settings"></i> Settings</a>
+              <div class="dropdown__sep"></div>
+              <a href="#logout" class="dropdown__item dropdown__item--danger"><i class="ic i-logout"></i> Sign out</a>
+            </div>
+          </details>
+        </div>
+      </header>
+
+      <main class="page">
+        <section class="page-head">
+          <div>
+            <h1 class="page-title">Alerts</h1>
+            <p class="page-sub">Threshold breaches, device health and energy anomalies across all meters and sub-meters.</p>
+          </div>
+          <div class="page-actions">
+            <a href="#saved" class="btn btn--sm"><i class="ic i-check"></i> Acknowledge all</a>
+            <a href="#add-rule" class="btn btn--sm btn--primary"><i class="ic i-plus"></i> New alert rule</a>
+          </div>
+        </section>
+
+        <section class="grid grid-4">
+          <article class="kpi kpi--rose">
+            <div class="kpi__top"><span class="kpi__icon"><i class="ic i-alert"></i></span><span class="badge badge--danger"><span class="dot dot--live"></span> Open</span></div>
+            <div class="kpi__label">Critical</div><div class="kpi__value">2<small>open now</small></div>
+            <div class="kpi__foot"><span>Oldest: 38 min</span></div>
+          </article>
+          <article class="kpi kpi--amber">
+            <div class="kpi__top"><span class="kpi__icon"><i class="ic i-activity"></i></span></div>
+            <div class="kpi__label">Warnings</div><div class="kpi__value">3<small>unresolved</small></div>
+            <div class="kpi__foot"><span>2 acknowledged</span></div>
+          </article>
+          <article class="kpi kpi--cyan">
+            <div class="kpi__top"><span class="kpi__icon"><i class="ic i-clock"></i></span></div>
+            <div class="kpi__label">Mean time to acknowledge</div><div class="kpi__value">6.4<small>min</small></div>
+            <div class="kpi__foot"><span class="trend trend--up"><i class="ic i-trend-down"></i> 22%</span><span>faster than last week</span></div>
+          </article>
+          <article class="kpi kpi--green">
+            <div class="kpi__top"><span class="kpi__icon"><i class="ic i-check"></i></span></div>
+            <div class="kpi__label">Resolved (7 days)</div><div class="kpi__value">41</div>
+            <div class="kpi__foot"><span>8 active rules</span></div>
+          </article>
+        </section>
+
+        <section class="card paged">
+          <input type="radio" class="pg-input" name="al-pg" id="al-p1" value="1" checked aria-label="Page 1" />
+<input type="radio" class="pg-input" name="al-pg" id="al-p2" value="2" aria-label="Page 2" />
+<input type="radio" class="pg-input" name="al-pg" id="al-p3" value="3" aria-label="Page 3" />
+          <div class="card__head"><div><h3 class="card__title"><i class="ic i-bell"></i> Alert log</h3><p class="card__sub">Newest first</p></div></div>
+          <div class="toolbar">
+            <label class="search"><i class="ic i-search"></i><input type="search" placeholder="Search alerts, devices…" aria-label="Search alerts" /></label>
+            <span class="chip is-active">All <small>16</small></span>
+            <span class="chip"><span class="dot" style="--c:var(--rose)"></span> Critical <small>4</small></span>
+            <span class="chip"><span class="dot" style="--c:var(--amber)"></span> Warning <small>7</small></span>
+            <span class="chip"><span class="dot" style="--c:var(--cyan)"></span> Info <small>5</small></span>
+            <span class="spacer"></span>
+            <select class="input input--sm" aria-label="Status"><option>Any status</option><option>Open</option><option>Acknowledged</option><option>Resolved</option></select>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th class="check-col"><label class="check"><input type="checkbox" aria-label="Select all" /></label></th><th>Alert</th><th>Source</th><th>Value / limit</th><th>Raised</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody data-page="1">
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--rose" style="width:36px;height:36px"><i class="ic i-alert"></i></span><div><strong>Load above 95% of rated capacity</strong><small><span class="badge badge--danger" style="height:20px;font-size:11px;margin-top:3px">Critical</span></small></div></div></td>
+    <td><strong>HVAC › Chiller-2</strong><br /><span class="mono small muted">SM-1002-02</span></td>
+    <td class="mono small nowrap">9.5 kW / 9.0 kW</td>
+    <td class="small nowrap">Today 15:58</td>
+    <td><span class="badge badge--danger"><span class="dot dot--live"></span> Open</span></td>
+    <td><div class="actions"><a href="#saved" class="act act--ok" title="Acknowledge"><i class="ic i-check"></i></a><a href="#edit-alert" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-alert" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--amber" style="width:36px;height:36px"><i class="ic i-activity"></i></span><div><strong>Power factor below target</strong><small><span class="badge badge--warn" style="height:20px;font-size:11px;margin-top:3px">Warning</span></small></div></div></td>
+    <td><strong>Main Incomer</strong><br /><span class="mono small muted">DEV-1001</span></td>
+    <td class="mono small nowrap">0.86 / ≥ 0.95</td>
+    <td class="small nowrap">Today 15:42</td>
+    <td><span class="badge badge--danger"><span class="dot dot--live"></span> Open</span></td>
+    <td><div class="actions"><a href="#saved" class="act act--ok" title="Acknowledge"><i class="ic i-check"></i></a><a href="#edit-alert" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-alert" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--cyan" style="width:36px;height:36px"><i class="ic i-wifi"></i></span><div><strong>Sub-meter communication lost</strong><small><span class="badge badge--info" style="height:20px;font-size:11px;margin-top:3px">Info</span></small></div></div></td>
+    <td><strong>Data Centre › UPS-B feeder</strong><br /><span class="mono small muted">SM-1004-02</span></td>
+    <td class="mono small nowrap">No data 40 min</td>
+    <td class="small nowrap">Today 15:18</td>
+    <td><span class="badge badge--warn"><span class="dot"></span> Acknowledged</span></td>
+    <td><div class="actions"><a href="#edit-alert" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-alert" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--rose" style="width:36px;height:36px"><i class="ic i-alert"></i></span><div><strong>Device offline</strong><small><span class="badge badge--danger" style="height:20px;font-size:11px;margin-top:3px">Critical</span></small></div></div></td>
+    <td><strong>Compressor House</strong><br /><span class="mono small muted">DEV-1006</span></td>
+    <td class="mono small nowrap">No data 38 min</td>
+    <td class="small nowrap">Today 15:22</td>
+    <td><span class="badge badge--danger"><span class="dot dot--live"></span> Open</span></td>
+    <td><div class="actions"><a href="#saved" class="act act--ok" title="Acknowledge"><i class="ic i-check"></i></a><a href="#edit-alert" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-alert" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--amber" style="width:36px;height:36px"><i class="ic i-activity"></i></span><div><strong>Voltage imbalance 4.2%</strong><small><span class="badge badge--warn" style="height:20px;font-size:11px;margin-top:3px">Warning</span></small></div></div></td>
+    <td><strong>Main Incomer › Feeder B</strong><br /><span class="mono small muted">SM-1001-02</span></td>
+    <td class="mono small nowrap">4.2% / 3%</td>
+    <td class="small nowrap">Today 13:05</td>
+    <td><span class="badge badge--warn"><span class="dot"></span> Acknowledged</span></td>
+    <td><div class="actions"><a href="#edit-alert" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-alert" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--amber" style="width:36px;height:36px"><i class="ic i-activity"></i></span><div><strong>Contract demand 95% reached</strong><small><span class="badge badge--warn" style="height:20px;font-size:11px;margin-top:3px">Warning</span></small></div></div></td>
+    <td><strong>Main Incomer</strong><br /><span class="mono small muted">DEV-1001</span></td>
+    <td class="mono small nowrap">150.2 / 160 kVA</td>
+    <td class="small nowrap">Today 14:05</td>
+    <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
+    <td><div class="actions"><a href="#edit-alert" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-alert" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+</tbody>
+<tbody data-page="2">
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--cyan" style="width:36px;height:36px"><i class="ic i-wifi"></i></span><div><strong>EV charger at full load</strong><small><span class="badge badge--info" style="height:20px;font-size:11px;margin-top:3px">Info</span></small></div></div></td>
+    <td><strong>EV Charging › Charger 1</strong><br /><span class="mono small muted">SM-1011-01</span></td>
+    <td class="mono small nowrap">7.4 kW / 7.4 kW</td>
+    <td class="small nowrap">Today 11:40</td>
+    <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
+    <td><div class="actions"><a href="#edit-alert" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-alert" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--rose" style="width:36px;height:36px"><i class="ic i-alert"></i></span><div><strong>Over-current on phase R</strong><small><span class="badge badge--danger" style="height:20px;font-size:11px;margin-top:3px">Critical</span></small></div></div></td>
+    <td><strong>Paint Shop › Curing oven</strong><br /><span class="mono small muted">SM-1012-02</span></td>
+    <td class="mono small nowrap">212 A / 200 A</td>
+    <td class="small nowrap">Yesterday 22:14</td>
+    <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
+    <td><div class="actions"><a href="#edit-alert" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-alert" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--amber" style="width:36px;height:36px"><i class="ic i-activity"></i></span><div><strong>After-hours consumption</strong><small><span class="badge badge--warn" style="height:20px;font-size:11px;margin-top:3px">Warning</span></small></div></div></td>
+    <td><strong>Office › First floor DB</strong><br /><span class="mono small muted">SM-1003-02</span></td>
+    <td class="mono small nowrap">2.8 kW at 23:00</td>
+    <td class="small nowrap">Yesterday 23:02</td>
+    <td><span class="badge badge--warn"><span class="dot"></span> Acknowledged</span></td>
+    <td><div class="actions"><a href="#edit-alert" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-alert" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--cyan" style="width:36px;height:36px"><i class="ic i-wifi"></i></span><div><strong>DG set started (grid failure)</strong><small><span class="badge badge--info" style="height:20px;font-size:11px;margin-top:3px">Info</span></small></div></div></td>
+    <td><strong>DG Set 1</strong><br /><span class="mono small muted">DEV-1008</span></td>
+    <td class="mono small nowrap">Run 12 min</td>
+    <td class="small nowrap">Yesterday 17:31</td>
+    <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
+    <td><div class="actions"><a href="#edit-alert" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-alert" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--amber" style="width:36px;height:36px"><i class="ic i-activity"></i></span><div><strong>THD above 8%</strong><small><span class="badge badge--warn" style="height:20px;font-size:11px;margin-top:3px">Warning</span></small></div></div></td>
+    <td><strong>Data Centre › UPS-A feeder</strong><br /><span class="mono small muted">SM-1004-01</span></td>
+    <td class="mono small nowrap">9.1% / 8%</td>
+    <td class="small nowrap">Sep 25, 10:12</td>
+    <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
+    <td><div class="actions"><a href="#edit-alert" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-alert" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--cyan" style="width:36px;height:36px"><i class="ic i-wifi"></i></span><div><strong>Solar generation below forecast</strong><small><span class="badge badge--info" style="height:20px;font-size:11px;margin-top:3px">Info</span></small></div></div></td>
+    <td><strong>Rooftop Solar</strong><br /><span class="mono small muted">DEV-1007</span></td>
+    <td class="mono small nowrap">−22% vs forecast</td>
+    <td class="small nowrap">Sep 25, 13:00</td>
+    <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
+    <td><div class="actions"><a href="#edit-alert" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-alert" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+</tbody>
+<tbody data-page="3">
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--rose" style="width:36px;height:36px"><i class="ic i-alert"></i></span><div><strong>Daily energy budget exceeded</strong><small><span class="badge badge--danger" style="height:20px;font-size:11px;margin-top:3px">Critical</span></small></div></div></td>
+    <td><strong>Lighting</strong><br /><span class="mono small muted">DEV-1005</span></td>
+    <td class="mono small nowrap">1,410 / 1,300 kWh</td>
+    <td class="small nowrap">Sep 24, 20:45</td>
+    <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
+    <td><div class="actions"><a href="#edit-alert" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-alert" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--amber" style="width:36px;height:36px"><i class="ic i-activity"></i></span><div><strong>Frequent tripping detected</strong><small><span class="badge badge--warn" style="height:20px;font-size:11px;margin-top:3px">Warning</span></small></div></div></td>
+    <td><strong>Water Pumps › Transfer pump</strong><br /><span class="mono small muted">SM-1009-02</span></td>
+    <td class="mono small nowrap">4 trips / hour</td>
+    <td class="small nowrap">Sep 24, 09:20</td>
+    <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
+    <td><div class="actions"><a href="#edit-alert" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-alert" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--cyan" style="width:36px;height:36px"><i class="ic i-wifi"></i></span><div><strong>Meter firmware updated</strong><small><span class="badge badge--info" style="height:20px;font-size:11px;margin-top:3px">Info</span></small></div></div></td>
+    <td><strong>HVAC</strong><br /><span class="mono small muted">DEV-1002</span></td>
+    <td class="mono small nowrap">v3.2.1 → v3.3.0</td>
+    <td class="small nowrap">Sep 23, 18:00</td>
+    <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
+    <td><div class="actions"><a href="#edit-alert" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-alert" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--amber" style="width:36px;height:36px"><i class="ic i-activity"></i></span><div><strong>Cold storage consumption spike</strong><small><span class="badge badge--warn" style="height:20px;font-size:11px;margin-top:3px">Warning</span></small></div></div></td>
+    <td><strong>Canteen › Cold storage</strong><br /><span class="mono small muted">SM-1010-02</span></td>
+    <td class="mono small nowrap">+38% vs baseline</td>
+    <td class="small nowrap">Sep 23, 03:10</td>
+    <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
+    <td><div class="actions"><a href="#edit-alert" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-alert" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+</tbody>
+            </table>
+          </div>
+          <div class="pager">
+  <div class="pager__info">Showing <span data-when="1"><strong>1–6</strong></span><span data-when="2"><strong>7–12</strong></span><span data-when="3"><strong>13–16</strong></span> of <strong>16</strong> alerts</div>
+  <div class="pager__size">Rows per page <select class="input" aria-label="Rows per page"><option>6</option><option>12</option><option>24</option></select></div>
+  <div class="pager__nav"><span class="pg-btn is-disabled" data-when="1" aria-hidden="true"><i class="ic i-chev-left"></i></span><label for="al-p1" data-when="2" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="al-p2" data-when="3" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="al-p1" data-p="1">1</label><label for="al-p2" data-p="2">2</label><label for="al-p3" data-p="3">3</label><label for="al-p2" data-when="1" aria-label="Next page"><i class="ic i-chev-right"></i></label><label for="al-p3" data-when="2" aria-label="Next page"><i class="ic i-chev-right"></i></label><span class="pg-btn is-disabled" data-when="3" aria-hidden="true"><i class="ic i-chev-right"></i></span></div>
+</div>
+        </section>
+
+        <section class="card paged">
+          <input type="radio" class="pg-input" name="ar-pg" id="ar-p1" value="1" checked aria-label="Page 1" />
+<input type="radio" class="pg-input" name="ar-pg" id="ar-p2" value="2" aria-label="Page 2" />
+          <div class="card__head"><div><h3 class="card__title"><i class="ic i-sliders"></i> Alert rules</h3><p class="card__sub">Conditions that raise alerts, and who gets notified</p></div><a href="#add-rule" class="btn btn--sm btn--soft"><i class="ic i-plus"></i> Add rule</a></div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>Rule</th><th>Metric</th><th>Condition</th><th>Applies to</th><th>Notify via</th><th>Severity</th><th>Enabled</th><th>Actions</th></tr></thead>
+<tbody data-page="1">
+  <tr>
+    <td><strong>Overload > 90% rated</strong></td>
+    <td><span class="tag">Load %</span></td>
+    <td class="mono small">> 90 % for 5 min</td>
+    <td>All HVAC sub-meters</td>
+    <td class="small">Email · SMS</td>
+    <td><span class="badge badge--danger">Critical</span></td>
+    <td><label class="switch"><input type="checkbox" checked aria-label="Enable Overload > 90% rated" /></label></td>
+    <td><div class="actions"><a href="#edit-rule" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-rule" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><strong>Low power factor</strong></td>
+    <td><span class="tag">Power factor</span></td>
+    <td class="mono small">< 0.95 for 15 min</td>
+    <td>Main Incomer</td>
+    <td class="small">Email</td>
+    <td><span class="badge badge--warn">Warning</span></td>
+    <td><label class="switch"><input type="checkbox" checked aria-label="Enable Low power factor" /></label></td>
+    <td><div class="actions"><a href="#edit-rule" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-rule" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><strong>Meter offline</strong></td>
+    <td><span class="tag">Heartbeat</span></td>
+    <td class="mono small">No data 10 min</td>
+    <td>All devices</td>
+    <td class="small">Email · Push</td>
+    <td><span class="badge badge--danger">Critical</span></td>
+    <td><label class="switch"><input type="checkbox" checked aria-label="Enable Meter offline" /></label></td>
+    <td><div class="actions"><a href="#edit-rule" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-rule" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><strong>Contract demand</strong></td>
+    <td><span class="tag">kVA</span></td>
+    <td class="mono small">> 95% of 160 kVA</td>
+    <td>Main Incomer</td>
+    <td class="small">SMS · Push</td>
+    <td><span class="badge badge--warn">Warning</span></td>
+    <td><label class="switch"><input type="checkbox" checked aria-label="Enable Contract demand" /></label></td>
+    <td><div class="actions"><a href="#edit-rule" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-rule" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+</tbody>
+<tbody data-page="2">
+  <tr>
+    <td><strong>After-hours usage</strong></td>
+    <td><span class="tag">kW</span></td>
+    <td class="mono small">> 2 kW, 20:00–06:00</td>
+    <td>Office sub-meters</td>
+    <td class="small">Email</td>
+    <td><span class="badge badge--warn">Warning</span></td>
+    <td><label class="switch"><input type="checkbox" aria-label="Enable After-hours usage" /></label></td>
+    <td><div class="actions"><a href="#edit-rule" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-rule" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><strong>Voltage imbalance</strong></td>
+    <td><span class="tag">Voltage</span></td>
+    <td class="mono small">> 3 % for 10 min</td>
+    <td>All feeders</td>
+    <td class="small">Email</td>
+    <td><span class="badge badge--warn">Warning</span></td>
+    <td><label class="switch"><input type="checkbox" checked aria-label="Enable Voltage imbalance" /></label></td>
+    <td><div class="actions"><a href="#edit-rule" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-rule" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><strong>Daily budget</strong></td>
+    <td><span class="tag">kWh / day</span></td>
+    <td class="mono small">> target by 5%</td>
+    <td>All devices</td>
+    <td class="small">Email · Digest</td>
+    <td><span class="badge badge--info">Info</span></td>
+    <td><label class="switch"><input type="checkbox" checked aria-label="Enable Daily budget" /></label></td>
+    <td><div class="actions"><a href="#edit-rule" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-rule" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><strong>THD</strong></td>
+    <td><span class="tag">THD %</span></td>
+    <td class="mono small">> 8 %</td>
+    <td>Data Centre</td>
+    <td class="small">Email</td>
+    <td><span class="badge badge--warn">Warning</span></td>
+    <td><label class="switch"><input type="checkbox" aria-label="Enable THD" /></label></td>
+    <td><div class="actions"><a href="#edit-rule" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-rule" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+</tbody>
+            </table>
+          </div>
+          <div class="pager">
+  <div class="pager__info">Showing <span data-when="1"><strong>1–4</strong></span><span data-when="2"><strong>5–8</strong></span> of <strong>8</strong> rules</div>
+  <div class="pager__size">Rows per page <select class="input" aria-label="Rows per page"><option>4</option><option>8</option><option>16</option></select></div>
+  <div class="pager__nav"><span class="pg-btn is-disabled" data-when="1" aria-hidden="true"><i class="ic i-chev-left"></i></span><label for="ar-p1" data-when="2" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="ar-p1" data-p="1">1</label><label for="ar-p2" data-p="2">2</label><label for="ar-p2" data-when="1" aria-label="Next page"><i class="ic i-chev-right"></i></label><span class="pg-btn is-disabled" data-when="2" aria-hidden="true"><i class="ic i-chev-right"></i></span></div>
+</div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>© 2026 Energy Dashboard · Tenant <span class="mono">ORG-FEB-2048</span></span>
+        <span>Data refreshed every 15 s · IST (UTC+05:30)</span>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ================= SHARED MODALS ================= -->
+  <div class="modal" id="profile" role="dialog" aria-modal="true" aria-labelledby="profile-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog">
+      <div class="modal__head">
+        <span class="modal__icon"><i class="ic i-user"></i></span>
+        <div><h3 id="profile-title">My profile</h3><p>Your personal details in this organisation.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body">
+        <div class="row" style="gap:16px;margin-bottom:20px">
+          <span class="avatar avatar--lg av-1">VK</span>
+          <div>
+            <strong style="font-size:17px">Vijay Kumar</strong>
+            <div class="small muted">Tenant Admin · Member since Jan 2026</div>
+            <label class="btn btn--sm" style="margin-top:8px"><i class="ic i-upload"></i> Change photo<input type="file" accept="image/*" hidden /></label>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label>First name</label><input class="input" value="Vijay" /></div>
+          <div class="field"><label>Last name</label><input class="input" value="Kumar" /></div>
+          <div class="field"><label>Email</label><input class="input" type="email" value="vijay@febinosolutions.com" /></div>
+          <div class="field"><label>Phone</label><input class="input" type="tel" value="+91 98450 12345" /></div>
+          <div class="field"><label>Language</label><select class="input"><option>English (India)</option><option>हिन्दी</option><option>தமிழ்</option></select></div>
+          <div class="field"><label>Time zone</label><select class="input"><option>Asia/Kolkata (UTC+05:30)</option><option>Asia/Dubai (UTC+04:00)</option></select></div>
+        </div>
+      </div>
+      <div class="modal__foot">
+        <a href="#close" class="btn btn--ghost">Cancel</a>
+        <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save profile</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="change-password" role="dialog" aria-modal="true" aria-labelledby="cp-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="modal__head">
+        <span class="modal__icon modal__icon--violet"><i class="ic i-key"></i></span>
+        <div><h3 id="cp-title">Change password</h3><p>Use at least 8 characters with a number.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body" style="display:grid;gap:16px">
+        <div class="field"><label>Current password</label><div class="input-icon"><i class="ic i-lock"></i><input class="input" type="password" placeholder="••••••••" /></div></div>
+        <div class="field pw-field"><label>New password</label>
+          <div class="input-icon"><i class="ic i-key"></i><input class="input" type="password" placeholder=" " minlength="8" pattern="(?=.*\d)(?=.*[A-Za-z]).{8,}" /></div>
+          <div class="strength"><span></span><span></span><span></span><span></span></div>
+          <span class="hint hint--rule">8+ characters, letters and at least one number</span>
+          <span class="hint hint--ok">Strong password ✓</span>
+        </div>
+        <div class="field"><label>Confirm new password</label><div class="input-icon"><i class="ic i-key"></i><input class="input" type="password" placeholder="••••••••" /></div></div>
+      </div>
+      <div class="modal__foot">
+        <a href="#close" class="btn btn--ghost">Cancel</a>
+        <a href="#saved" class="btn btn--primary">Update password</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="switch-org" role="dialog" aria-modal="true" aria-labelledby="so-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="modal__head">
+        <span class="modal__icon modal__icon--cyan"><i class="ic i-building"></i></span>
+        <div><h3 id="so-title">Switch organisation</h3><p>You belong to 3 tenants.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body" style="display:grid;gap:10px">
+        <label class="radio-card"><input type="radio" name="org" checked /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo">FS</span><span style="flex:1"><strong>Febino Solutions Pvt Ltd</strong><br /><small class="mono muted">ORG-FEB-2048 · Tenant Admin</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+        <label class="radio-card"><input type="radio" name="org" /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo" style="background:var(--grad-warm)">SP</span><span style="flex:1"><strong>Sunrise Plastics Ltd</strong><br /><small class="mono muted">ORG-SUN-1177 · Manager</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+        <label class="radio-card"><input type="radio" name="org" /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo" style="background:var(--grad)">GT</span><span style="flex:1"><strong>GreenTech Campus</strong><br /><small class="mono muted">ORG-GTC-0931 · Viewer</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+      </div>
+      <div class="modal__foot">
+        <a href="register.html" class="btn btn--ghost left"><i class="ic i-plus"></i> New tenant</a>
+        <a href="dashboard.html" class="btn btn--primary">Switch</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal modal--danger" id="logout" role="dialog" aria-modal="true" aria-labelledby="lo-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="confirm">
+        <span class="modal__icon modal__icon--rose"><i class="ic i-logout"></i></span>
+        <h3 id="lo-title">Sign out?</h3>
+        <p>You'll need your Organisation ID and password to sign in again.</p>
+      </div>
+      <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+        <a href="#close" class="btn">Stay signed in</a>
+        <a href="login.html" class="btn btn--danger"><i class="ic i-logout"></i> Sign out</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="edit-alert" role="dialog" aria-modal="true" aria-labelledby="edit-alert-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--rose"><i class="ic i-edit"></i></span>
+      <div><h3 id="edit-alert-t">Update alert</h3><p>Load above 95% of rated capacity · HVAC › Chiller-2</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="callout callout--danger" style="margin-bottom:16px"><i class="ic i-alert"></i><span><b>9.5 kW</b> measured vs <b>9.0 kW</b> limit · raised today 15:58 on <span class="mono">SM-1002-02</span></span></div>
+      <div class="form-grid">
+        <div class="field"><label>Status</label><select class="input"><option>Open</option><option selected>Acknowledged</option><option>Resolved</option></select></div>
+        <div class="field"><label>Severity</label><select class="input"><option selected>Critical</option><option>Warning</option><option>Info</option></select></div>
+        <div class="field full"><label>Assign to</label><select class="input"><option>Rahul Verma · Technician</option><option>Mohammed Irfan · Technician</option><option>Meera Iyer · Supervisor</option></select></div>
+        <div class="field full"><label>Resolution note</label><textarea class="input" placeholder="What was done?">Chiller-2 set-point raised from 6°C to 7°C; monitoring.</textarea></div>
+        <label class="switch full"><input type="checkbox" /> Snooze similar alerts for 1 hour</label>
+      </div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Update alert</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal" id="add-rule" role="dialog" aria-modal="true" aria-labelledby="add-rule-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--lg">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--amber"><i class="ic i-sliders"></i></span>
+      <div><h3 id="add-rule-t">New alert rule</h3><p>Raise an alert when a meter or sub-meter crosses a threshold.</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-grid form-grid--3">
+        <div class="field full"><label>Rule name <span class="req">*</span></label><input class="input" placeholder="e.g. Compressor idle at night" /></div>
+        <div class="field"><label>Metric</label><select class="input"><option>Power (kW)</option><option>Energy (kWh)</option><option>Load %</option><option>Power factor</option><option>Voltage</option><option>Current</option><option>THD %</option><option>Heartbeat</option></select></div>
+        <div class="field"><label>Condition</label><select class="input"><option>Greater than</option><option>Less than</option><option>Outside range</option><option>No data for</option></select></div>
+        <div class="field"><label>Threshold</label><input class="input mono" placeholder="90" /></div>
+        <div class="field"><label>For at least</label><select class="input"><option>Instantly</option><option>5 min</option><option>15 min</option><option>1 hour</option></select></div>
+        <div class="field"><label>Severity</label><select class="input"><option>Critical</option><option selected>Warning</option><option>Info</option></select></div>
+        <div class="field"><label>Active during</label><select class="input"><option>Always</option><option>Shift A</option><option>Shift B</option><option>Shift C</option><option>Outside all shifts</option></select></div>
+        <div class="field full"><label>Applies to</label><select class="input"><option>All devices &amp; sub-meters</option><option>Main Incomer (+4 sub-meters)</option><option>HVAC (+3 sub-meters)</option><option>Only sub-meters of Data Centre</option></select></div>
+        <div class="field full"><label>Notify</label>
+          <div class="row wrap" style="gap:16px"><label class="check"><input type="checkbox" checked /> Email</label><label class="check"><input type="checkbox" /> SMS</label><label class="check"><input type="checkbox" checked /> Push</label><label class="check"><input type="checkbox" /> WhatsApp</label><label class="check"><input type="checkbox" /> Webhook</label></div>
+        </div>
+        <div class="field full"><label>Recipients</label><select class="input"><option>Role: Supervisor + Energy Manager</option><option>Current shift supervisor</option><option>Specific users…</option></select></div>
+      </div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#created" class="btn btn--primary"><i class="ic i-check"></i> Create rule</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal" id="edit-rule" role="dialog" aria-modal="true" aria-labelledby="edit-rule-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--lg">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--cyan"><i class="ic i-edit"></i></span>
+      <div><h3 id="edit-rule-t">Edit alert rule</h3><p>Overload &gt; 90% rated</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-grid form-grid--3">
+        <div class="field full"><label>Rule name</label><input class="input" value="Overload &gt; 90% rated" /></div>
+        <div class="field"><label>Metric</label><select class="input"><option selected>Load %</option><option>Power (kW)</option></select></div>
+        <div class="field"><label>Condition</label><select class="input"><option selected>Greater than</option><option>Less than</option></select></div>
+        <div class="field"><label>Threshold</label><input class="input mono" value="90" /></div>
+        <div class="field"><label>For at least</label><select class="input"><option>Instantly</option><option selected>5 min</option><option>15 min</option></select></div>
+        <div class="field"><label>Severity</label><select class="input"><option selected>Critical</option><option>Warning</option></select></div>
+        <div class="field"><label>Active during</label><select class="input"><option selected>Always</option><option>Shift A</option></select></div>
+        <div class="field full"><label>Applies to</label><select class="input"><option selected>All HVAC sub-meters</option><option>All devices &amp; sub-meters</option></select></div>
+        <div class="field full"><label>Notify</label><div class="row wrap" style="gap:16px"><label class="check"><input type="checkbox" checked /> Email</label><label class="check"><input type="checkbox" checked /> SMS</label><label class="check"><input type="checkbox" /> Push</label></div></div>
+        <label class="switch full"><input type="checkbox" checked /> Rule enabled</label>
+      </div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save rule</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal modal--danger" id="delete-alert" role="dialog" aria-modal="true" aria-labelledby="delete-alert-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--sm">
+    <div class="confirm">
+      <span class="modal__icon modal__icon--rose"><i class="ic i-trash"></i></span>
+      <h3 id="delete-alert-t">Delete this alert?</h3>
+      <p>It will be removed from the log. This can't be undone.</p>
+    </div>
+    <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+      <a href="#close" class="btn">Cancel</a>
+      <a href="#deleted" class="btn btn--danger"><i class="ic i-trash"></i> Yes, delete</a>
+    </div>
+  </div>
+</div>
+  <div class="modal modal--danger" id="delete-rule" role="dialog" aria-modal="true" aria-labelledby="delete-rule-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--sm">
+    <div class="confirm">
+      <span class="modal__icon modal__icon--rose"><i class="ic i-trash"></i></span>
+      <h3 id="delete-rule-t">Delete alert rule?</h3>
+      <p>No new alerts will be raised by this rule. Existing alerts stay in the log.</p>
+    </div>
+    <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+      <a href="#close" class="btn">Cancel</a>
+      <a href="#deleted" class="btn btn--danger"><i class="ic i-trash"></i> Yes, delete</a>
+    </div>
+  </div>
+</div>
+
+
+  <!-- ================= TOASTS ================= -->
+  <div class="toast" id="saved" role="status"><span class="toast__icon"><i class="ic i-check"></i></span><div><strong>Changes saved</strong><span>Your updates were saved successfully.</span></div></div>
+  <div class="toast" id="created" role="status"><span class="toast__icon"><i class="ic i-plus"></i></span><div><strong>Record created</strong><span>The new record has been added.</span></div></div>
+  <div class="toast" id="invited" role="status"><span class="toast__icon"><i class="ic i-send"></i></span><div><strong>Invitation sent</strong><span>An invite email is on its way.</span></div></div>
+  <div class="toast toast--danger" id="deleted" role="status"><span class="toast__icon"><i class="ic i-trash"></i></span><div><strong>Record deleted</strong><span>The item was removed permanently.</span></div></div>
+</body>
+</html>

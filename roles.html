@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roles &amp; Permissions · Energy Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="app">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
+
+  <div class="app-shell">
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar" aria-label="Primary">
+      <a href="dashboard.html" class="brand">
+        <span class="brand__logo"><i class="ic i-bolt-fill"></i></span>
+        <span>
+          <span class="brand__name">Energy Dashboard</span><br />
+          <span class="brand__tag">Smart Energy Cloud</span>
+        </span>
+      </a>
+
+      <a href="#switch-org" class="tenant-switch" title="Switch organisation">
+        <span class="tenant-switch__logo">FS</span>
+        <span class="tenant-switch__meta">
+          <strong>Febino Solutions Pvt Ltd</strong>
+          <span>ORG-FEB-2048</span>
+        </span>
+        <i class="ic i-swap muted"></i>
+      </a>
+
+      <nav class="nav">
+        <div class="nav__section">Monitor</div>
+        <a href="dashboard.html" class="nav__link"><i class="ic i-grid"></i><span>Dashboard</span></a>
+        <a href="meters.html" class="nav__link"><i class="ic i-gauge"></i><span>Energy Meters</span><em class="nav__badge nav__badge--green">38</em></a>
+        <a href="analytics.html" class="nav__link"><i class="ic i-chart"></i><span>Analytics</span></a>
+        <a href="alerts.html" class="nav__link"><i class="ic i-bell"></i><span>Alerts</span><em class="nav__badge">5</em></a>
+
+        <div class="nav__section">Operations</div>
+        <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift Management</span></a>
+
+        <div class="nav__section">Administration</div>
+        <a href="users.html" class="nav__link"><i class="ic i-users"></i><span>Users</span></a>
+        <a href="roles.html" class="nav__link is-active"><i class="ic i-shield"></i><span>Roles &amp; Permissions</span></a>
+        <a href="settings.html" class="nav__link"><i class="ic i-settings"></i><span>Settings</span></a>
+      </nav>
+
+      <div class="sidebar__live">
+        <div class="eyebrow"><span class="dot dot--live" style="--c: var(--green)"></span> Live load</div>
+        <div class="sidebar__live-value">125.4 <small>kW</small></div>
+        <div class="small muted">Peak today 150.2 kW at 14:05</div>
+        <div class="eq" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="sidebar__foot"><span>v2.4.0</span><a href="#close" class="muted">Help &amp; docs</a></div>
+    </aside>
+    <label for="nav-toggle" class="nav-scrim" aria-hidden="true"></label>
+
+    <!-- ================= MAIN ================= -->
+    <div class="main">
+      <header class="topbar">
+        <label for="nav-toggle" class="icon-btn burger" aria-label="Open menu"><i class="ic i-menu"></i></label>
+
+        <div class="topbar__crumbs">
+          <small>Febino Solutions / Administration</small>
+          <strong>Roles &amp; Permissions</strong>
+        </div>
+
+        <label class="search">
+          <i class="ic i-search"></i>
+          <input type="search" placeholder="Search meters, users, alerts…" aria-label="Search" />
+          <kbd>Ctrl K</kbd>
+        </label>
+
+        <div class="topbar__actions">
+          <span class="live-pill"><span class="dot dot--live" style="--c: var(--green)"></span> Live</span>
+
+          <details class="dropdown">
+            <summary class="icon-btn" aria-label="Notifications"><i class="ic i-bell"></i><span class="ping"></span></summary>
+            <div class="dropdown__panel dropdown__panel--wide">
+              <div class="dropdown__head"><strong>Notifications</strong><span class="badge badge--danger">5 new</span></div>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: rgba(244,63,94,.14); color: var(--rose)"><i class="ic i-alert"></i></span>
+                <span><p><b>HVAC Chiller-2</b> crossed 95% of rated load</p><small>2 min ago · Critical</small></span>
+              </a>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: rgba(251,191,36,.14); color: var(--amber)"><i class="ic i-activity"></i></span>
+                <span><p>Power factor dropped to <b>0.86</b> on Main Incomer</p><small>18 min ago · Warning</small></span>
+              </a>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: rgba(34,211,238,.14); color: var(--cyan)"><i class="ic i-wifi"></i></span>
+                <span><p>Sub-meter <b>SM-1004-02</b> went offline</p><small>42 min ago · Info</small></span>
+              </a>
+              <div class="dropdown__sep"></div>
+              <a href="alerts.html" class="dropdown__item" style="justify-content:center;color:var(--green);font-weight:700">View all alerts</a>
+            </div>
+          </details>
+
+          <details class="dropdown">
+            <summary class="user-chip">
+              <span class="avatar av-1">VK</span>
+              <span class="user-chip__meta"><strong>Vijay</strong><small>Tenant Admin</small></span>
+              <i class="ic i-chev-down"></i>
+            </summary>
+            <div class="dropdown__panel">
+              <div class="dropdown__head" style="justify-content:flex-start;gap:12px">
+                <span class="avatar av-1">VK</span>
+                <span><strong>Vijay Kumar</strong><br /><small class="muted">vijay@febinosolutions.com</small></span>
+              </div>
+              <div class="dropdown__sep"></div>
+              <a href="#profile" class="dropdown__item"><i class="ic i-user"></i> My profile</a>
+              <a href="#change-password" class="dropdown__item"><i class="ic i-key"></i> Change password</a>
+              <a href="#switch-org" class="dropdown__item"><i class="ic i-swap"></i> Switch organisation</a>
+              <a href="settings.html" class="dropdown__item"><i class="ic i-settings"></i> Settings</a>
+              <div class="dropdown__sep"></div>
+              <a href="#logout" class="dropdown__item dropdown__item--danger"><i class="ic i-logout"></i> Sign out</a>
+            </div>
+          </details>
+        </div>
+      </header>
+
+      <main class="page">
+        <section class="page-head">
+          <div>
+            <h1 class="page-title">Roles &amp; <span class="gradient-text">Permissions</span></h1>
+            <p class="page-sub">Control who can see and change what — per module, per action.</p>
+          </div>
+          <div class="page-actions">
+            <a href="#add-permission" class="btn btn--sm"><i class="ic i-key"></i> New permission</a>
+            <a href="#add-role" class="btn btn--sm btn--primary"><i class="ic i-plus"></i> Create role</a>
+          </div>
+        </section>
+
+        <section class="grid grid-4">
+          <article class="card role-card" style="--c:var(--violet)"><span class="role-card__glow"></span>
+            <div class="row-between"><span class="icon-tile icon-tile--violet"><i class="ic i-shield"></i></span><span class="tag">System</span></div>
+            <h4>Tenant Admin</h4><p>Full access including billing and tenant settings.</p>
+            <div class="role-card__foot"><div class="avatar-stack"><span class="avatar avatar--sm av-1">VK</span></div><a href="#edit-role" class="btn btn--sm btn--ghost"><i class="ic i-edit"></i> Edit</a></div>
+          </article>
+          <article class="card role-card" style="--c:var(--green)"><span class="role-card__glow"></span>
+            <div class="row-between"><span class="icon-tile"><i class="ic i-gauge"></i></span><span class="tag">System</span></div>
+            <h4>Energy Manager</h4><p>Meters, analytics, alert rules and reports.</p>
+            <div class="role-card__foot"><div class="avatar-stack"><span class="avatar avatar--sm av-3">AN</span><span class="avatar avatar--sm av-2">AD</span></div><a href="#edit-role" class="btn btn--sm btn--ghost"><i class="ic i-edit"></i> Edit</a></div>
+          </article>
+          <article class="card role-card" style="--c:var(--cyan)"><span class="role-card__glow"></span>
+            <div class="row-between"><span class="icon-tile icon-tile--cyan"><i class="ic i-activity"></i></span><span class="tag" style="color:var(--cyan)">Custom</span></div>
+            <h4>Operator</h4><p>Live monitoring and alert acknowledgement on shift.</p>
+            <div class="role-card__foot"><div class="avatar-stack"><span class="avatar avatar--sm av-2">PS</span><span class="avatar avatar--sm av-1">KR</span><span class="avatar avatar--sm av-5">SB</span><span class="more">+2</span></div><a href="#edit-role" class="btn btn--sm btn--ghost"><i class="ic i-edit"></i> Edit</a></div>
+          </article>
+          <article class="card role-card" style="--c:var(--amber)"><span class="role-card__glow"></span>
+            <div class="row-between"><span class="icon-tile icon-tile--amber"><i class="ic i-eye"></i></span><span class="tag">System</span></div>
+            <h4>Viewer</h4><p>Read-only dashboards and reports.</p>
+            <div class="role-card__foot"><div class="avatar-stack"><span class="avatar avatar--sm av-6">SR</span><span class="avatar avatar--sm av-6">LP</span><span class="avatar avatar--sm av-6">PH</span></div><a href="#edit-role" class="btn btn--sm btn--ghost"><i class="ic i-edit"></i> Edit</a></div>
+          </article>
+        </section>
+
+        <section class="grid grid-main">
+          <article class="card paged">
+            <input type="radio" class="pg-input" name="rl-pg" id="rl-p1" value="1" checked aria-label="Page 1" />
+<input type="radio" class="pg-input" name="rl-pg" id="rl-p2" value="2" aria-label="Page 2" />
+            <div class="card__head"><div><h3 class="card__title"><i class="ic i-shield"></i> All roles</h3><p class="card__sub">System roles can be edited but not deleted</p></div></div>
+            <div class="toolbar"><label class="search"><i class="ic i-search"></i><input type="search" placeholder="Search roles…" aria-label="Search roles" /></label></div>
+            <div class="table-wrap">
+              <table class="table">
+                <thead><tr><th>Role</th><th>Type</th><th class="num">Users</th><th>Permissions</th><th>Created</th><th>Actions</th></tr></thead>
+<tbody data-page="1">
+  <tr>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--violet" style="width:36px;height:36px"><i class="ic i-shield"></i></span><div><strong>Tenant Admin</strong><small>Full access to every module, billing and tenant settings.</small></div></div></td>
+    <td><span class="tag">System</span></td>
+    <td class="num">1</td>
+    <td class="mono small">42 / 42</td>
+    <td class="small muted nowrap">Jan 04, 2026</td>
+    <td><div class="actions"><a href="#view-role" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-role" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--" style="width:36px;height:36px"><i class="ic i-shield"></i></span><div><strong>Energy Manager</strong><small>Manage meters, analytics, alert rules and reports.</small></div></div></td>
+    <td><span class="tag">System</span></td>
+    <td class="num">2</td>
+    <td class="mono small">31 / 42</td>
+    <td class="small muted nowrap">Jan 04, 2026</td>
+    <td><div class="actions"><a href="#view-role" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-role" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--blue" style="width:36px;height:36px"><i class="ic i-shield"></i></span><div><strong>Supervisor</strong><small>Manage shifts & teams, acknowledge alerts.</small></div></div></td>
+    <td><span class="tag" style="color:var(--cyan)">Custom</span></td>
+    <td class="num">3</td>
+    <td class="mono small">22 / 42</td>
+    <td class="small muted nowrap">Feb 11, 2026</td>
+    <td><div class="actions"><a href="#view-role" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-role" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-role" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--cyan" style="width:36px;height:36px"><i class="ic i-shield"></i></span><div><strong>Operator</strong><small>Monitor live dashboards and acknowledge alerts on shift.</small></div></div></td>
+    <td><span class="tag" style="color:var(--cyan)">Custom</span></td>
+    <td class="num">5</td>
+    <td class="mono small">12 / 42</td>
+    <td class="small muted nowrap">Feb 11, 2026</td>
+    <td><div class="actions"><a href="#view-role" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-role" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-role" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--amber" style="width:36px;height:36px"><i class="ic i-shield"></i></span><div><strong>Technician</strong><small>Update meter configuration and maintenance status.</small></div></div></td>
+    <td><span class="tag" style="color:var(--cyan)">Custom</span></td>
+    <td class="num">3</td>
+    <td class="mono small">15 / 42</td>
+    <td class="small muted nowrap">Mar 02, 2026</td>
+    <td><div class="actions"><a href="#view-role" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-role" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-role" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+</tbody>
+<tbody data-page="2">
+  <tr>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--amber" style="width:36px;height:36px"><i class="ic i-shield"></i></span><div><strong>Viewer</strong><small>Read-only access to dashboards and reports.</small></div></div></td>
+    <td><span class="tag">System</span></td>
+    <td class="num">3</td>
+    <td class="mono small">8 / 42</td>
+    <td class="small muted nowrap">Jan 04, 2026</td>
+    <td><div class="actions"><a href="#view-role" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-role" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--violet" style="width:36px;height:36px"><i class="ic i-shield"></i></span><div><strong>Auditor</strong><small>Read-only access plus export of audit logs & billing.</small></div></div></td>
+    <td><span class="tag" style="color:var(--cyan)">Custom</span></td>
+    <td class="num">1</td>
+    <td class="mono small">10 / 42</td>
+    <td class="small muted nowrap">Apr 19, 2026</td>
+    <td><div class="actions"><a href="#view-role" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-role" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-role" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-user"><span class="icon-tile icon-tile--amber" style="width:36px;height:36px"><i class="ic i-shield"></i></span><div><strong>Finance</strong><small>Cost, tariff and billing reports only.</small></div></div></td>
+    <td><span class="tag" style="color:var(--cyan)">Custom</span></td>
+    <td class="num">0</td>
+    <td class="mono small">6 / 42</td>
+    <td class="small muted nowrap">Jun 08, 2026</td>
+    <td><div class="actions"><a href="#view-role" class="act act--view" title="View"><i class="ic i-eye"></i></a><a href="#edit-role" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-role" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+</tbody>
+              </table>
+            </div>
+            <div class="pager">
+  <div class="pager__info">Showing <span data-when="1"><strong>1–5</strong></span><span data-when="2"><strong>6–8</strong></span> of <strong>8</strong> roles</div>
+  <div class="pager__size">Rows per page <select class="input" aria-label="Rows per page"><option>5</option><option>10</option><option>20</option></select></div>
+  <div class="pager__nav"><span class="pg-btn is-disabled" data-when="1" aria-hidden="true"><i class="ic i-chev-left"></i></span><label for="rl-p1" data-when="2" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="rl-p1" data-p="1">1</label><label for="rl-p2" data-p="2">2</label><label for="rl-p2" data-when="1" aria-label="Next page"><i class="ic i-chev-right"></i></label><span class="pg-btn is-disabled" data-when="2" aria-hidden="true"><i class="ic i-chev-right"></i></span></div>
+</div>
+          </article>
+
+          <article class="card">
+            <div class="card__head"><h3 class="card__title"><i class="ic i-users"></i> Users per role</h3></div>
+            <div class="card__body">
+              <div class="donut-wrap" style="flex-direction:column">
+                <div class="donut-holder">
+                  <div class="donut" style="--size:170px;--segments: #22d3ee 0 28%, #60a5fa 28% 45%, #fb923c 45% 62%, #fbbf24 62% 79%, #2af5a8 79% 90%, #a78bfa 90% 100%"></div>
+                  <div class="donut-center"><strong>18</strong><span>users</span></div>
+                </div>
+                <div class="donut-legend" style="width:100%">
+                  <div><i style="--c:#22d3ee"></i>Operator<b>5</b></div>
+                  <div><i style="--c:#60a5fa"></i>Supervisor<b>3</b></div>
+                  <div><i style="--c:#fb923c"></i>Technician<b>3</b></div>
+                  <div><i style="--c:#fbbf24"></i>Viewer<b>3</b></div>
+                  <div><i style="--c:#2af5a8"></i>Energy Manager<b>2</b></div>
+                  <div><i style="--c:#a78bfa"></i>Admin &amp; Auditor<b>2</b></div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="card">
+          <div class="card__head">
+            <div><h3 class="card__title"><i class="ic i-sliders"></i> Permission matrix</h3><p class="card__sub">Pick a role to see what it can do. Use <b>Edit</b> to change it.</p></div>
+          </div>
+          <div class="card__body tabs">
+            <input type="radio" class="tab-input" name="mx" id="mx-1" value="1" checked />
+            <input type="radio" class="tab-input" name="mx" id="mx-2" value="2" />
+            <input type="radio" class="tab-input" name="mx" id="mx-3" value="3" />
+            <input type="radio" class="tab-input" name="mx" id="mx-4" value="4" />
+            <div class="tab-list">
+              <label for="mx-1" data-t="1">Tenant Admin</label>
+              <label for="mx-2" data-t="2">Energy Manager</label>
+              <label for="mx-3" data-t="3">Operator</label>
+              <label for="mx-4" data-t="4">Viewer</label>
+            </div>
+            <div class="tab-panel table-wrap" data-tab="1"><table class="table perm-matrix"><thead><tr><th>Module</th><th>View</th><th>Create</th><th>Edit</th><th>Delete</th><th>Export</th></tr></thead><tbody>
+<tr><td><div class="perm-module"><span class="icon-tile"><i class="ic i-grid"></i></span><div><strong>Dashboard</strong><small>View live KPIs</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Dashboard" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Create Dashboard" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Edit Dashboard" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Delete Dashboard" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Dashboard" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--cyan"><i class="ic i-gauge"></i></span><div><strong>Energy Meters</strong><small>Devices & sub-meters</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Energy Meters" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Create Energy Meters" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Edit Energy Meters" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Delete Energy Meters" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Energy Meters" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--violet"><i class="ic i-chart"></i></span><div><strong>Analytics</strong><small>Reports & exports</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Analytics" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Create Analytics" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Edit Analytics" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Delete Analytics" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Analytics" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--rose"><i class="ic i-bell"></i></span><div><strong>Alerts</strong><small>Alerts & alert rules</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Alerts" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Create Alerts" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Edit Alerts" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Delete Alerts" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Alerts" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--amber"><i class="ic i-clock"></i></span><div><strong>Shift Management</strong><small>Shifts & rosters</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Shift Management" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Create Shift Management" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Edit Shift Management" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Delete Shift Management" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Shift Management" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--blue"><i class="ic i-users"></i></span><div><strong>Users</strong><small>Team members</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Users" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Create Users" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Edit Users" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Delete Users" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Users" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--violet"><i class="ic i-shield"></i></span><div><strong>Roles & Permissions</strong><small>Access control</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Create Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Edit Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Delete Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Roles & Permissions" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile"><i class="ic i-settings"></i></span><div><strong>Settings</strong><small>Tenant configuration</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Settings" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Create Settings" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Edit Settings" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Delete Settings" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Settings" /></label></td></tr>
+            </tbody></table></div>
+            <div class="tab-panel table-wrap" data-tab="2"><table class="table perm-matrix"><thead><tr><th>Module</th><th>View</th><th>Create</th><th>Edit</th><th>Delete</th><th>Export</th></tr></thead><tbody>
+<tr><td><div class="perm-module"><span class="icon-tile"><i class="ic i-grid"></i></span><div><strong>Dashboard</strong><small>View live KPIs</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Dashboard" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Dashboard" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Dashboard" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Dashboard" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Dashboard" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--cyan"><i class="ic i-gauge"></i></span><div><strong>Energy Meters</strong><small>Devices & sub-meters</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Energy Meters" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Create Energy Meters" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Edit Energy Meters" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Delete Energy Meters" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Energy Meters" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--violet"><i class="ic i-chart"></i></span><div><strong>Analytics</strong><small>Reports & exports</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Analytics" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Analytics" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Analytics" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Analytics" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Analytics" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--rose"><i class="ic i-bell"></i></span><div><strong>Alerts</strong><small>Alerts & alert rules</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Alerts" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Create Alerts" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Edit Alerts" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Delete Alerts" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Alerts" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--amber"><i class="ic i-clock"></i></span><div><strong>Shift Management</strong><small>Shifts & rosters</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Shift Management" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Shift Management" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Edit Shift Management" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Shift Management" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Shift Management" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--blue"><i class="ic i-users"></i></span><div><strong>Users</strong><small>Team members</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Users" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--violet"><i class="ic i-shield"></i></span><div><strong>Roles & Permissions</strong><small>Access control</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Roles & Permissions" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile"><i class="ic i-settings"></i></span><div><strong>Settings</strong><small>Tenant configuration</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Settings" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Settings" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Edit Settings" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Settings" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Settings" /></label></td></tr>
+            </tbody></table></div>
+            <div class="tab-panel table-wrap" data-tab="3"><table class="table perm-matrix"><thead><tr><th>Module</th><th>View</th><th>Create</th><th>Edit</th><th>Delete</th><th>Export</th></tr></thead><tbody>
+<tr><td><div class="perm-module"><span class="icon-tile"><i class="ic i-grid"></i></span><div><strong>Dashboard</strong><small>View live KPIs</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Dashboard" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Dashboard" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Dashboard" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Dashboard" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Dashboard" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--cyan"><i class="ic i-gauge"></i></span><div><strong>Energy Meters</strong><small>Devices & sub-meters</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Energy Meters" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Energy Meters" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Energy Meters" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Energy Meters" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Energy Meters" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--violet"><i class="ic i-chart"></i></span><div><strong>Analytics</strong><small>Reports & exports</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Analytics" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Analytics" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Analytics" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Analytics" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Analytics" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--rose"><i class="ic i-bell"></i></span><div><strong>Alerts</strong><small>Alerts & alert rules</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Alerts" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Alerts" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Edit Alerts" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Alerts" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Alerts" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--amber"><i class="ic i-clock"></i></span><div><strong>Shift Management</strong><small>Shifts & rosters</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Shift Management" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Shift Management" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Shift Management" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Shift Management" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Shift Management" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--blue"><i class="ic i-users"></i></span><div><strong>Users</strong><small>Team members</small></div></div></td><td><label class="check"><input type="checkbox" aria-label="View Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Users" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--violet"><i class="ic i-shield"></i></span><div><strong>Roles & Permissions</strong><small>Access control</small></div></div></td><td><label class="check"><input type="checkbox" aria-label="View Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Roles & Permissions" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile"><i class="ic i-settings"></i></span><div><strong>Settings</strong><small>Tenant configuration</small></div></div></td><td><label class="check"><input type="checkbox" aria-label="View Settings" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Settings" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Settings" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Settings" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Settings" /></label></td></tr>
+            </tbody></table></div>
+            <div class="tab-panel table-wrap" data-tab="4"><table class="table perm-matrix"><thead><tr><th>Module</th><th>View</th><th>Create</th><th>Edit</th><th>Delete</th><th>Export</th></tr></thead><tbody>
+<tr><td><div class="perm-module"><span class="icon-tile"><i class="ic i-grid"></i></span><div><strong>Dashboard</strong><small>View live KPIs</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Dashboard" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Dashboard" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Dashboard" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Dashboard" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Dashboard" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--cyan"><i class="ic i-gauge"></i></span><div><strong>Energy Meters</strong><small>Devices & sub-meters</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Energy Meters" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Energy Meters" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Energy Meters" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Energy Meters" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Energy Meters" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--violet"><i class="ic i-chart"></i></span><div><strong>Analytics</strong><small>Reports & exports</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Analytics" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Analytics" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Analytics" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Analytics" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Analytics" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--rose"><i class="ic i-bell"></i></span><div><strong>Alerts</strong><small>Alerts & alert rules</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Alerts" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Alerts" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Alerts" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Alerts" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Alerts" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--amber"><i class="ic i-clock"></i></span><div><strong>Shift Management</strong><small>Shifts & rosters</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Shift Management" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Shift Management" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Shift Management" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Shift Management" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Shift Management" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--blue"><i class="ic i-users"></i></span><div><strong>Users</strong><small>Team members</small></div></div></td><td><label class="check"><input type="checkbox" aria-label="View Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Users" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--violet"><i class="ic i-shield"></i></span><div><strong>Roles & Permissions</strong><small>Access control</small></div></div></td><td><label class="check"><input type="checkbox" aria-label="View Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Roles & Permissions" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile"><i class="ic i-settings"></i></span><div><strong>Settings</strong><small>Tenant configuration</small></div></div></td><td><label class="check"><input type="checkbox" aria-label="View Settings" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Settings" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Settings" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Settings" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Settings" /></label></td></tr>
+            </tbody></table></div>
+            <div class="row" style="justify-content:flex-end;margin-top:16px"><a href="#close" class="btn btn--sm btn--ghost">Reset</a><a href="#saved" class="btn btn--sm btn--primary"><i class="ic i-check"></i> Save matrix</a></div>
+          </div>
+        </section>
+
+        <section class="card paged">
+          <input type="radio" class="pg-input" name="pm-pg" id="pm-p1" value="1" checked aria-label="Page 1" />
+<input type="radio" class="pg-input" name="pm-pg" id="pm-p2" value="2" aria-label="Page 2" />
+          <div class="card__head"><div><h3 class="card__title"><i class="ic i-key"></i> Permissions</h3><p class="card__sub">Fine-grained permission keys that roles are built from</p></div><a href="#add-permission" class="btn btn--sm btn--soft"><i class="ic i-plus"></i> Add permission</a></div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>Key</th><th>Module</th><th>Description</th><th class="num">Roles using</th><th>Actions</th></tr></thead>
+<tbody data-page="1">
+  <tr>
+    <td><span class="tag" style="color:var(--green)">meters.view</span></td>
+    <td><strong>Energy Meters</strong></td>
+    <td>View devices, sub-meters and live readings</td>
+    <td class="num">6</td>
+    <td><div class="actions"><a href="#edit-permission" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-permission" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><span class="tag" style="color:var(--green)">meters.create</span></td>
+    <td><strong>Energy Meters</strong></td>
+    <td>Add devices and sub-meters</td>
+    <td class="num">2</td>
+    <td><div class="actions"><a href="#edit-permission" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-permission" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><span class="tag" style="color:var(--green)">meters.edit</span></td>
+    <td><strong>Energy Meters</strong></td>
+    <td>Edit meter configuration & CT ratios</td>
+    <td class="num">3</td>
+    <td><div class="actions"><a href="#edit-permission" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-permission" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><span class="tag" style="color:var(--green)">meters.delete</span></td>
+    <td><strong>Energy Meters</strong></td>
+    <td>Remove devices and sub-meters</td>
+    <td class="num">1</td>
+    <td><div class="actions"><a href="#edit-permission" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-permission" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><span class="tag" style="color:var(--green)">analytics.export</span></td>
+    <td><strong>Analytics</strong></td>
+    <td>Download CSV / PDF reports</td>
+    <td class="num">4</td>
+    <td><div class="actions"><a href="#edit-permission" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-permission" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><span class="tag" style="color:var(--green)">alerts.ack</span></td>
+    <td><strong>Alerts</strong></td>
+    <td>Acknowledge and resolve alerts</td>
+    <td class="num">5</td>
+    <td><div class="actions"><a href="#edit-permission" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-permission" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+</tbody>
+<tbody data-page="2">
+  <tr>
+    <td><span class="tag" style="color:var(--green)">alerts.rules.manage</span></td>
+    <td><strong>Alerts</strong></td>
+    <td>Create & edit alert rules</td>
+    <td class="num">2</td>
+    <td><div class="actions"><a href="#edit-permission" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-permission" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><span class="tag" style="color:var(--green)">shifts.manage</span></td>
+    <td><strong>Shift Management</strong></td>
+    <td>Create shifts and assign rosters</td>
+    <td class="num">3</td>
+    <td><div class="actions"><a href="#edit-permission" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-permission" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><span class="tag" style="color:var(--green)">users.invite</span></td>
+    <td><strong>Users</strong></td>
+    <td>Invite users to the tenant</td>
+    <td class="num">2</td>
+    <td><div class="actions"><a href="#edit-permission" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-permission" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><span class="tag" style="color:var(--green)">users.edit</span></td>
+    <td><strong>Users</strong></td>
+    <td>Edit users, reset passwords</td>
+    <td class="num">2</td>
+    <td><div class="actions"><a href="#edit-permission" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-permission" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><span class="tag" style="color:var(--green)">roles.manage</span></td>
+    <td><strong>Roles & Permissions</strong></td>
+    <td>Create and edit roles</td>
+    <td class="num">1</td>
+    <td><div class="actions"><a href="#edit-permission" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-permission" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><span class="tag" style="color:var(--green)">settings.billing</span></td>
+    <td><strong>Settings</strong></td>
+    <td>Manage plan, tariffs and billing</td>
+    <td class="num">2</td>
+    <td><div class="actions"><a href="#edit-permission" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-permission" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+</tbody>
+            </table>
+          </div>
+          <div class="pager">
+  <div class="pager__info">Showing <span data-when="1"><strong>1–6</strong></span><span data-when="2"><strong>7–12</strong></span> of <strong>12</strong> permissions</div>
+  <div class="pager__size">Rows per page <select class="input" aria-label="Rows per page"><option>6</option><option>12</option><option>24</option></select></div>
+  <div class="pager__nav"><span class="pg-btn is-disabled" data-when="1" aria-hidden="true"><i class="ic i-chev-left"></i></span><label for="pm-p1" data-when="2" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="pm-p1" data-p="1">1</label><label for="pm-p2" data-p="2">2</label><label for="pm-p2" data-when="1" aria-label="Next page"><i class="ic i-chev-right"></i></label><span class="pg-btn is-disabled" data-when="2" aria-hidden="true"><i class="ic i-chev-right"></i></span></div>
+</div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>© 2026 Energy Dashboard · Tenant <span class="mono">ORG-FEB-2048</span></span>
+        <span>Data refreshed every 15 s · IST (UTC+05:30)</span>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ================= SHARED MODALS ================= -->
+  <div class="modal" id="profile" role="dialog" aria-modal="true" aria-labelledby="profile-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog">
+      <div class="modal__head">
+        <span class="modal__icon"><i class="ic i-user"></i></span>
+        <div><h3 id="profile-title">My profile</h3><p>Your personal details in this organisation.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body">
+        <div class="row" style="gap:16px;margin-bottom:20px">
+          <span class="avatar avatar--lg av-1">VK</span>
+          <div>
+            <strong style="font-size:17px">Vijay Kumar</strong>
+            <div class="small muted">Tenant Admin · Member since Jan 2026</div>
+            <label class="btn btn--sm" style="margin-top:8px"><i class="ic i-upload"></i> Change photo<input type="file" accept="image/*" hidden /></label>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label>First name</label><input class="input" value="Vijay" /></div>
+          <div class="field"><label>Last name</label><input class="input" value="Kumar" /></div>
+          <div class="field"><label>Email</label><input class="input" type="email" value="vijay@febinosolutions.com" /></div>
+          <div class="field"><label>Phone</label><input class="input" type="tel" value="+91 98450 12345" /></div>
+          <div class="field"><label>Language</label><select class="input"><option>English (India)</option><option>हिन्दी</option><option>தமிழ்</option></select></div>
+          <div class="field"><label>Time zone</label><select class="input"><option>Asia/Kolkata (UTC+05:30)</option><option>Asia/Dubai (UTC+04:00)</option></select></div>
+        </div>
+      </div>
+      <div class="modal__foot">
+        <a href="#close" class="btn btn--ghost">Cancel</a>
+        <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save profile</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="change-password" role="dialog" aria-modal="true" aria-labelledby="cp-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="modal__head">
+        <span class="modal__icon modal__icon--violet"><i class="ic i-key"></i></span>
+        <div><h3 id="cp-title">Change password</h3><p>Use at least 8 characters with a number.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body" style="display:grid;gap:16px">
+        <div class="field"><label>Current password</label><div class="input-icon"><i class="ic i-lock"></i><input class="input" type="password" placeholder="••••••••" /></div></div>
+        <div class="field pw-field"><label>New password</label>
+          <div class="input-icon"><i class="ic i-key"></i><input class="input" type="password" placeholder=" " minlength="8" pattern="(?=.*\d)(?=.*[A-Za-z]).{8,}" /></div>
+          <div class="strength"><span></span><span></span><span></span><span></span></div>
+          <span class="hint hint--rule">8+ characters, letters and at least one number</span>
+          <span class="hint hint--ok">Strong password ✓</span>
+        </div>
+        <div class="field"><label>Confirm new password</label><div class="input-icon"><i class="ic i-key"></i><input class="input" type="password" placeholder="••••••••" /></div></div>
+      </div>
+      <div class="modal__foot">
+        <a href="#close" class="btn btn--ghost">Cancel</a>
+        <a href="#saved" class="btn btn--primary">Update password</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="switch-org" role="dialog" aria-modal="true" aria-labelledby="so-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="modal__head">
+        <span class="modal__icon modal__icon--cyan"><i class="ic i-building"></i></span>
+        <div><h3 id="so-title">Switch organisation</h3><p>You belong to 3 tenants.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body" style="display:grid;gap:10px">
+        <label class="radio-card"><input type="radio" name="org" checked /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo">FS</span><span style="flex:1"><strong>Febino Solutions Pvt Ltd</strong><br /><small class="mono muted">ORG-FEB-2048 · Tenant Admin</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+        <label class="radio-card"><input type="radio" name="org" /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo" style="background:var(--grad-warm)">SP</span><span style="flex:1"><strong>Sunrise Plastics Ltd</strong><br /><small class="mono muted">ORG-SUN-1177 · Manager</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+        <label class="radio-card"><input type="radio" name="org" /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo" style="background:var(--grad)">GT</span><span style="flex:1"><strong>GreenTech Campus</strong><br /><small class="mono muted">ORG-GTC-0931 · Viewer</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+      </div>
+      <div class="modal__foot">
+        <a href="register.html" class="btn btn--ghost left"><i class="ic i-plus"></i> New tenant</a>
+        <a href="dashboard.html" class="btn btn--primary">Switch</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal modal--danger" id="logout" role="dialog" aria-modal="true" aria-labelledby="lo-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="confirm">
+        <span class="modal__icon modal__icon--rose"><i class="ic i-logout"></i></span>
+        <h3 id="lo-title">Sign out?</h3>
+        <p>You'll need your Organisation ID and password to sign in again.</p>
+      </div>
+      <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+        <a href="#close" class="btn">Stay signed in</a>
+        <a href="login.html" class="btn btn--danger"><i class="ic i-logout"></i> Sign out</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="add-role" role="dialog" aria-modal="true" aria-labelledby="add-role-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--xl">
+    <div class="modal__head">
+      <span class="modal__icon"><i class="ic i-shield"></i></span>
+      <div><h3 id="add-role-t">Create role</h3><p>Start from a template or tick permissions below.</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-grid form-grid--3">
+        <div class="field"><label>Role name <span class="req">*</span></label><input class="input" placeholder="e.g. Shift Lead" /></div>
+        <div class="field"><label>Copy permissions from</label><select class="input"><option>Blank</option><option>Operator</option><option>Supervisor</option><option>Energy Manager</option></select></div>
+        <div class="field"><label>Default landing page</label><select class="input"><option>Dashboard</option><option>Energy Meters</option><option>Alerts</option></select></div>
+        <div class="field full"><label>Description</label><input class="input" placeholder="What is this role for?" /></div>
+      </div>
+      <div class="form-section" style="margin-top:18px">Permissions</div>
+      <div class="table-wrap" style="margin-top:0"><table class="table perm-matrix"><thead><tr><th>Module</th><th>View</th><th>Create</th><th>Edit</th><th>Delete</th><th>Export</th></tr></thead><tbody>
+<tr><td><div class="perm-module"><span class="icon-tile"><i class="ic i-grid"></i></span><div><strong>Dashboard</strong><small>View live KPIs</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Dashboard" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Dashboard" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Dashboard" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Dashboard" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Dashboard" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--cyan"><i class="ic i-gauge"></i></span><div><strong>Energy Meters</strong><small>Devices & sub-meters</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Energy Meters" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Energy Meters" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Energy Meters" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Energy Meters" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Energy Meters" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--violet"><i class="ic i-chart"></i></span><div><strong>Analytics</strong><small>Reports & exports</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Analytics" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Analytics" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Analytics" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Analytics" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Analytics" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--rose"><i class="ic i-bell"></i></span><div><strong>Alerts</strong><small>Alerts & alert rules</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Alerts" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Alerts" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Edit Alerts" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Alerts" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Alerts" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--amber"><i class="ic i-clock"></i></span><div><strong>Shift Management</strong><small>Shifts & rosters</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Shift Management" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Shift Management" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Shift Management" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Shift Management" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Shift Management" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--blue"><i class="ic i-users"></i></span><div><strong>Users</strong><small>Team members</small></div></div></td><td><label class="check"><input type="checkbox" aria-label="View Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Users" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--violet"><i class="ic i-shield"></i></span><div><strong>Roles & Permissions</strong><small>Access control</small></div></div></td><td><label class="check"><input type="checkbox" aria-label="View Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Roles & Permissions" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile"><i class="ic i-settings"></i></span><div><strong>Settings</strong><small>Tenant configuration</small></div></div></td><td><label class="check"><input type="checkbox" aria-label="View Settings" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Settings" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Settings" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Settings" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Settings" /></label></td></tr>
+      </tbody></table></div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#created" class="btn btn--primary"><i class="ic i-check"></i> Create role</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal" id="edit-role" role="dialog" aria-modal="true" aria-labelledby="edit-role-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--xl">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--cyan"><i class="ic i-edit"></i></span>
+      <div><h3 id="edit-role-t">Edit role</h3><p>Energy Manager · 2 users · 31 permissions</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-grid form-grid--3">
+        <div class="field"><label>Role name</label><input class="input" value="Energy Manager" /></div>
+        <div class="field"><label>Type</label><input class="input" value="System" readonly /></div>
+        <div class="field"><label>Default landing page</label><select class="input"><option selected>Analytics</option><option>Dashboard</option></select></div>
+        <div class="field full"><label>Description</label><input class="input" value="Manage meters, analytics, alert rules and reports." /></div>
+      </div>
+      <div class="form-section" style="margin-top:18px">Permissions</div>
+      <div class="table-wrap" style="margin-top:0"><table class="table perm-matrix"><thead><tr><th>Module</th><th>View</th><th>Create</th><th>Edit</th><th>Delete</th><th>Export</th></tr></thead><tbody>
+<tr><td><div class="perm-module"><span class="icon-tile"><i class="ic i-grid"></i></span><div><strong>Dashboard</strong><small>View live KPIs</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Dashboard" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Dashboard" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Dashboard" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Dashboard" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Dashboard" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--cyan"><i class="ic i-gauge"></i></span><div><strong>Energy Meters</strong><small>Devices & sub-meters</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Energy Meters" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Create Energy Meters" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Edit Energy Meters" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Delete Energy Meters" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Energy Meters" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--violet"><i class="ic i-chart"></i></span><div><strong>Analytics</strong><small>Reports & exports</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Analytics" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Analytics" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Analytics" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Analytics" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Analytics" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--rose"><i class="ic i-bell"></i></span><div><strong>Alerts</strong><small>Alerts & alert rules</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Alerts" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Create Alerts" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Edit Alerts" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Delete Alerts" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Alerts" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--amber"><i class="ic i-clock"></i></span><div><strong>Shift Management</strong><small>Shifts & rosters</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Shift Management" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Shift Management" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Edit Shift Management" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Shift Management" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Export Shift Management" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--blue"><i class="ic i-users"></i></span><div><strong>Users</strong><small>Team members</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Users" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Users" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile icon-tile--violet"><i class="ic i-shield"></i></span><div><strong>Roles & Permissions</strong><small>Access control</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Edit Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Roles & Permissions" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Roles & Permissions" /></label></td></tr>
+<tr><td><div class="perm-module"><span class="icon-tile"><i class="ic i-settings"></i></span><div><strong>Settings</strong><small>Tenant configuration</small></div></div></td><td><label class="check"><input type="checkbox" checked aria-label="View Settings" /></label></td><td><label class="check"><input type="checkbox" aria-label="Create Settings" /></label></td><td><label class="check"><input type="checkbox" checked aria-label="Edit Settings" /></label></td><td><label class="check"><input type="checkbox" aria-label="Delete Settings" /></label></td><td><label class="check"><input type="checkbox" aria-label="Export Settings" /></label></td></tr>
+      </tbody></table></div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save role</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal" id="view-role" role="dialog" aria-modal="true" aria-labelledby="view-role-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--violet"><i class="ic i-eye"></i></span>
+      <div><h3 id="view-role-t">Energy Manager</h3><p>System role · created Jan 04, 2026</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <p class="text-2">Manage meters, analytics, alert rules and reports.</p>
+      <div class="form-section" style="margin-top:18px">Members (2)</div>
+      <div class="list">
+        <div class="list__item"><span class="avatar av-3">AN</span><span class="grow"><strong>Arjun Nair</strong><small>Utilities</small></span><span class="shift-pill shift--g"><i class="ic i-clock"></i> General</span></div>
+        <div class="list__item"><span class="avatar av-2">AD</span><span class="grow"><strong>Ananya Das</strong><small>Sustainability</small></span><span class="shift-pill shift--g"><i class="ic i-clock"></i> General</span></div>
+      </div>
+      <div class="form-section" style="margin-top:12px">Key permissions</div>
+      <div class="row wrap"><span class="tag">meters.*</span><span class="tag">analytics.export</span><span class="tag">alerts.rules.manage</span><span class="tag">shifts.view</span></div>
+    </div>
+    <div class="modal__foot"><a href="#close" class="btn btn--ghost">Close</a><a href="#edit-role" class="btn btn--primary"><i class="ic i-edit"></i> Edit role</a></div>
+  </div>
+</div>
+
+  <div class="modal" id="add-permission" role="dialog" aria-modal="true" aria-labelledby="add-permission-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--amber"><i class="ic i-key"></i></span>
+      <div><h3 id="add-permission-t">Add permission</h3><p>Create a new permission key that roles can use.</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-grid">
+        <div class="field"><label>Permission key <span class="req">*</span></label><input class="input mono" placeholder="module.action" /></div>
+        <div class="field"><label>Module</label><select class="input"><option>Energy Meters</option><option>Analytics</option><option>Alerts</option><option>Shift Management</option><option>Users</option><option>Settings</option></select></div>
+        <div class="field full"><label>Description</label><textarea class="input" placeholder="What does this allow?"></textarea></div>
+        <div class="field full"><label>Grant to roles</label><div class="row wrap" style="gap:16px"><label class="check"><input type="checkbox" checked /> Tenant Admin</label><label class="check"><input type="checkbox" /> Energy Manager</label><label class="check"><input type="checkbox" /> Supervisor</label><label class="check"><input type="checkbox" /> Operator</label></div></div>
+      </div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#created" class="btn btn--primary"><i class="ic i-check"></i> Add permission</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal" id="edit-permission" role="dialog" aria-modal="true" aria-labelledby="edit-permission-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--cyan"><i class="ic i-edit"></i></span>
+      <div><h3 id="edit-permission-t">Edit permission</h3><p>meters.edit</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-grid">
+        <div class="field"><label>Permission key</label><input class="input mono" value="meters.edit" /></div>
+        <div class="field"><label>Module</label><select class="input"><option selected>Energy Meters</option><option>Analytics</option><option>Alerts</option></select></div>
+        <div class="field full"><label>Description</label><textarea class="input">Edit meter configuration &amp; CT ratios</textarea></div>
+        <div class="field full"><label>Granted to</label><div class="row wrap" style="gap:16px"><label class="check"><input type="checkbox" checked /> Tenant Admin</label><label class="check"><input type="checkbox" checked /> Energy Manager</label><label class="check"><input type="checkbox" checked /> Technician</label><label class="check"><input type="checkbox" /> Operator</label></div></div>
+      </div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save permission</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal modal--danger" id="delete-role" role="dialog" aria-modal="true" aria-labelledby="delete-role-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--sm">
+    <div class="confirm">
+      <span class="modal__icon modal__icon--rose"><i class="ic i-trash"></i></span>
+      <h3 id="delete-role-t">Delete this role?</h3>
+      <p>Users with this role will be moved to <b>Viewer</b> until you reassign them.</p>
+    </div>
+    <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+      <a href="#close" class="btn">Cancel</a>
+      <a href="#deleted" class="btn btn--danger"><i class="ic i-trash"></i> Yes, delete</a>
+    </div>
+  </div>
+</div>
+  <div class="modal modal--danger" id="delete-permission" role="dialog" aria-modal="true" aria-labelledby="delete-permission-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--sm">
+    <div class="confirm">
+      <span class="modal__icon modal__icon--rose"><i class="ic i-trash"></i></span>
+      <h3 id="delete-permission-t">Delete permission?</h3>
+      <p>It will be removed from every role that uses it.</p>
+    </div>
+    <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+      <a href="#close" class="btn">Cancel</a>
+      <a href="#deleted" class="btn btn--danger"><i class="ic i-trash"></i> Yes, delete</a>
+    </div>
+  </div>
+</div>
+
+
+  <!-- ================= TOASTS ================= -->
+  <div class="toast" id="saved" role="status"><span class="toast__icon"><i class="ic i-check"></i></span><div><strong>Changes saved</strong><span>Your updates were saved successfully.</span></div></div>
+  <div class="toast" id="created" role="status"><span class="toast__icon"><i class="ic i-plus"></i></span><div><strong>Record created</strong><span>The new record has been added.</span></div></div>
+  <div class="toast" id="invited" role="status"><span class="toast__icon"><i class="ic i-send"></i></span><div><strong>Invitation sent</strong><span>An invite email is on its way.</span></div></div>
+  <div class="toast toast--danger" id="deleted" role="status"><span class="toast__icon"><i class="ic i-trash"></i></span><div><strong>Record deleted</strong><span>The item was removed permanently.</span></div></div>
+</body>
+</html>

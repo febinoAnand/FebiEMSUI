@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workspace ready · Energy Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="auth">
+  <div class="auth-shell">
+    <!-- ================= VISUAL PANEL ================= -->
+    <aside class="auth-visual" aria-hidden="true">
+      <a href="login.html" class="brand" style="padding:0">
+        <span class="brand__logo"><i class="ic i-bolt-fill"></i></span>
+        <span><span class="brand__name">Energy Dashboard</span><br /><span class="brand__tag">Smart Energy Cloud</span></span>
+      </a>
+
+      <div class="energy-core">
+        <span class="ring"></span>
+        <span class="ring"></span>
+        <span class="ring"></span>
+        <span class="ring ring--spin" style="inset:6%"></span>
+        <span class="energy-core__center"><i class="ic i-bolt-fill"></i></span>
+
+        <div class="float-chip float-chip--1">
+          <span class="icon-tile"><i class="ic i-bolt"></i></span>
+          <span><strong>125.4 kW</strong>Live demand</span>
+        </div>
+        <div class="float-chip float-chip--2">
+          <span class="icon-tile icon-tile--amber"><i class="ic i-rupee"></i></span>
+          <span><strong>₹5,472</strong>Cost today</span>
+        </div>
+        <div class="float-chip float-chip--3">
+          <span class="icon-tile icon-tile--violet"><i class="ic i-leaf"></i></span>
+          <span><strong>−18.6%</strong>CO₂ vs last month</span>
+        </div>
+      </div>
+
+      <div class="auth-hero">
+        <h1>Every kilowatt, <span class="gradient-text">visible &amp; accountable.</span></h1>
+        <p>Multi-tenant energy monitoring for plants, campuses and buildings — meters, sub-meters, shifts and teams in one place.</p>
+        <div class="auth-points">
+          <div><i class="ic i-shield"></i> Tenant-isolated data</div>
+          <div><i class="ic i-layers"></i> Unlimited sub-meters</div>
+          <div><i class="ic i-activity"></i> 15-second telemetry</div>
+        </div>
+      </div>
+
+      <svg class="auth-wave" viewBox="0 0 600 120" preserveAspectRatio="none">
+        <path class="w1" d="M0,80 C60,40 120,110 180,70 S300,20 360,60 S480,110 600,50" />
+        <path class="w2" d="M0,100 C80,70 140,120 220,90 S340,50 420,85 S540,110 600,80" />
+      </svg>
+    </aside>
+
+    <!-- ================= FORM PANEL ================= -->
+    <main class="auth-panel">
+      <section class="auth-card" style="text-align:center">
+        <div class="success-burst"><span><i class="ic i-check"></i></span></div>
+        <h2 class="auth-title">Your workspace is ready! 🎉</h2>
+        <p class="auth-sub">Febino Solutions Pvt Ltd has been created. Share this Organisation ID with your team — they'll need it to sign in.</p>
+
+        <div class="card" style="padding:22px;text-align:left">
+          <span class="eyebrow">Organisation ID</span>
+          <div class="row-between" style="margin-top:10px">
+            <span class="org-id">ORG-FEB-2048</span>
+            <a href="#close" class="btn btn--sm"><i class="ic i-copy"></i> Copy</a>
+          </div>
+          <div class="dropdown__sep" style="margin:18px 0"></div>
+          <dl class="kv">
+            <dt>Workspace URL</dt><dd class="mono">febino.energydash.io</dd>
+            <dt>Admin</dt><dd>vijay@febinosolutions.com</dd>
+            <dt>Plan</dt><dd>Growth · 30-day trial</dd>
+          </dl>
+        </div>
+
+        <div class="list" style="text-align:left;margin-top:22px">
+          <div class="list__item"><span class="icon-tile"><i class="ic i-gauge"></i></span><span class="grow"><strong>Add your first meter</strong><small>Connect a device and its sub-meters</small></span><a href="meters.html#add-device" class="btn btn--sm btn--soft">Add</a></div>
+          <div class="list__item"><span class="icon-tile icon-tile--violet"><i class="ic i-user-plus"></i></span><span class="grow"><strong>Invite your team</strong><small>Assign roles and shifts</small></span><a href="users.html#add-user" class="btn btn--sm btn--soft">Invite</a></div>
+        </div>
+
+        <a href="login.html" class="btn btn--primary btn--lg btn--block" style="margin-top:22px">Go to sign in <i class="ic i-arrow-right"></i></a>
+      </section>
+      <p class="auth-legal" style="margin-top:34px;justify-content:center">
+        <span>© 2026 Energy Dashboard</span><a href="#close">Privacy</a><a href="#close">Terms</a><a href="#close">Status</a>
+      </p>
+    </main>
+  </div>
+</body>
+</html>

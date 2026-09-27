@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics · Energy Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="app">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
+
+  <div class="app-shell">
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar" aria-label="Primary">
+      <a href="dashboard.html" class="brand">
+        <span class="brand__logo"><i class="ic i-bolt-fill"></i></span>
+        <span>
+          <span class="brand__name">Energy Dashboard</span><br />
+          <span class="brand__tag">Smart Energy Cloud</span>
+        </span>
+      </a>
+
+      <a href="#switch-org" class="tenant-switch" title="Switch organisation">
+        <span class="tenant-switch__logo">FS</span>
+        <span class="tenant-switch__meta">
+          <strong>Febino Solutions Pvt Ltd</strong>
+          <span>ORG-FEB-2048</span>
+        </span>
+        <i class="ic i-swap muted"></i>
+      </a>
+
+      <nav class="nav">
+        <div class="nav__section">Monitor</div>
+        <a href="dashboard.html" class="nav__link"><i class="ic i-grid"></i><span>Dashboard</span></a>
+        <a href="meters.html" class="nav__link"><i class="ic i-gauge"></i><span>Energy Meters</span><em class="nav__badge nav__badge--green">38</em></a>
+        <a href="analytics.html" class="nav__link is-active"><i class="ic i-chart"></i><span>Analytics</span></a>
+        <a href="alerts.html" class="nav__link"><i class="ic i-bell"></i><span>Alerts</span><em class="nav__badge">5</em></a>
+
+        <div class="nav__section">Operations</div>
+        <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift Management</span></a>
+
+        <div class="nav__section">Administration</div>
+        <a href="users.html" class="nav__link"><i class="ic i-users"></i><span>Users</span></a>
+        <a href="roles.html" class="nav__link"><i class="ic i-shield"></i><span>Roles &amp; Permissions</span></a>
+        <a href="settings.html" class="nav__link"><i class="ic i-settings"></i><span>Settings</span></a>
+      </nav>
+
+      <div class="sidebar__live">
+        <div class="eyebrow"><span class="dot dot--live" style="--c: var(--green)"></span> Live load</div>
+        <div class="sidebar__live-value">125.4 <small>kW</small></div>
+        <div class="small muted">Peak today 150.2 kW at 14:05</div>
+        <div class="eq" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="sidebar__foot"><span>v2.4.0</span><a href="#close" class="muted">Help &amp; docs</a></div>
+    </aside>
+    <label for="nav-toggle" class="nav-scrim" aria-hidden="true"></label>
+
+    <!-- ================= MAIN ================= -->
+    <div class="main">
+      <header class="topbar">
+        <label for="nav-toggle" class="icon-btn burger" aria-label="Open menu"><i class="ic i-menu"></i></label>
+
+        <div class="topbar__crumbs">
+          <small>Febino Solutions / Monitor</small>
+          <strong>Analytics</strong>
+        </div>
+
+        <label class="search">
+          <i class="ic i-search"></i>
+          <input type="search" placeholder="Search meters, users, alerts…" aria-label="Search" />
+          <kbd>Ctrl K</kbd>
+        </label>
+
+        <div class="topbar__actions">
+          <span class="live-pill"><span class="dot dot--live" style="--c: var(--green)"></span> Live</span>
+
+          <details class="dropdown">
+            <summary class="icon-btn" aria-label="Notifications"><i class="ic i-bell"></i><span class="ping"></span></summary>
+            <div class="dropdown__panel dropdown__panel--wide">
+              <div class="dropdown__head"><strong>Notifications</strong><span class="badge badge--danger">5 new</span></div>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: rgba(244,63,94,.14); color: var(--rose)"><i class="ic i-alert"></i></span>
+                <span><p><b>HVAC Chiller-2</b> crossed 95% of rated load</p><small>2 min ago · Critical</small></span>
+              </a>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: rgba(251,191,36,.14); color: var(--amber)"><i class="ic i-activity"></i></span>
+                <span><p>Power factor dropped to <b>0.86</b> on Main Incomer</p><small>18 min ago · Warning</small></span>
+              </a>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: rgba(34,211,238,.14); color: var(--cyan)"><i class="ic i-wifi"></i></span>
+                <span><p>Sub-meter <b>SM-1004-02</b> went offline</p><small>42 min ago · Info</small></span>
+              </a>
+              <div class="dropdown__sep"></div>
+              <a href="alerts.html" class="dropdown__item" style="justify-content:center;color:var(--green);font-weight:700">View all alerts</a>
+            </div>
+          </details>
+
+          <details class="dropdown">
+            <summary class="user-chip">
+              <span class="avatar av-1">VK</span>
+              <span class="user-chip__meta"><strong>Vijay</strong><small>Tenant Admin</small></span>
+              <i class="ic i-chev-down"></i>
+            </summary>
+            <div class="dropdown__panel">
+              <div class="dropdown__head" style="justify-content:flex-start;gap:12px">
+                <span class="avatar av-1">VK</span>
+                <span><strong>Vijay Kumar</strong><br /><small class="muted">vijay@febinosolutions.com</small></span>
+              </div>
+              <div class="dropdown__sep"></div>
+              <a href="#profile" class="dropdown__item"><i class="ic i-user"></i> My profile</a>
+              <a href="#change-password" class="dropdown__item"><i class="ic i-key"></i> Change password</a>
+              <a href="#switch-org" class="dropdown__item"><i class="ic i-swap"></i> Switch organisation</a>
+              <a href="settings.html" class="dropdown__item"><i class="ic i-settings"></i> Settings</a>
+              <div class="dropdown__sep"></div>
+              <a href="#logout" class="dropdown__item dropdown__item--danger"><i class="ic i-logout"></i> Sign out</a>
+            </div>
+          </details>
+        </div>
+      </header>
+
+      <main class="page">
+        <section class="page-head">
+          <div>
+            <h1 class="page-title"><span class="gradient-text">Analytics</span></h1>
+            <p class="page-sub">Trends, patterns and cost allocation down to every sub-meter.</p>
+          </div>
+          <div class="page-actions">
+            <select class="input input--sm" style="width:auto" aria-label="Site"><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>All sites</option></select>
+            <select class="input input--sm" style="width:auto" aria-label="Range"><option>Last 12 months</option><option>This quarter</option><option>This month</option><option>Custom…</option></select>
+            <a href="#close" class="btn btn--sm btn--primary"><i class="ic i-download"></i> Download report</a>
+          </div>
+        </section>
+
+        <section class="grid grid-4">
+          <article class="kpi kpi--cyan"><div class="kpi__top"><span class="kpi__icon"><i class="ic i-battery"></i></span><span class="tag">12 mo</span></div><div class="kpi__label">Total consumption</div><div class="kpi__value">270.5<small>MWh</small></div><div class="kpi__foot"><span class="trend trend--up"><i class="ic i-trend-down"></i> 4.1%</span><span>vs previous year</span></div></article>
+          <article class="kpi kpi--amber"><div class="kpi__top"><span class="kpi__icon"><i class="ic i-rupee"></i></span></div><div class="kpi__label">Total cost</div><div class="kpi__value">₹21.6<small>L</small></div><div class="kpi__foot"><span>Avg ₹8.00 / kWh</span></div></article>
+          <article class="kpi kpi--green"><div class="kpi__top"><span class="kpi__icon"><i class="ic i-sun"></i></span></div><div class="kpi__label">Solar offset</div><div class="kpi__value">14.2<small>%</small></div><div class="kpi__foot"><span>38.4 MWh generated</span></div></article>
+          <article class="kpi kpi--violet"><div class="kpi__top"><span class="kpi__icon"><i class="ic i-activity"></i></span></div><div class="kpi__label">Avg power factor</div><div class="kpi__value">0.957</div><div class="kpi__foot"><span class="trend trend--flat">target ≥ 0.95</span></div></article>
+        </section>
+
+        <section class="grid grid-main">
+          <article class="card">
+            <div class="card__head">
+              <div><h3 class="card__title"><i class="ic i-chart"></i> Monthly consumption vs target</h3><p class="card__sub">MWh · red bars exceeded target · hover for cost</p></div>
+              <div class="legend"><span><i style="--c:var(--green)"></i> Within target</span><span><i style="--c:var(--rose)"></i> Over target</span><span><i style="--c:rgba(148,163,184,.55)"></i> Target</span></div>
+            </div>
+            <div class="card__body">
+<div class="columns"><div class="columns__col" style="--th:73%"><span class="columns__bar" style="--h:71%;--c:var(--green)"></span><span class="columns__bar columns__bar--dim" style="--h:73%"></span><span class="tip">Oct · <b>21.4 MWh</b> / target 22 · ₹171.2 L</span></div>
+<div class="columns__col" style="--th:73%"><span class="columns__bar" style="--h:67%;--c:var(--green)"></span><span class="columns__bar columns__bar--dim" style="--h:73%"></span><span class="tip">Nov · <b>20.1 MWh</b> / target 22 · ₹160.8 L</span></div>
+<div class="columns__col" style="--th:70%"><span class="columns__bar" style="--h:64%;--c:var(--green)"></span><span class="columns__bar columns__bar--dim" style="--h:70%"></span><span class="tip">Dec · <b>19.2 MWh</b> / target 21 · ₹153.6 L</span></div>
+<div class="columns__col" style="--th:70%"><span class="columns__bar" style="--h:66%;--c:var(--green)"></span><span class="columns__bar columns__bar--dim" style="--h:70%"></span><span class="tip">Jan · <b>19.8 MWh</b> / target 21 · ₹158.4 L</span></div>
+<div class="columns__col" style="--th:70%"><span class="columns__bar" style="--h:69%;--c:var(--green)"></span><span class="columns__bar columns__bar--dim" style="--h:70%"></span><span class="tip">Feb · <b>20.6 MWh</b> / target 21 · ₹164.8 L</span></div>
+<div class="columns__col" style="--th:80%"><span class="columns__bar" style="--h:80%;--c:var(--green)"></span><span class="columns__bar columns__bar--dim" style="--h:80%"></span><span class="tip">Mar · <b>23.9 MWh</b> / target 24 · ₹191.2 L</span></div>
+<div class="columns__col" style="--th:89%"><span class="columns__bar" style="--h:89%;--c:var(--rose)"></span><span class="columns__bar columns__bar--dim" style="--h:87%"></span><span class="tip">Apr · <b>26.8 MWh</b> / target 26 · ₹214.4 L</span></div>
+<div class="columns__col" style="--th:95%"><span class="columns__bar" style="--h:95%;--c:var(--rose)"></span><span class="columns__bar columns__bar--dim" style="--h:90%"></span><span class="tip">May · <b>28.4 MWh</b> / target 27 · ₹227.2 L</span></div>
+<div class="columns__col" style="--th:84%"><span class="columns__bar" style="--h:84%;--c:var(--rose)"></span><span class="columns__bar columns__bar--dim" style="--h:83%"></span><span class="tip">Jun · <b>25.1 MWh</b> / target 25 · ₹200.8 L</span></div>
+<div class="columns__col" style="--th:77%"><span class="columns__bar" style="--h:76%;--c:var(--green)"></span><span class="columns__bar columns__bar--dim" style="--h:77%"></span><span class="tip">Jul · <b>22.7 MWh</b> / target 23 · ₹181.6 L</span></div>
+<div class="columns__col" style="--th:77%"><span class="columns__bar" style="--h:73%;--c:var(--green)"></span><span class="columns__bar columns__bar--dim" style="--h:77%"></span><span class="tip">Aug · <b>22.0 MWh</b> / target 23 · ₹176.0 L</span></div>
+<div class="columns__col" style="--th:73%"><span class="columns__bar" style="--h:68%;--c:var(--green)"></span><span class="columns__bar columns__bar--dim" style="--h:73%"></span><span class="tip">Sep · <b>20.5 MWh</b> / target 22 · ₹164.0 L</span></div></div>
+<div class="columns-x"><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span></div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card__head"><div><h3 class="card__title"><i class="ic i-trend-up"></i> Top consumers</h3><p class="card__sub">Sub-meters · this month</p></div></div>
+            <div class="card__body">
+              <div class="list">
+                <div class="list__item"><span class="icon-tile icon-tile--cyan"><i class="ic i-layers"></i></span><div class="grow"><div class="row-between"><strong>Production Line 1</strong><span class="mono">3,120</span></div><div class="bar" style="margin-top:6px"><span style="--w:100%"></span></div></div></div>
+                <div class="list__item"><span class="icon-tile icon-tile--cyan"><i class="ic i-layers"></i></span><div class="grow"><div class="row-between"><strong>Production Line 2</strong><span class="mono">2,840</span></div><div class="bar" style="margin-top:6px"><span style="--w:91%"></span></div></div></div>
+                <div class="list__item"><span class="icon-tile icon-tile--violet"><i class="ic i-layers"></i></span><div class="grow"><div class="row-between"><strong>Screw compressor 1</strong><span class="mono">2,210</span></div><div class="bar bar--amber" style="margin-top:6px"><span style="--w:71%"></span></div></div></div>
+                <div class="list__item"><span class="icon-tile icon-tile--violet"><i class="ic i-layers"></i></span><div class="grow"><div class="row-between"><strong>Tool Room</strong><span class="mono">1,560</span></div><div class="bar" style="margin-top:6px"><span style="--w:50%"></span></div></div></div>
+                <div class="list__item"><span class="icon-tile icon-tile--violet"><i class="ic i-layers"></i></span><div class="grow"><div class="row-between"><strong>UPS-A feeder</strong><span class="mono">1,480</span></div><div class="bar" style="margin-top:6px"><span style="--w:47%"></span></div></div></div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="grid grid-main-r">
+          <article class="card">
+            <div class="card__head"><div><h3 class="card__title"><i class="ic i-bolt"></i> Demand vs contract</h3><p class="card__sub">This month's peak</p></div></div>
+            <div class="card__body">
+              <div class="gauge-holder"><div class="gauge" style="--v:94;--c:var(--amber)"></div><div class="gauge-center"><strong>150.2</strong><span>of 160 kVA</span></div></div>
+              <dl class="kv" style="margin-top:18px"><dt>Peak on</dt><dd>Sep 27, 14:05</dd><dt>Headroom</dt><dd class="tc-amber">9.8 kVA (6%)</dd><dt>Penalty risk</dt><dd class="tc-green">Low</dd></dl>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card__head">
+              <div><h3 class="card__title"><i class="ic i-grid"></i> Load heatmap</h3><p class="card__sub">Average kWh per 2-hour slot · last 4 weeks</p></div>
+              <div class="heat-scale">Low <span class="h l1"></span><span class="h l2"></span><span class="h l3"></span><span class="h l4"></span><span class="h l5"></span> High</div>
+            </div>
+            <div class="card__body">
+<div class="heatmap">
+<span></span>
+<span class="xl">00</span>
+<span class="xl">02</span>
+<span class="xl">04</span>
+<span class="xl">06</span>
+<span class="xl">08</span>
+<span class="xl">10</span>
+<span class="xl">12</span>
+<span class="xl">14</span>
+<span class="xl">16</span>
+<span class="xl">18</span>
+<span class="xl">20</span>
+<span class="xl">22</span>
+<span class="lbl">Mon</span>
+<span class="h l1" title="Mon 00:00–02:00 · 15 kWh"></span>
+<span class="h l2" title="Mon 02:00–04:00 · 39 kWh"></span>
+<span class="h l1" title="Mon 04:00–06:00 · 14 kWh"></span>
+<span class="h l1" title="Mon 06:00–08:00 · 14 kWh"></span>
+<span class="h l4" title="Mon 08:00–10:00 · 74 kWh"></span>
+<span class="h l5" title="Mon 10:00–12:00 · 91 kWh"></span>
+<span class="h l5" title="Mon 12:00–14:00 · 83 kWh"></span>
+<span class="h l5" title="Mon 14:00–16:00 · 89 kWh"></span>
+<span class="h l5" title="Mon 16:00–18:00 · 84 kWh"></span>
+<span class="h l3" title="Mon 18:00–20:00 · 48 kWh"></span>
+<span class="h l1" title="Mon 20:00–22:00 · 19 kWh"></span>
+<span class="h l1" title="Mon 22:00–24:00 · 22 kWh"></span>
+<span class="lbl">Tue</span>
+<span class="h l1" title="Tue 00:00–02:00 · 16 kWh"></span>
+<span class="h l1" title="Tue 02:00–04:00 · 13 kWh"></span>
+<span class="h l1" title="Tue 04:00–06:00 · 22 kWh"></span>
+<span class="h l3" title="Tue 06:00–08:00 · 47 kWh"></span>
+<span class="h l4" title="Tue 08:00–10:00 · 65 kWh"></span>
+<span class="h l4" title="Tue 10:00–12:00 · 67 kWh"></span>
+<span class="h l5" title="Tue 12:00–14:00 · 89 kWh"></span>
+<span class="h l5" title="Tue 14:00–16:00 · 91 kWh"></span>
+<span class="h l4" title="Tue 16:00–18:00 · 74 kWh"></span>
+<span class="h l3" title="Tue 18:00–20:00 · 55 kWh"></span>
+<span class="h l2" title="Tue 20:00–22:00 · 30 kWh"></span>
+<span class="h l1" title="Tue 22:00–24:00 · 22 kWh"></span>
+<span class="lbl">Wed</span>
+<span class="h l1" title="Wed 00:00–02:00 · 18 kWh"></span>
+<span class="h l1" title="Wed 02:00–04:00 · 21 kWh"></span>
+<span class="h l1" title="Wed 04:00–06:00 · 22 kWh"></span>
+<span class="h l2" title="Wed 06:00–08:00 · 38 kWh"></span>
+<span class="h l4" title="Wed 08:00–10:00 · 72 kWh"></span>
+<span class="h l4" title="Wed 10:00–12:00 · 71 kWh"></span>
+<span class="h l5" title="Wed 12:00–14:00 · 90 kWh"></span>
+<span class="h l4" title="Wed 14:00–16:00 · 72 kWh"></span>
+<span class="h l4" title="Wed 16:00–18:00 · 69 kWh"></span>
+<span class="h l3" title="Wed 18:00–20:00 · 49 kWh"></span>
+<span class="h l2" title="Wed 20:00–22:00 · 30 kWh"></span>
+<span class="h l1" title="Wed 22:00–24:00 · 17 kWh"></span>
+<span class="lbl">Thu</span>
+<span class="h l1" title="Thu 00:00–02:00 · 20 kWh"></span>
+<span class="h l1" title="Thu 02:00–04:00 · 20 kWh"></span>
+<span class="h l1" title="Thu 04:00–06:00 · 22 kWh"></span>
+<span class="h l2" title="Thu 06:00–08:00 · 30 kWh"></span>
+<span class="h l3" title="Thu 08:00–10:00 · 53 kWh"></span>
+<span class="h l5" title="Thu 10:00–12:00 · 88 kWh"></span>
+<span class="h l5" title="Thu 12:00–14:00 · 90 kWh"></span>
+<span class="h l5" title="Thu 14:00–16:00 · 83 kWh"></span>
+<span class="h l4" title="Thu 16:00–18:00 · 73 kWh"></span>
+<span class="h l2" title="Thu 18:00–20:00 · 34 kWh"></span>
+<span class="h l2" title="Thu 20:00–22:00 · 34 kWh"></span>
+<span class="h l1" title="Thu 22:00–24:00 · 20 kWh"></span>
+<span class="lbl">Fri</span>
+<span class="h l1" title="Fri 00:00–02:00 · 20 kWh"></span>
+<span class="h l1" title="Fri 02:00–04:00 · 14 kWh"></span>
+<span class="h l1" title="Fri 04:00–06:00 · 20 kWh"></span>
+<span class="h l2" title="Fri 06:00–08:00 · 29 kWh"></span>
+<span class="h l4" title="Fri 08:00–10:00 · 75 kWh"></span>
+<span class="h l4" title="Fri 10:00–12:00 · 75 kWh"></span>
+<span class="h l5" title="Fri 12:00–14:00 · 87 kWh"></span>
+<span class="h l5" title="Fri 14:00–16:00 · 93 kWh"></span>
+<span class="h l4" title="Fri 16:00–18:00 · 65 kWh"></span>
+<span class="h l4" title="Fri 18:00–20:00 · 70 kWh"></span>
+<span class="h l2" title="Fri 20:00–22:00 · 38 kWh"></span>
+<span class="h l1" title="Fri 22:00–24:00 · 20 kWh"></span>
+<span class="lbl">Sat</span>
+<span class="h l1" title="Sat 00:00–02:00 · 16 kWh"></span>
+<span class="h l1" title="Sat 02:00–04:00 · 15 kWh"></span>
+<span class="h l1" title="Sat 04:00–06:00 · 19 kWh"></span>
+<span class="h l2" title="Sat 06:00–08:00 · 36 kWh"></span>
+<span class="h l3" title="Sat 08:00–10:00 · 49 kWh"></span>
+<span class="h l5" title="Sat 10:00–12:00 · 89 kWh"></span>
+<span class="h l3" title="Sat 12:00–14:00 · 51 kWh"></span>
+<span class="h l4" title="Sat 14:00–16:00 · 71 kWh"></span>
+<span class="h l2" title="Sat 16:00–18:00 · 33 kWh"></span>
+<span class="h l3" title="Sat 18:00–20:00 · 52 kWh"></span>
+<span class="h l2" title="Sat 20:00–22:00 · 32 kWh"></span>
+<span class="h l1" title="Sat 22:00–24:00 · 14 kWh"></span>
+<span class="lbl">Sun</span>
+<span class="h l1" title="Sun 00:00–02:00 · 15 kWh"></span>
+<span class="h l1" title="Sun 02:00–04:00 · 23 kWh"></span>
+<span class="h l1" title="Sun 04:00–06:00 · 13 kWh"></span>
+<span class="h l1" title="Sun 06:00–08:00 · 22 kWh"></span>
+<span class="h l2" title="Sun 08:00–10:00 · 33 kWh"></span>
+<span class="h l3" title="Sun 10:00–12:00 · 47 kWh"></span>
+<span class="h l3" title="Sun 12:00–14:00 · 53 kWh"></span>
+<span class="h l2" title="Sun 14:00–16:00 · 34 kWh"></span>
+<span class="h l1" title="Sun 16:00–18:00 · 22 kWh"></span>
+<span class="h l1" title="Sun 18:00–20:00 · 15 kWh"></span>
+<span class="h l1" title="Sun 20:00–22:00 · 22 kWh"></span>
+<span class="h l1" title="Sun 22:00–24:00 · 20 kWh"></span>
+</div>
+            </div>
+          </article>
+        </section>
+
+        <section class="card paged">
+          <input type="radio" class="pg-input" name="rp-pg" id="rp-p1" value="1" checked aria-label="Page 1" />
+<input type="radio" class="pg-input" name="rp-pg" id="rp-p2" value="2" aria-label="Page 2" />
+<input type="radio" class="pg-input" name="rp-pg" id="rp-p3" value="3" aria-label="Page 3" />
+          <div class="card__head">
+            <div><h3 class="card__title"><i class="ic i-file"></i> Sub-meter consumption report</h3><p class="card__sub">September 2026 · cost allocated at ₹8.00 / kWh · edit targets and cost centres</p></div>
+            <a href="#close" class="btn btn--sm"><i class="ic i-download"></i> CSV</a>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>Sub-meter</th><th>Cost centre</th><th class="num">Energy (kWh)</th><th class="num">Cost</th><th class="num">Target (kWh)</th><th>vs target</th><th>Avg load</th><th>Actions</th></tr></thead>
+<tbody data-page="1">
+  <tr>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Feeder A · Production Line 1</strong><small>SM-1001-01 · Main Incomer</small></div></div></td>
+    <td><span class="tag">CC-IT</span></td>
+    <td class="num">3,120</td>
+    <td class="num">₹24,960</td>
+    <td class="num">2,870</td>
+    <td><span class="trend trend--down">+8.7%</span></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:78%"></span></div><small>78%</small></div></td>
+    <td><div class="actions"><a href="#edit-target" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Feeder B · Production Line 2</strong><small>SM-1001-02 · Main Incomer</small></div></div></td>
+    <td><span class="tag">CC-IT</span></td>
+    <td class="num">2,840</td>
+    <td class="num">₹22,720</td>
+    <td class="num">3,124</td>
+    <td><span class="trend trend--up">-9.1%</span></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:70%"></span></div><small>70%</small></div></td>
+    <td><div class="actions"><a href="#edit-target" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Chiller-1</strong><small>SM-1002-01 · HVAC</small></div></div></td>
+    <td><span class="tag">CC-PROD</span></td>
+    <td class="num">860</td>
+    <td class="num">₹6,880</td>
+    <td class="num">946</td>
+    <td><span class="trend trend--up">-9.1%</span></td>
+    <td><div class="bar-cell"><div class="bar bar--amber"><span style="--w:86%"></span></div><small>86%</small></div></td>
+    <td><div class="actions"><a href="#edit-target" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Chiller-2</strong><small>SM-1002-02 · HVAC</small></div></div></td>
+    <td><span class="tag">CC-PROD</span></td>
+    <td class="num">905</td>
+    <td class="num">₹7,240</td>
+    <td class="num">832</td>
+    <td><span class="trend trend--down">+8.8%</span></td>
+    <td><div class="bar-cell"><div class="bar bar--rose"><span style="--w:95%"></span></div><small>95%</small></div></td>
+    <td><div class="actions"><a href="#edit-target" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Ground floor DB</strong><small>SM-1003-01 · Office</small></div></div></td>
+    <td><span class="tag">CC-IT</span></td>
+    <td class="num">260</td>
+    <td class="num">₹2,080</td>
+    <td class="num">286</td>
+    <td><span class="trend trend--up">-9.1%</span></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:31%"></span></div><small>31%</small></div></td>
+    <td><div class="actions"><a href="#edit-target" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>First floor DB</strong><small>SM-1003-02 · Office</small></div></div></td>
+    <td><span class="tag">CC-IT</span></td>
+    <td class="num">240</td>
+    <td class="num">₹1,920</td>
+    <td class="num">264</td>
+    <td><span class="trend trend--up">-9.1%</span></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:28%"></span></div><small>28%</small></div></td>
+    <td><div class="actions"><a href="#edit-target" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+</tbody>
+<tbody data-page="2">
+  <tr>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>UPS-A feeder</strong><small>SM-1004-01 · Data Centre</small></div></div></td>
+    <td><span class="tag">CC-FAC</span></td>
+    <td class="num">1,480</td>
+    <td class="num">₹11,840</td>
+    <td class="num">1,361</td>
+    <td><span class="trend trend--down">+8.7%</span></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:62%"></span></div><small>62%</small></div></td>
+    <td><div class="actions"><a href="#edit-target" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>UPS-B feeder</strong><small>SM-1004-02 · Data Centre</small></div></div></td>
+    <td><span class="tag">CC-FAC</span></td>
+    <td class="num">1,110</td>
+    <td class="num">₹8,880</td>
+    <td class="num">1,221</td>
+    <td><span class="trend trend--up">-9.1%</span></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
+    <td><div class="actions"><a href="#edit-target" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Shop floor high-bays</strong><small>SM-1005-01 · Lighting</small></div></div></td>
+    <td><span class="tag">CC-ADMIN</span></td>
+    <td class="num">640</td>
+    <td class="num">₹5,120</td>
+    <td class="num">704</td>
+    <td><span class="trend trend--up">-9.1%</span></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:64%"></span></div><small>64%</small></div></td>
+    <td><div class="actions"><a href="#edit-target" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Street lights</strong><small>SM-1005-02 · Lighting</small></div></div></td>
+    <td><span class="tag">CC-ADMIN</span></td>
+    <td class="num">180</td>
+    <td class="num">₹1,440</td>
+    <td class="num">165</td>
+    <td><span class="trend trend--down">+9.1%</span></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:42%"></span></div><small>42%</small></div></td>
+    <td><div class="actions"><a href="#edit-target" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Screw compressor 1</strong><small>SM-1006-01 · Compressor House</small></div></div></td>
+    <td><span class="tag">CC-ADMIN</span></td>
+    <td class="num">2,210</td>
+    <td class="num">₹17,680</td>
+    <td class="num">2,431</td>
+    <td><span class="trend trend--up">-9.1%</span></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
+    <td><div class="actions"><a href="#edit-target" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Screw compressor 2</strong><small>SM-1006-02 · Compressor House</small></div></div></td>
+    <td><span class="tag">CC-ADMIN</span></td>
+    <td class="num">1,640</td>
+    <td class="num">₹13,120</td>
+    <td class="num">1,804</td>
+    <td><span class="trend trend--up">-9.1%</span></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
+    <td><div class="actions"><a href="#edit-target" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+</tbody>
+<tbody data-page="3">
+  <tr>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Inverter 1 · 25 kWp</strong><small>SM-1007-01 · Rooftop Solar</small></div></div></td>
+    <td><span class="tag">CC-PROD</span></td>
+    <td class="num">704</td>
+    <td class="num">₹5,632</td>
+    <td class="num">647</td>
+    <td><span class="trend trend--down">+8.8%</span></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:68%"></span></div><small>68%</small></div></td>
+    <td><div class="actions"><a href="#edit-target" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Inverter 2 · 20 kWp</strong><small>SM-1007-02 · Rooftop Solar</small></div></div></td>
+    <td><span class="tag">CC-PROD</span></td>
+    <td class="num">580</td>
+    <td class="num">₹4,640</td>
+    <td class="num">638</td>
+    <td><span class="trend trend--up">-9.1%</span></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:56%"></span></div><small>56%</small></div></td>
+    <td><div class="actions"><a href="#edit-target" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>DG output · 250 kVA</strong><small>SM-1008-01 · DG Set 1</small></div></div></td>
+    <td><span class="tag">CC-ADMIN</span></td>
+    <td class="num">212</td>
+    <td class="num">₹1,696</td>
+    <td class="num">233</td>
+    <td><span class="trend trend--up">-9.0%</span></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
+    <td><div class="actions"><a href="#edit-target" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Borewell pump</strong><small>SM-1009-01 · Water Pumps</small></div></div></td>
+    <td><span class="tag">CC-PROD</span></td>
+    <td class="num">410</td>
+    <td class="num">₹3,280</td>
+    <td class="num">377</td>
+    <td><span class="trend trend--down">+8.8%</span></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:58%"></span></div><small>58%</small></div></td>
+    <td><div class="actions"><a href="#edit-target" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Transfer pump</strong><small>SM-1009-02 · Water Pumps</small></div></div></td>
+    <td><span class="tag">CC-PROD</span></td>
+    <td class="num">300</td>
+    <td class="num">₹2,400</td>
+    <td class="num">330</td>
+    <td><span class="trend trend--up">-9.1%</span></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:48%"></span></div><small>48%</small></div></td>
+    <td><div class="actions"><a href="#edit-target" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><strong>Kitchen equipment</strong><small>SM-1010-01 · Canteen</small></div></div></td>
+    <td><span class="tag">CC-ADMIN</span></td>
+    <td class="num">330</td>
+    <td class="num">₹2,640</td>
+    <td class="num">363</td>
+    <td><span class="trend trend--up">-9.1%</span></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:43%"></span></div><small>43%</small></div></td>
+    <td><div class="actions"><a href="#edit-target" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a></div></td>
+  </tr>
+</tbody>
+            </table>
+          </div>
+          <div class="pager">
+  <div class="pager__info">Showing <span data-when="1"><strong>1–6</strong></span><span data-when="2"><strong>7–12</strong></span><span data-when="3"><strong>13–18</strong></span> of <strong>18</strong> sub-meters</div>
+  <div class="pager__size">Rows per page <select class="input" aria-label="Rows per page"><option>6</option><option>12</option><option>24</option></select></div>
+  <div class="pager__nav"><span class="pg-btn is-disabled" data-when="1" aria-hidden="true"><i class="ic i-chev-left"></i></span><label for="rp-p1" data-when="2" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="rp-p2" data-when="3" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="rp-p1" data-p="1">1</label><label for="rp-p2" data-p="2">2</label><label for="rp-p3" data-p="3">3</label><label for="rp-p2" data-when="1" aria-label="Next page"><i class="ic i-chev-right"></i></label><label for="rp-p3" data-when="2" aria-label="Next page"><i class="ic i-chev-right"></i></label><span class="pg-btn is-disabled" data-when="3" aria-hidden="true"><i class="ic i-chev-right"></i></span></div>
+</div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>© 2026 Energy Dashboard · Tenant <span class="mono">ORG-FEB-2048</span></span>
+        <span>Data refreshed every 15 s · IST (UTC+05:30)</span>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ================= SHARED MODALS ================= -->
+  <div class="modal" id="profile" role="dialog" aria-modal="true" aria-labelledby="profile-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog">
+      <div class="modal__head">
+        <span class="modal__icon"><i class="ic i-user"></i></span>
+        <div><h3 id="profile-title">My profile</h3><p>Your personal details in this organisation.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body">
+        <div class="row" style="gap:16px;margin-bottom:20px">
+          <span class="avatar avatar--lg av-1">VK</span>
+          <div>
+            <strong style="font-size:17px">Vijay Kumar</strong>
+            <div class="small muted">Tenant Admin · Member since Jan 2026</div>
+            <label class="btn btn--sm" style="margin-top:8px"><i class="ic i-upload"></i> Change photo<input type="file" accept="image/*" hidden /></label>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label>First name</label><input class="input" value="Vijay" /></div>
+          <div class="field"><label>Last name</label><input class="input" value="Kumar" /></div>
+          <div class="field"><label>Email</label><input class="input" type="email" value="vijay@febinosolutions.com" /></div>
+          <div class="field"><label>Phone</label><input class="input" type="tel" value="+91 98450 12345" /></div>
+          <div class="field"><label>Language</label><select class="input"><option>English (India)</option><option>हिन्दी</option><option>தமிழ்</option></select></div>
+          <div class="field"><label>Time zone</label><select class="input"><option>Asia/Kolkata (UTC+05:30)</option><option>Asia/Dubai (UTC+04:00)</option></select></div>
+        </div>
+      </div>
+      <div class="modal__foot">
+        <a href="#close" class="btn btn--ghost">Cancel</a>
+        <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save profile</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="change-password" role="dialog" aria-modal="true" aria-labelledby="cp-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="modal__head">
+        <span class="modal__icon modal__icon--violet"><i class="ic i-key"></i></span>
+        <div><h3 id="cp-title">Change password</h3><p>Use at least 8 characters with a number.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body" style="display:grid;gap:16px">
+        <div class="field"><label>Current password</label><div class="input-icon"><i class="ic i-lock"></i><input class="input" type="password" placeholder="••••••••" /></div></div>
+        <div class="field pw-field"><label>New password</label>
+          <div class="input-icon"><i class="ic i-key"></i><input class="input" type="password" placeholder=" " minlength="8" pattern="(?=.*\d)(?=.*[A-Za-z]).{8,}" /></div>
+          <div class="strength"><span></span><span></span><span></span><span></span></div>
+          <span class="hint hint--rule">8+ characters, letters and at least one number</span>
+          <span class="hint hint--ok">Strong password ✓</span>
+        </div>
+        <div class="field"><label>Confirm new password</label><div class="input-icon"><i class="ic i-key"></i><input class="input" type="password" placeholder="••••••••" /></div></div>
+      </div>
+      <div class="modal__foot">
+        <a href="#close" class="btn btn--ghost">Cancel</a>
+        <a href="#saved" class="btn btn--primary">Update password</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="switch-org" role="dialog" aria-modal="true" aria-labelledby="so-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="modal__head">
+        <span class="modal__icon modal__icon--cyan"><i class="ic i-building"></i></span>
+        <div><h3 id="so-title">Switch organisation</h3><p>You belong to 3 tenants.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body" style="display:grid;gap:10px">
+        <label class="radio-card"><input type="radio" name="org" checked /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo">FS</span><span style="flex:1"><strong>Febino Solutions Pvt Ltd</strong><br /><small class="mono muted">ORG-FEB-2048 · Tenant Admin</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+        <label class="radio-card"><input type="radio" name="org" /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo" style="background:var(--grad-warm)">SP</span><span style="flex:1"><strong>Sunrise Plastics Ltd</strong><br /><small class="mono muted">ORG-SUN-1177 · Manager</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+        <label class="radio-card"><input type="radio" name="org" /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo" style="background:var(--grad)">GT</span><span style="flex:1"><strong>GreenTech Campus</strong><br /><small class="mono muted">ORG-GTC-0931 · Viewer</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+      </div>
+      <div class="modal__foot">
+        <a href="register.html" class="btn btn--ghost left"><i class="ic i-plus"></i> New tenant</a>
+        <a href="dashboard.html" class="btn btn--primary">Switch</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal modal--danger" id="logout" role="dialog" aria-modal="true" aria-labelledby="lo-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="confirm">
+        <span class="modal__icon modal__icon--rose"><i class="ic i-logout"></i></span>
+        <h3 id="lo-title">Sign out?</h3>
+        <p>You'll need your Organisation ID and password to sign in again.</p>
+      </div>
+      <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+        <a href="#close" class="btn">Stay signed in</a>
+        <a href="login.html" class="btn btn--danger"><i class="ic i-logout"></i> Sign out</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="edit-target" role="dialog" aria-modal="true" aria-labelledby="edit-target-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--cyan"><i class="ic i-edit"></i></span>
+      <div><h3 id="edit-target-t">Edit target &amp; allocation</h3><p>Feeder A · Production Line 1 · SM-1001-01</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-grid">
+        <div class="field"><label>Monthly target</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" value="3,432" /><span class="suffix">kWh</span></div></div>
+        <div class="field"><label>Cost centre</label><select class="input"><option selected>CC-PROD</option><option>CC-UTIL</option><option>CC-ADMIN</option><option>CC-IT</option><option>CC-FAC</option></select></div>
+        <div class="field"><label>Allocation</label><div class="input-icon"><i class="ic i-sliders"></i><input class="input mono" value="100" /><span class="suffix">%</span></div></div>
+        <div class="field"><label>Tariff</label><select class="input"><option selected>Time of Day (ToD)</option><option>Flat ₹8.00</option></select></div>
+        <div class="field full"><label>Notes</label><textarea class="input" placeholder="Reason for target change">Production volume +8% from October.</textarea></div>
+        <label class="switch full"><input type="checkbox" checked /> Alert when 90% of target is reached</label>
+      </div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save target</a>
+    </div>
+  </div>
+</div>
+
+
+  <!-- ================= TOASTS ================= -->
+  <div class="toast" id="saved" role="status"><span class="toast__icon"><i class="ic i-check"></i></span><div><strong>Changes saved</strong><span>Your updates were saved successfully.</span></div></div>
+  <div class="toast" id="created" role="status"><span class="toast__icon"><i class="ic i-plus"></i></span><div><strong>Record created</strong><span>The new record has been added.</span></div></div>
+  <div class="toast" id="invited" role="status"><span class="toast__icon"><i class="ic i-send"></i></span><div><strong>Invitation sent</strong><span>An invite email is on its way.</span></div></div>
+  <div class="toast toast--danger" id="deleted" role="status"><span class="toast__icon"><i class="ic i-trash"></i></span><div><strong>Record deleted</strong><span>The item was removed permanently.</span></div></div>
+</body>
+</html>
