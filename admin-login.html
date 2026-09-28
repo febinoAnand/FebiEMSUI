@@ -3,11 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Workspace ready · Energy Dashboard</title>
+  <title>Admin Sign In · Energy Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <meta name="theme-color" content="#f3f4fa" />
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/auth.js" defer></script>
 </head>
 <body class="auth">
   <div class="auth-shell">
@@ -57,36 +61,43 @@
 
     <!-- ================= FORM PANEL ================= -->
     <main class="auth-panel">
-      <section class="auth-card" style="text-align:center">
-        <div class="success-burst"><span><i class="ic i-check"></i></span></div>
-        <h2 class="auth-title">Your workspace is ready! 🎉</h2>
-        <p class="auth-sub">Febino Solutions Pvt Ltd has been created. Share this Organisation ID with your team — they'll need it to sign in.</p>
+      <button type="button" class="icon-btn theme-toggle theme-toggle--float" data-theme-toggle aria-label="Toggle dark mode"><i class="ic i-moon"></i><i class="ic i-sun"></i></button>
+      <p class="auth-top-link">Not an admin?<a href="login.html">Organisation sign in</a></p>
 
-        <div class="card" style="padding:22px;text-align:left">
-          <span class="eyebrow">Organisation ID</span>
-          <div class="row-between" style="margin-top:10px">
-            <span class="org-id">ORG-FEB-2048</span>
-            <a href="#close" class="btn btn--sm"><i class="ic i-copy"></i> Copy</a>
+      <section class="auth-card">
+        <a href="login.html" class="brand auth-mobile-brand"><span class="brand__logo"><i class="ic i-bolt-fill"></i></span><span><span class="brand__name">Energy Dashboard</span><br /><span class="brand__tag">Smart Energy Cloud</span></span></a>
+        <span class="icon-tile icon-tile--violet auth-icon"><i class="ic i-shield"></i></span>
+        <h2 class="auth-title">Control Center</h2>
+        <p class="auth-sub">Admin sign-in — manage every tenant on this platform</p>
+
+        <form id="admin-login-form" class="auth-form" action="tenant-approvals.html" method="post" autocomplete="on" novalidate>
+          <div class="field">
+            <label for="admin-user">Username</label>
+            <div class="input-icon"><i class="ic i-user"></i><input id="admin-user" name="username" class="input" placeholder="superadmin" autocomplete="username" autocapitalize="none" spellcheck="false" /></div>
           </div>
-          <div class="dropdown__sep" style="margin:18px 0"></div>
-          <dl class="kv">
-            <dt>Workspace URL</dt><dd class="mono">febino.energydash.io</dd>
-            <dt>Admin</dt><dd>vijay@febinosolutions.com</dd>
-            <dt>Plan</dt><dd>Growth · 30-day trial</dd>
-          </dl>
+          <div class="field">
+            <label for="admin-pw">Password</label>
+            <div class="input-icon">
+              <i class="ic i-lock"></i>
+              <input id="admin-pw" name="password" type="password" class="input input--pw" placeholder="Enter your password" autocomplete="current-password" />
+              <button type="button" class="pw-toggle" data-pw-toggle="admin-pw" aria-label="Show password">Show</button>
+            </div>
+          </div>
+          <button type="submit" class="btn btn--primary btn--lg btn--block">Sign In</button>
+        </form>
+
+        <div class="demo-hint">
+          <span>Admin login — user <b>superadmin</b> / <b>Control@2026</b></span>
+          <button type="button" class="btn btn--sm btn--soft" data-autofill-admin>Autofill</button>
         </div>
 
-        <div class="list" style="text-align:left;margin-top:22px">
-          <div class="list__item"><span class="icon-tile"><i class="ic i-gauge"></i></span><span class="grow"><strong>Add your first meter</strong><small>Connect a device and its sub-meters</small></span><a href="meters.html#add-device" class="btn btn--sm btn--soft">Add</a></div>
-          <div class="list__item"><span class="icon-tile icon-tile--violet"><i class="ic i-user-plus"></i></span><span class="grow"><strong>Invite your team</strong><small>Assign roles and shifts</small></span><a href="users.html#add-user" class="btn btn--sm btn--soft">Invite</a></div>
-        </div>
-
-        <a href="login.html" class="btn btn--primary btn--lg btn--block" style="margin-top:22px">Go to sign in <i class="ic i-arrow-right"></i></a>
+        <p class="auth-foot">Not an admin? <a href="login.html">Sign in to your organisation</a></p>
       </section>
       <p class="auth-legal" style="margin-top:34px;justify-content:center">
-        <span>© 2026 Energy Dashboard</span><a href="#close">Privacy</a><a href="#close">Terms</a><a href="#close">Status</a>
+        <span>© 2026 Energy Dashboard</span><a href="#close">Privacy</a><a href="#close">Terms</a><a href="#" data-reset-demo>Reset demo data</a>
       </p>
     </main>
   </div>
+
 </body>
 </html>

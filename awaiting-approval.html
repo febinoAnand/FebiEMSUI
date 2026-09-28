@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Awaiting Approval · Energy Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <meta name="theme-color" content="#f3f4fa" />
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/auth.js" defer></script>
+</head>
+<body class="auth">
+  <div class="auth-shell">
+    <!-- ================= VISUAL PANEL ================= -->
+    <aside class="auth-visual" aria-hidden="true">
+      <a href="login.html" class="brand" style="padding:0">
+        <span class="brand__logo"><i class="ic i-bolt-fill"></i></span>
+        <span><span class="brand__name">Energy Dashboard</span><br /><span class="brand__tag">Smart Energy Cloud</span></span>
+      </a>
+
+      <div class="energy-core">
+        <span class="ring"></span>
+        <span class="ring"></span>
+        <span class="ring"></span>
+        <span class="ring ring--spin" style="inset:6%"></span>
+        <span class="energy-core__center"><i class="ic i-bolt-fill"></i></span>
+
+        <div class="float-chip float-chip--1">
+          <span class="icon-tile"><i class="ic i-bolt"></i></span>
+          <span><strong>125.4 kW</strong>Live demand</span>
+        </div>
+        <div class="float-chip float-chip--2">
+          <span class="icon-tile icon-tile--amber"><i class="ic i-rupee"></i></span>
+          <span><strong>₹5,472</strong>Cost today</span>
+        </div>
+        <div class="float-chip float-chip--3">
+          <span class="icon-tile icon-tile--violet"><i class="ic i-leaf"></i></span>
+          <span><strong>−18.6%</strong>CO₂ vs last month</span>
+        </div>
+      </div>
+
+      <div class="auth-hero">
+        <h1>Every kilowatt, <span class="gradient-text">visible &amp; accountable.</span></h1>
+        <p>Multi-tenant energy monitoring for plants, campuses and buildings — meters, sub-meters, shifts and teams in one place.</p>
+        <div class="auth-points">
+          <div><i class="ic i-shield"></i> Tenant-isolated data</div>
+          <div><i class="ic i-layers"></i> Unlimited sub-meters</div>
+          <div><i class="ic i-activity"></i> 15-second telemetry</div>
+        </div>
+      </div>
+
+      <svg class="auth-wave" viewBox="0 0 600 120" preserveAspectRatio="none">
+        <path class="w1" d="M0,80 C60,40 120,110 180,70 S300,20 360,60 S480,110 600,50" />
+        <path class="w2" d="M0,100 C80,70 140,120 220,90 S340,50 420,85 S540,110 600,80" />
+      </svg>
+    </aside>
+
+    <!-- ================= FORM PANEL ================= -->
+    <main class="auth-panel">
+      <button type="button" class="icon-btn theme-toggle theme-toggle--float" data-theme-toggle aria-label="Toggle dark mode"><i class="ic i-moon"></i><i class="ic i-sun"></i></button>
+
+      <section id="awaiting-approval" class="auth-card" style="text-align:center">
+        <a href="login.html" class="brand auth-mobile-brand"><span class="brand__logo"><i class="ic i-bolt-fill"></i></span><span><span class="brand__name">Energy Dashboard</span><br /><span class="brand__tag">Smart Energy Cloud</span></span></a>
+        <span class="icon-tile icon-tile--amber auth-icon auth-icon--round"><i class="ic i-clock"></i></span>
+        <h2 class="auth-title">Awaiting approval</h2>
+        <p class="auth-sub" data-aw-sub>Your organisation is registered and your email is verified. The platform administrator is now reviewing your site details.</p>
+
+        <div class="org-ref" data-pending-chip hidden><i class="ic i-building"></i> Organisation ID <b class="mono" data-pending-id>—</b></div>
+
+        <ol class="progress-steps" aria-label="Approval progress">
+          <li class="is-done"><span><i class="ic i-check"></i></span>Registered</li>
+          <li class="is-current"><span>2</span>Site review</li>
+          <li><span>3</span>Meters go live</li>
+        </ol>
+        <dl class="kv org-summary" data-org-summary hidden>
+          <dt>Organisation</dt><dd data-os="name">—</dd>
+          <dt>Facility type</dt><dd data-os="facility">—</dd>
+          <dt>Site · provider</dt><dd data-os="site">—</dd>
+          <dt>Energy meters</dt><dd data-os="meters">—</dd>
+          <dt>Contract demand</dt><dd class="mono" data-os="demand">—</dd>
+          <dt>Administrator</dt><dd data-os="admin">—</dd>
+          <dt>Submitted</dt><dd data-os="submitted">—</dd>
+        </dl>
+        <div class="callout" style="text-align:left">
+          <i class="ic i-alert"></i>
+          <span><b>What happens next?</b>
+            <ul class="next-steps"><li>The platform admin checks your organisation, site and meter details</li><li>Once approved, sign in with your Organisation ID, username and password</li><li>Then add your energy meters and invite your team</li></ul>
+          </span>
+        </div>
+
+        <button type="button" class="btn btn--primary btn--lg btn--block" style="margin-top:22px" data-return-login>Return to sign in</button>
+      </section>
+      <p class="auth-legal" style="margin-top:34px;justify-content:center">
+        <span>© 2026 Energy Dashboard</span><a href="#close">Privacy</a><a href="#close">Terms</a><a href="#" data-reset-demo>Reset demo data</a>
+      </p>
+    </main>
+  </div>
+
+</body>
+</html>

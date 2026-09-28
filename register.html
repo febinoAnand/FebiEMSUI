@@ -3,11 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Register your organisation · Energy Dashboard</title>
+  <title>Register Organisation · Energy Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <meta name="theme-color" content="#f3f4fa" />
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/auth.js" defer></script>
 </head>
 <body class="auth">
   <div class="auth-shell">
@@ -40,13 +44,14 @@
       </div>
 
       <div class="auth-hero">
-        <h1>Every kilowatt, <span class="gradient-text">visible &amp; accountable.</span></h1>
-        <p>Multi-tenant energy monitoring for plants, campuses and buildings — meters, sub-meters, shifts and teams in one place.</p>
-        <div class="auth-points">
-          <div><i class="ic i-shield"></i> Tenant-isolated data</div>
-          <div><i class="ic i-layers"></i> Unlimited sub-meters</div>
-          <div><i class="ic i-activity"></i> 15-second telemetry</div>
-        </div>
+        <h1>Bring your whole energy operation <span class="gradient-text">online.</span></h1>
+        <p>Register your organisation and get a unique Organisation ID to monitor every meter, sub-meter, shift and alert from one console.</p>
+        <ul class="auth-feature-list">
+          <li><i class="ic i-check"></i> A unique, secure Organisation ID generated instantly</li>
+          <li><i class="ic i-check"></i> Invite your team and manage meters, shifts &amp; alerts</li>
+          <li><i class="ic i-check"></i> Live dashboards for every meter and sub-meter</li>
+          <li><i class="ic i-check"></i> Tariff-based cost and CO₂ tracking per site</li>
+        </ul>
       </div>
 
       <svg class="auth-wave" viewBox="0 0 600 120" preserveAspectRatio="none">
@@ -57,167 +62,119 @@
 
     <!-- ================= FORM PANEL ================= -->
     <main class="auth-panel">
-      <p class="auth-top-link">Already registered?<a href="login.html">Sign in</a></p>
+      <button type="button" class="icon-btn theme-toggle theme-toggle--float" data-theme-toggle aria-label="Toggle dark mode"><i class="ic i-moon"></i><i class="ic i-sun"></i></button>
+      <p class="auth-top-link">Already have an organisation?<a href="login.html">Sign in</a></p>
 
       <section class="auth-card auth-card--wide">
-        <span class="eyebrow">Tenant registration</span>
-        <h2 class="auth-title" style="margin-top:6px">Create your organisation workspace</h2>
-        <p class="auth-sub">Four quick steps — you'll get a unique <b>Organisation ID</b> for your team to sign in.</p>
+        <a href="login.html" class="brand auth-mobile-brand"><span class="brand__logo"><i class="ic i-bolt-fill"></i></span><span><span class="brand__name">Energy Dashboard</span><br /><span class="brand__tag">Smart Energy Cloud</span></span></a>
+        <h2 class="auth-title">Register your organisation</h2>
+        <p class="auth-sub">Tell us about your site and its energy meters. The platform admin reviews every new organisation before it can sign in.</p>
 
-        <form class="tabs wizard" action="verify-otp.html" method="get">
-          <input type="radio" class="tab-input" name="step" id="st-1" value="1" checked />
-          <input type="radio" class="tab-input" name="step" id="st-2" value="2" />
-          <input type="radio" class="tab-input" name="step" id="st-3" value="3" />
-          <input type="radio" class="tab-input" name="step" id="st-4" value="4" />
-
-          <div class="stepper">
-            <label for="st-1" data-t="1"><b>01</b><span>Organisation</span></label>
-            <label for="st-2" data-t="2"><b>02</b><span>Admin account</span></label>
-            <label for="st-3" data-t="3"><b>03</b><span>Plan</span></label>
-            <label for="st-4" data-t="4"><b>04</b><span>Review</span></label>
-          </div>
-
-          <!-- Step 1 -->
-          <div class="tab-panel" data-tab="1">
-            <div class="form-grid">
-              <div class="field full">
-                <label>Organisation name <span class="req">*</span></label>
-                <div class="input-icon"><i class="ic i-building"></i><input class="input" placeholder="Febino Solutions Pvt Ltd" /></div>
-              </div>
-              <div class="field">
-                <label>Workspace URL</label>
-                <div class="input-group"><input class="input" placeholder="febino" /><span class="addon">.energydash.io</span></div>
-              </div>
-              <div class="field">
-                <label>Industry</label>
-                <select class="input"><option>Manufacturing</option><option>Commercial building</option><option>Education campus</option><option>Hospital</option><option>Data centre</option><option>Retail chain</option></select>
-              </div>
-              <div class="field">
-                <label>GSTIN / Tax ID</label>
-                <input class="input mono" placeholder="29ABCDE1234F1Z5" />
-              </div>
-              <div class="field">
-                <label>Number of sites</label>
-                <select class="input"><option>1</option><option>2 – 5</option><option>6 – 20</option><option>20+</option></select>
-              </div>
-              <div class="field">
-                <label>Country</label>
-                <select class="input"><option>India</option><option>United Arab Emirates</option><option>Singapore</option><option>United Kingdom</option></select>
-              </div>
-              <div class="field">
-                <label>Time zone</label>
-                <select class="input"><option>Asia/Kolkata (UTC+05:30)</option><option>Asia/Dubai (UTC+04:00)</option><option>Asia/Singapore (UTC+08:00)</option></select>
-              </div>
-              <div class="field full">
-                <label>Registered address</label>
-                <div class="input-icon"><i class="ic i-pin"></i><input class="input" placeholder="Plot 12, Electronic City Phase 1, Bengaluru 560100" /></div>
-              </div>
+        <form id="register-form" class="auth-form" action="verify-email.html" method="post" autocomplete="on" novalidate>
+          <div class="form-section">Organisation &amp; site</div>
+          <div class="form-grid">
+            <div class="field full">
+              <label for="r-org">Organisation name <span class="req">*</span></label>
+              <div class="input-icon"><i class="ic i-building"></i><input id="r-org" name="organization" class="input" placeholder="e.g. Febino Solutions Pvt Ltd" autocomplete="organization" /></div>
+              <span class="field-error" data-err="r-org">Enter your organisation's name.</span>
             </div>
-            <div class="wizard__nav">
-              <a href="login.html" class="btn btn--ghost"><i class="ic i-arrow-left"></i> Cancel</a>
-              <label for="st-2" class="btn btn--primary">Continue <i class="ic i-arrow-right"></i></label>
+            <div class="field">
+              <label for="r-facility">Facility type <span class="req">*</span></label>
+              <select id="r-facility" class="input">
+                <option value="">Select facility type</option>
+                <option>Manufacturing plant</option>
+                <option>Commercial building</option>
+                <option>Education campus</option>
+                <option>Hospital</option>
+                <option>Data centre</option>
+                <option>Retail / mall</option>
+                <option>Solar / renewable plant</option>
+                <option>Other</option>
+              </select>
+              <span class="field-error" data-err="r-facility">Select your facility type.</span>
+            </div>
+            <div class="field">
+              <label for="r-city">Site location <span class="req">*</span></label>
+              <div class="input-icon"><i class="ic i-pin"></i><input id="r-city" name="address-level2" class="input" placeholder="e.g. Bengaluru, Karnataka" autocomplete="address-level2" /></div>
+              <span class="field-error" data-err="r-city">Enter the city where your site is.</span>
+            </div>
+            <div class="field">
+              <label for="r-discom">Electricity provider (DISCOM) <span class="req">*</span></label>
+              <div class="input-icon"><i class="ic i-plug"></i><input id="r-discom" class="input" placeholder="e.g. BESCOM" list="discoms" /></div>
+              <datalist id="discoms"><option>BESCOM</option><option>TANGEDCO</option><option>MSEDCL</option><option>BSES Rajdhani</option><option>Tata Power</option><option>KSEB</option><option>TSSPDCL</option><option>Adani Electricity</option></datalist>
+              <span class="field-error" data-err="r-discom">Enter your electricity provider.</span>
+            </div>
+            <div class="field">
+              <label for="r-demand">Contract demand <span class="req">*</span></label>
+              <div class="input-icon"><i class="ic i-bolt"></i><input id="r-demand" class="input mono" inputmode="decimal" placeholder="e.g. 250" /><span class="suffix">kVA</span></div>
+              <span class="field-error" data-err="r-demand">Enter the sanctioned load in kVA (1 – 100,000).</span>
+            </div>
+            <div class="field full">
+              <label for="r-meters">Number of energy meters <span class="req">*</span></label>
+              <select id="r-meters" class="input">
+                <option value="">How many meters will you connect?</option>
+                <option value="1-10">1 – 10 meters</option>
+                <option value="11-50">11 – 50 meters</option>
+                <option value="51-200">51 – 200 meters</option>
+                <option value="200+">More than 200 meters</option>
+              </select>
+              <span class="field-error" data-err="r-meters">Select how many meters you'll connect.</span>
             </div>
           </div>
 
-          <!-- Step 2 -->
-          <div class="tab-panel" data-tab="2">
-            <div class="callout" style="margin-bottom:18px"><i class="ic i-shield"></i><span>This person becomes the <b>Tenant Admin</b> and can invite users, create roles and manage meters.</span></div>
-            <div class="form-grid">
-              <div class="field"><label>First name <span class="req">*</span></label><input class="input" placeholder="Vijay" /></div>
-              <div class="field"><label>Last name</label><input class="input" placeholder="Kumar" /></div>
-              <div class="field"><label>Work email <span class="req">*</span></label><div class="input-icon"><i class="ic i-mail"></i><input type="email" class="input" placeholder="vijay@company.com" /></div></div>
-              <div class="field"><label>Mobile</label><div class="input-icon"><i class="ic i-phone"></i><input type="tel" class="input" placeholder="+91 98450 12345" /></div></div>
-              <div class="field"><label>Designation</label><input class="input" placeholder="Energy Manager" /></div>
-              <div class="field"><label>Username</label><div class="input-icon"><i class="ic i-user"></i><input class="input" placeholder="vijay.k" /></div></div>
-              <div class="field full pw-field">
-                <label>Password <span class="req">*</span></label>
-                <div class="input-icon"><i class="ic i-lock"></i><input type="password" class="input" placeholder=" " pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" /></div>
-                <div class="strength"><span></span><span></span><span></span><span></span></div>
-                <ul class="rules"><li>At least 8 characters</li><li>One uppercase letter</li><li>One lowercase letter</li><li>One number</li></ul>
-              </div>
+          <div class="form-section">Administrator</div>
+          <div class="form-grid">
+            <div class="field">
+              <label for="r-name">Full name <span class="req">*</span></label>
+              <div class="input-icon"><i class="ic i-user"></i><input id="r-name" name="name" class="input" placeholder="e.g. Vijay Kumar" autocomplete="name" /></div>
+              <span class="field-error" data-err="r-name">Enter the administrator's name.</span>
             </div>
-            <div class="wizard__nav">
-              <label for="st-1" class="btn"><i class="ic i-arrow-left"></i> Back</label>
-              <label for="st-3" class="btn btn--primary">Continue <i class="ic i-arrow-right"></i></label>
+            <div class="field">
+              <label for="r-email">Work email <span class="req">*</span></label>
+              <div class="input-icon"><i class="ic i-mail"></i><input id="r-email" name="email" type="email" class="input" placeholder="e.g. vijay@company.com" autocomplete="email" /></div>
+              <span class="field-error" data-err="r-email">Enter a valid work email — we'll send the verification link here.</span>
+            </div>
+            <div class="field">
+              <label for="r-mobile">Mobile number <span class="req">*</span></label>
+              <div class="input-icon"><i class="ic i-phone"></i><input id="r-mobile" name="tel" class="input mono" maxlength="10" inputmode="numeric" placeholder="10-digit mobile" autocomplete="tel-national" /></div>
+              <span class="field-error" data-err="r-mobile">Enter a valid 10-digit mobile number.</span>
+            </div>
+            <div class="field">
+              <label for="r-username">Username <span class="req">*</span></label>
+              <div class="input-icon"><i class="ic i-user"></i><input id="r-username" name="username" class="input" placeholder="e.g. vijay" autocomplete="username" autocapitalize="none" spellcheck="false" /></div>
+              <span class="field-error" data-err="r-username">Choose a username (3–30 letters, numbers, dots or underscores).</span>
+            </div>
+            <div class="field">
+              <label for="r-password">Password <span class="req">*</span></label>
+              <div class="input-icon">
+                <i class="ic i-lock"></i>
+                <input id="r-password" name="new-password" type="password" class="input input--pw" placeholder="At least 8 characters" autocomplete="new-password" />
+                <button type="button" class="pw-toggle" data-pw-toggle="r-password" aria-label="Show password">Show</button>
+              </div>
+              <div class="strength strength--scored" data-strength="0"><span></span><span></span><span></span><span></span></div>
+              <span class="strength-label" data-strength-label>&nbsp;</span>
+              <span class="field-error" data-err="r-password">Use 8+ characters with a letter and a number.</span>
+            </div>
+            <div class="field">
+              <label for="r-confirm">Confirm password <span class="req">*</span></label>
+              <div class="input-icon">
+                <i class="ic i-lock"></i>
+                <input id="r-confirm" name="confirm-password" type="password" class="input input--pw" placeholder="Re-enter password" autocomplete="new-password" />
+                <button type="button" class="pw-toggle" data-pw-toggle="r-confirm" aria-label="Show password">Show</button>
+              </div>
+              <span class="field-error" data-err="r-confirm">Passwords do not match.</span>
             </div>
           </div>
-
-          <!-- Step 3 -->
-          <div class="tab-panel" data-tab="3">
-            <div class="radio-cards">
-              <label class="radio-card">
-                <input type="radio" name="plan" />
-                <span class="radio-card__body">
-                  <span class="tick"><i class="ic i-check"></i></span>
-                  <h4>Starter</h4>
-                  <div class="price">₹0<small> / 30-day trial</small></div>
-                  <ul><li>10 meters</li><li>30 sub-meters</li><li>5 users</li></ul>
-                </span>
-              </label>
-              <label class="radio-card">
-                <input type="radio" name="plan" checked />
-                <span class="radio-card__body">
-                  <span class="ribbon">Popular</span>
-                  <span class="tick"><i class="ic i-check"></i></span>
-                  <h4>Growth</h4>
-                  <div class="price">₹4,999<small> / month</small></div>
-                  <ul><li>100 meters</li><li>Unlimited sub-meters</li><li>50 users · Shifts</li></ul>
-                </span>
-              </label>
-              <label class="radio-card">
-                <input type="radio" name="plan" />
-                <span class="radio-card__body">
-                  <span class="tick"><i class="ic i-check"></i></span>
-                  <h4>Enterprise</h4>
-                  <div class="price">Custom</div>
-                  <ul><li>Unlimited everything</li><li>SSO / SAML</li><li>Dedicated support</li></ul>
-                </span>
-              </label>
-            </div>
-            <div class="field" style="margin-top:18px">
-              <label>Billing cycle</label>
-              <div class="row wrap" style="gap:18px">
-                <label class="check"><input type="radio" name="cycle" checked /> Monthly</label>
-                <label class="check"><input type="radio" name="cycle" /> Yearly <span class="badge badge--success">Save 20%</span></label>
-              </div>
-            </div>
-            <div class="wizard__nav">
-              <label for="st-2" class="btn"><i class="ic i-arrow-left"></i> Back</label>
-              <label for="st-4" class="btn btn--primary">Review <i class="ic i-arrow-right"></i></label>
-            </div>
-          </div>
-
-          <!-- Step 4 -->
-          <div class="tab-panel" data-tab="4">
-            <div class="review">
-              <div class="review__block">
-                <div class="row-between"><span class="eyebrow">Organisation</span><label for="st-1">Edit</label></div>
-                <dl class="kv"><dt>Name</dt><dd>Febino Solutions Pvt Ltd</dd><dt>Workspace</dt><dd class="mono">febino.energydash.io</dd><dt>Industry</dt><dd>Manufacturing · India</dd></dl>
-              </div>
-              <div class="review__block">
-                <div class="row-between"><span class="eyebrow">Tenant admin</span><label for="st-2">Edit</label></div>
-                <dl class="kv"><dt>Name</dt><dd>Vijay Kumar</dd><dt>Email</dt><dd>vijay@febinosolutions.com</dd></dl>
-              </div>
-              <div class="review__block">
-                <div class="row-between"><span class="eyebrow">Plan</span><label for="st-3">Change</label></div>
-                <dl class="kv"><dt>Growth · Monthly</dt><dd class="mono">₹4,999 / mo</dd></dl>
-              </div>
-            </div>
-            <div style="display:grid;gap:10px;margin-top:18px">
-              <label class="check"><input type="checkbox" required /> I agree to the <a href="#close">Terms of Service</a> and <a href="#close">Data Processing Agreement</a></label>
-              <label class="check"><input type="checkbox" checked /> Send me product updates and energy-saving tips</label>
-            </div>
-            <div class="wizard__nav">
-              <label for="st-3" class="btn"><i class="ic i-arrow-left"></i> Back</label>
-              <button type="submit" class="btn btn--primary"><i class="ic i-spark"></i> Create workspace</button>
-            </div>
-          </div>
+          <button type="submit" class="btn btn--primary btn--lg btn--block" style="margin-top:4px">Create Account</button>
         </form>
+
+        <p class="auth-foot">Already have an organisation? <a href="login.html">Sign in</a></p>
       </section>
       <p class="auth-legal" style="margin-top:34px;justify-content:center">
-        <span>© 2026 Energy Dashboard</span><a href="#close">Privacy</a><a href="#close">Terms</a><a href="#close">Status</a>
+        <span>© 2026 Energy Dashboard</span><a href="#close">Privacy</a><a href="#close">Terms</a><a href="#" data-reset-demo>Reset demo data</a>
       </p>
     </main>
   </div>
+
 </body>
 </html>

@@ -8,6 +8,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <meta name="theme-color" content="#f3f4fa" />
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/auth.js" defer></script>
 </head>
 <body class="auth">
   <div class="auth-shell">
@@ -57,38 +61,46 @@
 
     <!-- ================= FORM PANEL ================= -->
     <main class="auth-panel">
+      <button type="button" class="icon-btn theme-toggle theme-toggle--float" data-theme-toggle aria-label="Toggle dark mode"><i class="ic i-moon"></i><i class="ic i-sun"></i></button>
       <p class="auth-top-link">Already have an account?<a href="login.html">Sign in</a></p>
 
       <section class="auth-card">
+        <a href="login.html" class="brand auth-mobile-brand"><span class="brand__logo"><i class="ic i-bolt-fill"></i></span><span><span class="brand__name">Energy Dashboard</span><br /><span class="brand__tag">Smart Energy Cloud</span></span></a>
         <h2 class="auth-title">You're invited!</h2>
-        <p class="auth-sub">Finish setting up your account to join the workspace.</p>
+        <div data-when-pending>
+          <p class="auth-sub">Finish setting up your account to join the workspace.</p>
 
-        <div class="invite-card">
-          <span class="tenant-switch__logo" style="width:48px;height:48px;border-radius:14px;font-size:15px">FS</span>
-          <div style="flex:1">
-            <strong>Febino Solutions Pvt Ltd</strong>
-            <div class="small muted">Invited by Vijay Kumar · <span class="mono">ORG-FEB-2048</span></div>
-          </div>
-          <span class="badge badge--violet"><i class="ic i-shield"></i> Operator</span>
-        </div>
-
-        <form class="auth-form" action="dashboard.html" method="get">
-          <div class="form-grid">
-            <div class="field"><label>First name <span class="req">*</span></label><input class="input" value="Priya" required /></div>
-            <div class="field"><label>Last name</label><input class="input" value="Sharma" /></div>
-            <div class="field full"><label>Email</label><div class="input-icon"><i class="ic i-mail"></i><input class="input" value="priya.sharma@febinosolutions.com" readonly /></div></div>
-            <div class="field full"><label>Mobile</label><div class="input-icon"><i class="ic i-phone"></i><input type="tel" class="input" placeholder="+91 98xxx xxxxx" /></div></div>
-            <div class="field full pw-field">
-              <label>Create password <span class="req">*</span></label>
-              <div class="input-icon"><i class="ic i-lock"></i><input type="password" class="input" placeholder=" " required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" /></div>
-              <div class="strength"><span></span><span></span><span></span><span></span></div>
-              <ul class="rules"><li>At least 8 characters</li><li>One uppercase letter</li><li>One lowercase letter</li><li>One number</li></ul>
+          <div class="invite-card">
+            <span class="tenant-switch__logo" style="width:48px;height:48px;border-radius:14px;font-size:15px" data-inv="initials">··</span>
+            <div style="flex:1;min-width:0">
+              <strong data-inv="org">Organisation</strong>
+              <div class="small muted">Invited by <span data-inv="by">your admin</span> · <span class="mono" data-inv="orgid">ORG</span></div>
             </div>
+            <span class="badge badge--violet"><i class="ic i-shield"></i> <span data-inv="role">Role</span></span>
           </div>
-          <div class="callout"><i class="ic i-clock"></i><span>You're assigned to <b>Shift A (06:00 – 14:00)</b>. Your supervisor can change this later.</span></div>
-          <label class="check"><input type="checkbox" required /> I accept the <a href="#close">Terms</a> and <a href="#close">Privacy Policy</a></label>
-          <button type="submit" class="btn btn--primary btn--lg btn--block">Join workspace <i class="ic i-arrow-right"></i></button>
-        </form>
+
+          <form id="invite-form" class="auth-form" action="dashboard.html" method="post">
+            <div class="form-grid">
+              <div class="field"><label for="inv-first">First name <span class="req">*</span></label><input id="inv-first" class="input" required autocomplete="given-name" /></div>
+              <div class="field"><label for="inv-last">Last name</label><input id="inv-last" class="input" autocomplete="family-name" /></div>
+              <div class="field full"><label for="inv-email">Username · you'll sign in with this and <span class="mono" data-inv="orgid">the Organisation ID</span></label><div class="input-icon"><i class="ic i-user"></i><input id="inv-email" name="username" class="input" readonly autocomplete="username" /></div></div>
+              <div class="field full"><label for="inv-mobile">Mobile</label><div class="input-icon"><i class="ic i-phone"></i><input id="inv-mobile" type="tel" class="input" placeholder="+91 98xxx xxxxx" pattern="[+0-9 ()-]{10,18}" title="10-digit mobile number, optionally with country code" autocomplete="tel" /></div></div>
+              <div class="field full pw-field">
+                <label for="inv-password">Create password <span class="req">*</span></label>
+                <div class="input-icon"><i class="ic i-lock"></i><input id="inv-password" name="password" type="password" class="input" placeholder="At least 8 characters" required pattern="(?=.*[A-Za-z])(?=.*\d).{8,}" title="8+ characters with a letter and a number" autocomplete="new-password" /></div>
+                <div class="strength"><span></span><span></span><span></span><span></span></div>
+                <span class="hint">8+ characters with a letter and a number · invitation for <b data-inv="email">you</b></span>
+              </div>
+            </div>
+            <div class="callout"><i class="ic i-clock"></i><span>You're assigned to <b data-inv="shift">a shift</b>. Your supervisor can change this later.</span></div>
+            <label class="check"><input type="checkbox" required /> I accept the <a href="#close">Terms</a> and <a href="#close">Privacy Policy</a></label>
+            <button type="submit" class="btn btn--primary btn--lg btn--block">Join workspace <i class="ic i-arrow-right"></i></button>
+          </form>
+        </div>
+        <div data-when-none hidden>
+          <p class="auth-sub">This invitation link is invalid or has already been used. Ask your administrator to send a new one, or sign in if you've already set your password.</p>
+          <a href="login.html" class="btn btn--primary btn--lg btn--block">Go to sign in</a>
+        </div>
       </section>
       <p class="auth-legal" style="margin-top:34px;justify-content:center">
         <span>© 2026 Energy Dashboard</span><a href="#close">Privacy</a><a href="#close">Terms</a><a href="#close">Status</a>

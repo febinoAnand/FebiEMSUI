@@ -3,11 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Verify email · Energy Dashboard</title>
+  <title>Verify Your Email · Energy Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <meta name="theme-color" content="#f3f4fa" />
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/auth.js" defer></script>
 </head>
 <body class="auth">
   <div class="auth-shell">
@@ -57,37 +61,34 @@
 
     <!-- ================= FORM PANEL ================= -->
     <main class="auth-panel">
-      <p class="auth-top-link">Wrong account?<a href="login.html">Back to sign in</a></p>
+      <button type="button" class="icon-btn theme-toggle theme-toggle--float" data-theme-toggle aria-label="Toggle dark mode"><i class="ic i-moon"></i><i class="ic i-sun"></i></button>
+      <p class="auth-top-link">Already have an organisation?<a href="login.html">Sign in</a></p>
 
-      <section class="auth-card">
-        <span class="icon-tile" style="width:56px;height:56px;border-radius:18px;margin-bottom:20px"><i class="ic i-mail" style="width:26px;height:26px"></i></span>
-        <h2 class="auth-title">Check your inbox</h2>
-        <p class="auth-sub">We sent a 6-digit verification code to <b style="color:var(--text)">vi•••@febinosolutions.com</b>. Enter it below to continue.</p>
+      <section id="verify-email" class="auth-card" style="text-align:center">
+        <a href="login.html" class="brand auth-mobile-brand"><span class="brand__logo"><i class="ic i-bolt-fill"></i></span><span><span class="brand__name">Energy Dashboard</span><br /><span class="brand__tag">Smart Energy Cloud</span></span></a>
+        <span class="icon-tile icon-tile--cyan auth-icon auth-icon--round"><i class="ic i-mail"></i></span>
+        <h2 class="auth-title">Check Your Inbox</h2>
+        <p class="auth-sub">We've sent a verification link to the address below. Open it to finish creating your organisation.</p>
 
-        <form class="auth-form" action="tenant-success.html" method="get">
-          <div class="otp" role="group" aria-label="Verification code">
-            <input inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 1" required />
-            <input inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 2" required />
-            <input inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 3" required />
-            <input inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 4" required />
-            <input inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 5" required />
-            <input inputmode="numeric" maxlength="1" placeholder=" " aria-label="Digit 6" required />
-          </div>
+        <div class="org-id-box">
+          <span class="eyebrow">Verification Sent To</span>
+          <div class="org-id-box__value" data-pending-email>&nbsp;</div>
+        </div>
 
-          <div class="auth-row">
-            <span class="muted"><i class="ic i-clock"></i> Code expires in <b class="mono" style="color:var(--amber)">04:59</b></span>
-            <a href="#close">Resend code</a>
-          </div>
+        <p class="resend-row">Didn't get it? <button type="button" data-resend-email>Resend email</button></p>
 
-          <button type="submit" class="btn btn--primary btn--lg btn--block"><i class="ic i-shield"></i> Verify &amp; continue</button>
-        </form>
+        <div style="display:grid;gap:10px">
+          <button type="button" class="btn btn--primary btn--lg btn--block" data-verified>I've Clicked the Verification Link</button>
+          <a href="register.html" class="btn btn--lg btn--block" data-edit-email>Edit Email Address</a>
+        </div>
 
-        <div class="callout" style="margin-top:22px"><i class="ic i-alert"></i><span>Didn't get it? Check spam, or <a href="register.html" style="color:var(--green);font-weight:700">change the email address</a>.</span></div>
+        <p class="auth-foot">Already have an organisation? <a href="login.html">Sign in</a></p>
       </section>
       <p class="auth-legal" style="margin-top:34px;justify-content:center">
-        <span>© 2026 Energy Dashboard</span><a href="#close">Privacy</a><a href="#close">Terms</a><a href="#close">Status</a>
+        <span>© 2026 Energy Dashboard</span><a href="#close">Privacy</a><a href="#close">Terms</a><a href="#" data-reset-demo>Reset demo data</a>
       </p>
     </main>
   </div>
+  <div class="toast" id="auth-toast" role="status"><span class="toast__icon"><i class="ic i-check"></i></span><div><strong data-toast-title>Done</strong><span data-toast-text></span></div></div>
 </body>
 </html>

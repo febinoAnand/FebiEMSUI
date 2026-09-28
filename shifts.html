@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth="required">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,6 +8,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <meta name="theme-color" content="#f3f4fa" />
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/workspace.js" defer></script>
 </head>
 <body class="app">
   <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
@@ -24,10 +28,10 @@
       </a>
 
       <a href="#switch-org" class="tenant-switch" title="Switch organisation">
-        <span class="tenant-switch__logo">FS</span>
+        <span class="tenant-switch__logo" data-bind="org.initials">FS</span>
         <span class="tenant-switch__meta">
-          <strong>Febino Solutions Pvt Ltd</strong>
-          <span>ORG-FEB-2048</span>
+          <strong data-bind="org.name">Febino Solutions Pvt Ltd</strong>
+          <span data-bind="org.id">FEBINO</span>
         </span>
         <i class="ic i-swap muted"></i>
       </a>
@@ -67,7 +71,7 @@
         <label for="nav-toggle" class="icon-btn burger" aria-label="Open menu"><i class="ic i-menu"></i></label>
 
         <div class="topbar__crumbs">
-          <small>Febino Solutions / Operations</small>
+          <small><span data-bind="org.short">Febino Solutions</span> / Operations</small>
           <strong>Shift Management</strong>
         </div>
 
@@ -78,6 +82,18 @@
         </label>
 
         <div class="topbar__actions">
+          <button type="button" class="icon-btn theme-toggle" data-theme-toggle aria-label="Toggle dark mode"><i class="ic i-moon"></i><i class="ic i-sun"></i></button>
+          <details class="dropdown">
+            <summary class="icon-btn" aria-label="Theme" title="Theme"><i class="ic i-palette"></i></summary>
+            <div class="dropdown__panel appearance-panel">
+              <div class="dropdown__head" style="padding:4px 4px 0"><strong>Theme</strong><a href="settings.html" class="small tc-primary">More</a></div>
+              <div class="palette-grid" role="radiogroup" aria-label="Theme">
+                <label class="palette-opt pal-daylight"><input type="radio" name="ap-theme" value="daylight" data-theme-set /><span class="palette-dot"></span>Daylight</label>
+                <label class="palette-opt pal-aurora"><input type="radio" name="ap-theme" value="aurora" data-theme-set /><span class="palette-dot"></span>Aurora</label>
+                <label class="palette-opt pal-midnight"><input type="radio" name="ap-theme" value="midnight" data-theme-set /><span class="palette-dot"></span>Midnight</label>
+              </div>
+            </div>
+          </details>
           <span class="live-pill"><span class="dot dot--live" style="--c: var(--green)"></span> Live</span>
 
           <details class="dropdown">
@@ -85,32 +101,32 @@
             <div class="dropdown__panel dropdown__panel--wide">
               <div class="dropdown__head"><strong>Notifications</strong><span class="badge badge--danger">5 new</span></div>
               <a href="alerts.html" class="notif">
-                <span class="notif__icon" style="background: rgba(244,63,94,.14); color: var(--rose)"><i class="ic i-alert"></i></span>
+                <span class="notif__icon" style="background: color-mix(in srgb, var(--rose) 13%, transparent); color: var(--rose)"><i class="ic i-alert"></i></span>
                 <span><p><b>HVAC Chiller-2</b> crossed 95% of rated load</p><small>2 min ago · Critical</small></span>
               </a>
               <a href="alerts.html" class="notif">
-                <span class="notif__icon" style="background: rgba(251,191,36,.14); color: var(--amber)"><i class="ic i-activity"></i></span>
+                <span class="notif__icon" style="background: color-mix(in srgb, var(--amber) 13%, transparent); color: var(--amber)"><i class="ic i-activity"></i></span>
                 <span><p>Power factor dropped to <b>0.86</b> on Main Incomer</p><small>18 min ago · Warning</small></span>
               </a>
               <a href="alerts.html" class="notif">
-                <span class="notif__icon" style="background: rgba(34,211,238,.14); color: var(--cyan)"><i class="ic i-wifi"></i></span>
+                <span class="notif__icon" style="background: color-mix(in srgb, var(--cyan) 13%, transparent); color: var(--cyan)"><i class="ic i-wifi"></i></span>
                 <span><p>Sub-meter <b>SM-1004-02</b> went offline</p><small>42 min ago · Info</small></span>
               </a>
               <div class="dropdown__sep"></div>
-              <a href="alerts.html" class="dropdown__item" style="justify-content:center;color:var(--green);font-weight:700">View all alerts</a>
+              <a href="alerts.html" class="dropdown__item" style="justify-content:center;color:var(--primary);font-weight:700">View all alerts</a>
             </div>
           </details>
 
           <details class="dropdown">
             <summary class="user-chip">
-              <span class="avatar av-1">VK</span>
-              <span class="user-chip__meta"><strong>Vijay</strong><small>Tenant Admin</small></span>
+              <span class="avatar av-1" data-bind="user.initials">VK</span>
+              <span class="user-chip__meta"><strong data-bind="user.first">Vijay</strong><small data-bind="user.role">Tenant Admin</small></span>
               <i class="ic i-chev-down"></i>
             </summary>
             <div class="dropdown__panel">
               <div class="dropdown__head" style="justify-content:flex-start;gap:12px">
-                <span class="avatar av-1">VK</span>
-                <span><strong>Vijay Kumar</strong><br /><small class="muted">vijay@febinosolutions.com</small></span>
+                <span class="avatar av-1" data-bind="user.initials">VK</span>
+                <span><strong data-bind="user.name">Vijay Kumar</strong><br /><small class="muted" data-bind="user.email">vijay@febinosolutions.com</small></span>
               </div>
               <div class="dropdown__sep"></div>
               <a href="#profile" class="dropdown__item"><i class="ic i-user"></i> My profile</a>
@@ -165,7 +181,7 @@
                   <div class="timeline-24__block" style="--c:var(--cyan);--s:39.58%;--w:37.5%;animation-delay:.25s">General <small>09:30–18:30 · 11 staff</small></div>
                 </div>
                 <div class="timeline-24__lane" style="top:104px">
-                  <div class="timeline-24__block" style="--c:#64748b;--s:33.33%;--w:33.33%;animation-delay:.35s">Weekend Maintenance <small>08:00–16:00 · 5 staff</small></div>
+                  <div class="timeline-24__block" style="--c:var(--slate);--s:33.33%;--w:33.33%;animation-delay:.35s">Weekend Maintenance <small>08:00–16:00 · 5 staff</small></div>
                 </div>
                 <div class="timeline-24__now" style="--at:66.66%"></div>
               </div>
@@ -381,7 +397,7 @@
       </main>
 
       <footer class="footer">
-        <span>© 2026 Energy Dashboard · Tenant <span class="mono">ORG-FEB-2048</span></span>
+        <span>© 2026 Energy Dashboard · Tenant <span class="mono" data-bind="org.id">FEBINO</span></span>
         <span>Data refreshed every 15 s · IST (UTC+05:30)</span>
       </footer>
     </div>
@@ -398,25 +414,25 @@
       </div>
       <div class="modal__body">
         <div class="row" style="gap:16px;margin-bottom:20px">
-          <span class="avatar avatar--lg av-1">VK</span>
+          <span class="avatar avatar--lg av-1" data-bind="user.initials">VK</span>
           <div>
-            <strong style="font-size:17px">Vijay Kumar</strong>
-            <div class="small muted">Tenant Admin · Member since Jan 2026</div>
+            <strong style="font-size:17px" data-bind="user.name">Vijay Kumar</strong>
+            <div class="small muted"><span data-bind="user.role">Tenant Admin</span> · Member since <span data-bind="user.since">Jan 2026</span></div>
             <label class="btn btn--sm" style="margin-top:8px"><i class="ic i-upload"></i> Change photo<input type="file" accept="image/*" hidden /></label>
           </div>
         </div>
         <div class="form-grid">
-          <div class="field"><label>First name</label><input class="input" value="Vijay" /></div>
-          <div class="field"><label>Last name</label><input class="input" value="Kumar" /></div>
-          <div class="field"><label>Email</label><input class="input" type="email" value="vijay@febinosolutions.com" /></div>
-          <div class="field"><label>Phone</label><input class="input" type="tel" value="+91 98450 12345" /></div>
+          <div class="field"><label for="pf-first">First name <span class="req">*</span></label><input id="pf-first" class="input" required autocomplete="given-name" /></div>
+          <div class="field"><label for="pf-last">Last name</label><input id="pf-last" class="input" autocomplete="family-name" /></div>
+          <div class="field"><label for="pf-email">Email <span class="req">*</span></label><input id="pf-email" class="input" type="email" required autocomplete="email" /></div>
+          <div class="field"><label for="pf-mobile">Phone</label><input id="pf-mobile" class="input" type="tel" pattern="[+0-9 ()-]{10,18}" title="10-digit mobile number, optionally with country code" autocomplete="tel" /></div>
           <div class="field"><label>Language</label><select class="input"><option>English (India)</option><option>हिन्दी</option><option>தமிழ்</option></select></div>
           <div class="field"><label>Time zone</label><select class="input"><option>Asia/Kolkata (UTC+05:30)</option><option>Asia/Dubai (UTC+04:00)</option></select></div>
         </div>
       </div>
       <div class="modal__foot">
         <a href="#close" class="btn btn--ghost">Cancel</a>
-        <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save profile</a>
+        <a href="#saved" class="btn btn--primary" data-save-profile><i class="ic i-check"></i> Save profile</a>
       </div>
     </div>
   </div>
@@ -426,22 +442,22 @@
     <div class="modal__dialog modal__dialog--sm">
       <div class="modal__head">
         <span class="modal__icon modal__icon--violet"><i class="ic i-key"></i></span>
-        <div><h3 id="cp-title">Change password</h3><p>Use at least 8 characters with a number.</p></div>
+        <div><h3 id="cp-title">Change password</h3><p>You'll use it the next time you sign in.</p></div>
         <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
       </div>
       <div class="modal__body" style="display:grid;gap:16px">
-        <div class="field"><label>Current password</label><div class="input-icon"><i class="ic i-lock"></i><input class="input" type="password" placeholder="••••••••" /></div></div>
-        <div class="field pw-field"><label>New password</label>
-          <div class="input-icon"><i class="ic i-key"></i><input class="input" type="password" placeholder=" " minlength="8" pattern="(?=.*\d)(?=.*[A-Za-z]).{8,}" /></div>
+        <div class="field"><label for="cp-current">Current password</label><div class="input-icon"><i class="ic i-lock"></i><input id="cp-current" class="input" type="password" placeholder="••••••••" required autocomplete="current-password" /></div></div>
+        <div class="field pw-field"><label for="cp-new">New password</label>
+          <div class="input-icon"><i class="ic i-key"></i><input id="cp-new" class="input" type="password" placeholder=" " required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="At least 8 characters with an uppercase letter, a lowercase letter and a number" autocomplete="new-password" /></div>
           <div class="strength"><span></span><span></span><span></span><span></span></div>
-          <span class="hint hint--rule">8+ characters, letters and at least one number</span>
+          <span class="hint hint--rule">8+ characters with upper- and lowercase letters and a number</span>
           <span class="hint hint--ok">Strong password ✓</span>
         </div>
-        <div class="field"><label>Confirm new password</label><div class="input-icon"><i class="ic i-key"></i><input class="input" type="password" placeholder="••••••••" /></div></div>
+        <div class="field"><label for="cp-confirm">Confirm new password</label><div class="input-icon"><i class="ic i-key"></i><input id="cp-confirm" class="input" type="password" placeholder="••••••••" required autocomplete="new-password" /></div></div>
       </div>
       <div class="modal__foot">
         <a href="#close" class="btn btn--ghost">Cancel</a>
-        <a href="#saved" class="btn btn--primary">Update password</a>
+        <a href="#saved" class="btn btn--primary" data-change-password>Update password</a>
       </div>
     </div>
   </div>
@@ -451,17 +467,15 @@
     <div class="modal__dialog modal__dialog--sm">
       <div class="modal__head">
         <span class="modal__icon modal__icon--cyan"><i class="ic i-building"></i></span>
-        <div><h3 id="so-title">Switch organisation</h3><p>You belong to 3 tenants.</p></div>
+        <div><h3 id="so-title">Switch organisation</h3><p data-bind="org.count">Organisations you belong to</p></div>
         <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
       </div>
       <div class="modal__body" style="display:grid;gap:10px">
-        <label class="radio-card"><input type="radio" name="org" checked /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo">FS</span><span style="flex:1"><strong>Febino Solutions Pvt Ltd</strong><br /><small class="mono muted">ORG-FEB-2048 · Tenant Admin</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
-        <label class="radio-card"><input type="radio" name="org" /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo" style="background:var(--grad-warm)">SP</span><span style="flex:1"><strong>Sunrise Plastics Ltd</strong><br /><small class="mono muted">ORG-SUN-1177 · Manager</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
-        <label class="radio-card"><input type="radio" name="org" /><span class="radio-card__body row" style="gap:12px"><span class="tenant-switch__logo" style="background:var(--grad)">GT</span><span style="flex:1"><strong>GreenTech Campus</strong><br /><small class="mono muted">ORG-GTC-0931 · Viewer</small></span><span class="tick"><i class="ic i-check"></i></span></span></label>
+        <div data-org-switch style="display:grid;gap:10px"></div>
       </div>
       <div class="modal__foot">
         <a href="register.html" class="btn btn--ghost left"><i class="ic i-plus"></i> New tenant</a>
-        <a href="dashboard.html" class="btn btn--primary">Switch</a>
+        <a href="dashboard.html" class="btn btn--primary" data-switch-org>Switch</a>
       </div>
     </div>
   </div>
@@ -476,7 +490,7 @@
       </div>
       <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
         <a href="#close" class="btn">Stay signed in</a>
-        <a href="login.html" class="btn btn--danger"><i class="ic i-logout"></i> Sign out</a>
+        <a href="login.html?signedout=1" class="btn btn--danger" data-signout><i class="ic i-logout"></i> Sign out</a>
       </div>
     </div>
   </div>

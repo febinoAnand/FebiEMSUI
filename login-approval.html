@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-auth="guest">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign In · Energy Dashboard</title>
+  <title>Approval Preview Login · Energy Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
@@ -62,56 +62,41 @@
     <!-- ================= FORM PANEL ================= -->
     <main class="auth-panel">
       <button type="button" class="icon-btn theme-toggle theme-toggle--float" data-theme-toggle aria-label="Toggle dark mode"><i class="ic i-moon"></i><i class="ic i-sun"></i></button>
-      <p class="auth-top-link">New organisation?<a href="register.html">Create an account</a></p>
+      <p class="auth-top-link">Not what you're after?<a href="login.html">Back to the real login</a></p>
 
       <section class="auth-card">
         <a href="login.html" class="brand auth-mobile-brand"><span class="brand__logo"><i class="ic i-bolt-fill"></i></span><span><span class="brand__name">Energy Dashboard</span><br /><span class="brand__tag">Smart Energy Cloud</span></span></a>
-        <h2 class="auth-title">Welcome back <span aria-hidden="true">👋</span></h2>
-        <p class="auth-sub">Sign in to your organisation's dashboard</p>
+        <span class="preview-badge"><i class="ic i-alert"></i> Preview only</span>
+        <h2 class="auth-title">Approval Preview Login</h2>
+        <p class="auth-sub">Sign in with an organisation that is still waiting for approval to see the Awaiting Approval screen.</p>
 
-        <div class="callout callout--warn flow-msg" data-flow-show="next:*"><i class="ic i-lock"></i><span>Please sign in to continue. We'll take you back to the page you opened.</span></div>
-        <div class="callout callout--warn flow-msg" data-flow-show="expired:1"><i class="ic i-clock"></i><span>You were signed out due to inactivity. Please sign in again.</span></div>
-        <div class="callout callout--danger flow-msg" data-flow-show="revoked:1"><i class="ic i-lock"></i><span>Your access was changed by an administrator. Please sign in again.</span></div>
-        <div class="callout callout--success flow-msg" data-flow-show="orgdeleted:1"><i class="ic i-check"></i><span>The organisation and all of its users were deleted.</span></div>
-        <div class="callout callout--success flow-msg" data-flow-show="signedout:1"><i class="ic i-check"></i><span>You've been signed out. See you soon!</span></div>
-
-        <!-- Autofill: name + autocomplete (organization / username / current-password) let browsers and password
-             managers save and fill logins. auth.js checks the credentials against the store. -->
-        <form id="login-form" class="auth-form" action="dashboard.html" method="post" autocomplete="on" novalidate>
+        <form id="preview-form" class="auth-form" action="awaiting-approval.html" method="post" autocomplete="off" novalidate>
           <div class="field">
-            <label for="org-id">Organisation ID</label>
-            <div class="input-icon"><i class="ic i-building"></i><input id="org-id" name="orgId" class="input mono" placeholder="e.g. FEBINO" autocomplete="organization" autocapitalize="characters" spellcheck="false" list="recent-orgs" /></div>
-            <datalist id="recent-orgs"></datalist>
+            <label for="pv-org">Organisation ID</label>
+            <div class="input-icon"><i class="ic i-building"></i><input id="pv-org" class="input mono" placeholder="e.g. HX4R7TQM" autocomplete="off" autocapitalize="characters" spellcheck="false" /></div>
           </div>
           <div class="field">
-            <label for="login-user">Username</label>
-            <div class="input-icon"><i class="ic i-user"></i><input id="login-user" name="username" type="text" class="input" placeholder="e.g. vijay" autocomplete="username" autocapitalize="none" spellcheck="false" /></div>
+            <label for="pv-user">Username</label>
+            <div class="input-icon"><i class="ic i-user"></i><input id="pv-user" class="input" placeholder="e.g. kaveri_admin" autocomplete="off" autocapitalize="none" spellcheck="false" /></div>
           </div>
           <div class="field">
-            <label for="login-pw">Password</label>
+            <label for="pv-pw">Password</label>
             <div class="input-icon">
               <i class="ic i-lock"></i>
-              <input id="login-pw" name="password" type="password" class="input input--pw" placeholder="Enter your password" autocomplete="current-password" />
-              <button type="button" class="pw-toggle" data-pw-toggle="login-pw" aria-label="Show password">Show</button>
+              <input id="pv-pw" name="password" type="password" class="input input--pw" placeholder="Enter your password" autocomplete="off" />
+              <button type="button" class="pw-toggle" data-pw-toggle="pv-pw" aria-label="Show password">Show</button>
             </div>
           </div>
-          <div class="auth-row">
-            <label class="check"><input id="remember" name="remember" type="checkbox" /> Remember me</label>
-            <a href="forgot-password.html">Forgot password?</a>
-          </div>
+          <div class="auth-row" style="justify-content:flex-end"><a href="forgot-password.html">Forgot password?</a></div>
           <button type="submit" class="btn btn--primary btn--lg btn--block">Sign In</button>
         </form>
 
         <div class="demo-hint">
-          <span>Demo login — Org <b>FEBINO</b>, user <b>vijay</b> / <b>Admin@123</b></span>
-          <button type="button" class="btn btn--sm btn--soft" data-autofill="FEBINO|vijay|Admin@123">Autofill</button>
+          <span>Pending organisation — Org <b>HX4R7TQM</b>, user <b>kaveri_admin</b> / <b>Kaveri@123</b></span>
+          <button type="button" class="btn btn--sm btn--soft" data-autofill="HX4R7TQM|kaveri_admin|Kaveri@123" data-autofill-target="pv">Autofill</button>
         </div>
 
-        <p class="auth-foot">
-          New organisation? <a href="register.html">Create an account</a><br />
-          Curious about pending accounts? <a href="login-approval.html">Preview the Awaiting Approval screen</a><br />
-          <span class="small">Invited by your admin? <a href="accept-invite.html">Accept invitation</a> · Platform admin? <a href="admin-login.html">Control Center</a></span>
-        </p>
+        <p class="auth-foot">Not what you're after? <a href="login.html">Back to the real login</a></p>
       </section>
       <p class="auth-legal" style="margin-top:34px;justify-content:center">
         <span>© 2026 Energy Dashboard</span><a href="#close">Privacy</a><a href="#close">Terms</a><a href="#" data-reset-demo>Reset demo data</a>
