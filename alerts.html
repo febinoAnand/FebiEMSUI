@@ -40,6 +40,7 @@
         <div class="nav__section">Monitor</div>
         <a href="dashboard.html" class="nav__link"><i class="ic i-grid"></i><span>Dashboard</span></a>
         <a href="meters.html" class="nav__link"><i class="ic i-gauge"></i><span>Energy Meters</span><em class="nav__badge nav__badge--green">38</em></a>
+        <a href="devices.html" class="nav__link"><i class="ic i-cpu"></i><span>Device Management</span></a>
         <a href="analytics.html" class="nav__link"><i class="ic i-chart"></i><span>Analytics</span></a>
         <a href="alerts.html" class="nav__link is-active"><i class="ic i-bell"></i><span>Alerts</span><em class="nav__badge">5</em></a>
 
@@ -171,7 +172,7 @@
           <article class="kpi kpi--green">
             <div class="kpi__top"><span class="kpi__icon"><i class="ic i-check"></i></span></div>
             <div class="kpi__label">Resolved (7 days)</div><div class="kpi__value">41</div>
-            <div class="kpi__foot"><span>8 active rules</span></div>
+            <div class="kpi__foot"><span>10 rules · 8 on individual meters</span></div>
           </article>
         </section>
 
@@ -196,7 +197,7 @@
   <tr>
     <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
     <td><div class="cell-user"><span class="icon-tile icon-tile--rose" style="width:36px;height:36px"><i class="ic i-alert"></i></span><div><strong>Load above 95% of rated capacity</strong><small><span class="badge badge--danger" style="height:20px;font-size:11px;margin-top:3px">Critical</span></small></div></div></td>
-    <td><strong>HVAC › Chiller-2</strong><br /><span class="mono small muted">SM-1002-02</span></td>
+    <td><strong>HVAC › Chiller-2</strong><br /><a href="meter.html?id=SM-1002-02" class="mono row-link small muted">SM-1002-02</a></td>
     <td class="mono small nowrap">9.5 kW / 9.0 kW</td>
     <td class="small nowrap">Today 15:58</td>
     <td><span class="badge badge--danger"><span class="dot dot--live"></span> Open</span></td>
@@ -205,7 +206,7 @@
   <tr>
     <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
     <td><div class="cell-user"><span class="icon-tile icon-tile--amber" style="width:36px;height:36px"><i class="ic i-activity"></i></span><div><strong>Power factor below target</strong><small><span class="badge badge--warn" style="height:20px;font-size:11px;margin-top:3px">Warning</span></small></div></div></td>
-    <td><strong>Main Incomer</strong><br /><span class="mono small muted">DEV-1001</span></td>
+    <td><strong>Main Incomer</strong><br /><a href="meter.html?id=MTR-1001" class="mono row-link small muted">MTR-1001</a></td>
     <td class="mono small nowrap">0.86 / ≥ 0.95</td>
     <td class="small nowrap">Today 15:42</td>
     <td><span class="badge badge--danger"><span class="dot dot--live"></span> Open</span></td>
@@ -214,7 +215,7 @@
   <tr>
     <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
     <td><div class="cell-user"><span class="icon-tile icon-tile--cyan" style="width:36px;height:36px"><i class="ic i-wifi"></i></span><div><strong>Sub-meter communication lost</strong><small><span class="badge badge--info" style="height:20px;font-size:11px;margin-top:3px">Info</span></small></div></div></td>
-    <td><strong>Data Centre › UPS-B feeder</strong><br /><span class="mono small muted">SM-1004-02</span></td>
+    <td><strong>Data Centre › UPS-B feeder</strong><br /><a href="meter.html?id=SM-1004-02" class="mono row-link small muted">SM-1004-02</a></td>
     <td class="mono small nowrap">No data 40 min</td>
     <td class="small nowrap">Today 15:18</td>
     <td><span class="badge badge--warn"><span class="dot"></span> Acknowledged</span></td>
@@ -223,7 +224,7 @@
   <tr>
     <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
     <td><div class="cell-user"><span class="icon-tile icon-tile--rose" style="width:36px;height:36px"><i class="ic i-alert"></i></span><div><strong>Device offline</strong><small><span class="badge badge--danger" style="height:20px;font-size:11px;margin-top:3px">Critical</span></small></div></div></td>
-    <td><strong>Compressor House</strong><br /><span class="mono small muted">DEV-1006</span></td>
+    <td><strong>Compressor House</strong><br /><a href="meter.html?id=MTR-1006" class="mono row-link small muted">MTR-1006</a></td>
     <td class="mono small nowrap">No data 38 min</td>
     <td class="small nowrap">Today 15:22</td>
     <td><span class="badge badge--danger"><span class="dot dot--live"></span> Open</span></td>
@@ -232,7 +233,7 @@
   <tr>
     <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
     <td><div class="cell-user"><span class="icon-tile icon-tile--amber" style="width:36px;height:36px"><i class="ic i-activity"></i></span><div><strong>Voltage imbalance 4.2%</strong><small><span class="badge badge--warn" style="height:20px;font-size:11px;margin-top:3px">Warning</span></small></div></div></td>
-    <td><strong>Main Incomer › Feeder B</strong><br /><span class="mono small muted">SM-1001-02</span></td>
+    <td><strong>Main Incomer › Feeder B</strong><br /><a href="meter.html?id=SM-1001-02" class="mono row-link small muted">SM-1001-02</a></td>
     <td class="mono small nowrap">4.2% / 3%</td>
     <td class="small nowrap">Today 13:05</td>
     <td><span class="badge badge--warn"><span class="dot"></span> Acknowledged</span></td>
@@ -241,7 +242,7 @@
   <tr>
     <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
     <td><div class="cell-user"><span class="icon-tile icon-tile--amber" style="width:36px;height:36px"><i class="ic i-activity"></i></span><div><strong>Contract demand 95% reached</strong><small><span class="badge badge--warn" style="height:20px;font-size:11px;margin-top:3px">Warning</span></small></div></div></td>
-    <td><strong>Main Incomer</strong><br /><span class="mono small muted">DEV-1001</span></td>
+    <td><strong>Main Incomer</strong><br /><a href="meter.html?id=MTR-1001" class="mono row-link small muted">MTR-1001</a></td>
     <td class="mono small nowrap">150.2 / 160 kVA</td>
     <td class="small nowrap">Today 14:05</td>
     <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
@@ -250,9 +251,29 @@
 </tbody>
 <tbody data-page="2">
   <tr>
+    <td><strong>Compressor overload</strong></td>
+    <td><span class="tag">Power (kW)</span></td>
+    <td class="mono small">> 48 kW for 5 min</td>
+    <td>Compressor House<div class="small muted"><a href="meter.html?id=MTR-1006" class="mono row-link">MTR-1006</a> · meter only</div></td>
+    <td class="small">SMS · Push</td>
+    <td><span class="badge badge--danger">Critical</span></td>
+    <td><label class="switch"><input type="checkbox" checked aria-label="Enable Compressor overload" /></label></td>
+    <td><div class="actions"><a href="#edit-rule" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-rule" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
+    <td><strong>Welding bay idle draw</strong></td>
+    <td><span class="tag">Power (kW)</span></td>
+    <td class="mono small">> 1.5 kW, 22:00–06:00</td>
+    <td>↳ Feeder D · Welding Bay<div class="small muted"><a href="meter.html?id=SM-1001-04" class="mono row-link">SM-1001-04</a> · sub-meter</div></td>
+    <td class="small">Email</td>
+    <td><span class="badge badge--info">Info</span></td>
+    <td><label class="switch"><input type="checkbox" checked aria-label="Enable Welding bay idle draw" /></label></td>
+    <td><div class="actions"><a href="#edit-rule" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-rule" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr>
     <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
     <td><div class="cell-user"><span class="icon-tile icon-tile--cyan" style="width:36px;height:36px"><i class="ic i-wifi"></i></span><div><strong>EV charger at full load</strong><small><span class="badge badge--info" style="height:20px;font-size:11px;margin-top:3px">Info</span></small></div></div></td>
-    <td><strong>EV Charging › Charger 1</strong><br /><span class="mono small muted">SM-1011-01</span></td>
+    <td><strong>EV Charging › Charger 1</strong><br /><a href="meter.html?id=SM-1011-01" class="mono row-link small muted">SM-1011-01</a></td>
     <td class="mono small nowrap">7.4 kW / 7.4 kW</td>
     <td class="small nowrap">Today 11:40</td>
     <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
@@ -261,7 +282,7 @@
   <tr>
     <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
     <td><div class="cell-user"><span class="icon-tile icon-tile--rose" style="width:36px;height:36px"><i class="ic i-alert"></i></span><div><strong>Over-current on phase R</strong><small><span class="badge badge--danger" style="height:20px;font-size:11px;margin-top:3px">Critical</span></small></div></div></td>
-    <td><strong>Paint Shop › Curing oven</strong><br /><span class="mono small muted">SM-1012-02</span></td>
+    <td><strong>Paint Shop › Curing oven</strong><br /><a href="meter.html?id=SM-1012-02" class="mono row-link small muted">SM-1012-02</a></td>
     <td class="mono small nowrap">212 A / 200 A</td>
     <td class="small nowrap">Yesterday 22:14</td>
     <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
@@ -270,7 +291,7 @@
   <tr>
     <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
     <td><div class="cell-user"><span class="icon-tile icon-tile--amber" style="width:36px;height:36px"><i class="ic i-activity"></i></span><div><strong>After-hours consumption</strong><small><span class="badge badge--warn" style="height:20px;font-size:11px;margin-top:3px">Warning</span></small></div></div></td>
-    <td><strong>Office › First floor DB</strong><br /><span class="mono small muted">SM-1003-02</span></td>
+    <td><strong>Office › First floor DB</strong><br /><a href="meter.html?id=SM-1003-02" class="mono row-link small muted">SM-1003-02</a></td>
     <td class="mono small nowrap">2.8 kW at 23:00</td>
     <td class="small nowrap">Yesterday 23:02</td>
     <td><span class="badge badge--warn"><span class="dot"></span> Acknowledged</span></td>
@@ -279,7 +300,7 @@
   <tr>
     <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
     <td><div class="cell-user"><span class="icon-tile icon-tile--cyan" style="width:36px;height:36px"><i class="ic i-wifi"></i></span><div><strong>DG set started (grid failure)</strong><small><span class="badge badge--info" style="height:20px;font-size:11px;margin-top:3px">Info</span></small></div></div></td>
-    <td><strong>DG Set 1</strong><br /><span class="mono small muted">DEV-1008</span></td>
+    <td><strong>DG Set 1</strong><br /><a href="meter.html?id=MTR-1008" class="mono row-link small muted">MTR-1008</a></td>
     <td class="mono small nowrap">Run 12 min</td>
     <td class="small nowrap">Yesterday 17:31</td>
     <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
@@ -288,7 +309,7 @@
   <tr>
     <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
     <td><div class="cell-user"><span class="icon-tile icon-tile--amber" style="width:36px;height:36px"><i class="ic i-activity"></i></span><div><strong>THD above 8%</strong><small><span class="badge badge--warn" style="height:20px;font-size:11px;margin-top:3px">Warning</span></small></div></div></td>
-    <td><strong>Data Centre › UPS-A feeder</strong><br /><span class="mono small muted">SM-1004-01</span></td>
+    <td><strong>Data Centre › UPS-A feeder</strong><br /><a href="meter.html?id=SM-1004-01" class="mono row-link small muted">SM-1004-01</a></td>
     <td class="mono small nowrap">9.1% / 8%</td>
     <td class="small nowrap">Sep 25, 10:12</td>
     <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
@@ -297,7 +318,7 @@
   <tr>
     <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
     <td><div class="cell-user"><span class="icon-tile icon-tile--cyan" style="width:36px;height:36px"><i class="ic i-wifi"></i></span><div><strong>Solar generation below forecast</strong><small><span class="badge badge--info" style="height:20px;font-size:11px;margin-top:3px">Info</span></small></div></div></td>
-    <td><strong>Rooftop Solar</strong><br /><span class="mono small muted">DEV-1007</span></td>
+    <td><strong>Rooftop Solar</strong><br /><a href="meter.html?id=MTR-1007" class="mono row-link small muted">MTR-1007</a></td>
     <td class="mono small nowrap">−22% vs forecast</td>
     <td class="small nowrap">Sep 25, 13:00</td>
     <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
@@ -308,7 +329,7 @@
   <tr>
     <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
     <td><div class="cell-user"><span class="icon-tile icon-tile--rose" style="width:36px;height:36px"><i class="ic i-alert"></i></span><div><strong>Daily energy budget exceeded</strong><small><span class="badge badge--danger" style="height:20px;font-size:11px;margin-top:3px">Critical</span></small></div></div></td>
-    <td><strong>Lighting</strong><br /><span class="mono small muted">DEV-1005</span></td>
+    <td><strong>Lighting</strong><br /><a href="meter.html?id=MTR-1005" class="mono row-link small muted">MTR-1005</a></td>
     <td class="mono small nowrap">1,410 / 1,300 kWh</td>
     <td class="small nowrap">Sep 24, 20:45</td>
     <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
@@ -317,7 +338,7 @@
   <tr>
     <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
     <td><div class="cell-user"><span class="icon-tile icon-tile--amber" style="width:36px;height:36px"><i class="ic i-activity"></i></span><div><strong>Frequent tripping detected</strong><small><span class="badge badge--warn" style="height:20px;font-size:11px;margin-top:3px">Warning</span></small></div></div></td>
-    <td><strong>Water Pumps › Transfer pump</strong><br /><span class="mono small muted">SM-1009-02</span></td>
+    <td><strong>Water Pumps › Transfer pump</strong><br /><a href="meter.html?id=SM-1009-02" class="mono row-link small muted">SM-1009-02</a></td>
     <td class="mono small nowrap">4 trips / hour</td>
     <td class="small nowrap">Sep 24, 09:20</td>
     <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
@@ -326,7 +347,7 @@
   <tr>
     <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
     <td><div class="cell-user"><span class="icon-tile icon-tile--cyan" style="width:36px;height:36px"><i class="ic i-wifi"></i></span><div><strong>Meter firmware updated</strong><small><span class="badge badge--info" style="height:20px;font-size:11px;margin-top:3px">Info</span></small></div></div></td>
-    <td><strong>HVAC</strong><br /><span class="mono small muted">DEV-1002</span></td>
+    <td><strong>HVAC</strong><br /><a href="meter.html?id=MTR-1002" class="mono row-link small muted">MTR-1002</a></td>
     <td class="mono small nowrap">v3.2.1 → v3.3.0</td>
     <td class="small nowrap">Sep 23, 18:00</td>
     <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
@@ -335,7 +356,7 @@
   <tr>
     <td class="check-col"><label class="check"><input type="checkbox" aria-label="Select alert" /></label></td>
     <td><div class="cell-user"><span class="icon-tile icon-tile--amber" style="width:36px;height:36px"><i class="ic i-activity"></i></span><div><strong>Cold storage consumption spike</strong><small><span class="badge badge--warn" style="height:20px;font-size:11px;margin-top:3px">Warning</span></small></div></div></td>
-    <td><strong>Canteen › Cold storage</strong><br /><span class="mono small muted">SM-1010-02</span></td>
+    <td><strong>Canteen › Cold storage</strong><br /><a href="meter.html?id=SM-1010-02" class="mono row-link small muted">SM-1010-02</a></td>
     <td class="mono small nowrap">+38% vs baseline</td>
     <td class="small nowrap">Sep 23, 03:10</td>
     <td><span class="badge badge--success"><span class="dot"></span> Resolved</span></td>
@@ -363,7 +384,7 @@
     <td><strong>Overload > 90% rated</strong></td>
     <td><span class="tag">Load %</span></td>
     <td class="mono small">> 90 % for 5 min</td>
-    <td>All HVAC sub-meters</td>
+    <td>HVAC + 3 sub-meters<div class="small muted"><a href="meter.html?id=MTR-1002" class="mono row-link">MTR-1002</a></div></td>
     <td class="small">Email · SMS</td>
     <td><span class="badge badge--danger">Critical</span></td>
     <td><label class="switch"><input type="checkbox" checked aria-label="Enable Overload > 90% rated" /></label></td>
@@ -373,7 +394,7 @@
     <td><strong>Low power factor</strong></td>
     <td><span class="tag">Power factor</span></td>
     <td class="mono small">< 0.95 for 15 min</td>
-    <td>Main Incomer</td>
+    <td>Main Incomer<div class="small muted"><a href="meter.html?id=MTR-1001" class="mono row-link">MTR-1001</a> · meter only</div></td>
     <td class="small">Email</td>
     <td><span class="badge badge--warn">Warning</span></td>
     <td><label class="switch"><input type="checkbox" checked aria-label="Enable Low power factor" /></label></td>
@@ -383,7 +404,7 @@
     <td><strong>Meter offline</strong></td>
     <td><span class="tag">Heartbeat</span></td>
     <td class="mono small">No data 10 min</td>
-    <td>All devices</td>
+    <td>All meters &amp; sub-meters<div class="small muted"><span class="mono">ALL</span></div></td>
     <td class="small">Email · Push</td>
     <td><span class="badge badge--danger">Critical</span></td>
     <td><label class="switch"><input type="checkbox" checked aria-label="Enable Meter offline" /></label></td>
@@ -393,7 +414,7 @@
     <td><strong>Contract demand</strong></td>
     <td><span class="tag">kVA</span></td>
     <td class="mono small">> 95% of 160 kVA</td>
-    <td>Main Incomer</td>
+    <td>Main Incomer<div class="small muted"><a href="meter.html?id=MTR-1001" class="mono row-link">MTR-1001</a> · meter only</div></td>
     <td class="small">SMS · Push</td>
     <td><span class="badge badge--warn">Warning</span></td>
     <td><label class="switch"><input type="checkbox" checked aria-label="Enable Contract demand" /></label></td>
@@ -405,7 +426,7 @@
     <td><strong>After-hours usage</strong></td>
     <td><span class="tag">kW</span></td>
     <td class="mono small">> 2 kW, 20:00–06:00</td>
-    <td>Office sub-meters</td>
+    <td>Office + 5 sub-meters<div class="small muted"><a href="meter.html?id=MTR-1003" class="mono row-link">MTR-1003</a></div></td>
     <td class="small">Email</td>
     <td><span class="badge badge--warn">Warning</span></td>
     <td><label class="switch"><input type="checkbox" aria-label="Enable After-hours usage" /></label></td>
@@ -415,7 +436,7 @@
     <td><strong>Voltage imbalance</strong></td>
     <td><span class="tag">Voltage</span></td>
     <td class="mono small">> 3 % for 10 min</td>
-    <td>All feeders</td>
+    <td>All sub-meters<div class="small muted"><span class="mono">ALL-SUBS</span></div></td>
     <td class="small">Email</td>
     <td><span class="badge badge--warn">Warning</span></td>
     <td><label class="switch"><input type="checkbox" checked aria-label="Enable Voltage imbalance" /></label></td>
@@ -425,7 +446,7 @@
     <td><strong>Daily budget</strong></td>
     <td><span class="tag">kWh / day</span></td>
     <td class="mono small">> target by 5%</td>
-    <td>All devices</td>
+    <td>All meters &amp; sub-meters<div class="small muted"><span class="mono">ALL</span></div></td>
     <td class="small">Email · Digest</td>
     <td><span class="badge badge--info">Info</span></td>
     <td><label class="switch"><input type="checkbox" checked aria-label="Enable Daily budget" /></label></td>
@@ -435,7 +456,7 @@
     <td><strong>THD</strong></td>
     <td><span class="tag">THD %</span></td>
     <td class="mono small">> 8 %</td>
-    <td>Data Centre</td>
+    <td>Data Centre<div class="small muted"><a href="meter.html?id=MTR-1004" class="mono row-link">MTR-1004</a> · meter only</div></td>
     <td class="small">Email</td>
     <td><span class="badge badge--warn">Warning</span></td>
     <td><label class="switch"><input type="checkbox" aria-label="Enable THD" /></label></td>
@@ -445,7 +466,7 @@
             </table>
           </div>
           <div class="pager">
-  <div class="pager__info">Showing <span data-when="1"><strong>1–4</strong></span><span data-when="2"><strong>5–8</strong></span> of <strong>8</strong> rules</div>
+  <div class="pager__info">Showing <span data-when="1"><strong>1–4</strong></span><span data-when="2"><strong>5–10</strong></span> of <strong>10</strong> rules</div>
   <div class="pager__size">Rows per page <select class="input" aria-label="Rows per page"><option>4</option><option>8</option><option>16</option></select></div>
   <div class="pager__nav"><span class="pg-btn is-disabled" data-when="1" aria-hidden="true"><i class="ic i-chev-left"></i></span><label for="ar-p1" data-when="2" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="ar-p1" data-p="1">1</label><label for="ar-p2" data-p="2">2</label><label for="ar-p2" data-when="1" aria-label="Next page"><i class="ic i-chev-right"></i></label><span class="pg-btn is-disabled" data-when="2" aria-hidden="true"><i class="ic i-chev-right"></i></span></div>
 </div>
@@ -560,7 +581,7 @@
       <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
     </div>
     <div class="modal__body">
-      <div class="callout callout--danger" style="margin-bottom:16px"><i class="ic i-alert"></i><span><b>9.5 kW</b> measured vs <b>9.0 kW</b> limit · raised today 15:58 on <span class="mono">SM-1002-02</span></span></div>
+      <div class="callout callout--danger" style="margin-bottom:16px"><i class="ic i-alert"></i><span><b>9.5 kW</b> measured vs <b>9.0 kW</b> limit · raised today 15:58 on <a href="meter.html?id=SM-1002-02" class="mono row-link">SM-1002-02</a></span></div>
       <div class="form-grid">
         <div class="field"><label>Status</label><select class="input"><option>Open</option><option selected>Acknowledged</option><option>Resolved</option></select></div>
         <div class="field"><label>Severity</label><select class="input"><option selected>Critical</option><option>Warning</option><option>Info</option></select></div>
@@ -581,11 +602,12 @@
   <div class="modal__dialog modal__dialog--lg">
     <div class="modal__head">
       <span class="modal__icon modal__icon--amber"><i class="ic i-sliders"></i></span>
-      <div><h3 id="add-rule-t">New alert rule</h3><p>Raise an alert when a meter or sub-meter crosses a threshold.</p></div>
+      <div><h3 id="add-rule-t">New alert rule</h3><p>Raise an alert for a group, a single meter or a single sub-meter.</p></div>
       <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
     </div>
     <div class="modal__body">
       <div class="form-grid form-grid--3">
+        <div class="field full"><label for="rule-target">Applies to <span class="req">*</span></label><select id="rule-target" class="input"><optgroup label="Groups"><option value="ALL" selected>All meters &amp; sub-meters</option><option value="ALL-METERS">All meters (main meters only)</option><option value="ALL-SUBS">All sub-meters</option></optgroup><optgroup label="Main Incomer · MTR-1001"><option value="MTR-1001">Main Incomer — this meter only</option><option value="MTR-1001+">Main Incomer + all 4 sub-meters</option><option value="SM-1001-01">↳ Feeder A · Production Line 1 · SM-1001-01</option><option value="SM-1001-02">↳ Feeder B · Production Line 2 · SM-1001-02</option><option value="SM-1001-03">↳ Feeder C · Tool Room · SM-1001-03</option><option value="SM-1001-04">↳ Feeder D · Welding Bay · SM-1001-04</option></optgroup><optgroup label="HVAC · MTR-1002"><option value="MTR-1002">HVAC — this meter only</option><option value="MTR-1002+">HVAC + all 3 sub-meters</option><option value="SM-1002-01">↳ Chiller-1 · SM-1002-01</option><option value="SM-1002-02">↳ Chiller-2 · SM-1002-02</option><option value="SM-1002-03">↳ AHU · Level 1–3 · SM-1002-03</option></optgroup><optgroup label="Office · MTR-1003"><option value="MTR-1003">Office — this meter only</option><option value="MTR-1003+">Office + all 5 sub-meters</option><option value="SM-1003-01">↳ Ground floor DB · SM-1003-01</option><option value="SM-1003-02">↳ First floor DB · SM-1003-02</option><option value="SM-1003-03">↳ Second floor DB · SM-1003-03</option><option value="SM-1003-04">↳ Conference wing · SM-1003-04</option><option value="SM-1003-05">↳ Office UPS · SM-1003-05</option></optgroup><optgroup label="Data Centre · MTR-1004"><option value="MTR-1004">Data Centre — this meter only</option><option value="MTR-1004+">Data Centre + all 4 sub-meters</option><option value="SM-1004-01">↳ UPS-A feeder · SM-1004-01</option><option value="SM-1004-02">↳ UPS-B feeder · SM-1004-02</option><option value="SM-1004-03">↳ Precision AC · SM-1004-03</option><option value="SM-1004-04">↳ Rack lighting · SM-1004-04</option></optgroup><optgroup label="Lighting · MTR-1005"><option value="MTR-1005">Lighting — this meter only</option><option value="MTR-1005+">Lighting + all 6 sub-meters</option><option value="SM-1005-01">↳ Shop floor high-bays · SM-1005-01</option><option value="SM-1005-02">↳ Street lights · SM-1005-02</option><option value="SM-1005-03">↳ Warehouse · SM-1005-03</option><option value="SM-1005-04">↳ Admin corridors · SM-1005-04</option><option value="SM-1005-05">↳ Security &amp; gate · SM-1005-05</option><option value="SM-1005-06">↳ Emergency lighting · SM-1005-06</option></optgroup><optgroup label="Compressor House · MTR-1006"><option value="MTR-1006">Compressor House — this meter only</option><option value="MTR-1006+">Compressor House + all 3 sub-meters</option><option value="SM-1006-01">↳ Screw compressor 1 · SM-1006-01</option><option value="SM-1006-02">↳ Screw compressor 2 · SM-1006-02</option><option value="SM-1006-03">↳ Air dryer · SM-1006-03</option></optgroup><optgroup label="Rooftop Solar · MTR-1007"><option value="MTR-1007">Rooftop Solar — this meter only</option><option value="MTR-1007+">Rooftop Solar + all 2 sub-meters</option><option value="SM-1007-01">↳ Inverter 1 · 25 kWp · SM-1007-01</option><option value="SM-1007-02">↳ Inverter 2 · 20 kWp · SM-1007-02</option></optgroup><optgroup label="DG Set 1 · MTR-1008"><option value="MTR-1008">DG Set 1 — this meter only</option><option value="MTR-1008+">DG Set 1 + all 1 sub-meters</option><option value="SM-1008-01">↳ DG output · 250 kVA · SM-1008-01</option></optgroup><optgroup label="Water Pumps · MTR-1009"><option value="MTR-1009">Water Pumps — this meter only</option><option value="MTR-1009+">Water Pumps + all 4 sub-meters</option><option value="SM-1009-01">↳ Borewell pump · SM-1009-01</option><option value="SM-1009-02">↳ Transfer pump · SM-1009-02</option><option value="SM-1009-03">↳ Fire hydrant jockey · SM-1009-03</option><option value="SM-1009-04">↳ STP blowers · SM-1009-04</option></optgroup><optgroup label="Canteen · MTR-1010"><option value="MTR-1010">Canteen — this meter only</option><option value="MTR-1010+">Canteen + all 3 sub-meters</option><option value="SM-1010-01">↳ Kitchen equipment · SM-1010-01</option><option value="SM-1010-02">↳ Cold storage · SM-1010-02</option><option value="SM-1010-03">↳ Dining hall · SM-1010-03</option></optgroup><optgroup label="EV Charging · MTR-1011"><option value="MTR-1011">EV Charging — this meter only</option><option value="MTR-1011+">EV Charging + all 2 sub-meters</option><option value="SM-1011-01">↳ Charger 1 · 7.4 kW AC · SM-1011-01</option><option value="SM-1011-02">↳ Charger 2 · 7.4 kW AC · SM-1011-02</option></optgroup><optgroup label="Paint Shop · MTR-1012"><option value="MTR-1012">Paint Shop — this meter only</option><option value="MTR-1012+">Paint Shop + all 3 sub-meters</option><option value="SM-1012-01">↳ Spray booth · SM-1012-01</option><option value="SM-1012-02">↳ Curing oven · SM-1012-02</option><option value="SM-1012-03">↳ Exhaust fans · SM-1012-03</option></optgroup></select><span class="hint">Choose a whole group, one meter, a meter with its sub-meters, or a single sub-meter.</span></div>
         <div class="field full"><label>Rule name <span class="req">*</span></label><input class="input" placeholder="e.g. Compressor idle at night" /></div>
         <div class="field"><label>Metric</label><select class="input"><option>Power (kW)</option><option>Energy (kWh)</option><option>Load %</option><option>Power factor</option><option>Voltage</option><option>Current</option><option>THD %</option><option>Heartbeat</option></select></div>
         <div class="field"><label>Condition</label><select class="input"><option>Greater than</option><option>Less than</option><option>Outside range</option><option>No data for</option></select></div>
@@ -593,7 +615,6 @@
         <div class="field"><label>For at least</label><select class="input"><option>Instantly</option><option>5 min</option><option>15 min</option><option>1 hour</option></select></div>
         <div class="field"><label>Severity</label><select class="input"><option>Critical</option><option selected>Warning</option><option>Info</option></select></div>
         <div class="field"><label>Active during</label><select class="input"><option>Always</option><option>Shift A</option><option>Shift B</option><option>Shift C</option><option>Outside all shifts</option></select></div>
-        <div class="field full"><label>Applies to</label><select class="input"><option>All devices &amp; sub-meters</option><option>Main Incomer (+4 sub-meters)</option><option>HVAC (+3 sub-meters)</option><option>Only sub-meters of Data Centre</option></select></div>
         <div class="field full"><label>Notify</label>
           <div class="row wrap" style="gap:16px"><label class="check"><input type="checkbox" checked /> Email</label><label class="check"><input type="checkbox" /> SMS</label><label class="check"><input type="checkbox" checked /> Push</label><label class="check"><input type="checkbox" /> WhatsApp</label><label class="check"><input type="checkbox" /> Webhook</label></div>
         </div>
@@ -624,7 +645,7 @@
         <div class="field"><label>For at least</label><select class="input"><option>Instantly</option><option selected>5 min</option><option>15 min</option></select></div>
         <div class="field"><label>Severity</label><select class="input"><option selected>Critical</option><option>Warning</option></select></div>
         <div class="field"><label>Active during</label><select class="input"><option selected>Always</option><option>Shift A</option></select></div>
-        <div class="field full"><label>Applies to</label><select class="input"><option selected>All HVAC sub-meters</option><option>All devices &amp; sub-meters</option></select></div>
+        <div class="field full"><label for="edit-rule-target">Applies to <span class="req">*</span></label><select id="edit-rule-target" class="input"><optgroup label="Groups"><option value="ALL">All meters &amp; sub-meters</option><option value="ALL-METERS">All meters (main meters only)</option><option value="ALL-SUBS">All sub-meters</option></optgroup><optgroup label="Main Incomer · MTR-1001"><option value="MTR-1001">Main Incomer — this meter only</option><option value="MTR-1001+">Main Incomer + all 4 sub-meters</option><option value="SM-1001-01">↳ Feeder A · Production Line 1 · SM-1001-01</option><option value="SM-1001-02">↳ Feeder B · Production Line 2 · SM-1001-02</option><option value="SM-1001-03">↳ Feeder C · Tool Room · SM-1001-03</option><option value="SM-1001-04">↳ Feeder D · Welding Bay · SM-1001-04</option></optgroup><optgroup label="HVAC · MTR-1002"><option value="MTR-1002">HVAC — this meter only</option><option value="MTR-1002+" selected>HVAC + all 3 sub-meters</option><option value="SM-1002-01">↳ Chiller-1 · SM-1002-01</option><option value="SM-1002-02">↳ Chiller-2 · SM-1002-02</option><option value="SM-1002-03">↳ AHU · Level 1–3 · SM-1002-03</option></optgroup><optgroup label="Office · MTR-1003"><option value="MTR-1003">Office — this meter only</option><option value="MTR-1003+">Office + all 5 sub-meters</option><option value="SM-1003-01">↳ Ground floor DB · SM-1003-01</option><option value="SM-1003-02">↳ First floor DB · SM-1003-02</option><option value="SM-1003-03">↳ Second floor DB · SM-1003-03</option><option value="SM-1003-04">↳ Conference wing · SM-1003-04</option><option value="SM-1003-05">↳ Office UPS · SM-1003-05</option></optgroup><optgroup label="Data Centre · MTR-1004"><option value="MTR-1004">Data Centre — this meter only</option><option value="MTR-1004+">Data Centre + all 4 sub-meters</option><option value="SM-1004-01">↳ UPS-A feeder · SM-1004-01</option><option value="SM-1004-02">↳ UPS-B feeder · SM-1004-02</option><option value="SM-1004-03">↳ Precision AC · SM-1004-03</option><option value="SM-1004-04">↳ Rack lighting · SM-1004-04</option></optgroup><optgroup label="Lighting · MTR-1005"><option value="MTR-1005">Lighting — this meter only</option><option value="MTR-1005+">Lighting + all 6 sub-meters</option><option value="SM-1005-01">↳ Shop floor high-bays · SM-1005-01</option><option value="SM-1005-02">↳ Street lights · SM-1005-02</option><option value="SM-1005-03">↳ Warehouse · SM-1005-03</option><option value="SM-1005-04">↳ Admin corridors · SM-1005-04</option><option value="SM-1005-05">↳ Security &amp; gate · SM-1005-05</option><option value="SM-1005-06">↳ Emergency lighting · SM-1005-06</option></optgroup><optgroup label="Compressor House · MTR-1006"><option value="MTR-1006">Compressor House — this meter only</option><option value="MTR-1006+">Compressor House + all 3 sub-meters</option><option value="SM-1006-01">↳ Screw compressor 1 · SM-1006-01</option><option value="SM-1006-02">↳ Screw compressor 2 · SM-1006-02</option><option value="SM-1006-03">↳ Air dryer · SM-1006-03</option></optgroup><optgroup label="Rooftop Solar · MTR-1007"><option value="MTR-1007">Rooftop Solar — this meter only</option><option value="MTR-1007+">Rooftop Solar + all 2 sub-meters</option><option value="SM-1007-01">↳ Inverter 1 · 25 kWp · SM-1007-01</option><option value="SM-1007-02">↳ Inverter 2 · 20 kWp · SM-1007-02</option></optgroup><optgroup label="DG Set 1 · MTR-1008"><option value="MTR-1008">DG Set 1 — this meter only</option><option value="MTR-1008+">DG Set 1 + all 1 sub-meters</option><option value="SM-1008-01">↳ DG output · 250 kVA · SM-1008-01</option></optgroup><optgroup label="Water Pumps · MTR-1009"><option value="MTR-1009">Water Pumps — this meter only</option><option value="MTR-1009+">Water Pumps + all 4 sub-meters</option><option value="SM-1009-01">↳ Borewell pump · SM-1009-01</option><option value="SM-1009-02">↳ Transfer pump · SM-1009-02</option><option value="SM-1009-03">↳ Fire hydrant jockey · SM-1009-03</option><option value="SM-1009-04">↳ STP blowers · SM-1009-04</option></optgroup><optgroup label="Canteen · MTR-1010"><option value="MTR-1010">Canteen — this meter only</option><option value="MTR-1010+">Canteen + all 3 sub-meters</option><option value="SM-1010-01">↳ Kitchen equipment · SM-1010-01</option><option value="SM-1010-02">↳ Cold storage · SM-1010-02</option><option value="SM-1010-03">↳ Dining hall · SM-1010-03</option></optgroup><optgroup label="EV Charging · MTR-1011"><option value="MTR-1011">EV Charging — this meter only</option><option value="MTR-1011+">EV Charging + all 2 sub-meters</option><option value="SM-1011-01">↳ Charger 1 · 7.4 kW AC · SM-1011-01</option><option value="SM-1011-02">↳ Charger 2 · 7.4 kW AC · SM-1011-02</option></optgroup><optgroup label="Paint Shop · MTR-1012"><option value="MTR-1012">Paint Shop — this meter only</option><option value="MTR-1012+">Paint Shop + all 3 sub-meters</option><option value="SM-1012-01">↳ Spray booth · SM-1012-01</option><option value="SM-1012-02">↳ Curing oven · SM-1012-02</option><option value="SM-1012-03">↳ Exhaust fans · SM-1012-03</option></optgroup></select><span class="hint">Choose a whole group, one meter, a meter with its sub-meters, or a single sub-meter.</span></div>
         <div class="field full"><label>Notify</label><div class="row wrap" style="gap:16px"><label class="check"><input type="checkbox" checked /> Email</label><label class="check"><input type="checkbox" checked /> SMS</label><label class="check"><input type="checkbox" /> Push</label></div></div>
         <label class="switch full"><input type="checkbox" checked /> Rule enabled</label>
       </div>
