@@ -1692,3 +1692,56 @@ p.flow-msg.is-shown { display: block !important; }
 @media (max-width: 420px) {
   .topbar .theme-toggle { display: none; } /* the appearance menu covers it on small phones */
 }
+
+/* Energy Meters: device each meter reports through */
+.device-chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 99px; font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--primary-ink); background: var(--primary-soft); white-space: nowrap; }
+.device-chip:hover { text-decoration: none; filter: brightness(.97); }
+.device-chip .dot { width: 7px; height: 7px; }
+.device-chip--inherited { color: var(--muted); background: var(--surface-2); }
+
+/* Energy Meters: main meter actual reading vs sum of its sub-meters */
+.mv { display: flex; justify-content: flex-end; align-items: baseline; gap: 6px; white-space: nowrap; }
+.mv small { font-family: var(--font); font-size: 10.5px; font-weight: 600; color: var(--muted); min-width: 44px; text-align: left; }
+.mv--sum { margin-top: 2px; font-size: 12px; color: var(--text-2); }
+.gap { display: inline-block; margin-top: 5px; padding: 1px 7px; border-radius: 99px; font-size: 10.5px; font-weight: 700; white-space: nowrap; color: var(--c); background: color-mix(in srgb, var(--c) 12%, transparent); }
+.gap--ok { --c: var(--green); } .gap--mid { --c: var(--amber); } .gap--high { --c: var(--rose); }
+
+/* ==========================================================================
+   METER DASHBOARD (meter.html?id=…)
+   ========================================================================== */
+.meter-head { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; min-width: 0; }
+.meter-head .dev-icon { width: 54px; height: 54px; border-radius: 16px; }
+.meter-head .dev-icon .ic { width: 26px; height: 26px; }
+.meter-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 8px; font-size: 13px; }
+.chart-box { position: relative; min-height: 220px; }
+.chart-box svg { display: block; width: 100%; overflow: visible; }
+.chart-box .grid-line { stroke: var(--line); stroke-width: 1; }
+.chart-box .axis-text { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+.chart-box .series-line { fill: none; stroke: var(--primary); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.chart-box .series-area { fill: var(--primary); opacity: .12; }
+.chart-box .series-bar { fill: var(--primary); }
+.chart-box .series-bar.is-partial { opacity: .45; }
+.chart-box .series-bar.is-hover { fill: var(--primary-ink); }
+.chart-box .now-dot { fill: var(--primary); stroke: var(--surface); stroke-width: 2; }
+.chart-box .cross { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+.chart-box .hover-dot { fill: var(--primary); stroke: var(--surface); stroke-width: 2; }
+.chart-box .gap-note { fill: var(--rose); font-size: 11.5px; font-weight: 700; }
+.chart-tip { position: absolute; z-index: 5; pointer-events: none; padding: 7px 10px; border-radius: 10px; background: var(--text); color: var(--surface); font-size: 12px; line-height: 1.35; white-space: nowrap; box-shadow: var(--shadow-lg); transform: translate(-50%, calc(-100% - 12px)); }
+.chart-tip b { font-family: var(--mono); }
+.chart-table { margin-top: 10px; font-size: 12.5px; }
+.chart-table summary { cursor: pointer; color: var(--primary); font-weight: 700; width: max-content; }
+.chart-table .table-wrap { max-height: 240px; overflow: auto; margin-top: 8px; }
+.share-list { display: grid; gap: 12px; }
+.share-row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(90px, 2fr) auto; gap: 12px; align-items: center; font-size: 13px; }
+.share-row a { color: var(--text); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.share-row a:hover { color: var(--primary); }
+.share-row .bar > span { --c: var(--primary); }
+.share-row--rest .bar > span { --c: var(--muted); }
+.share-row b { font-family: var(--mono); font-weight: 600; text-align: right; min-width: 110px; }
+.param-table td:not(:first-child), .param-table th:not(:first-child) { text-align: right; font-family: var(--mono); }
+.row-link { color: inherit; }
+.row-link:hover { color: var(--primary); text-decoration: underline; }
+@media (max-width: 760px) {
+  .share-row { grid-template-columns: 1fr auto; }
+  .share-row .bar { grid-column: 1 / -1; order: 3; }
+}

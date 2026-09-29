@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en" data-auth="required">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Device Management · Energy Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <meta name="theme-color" content="#f3f4fa" />
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/workspace.js" defer></script>
+</head>
+<body class="app">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
+
+  <div class="app-shell">
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar" aria-label="Primary">
+      <a href="dashboard.html" class="brand">
+        <span class="brand__logo"><i class="ic i-bolt-fill"></i></span>
+        <span>
+          <span class="brand__name">Energy Dashboard</span><br />
+          <span class="brand__tag">Smart Energy Cloud</span>
+        </span>
+      </a>
+
+      <a href="#switch-org" class="tenant-switch" title="Switch organisation">
+        <span class="tenant-switch__logo" data-bind="org.initials">FS</span>
+        <span class="tenant-switch__meta">
+          <strong data-bind="org.name">Febino Solutions Pvt Ltd</strong>
+          <span data-bind="org.id">FEBINO</span>
+        </span>
+        <i class="ic i-swap muted"></i>
+      </a>
+
+      <nav class="nav">
+        <div class="nav__section">Monitor</div>
+        <a href="dashboard.html" class="nav__link"><i class="ic i-grid"></i><span>Dashboard</span></a>
+        <a href="meters.html" class="nav__link"><i class="ic i-gauge"></i><span>Energy Meters</span><em class="nav__badge nav__badge--green">38</em></a>
+        <a href="devices.html" class="nav__link is-active"><i class="ic i-cpu"></i><span>Device Management</span></a>
+        <a href="analytics.html" class="nav__link"><i class="ic i-chart"></i><span>Analytics</span></a>
+        <a href="alerts.html" class="nav__link"><i class="ic i-bell"></i><span>Alerts</span><em class="nav__badge">5</em></a>
+
+        <div class="nav__section">Operations</div>
+        <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift Management</span></a>
+
+        <div class="nav__section">Administration</div>
+        <a href="users.html" class="nav__link"><i class="ic i-users"></i><span>Users</span></a>
+        <a href="roles.html" class="nav__link"><i class="ic i-shield"></i><span>Roles &amp; Permissions</span></a>
+        <a href="settings.html" class="nav__link"><i class="ic i-settings"></i><span>Settings</span></a>
+      </nav>
+
+      <div class="sidebar__live">
+        <div class="eyebrow"><span class="dot dot--live" style="--c: var(--green)"></span> Live load</div>
+        <div class="sidebar__live-value">125.4 <small>kW</small></div>
+        <div class="small muted">Peak today 150.2 kW at 14:05</div>
+        <div class="eq" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="sidebar__foot"><span>v2.4.0</span><a href="#close" class="muted">Help &amp; docs</a></div>
+    </aside>
+    <label for="nav-toggle" class="nav-scrim" aria-hidden="true"></label>
+
+    <!-- ================= MAIN ================= -->
+    <div class="main">
+      <header class="topbar">
+        <label for="nav-toggle" class="icon-btn burger" aria-label="Open menu"><i class="ic i-menu"></i></label>
+
+        <div class="topbar__crumbs">
+          <small><span data-bind="org.short">Febino Solutions</span> / Monitor</small>
+          <strong>Device Management</strong>
+        </div>
+
+        <label class="search">
+          <i class="ic i-search"></i>
+          <input type="search" placeholder="Search meters, users, alerts…" aria-label="Search" />
+          <kbd>Ctrl K</kbd>
+        </label>
+
+        <div class="topbar__actions">
+          <button type="button" class="icon-btn theme-toggle" data-theme-toggle aria-label="Toggle dark mode"><i class="ic i-moon"></i><i class="ic i-sun"></i></button>
+          <details class="dropdown">
+            <summary class="icon-btn" aria-label="Theme" title="Theme"><i class="ic i-palette"></i></summary>
+            <div class="dropdown__panel appearance-panel">
+              <div class="dropdown__head" style="padding:4px 4px 0"><strong>Theme</strong><a href="settings.html" class="small tc-primary">More</a></div>
+              <div class="palette-grid" role="radiogroup" aria-label="Theme">
+                <label class="palette-opt pal-daylight"><input type="radio" name="ap-theme" value="daylight" data-theme-set /><span class="palette-dot"></span>Daylight</label>
+                <label class="palette-opt pal-aurora"><input type="radio" name="ap-theme" value="aurora" data-theme-set /><span class="palette-dot"></span>Aurora</label>
+                <label class="palette-opt pal-midnight"><input type="radio" name="ap-theme" value="midnight" data-theme-set /><span class="palette-dot"></span>Midnight</label>
+              </div>
+            </div>
+          </details>
+          <span class="live-pill"><span class="dot dot--live" style="--c: var(--green)"></span> Live</span>
+
+          <details class="dropdown">
+            <summary class="icon-btn" aria-label="Notifications"><i class="ic i-bell"></i><span class="ping"></span></summary>
+            <div class="dropdown__panel dropdown__panel--wide">
+              <div class="dropdown__head"><strong>Notifications</strong><span class="badge badge--danger">5 new</span></div>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: color-mix(in srgb, var(--rose) 13%, transparent); color: var(--rose)"><i class="ic i-alert"></i></span>
+                <span><p><b>HVAC Chiller-2</b> crossed 95% of rated load</p><small>2 min ago · Critical</small></span>
+              </a>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: color-mix(in srgb, var(--amber) 13%, transparent); color: var(--amber)"><i class="ic i-activity"></i></span>
+                <span><p>Power factor dropped to <b>0.86</b> on Main Incomer</p><small>18 min ago · Warning</small></span>
+              </a>
+              <a href="alerts.html" class="notif">
+                <span class="notif__icon" style="background: color-mix(in srgb, var(--cyan) 13%, transparent); color: var(--cyan)"><i class="ic i-wifi"></i></span>
+                <span><p>Sub-meter <b>SM-1004-02</b> went offline</p><small>42 min ago · Info</small></span>
+              </a>
+              <div class="dropdown__sep"></div>
+              <a href="alerts.html" class="dropdown__item" style="justify-content:center;color:var(--primary);font-weight:700">View all alerts</a>
+            </div>
+          </details>
+
+          <details class="dropdown">
+            <summary class="user-chip">
+              <span class="avatar av-1" data-bind="user.initials">VK</span>
+              <span class="user-chip__meta"><strong data-bind="user.first">Vijay</strong><small data-bind="user.role">Tenant Admin</small></span>
+              <i class="ic i-chev-down"></i>
+            </summary>
+            <div class="dropdown__panel">
+              <div class="dropdown__head" style="justify-content:flex-start;gap:12px">
+                <span class="avatar av-1" data-bind="user.initials">VK</span>
+                <span><strong data-bind="user.name">Vijay Kumar</strong><br /><small class="muted" data-bind="user.email">vijay@febinosolutions.com</small></span>
+              </div>
+              <div class="dropdown__sep"></div>
+              <a href="#profile" class="dropdown__item"><i class="ic i-user"></i> My profile</a>
+              <a href="#change-password" class="dropdown__item"><i class="ic i-key"></i> Change password</a>
+              <a href="#switch-org" class="dropdown__item"><i class="ic i-swap"></i> Switch organisation</a>
+              <a href="settings.html" class="dropdown__item"><i class="ic i-settings"></i> Settings</a>
+              <div class="dropdown__sep"></div>
+              <a href="#logout" class="dropdown__item dropdown__item--danger"><i class="ic i-logout"></i> Sign out</a>
+            </div>
+          </details>
+        </div>
+      </header>
+
+      <main class="page">
+        <section class="page-head">
+          <div>
+            <h1 class="page-title">Device <span class="gradient-text">Management</span></h1>
+            <p class="page-sub">Gateways, data loggers and IoT devices that collect readings from your energy meters. Meters and sub-meters are in <a href="meters.html" class="tc-primary">Energy Meters</a>.</p>
+          </div>
+          <div class="page-actions">
+            <a href="#close" class="btn btn--sm"><i class="ic i-download"></i> Export CSV</a>
+            <a href="#update-firmware" class="btn btn--sm btn--soft"><i class="ic i-upload"></i> Firmware updates</a>
+            <a href="#add-device" class="btn btn--sm btn--primary"><i class="ic i-plus"></i> Add device</a>
+          </div>
+        </section>
+
+        <section class="grid grid-4">
+          <div class="card stat"><span class="stat__icon" style="--c:var(--cyan)"><i class="ic i-cpu"></i></span><div><strong>6</strong><span>Devices</span></div></div>
+          <div class="card stat"><span class="stat__icon" style="--c:var(--green)"><i class="ic i-wifi"></i></span><div><strong>5 <small class="muted" style="font-size:13px">/ 6</small></strong><span>Online · good signal</span></div></div>
+          <div class="card stat"><span class="stat__icon" style="--c:var(--violet)"><i class="ic i-gauge"></i></span><div><strong>12</strong><span>Meters connected</span></div></div>
+          <div class="card stat"><span class="stat__icon" style="--c:var(--amber)"><i class="ic i-upload"></i></span><div><strong>2</strong><span>Firmware updates available</span></div></div>
+        </section>
+
+        <section class="card">
+          <div class="card__head">
+            <div><h3 class="card__title"><i class="ic i-cpu"></i> Devices</h3><p class="card__sub">Click <i class="ic i-chev-right"></i> to see the meters each device polls · status refreshes every 15 s</p></div>
+          </div>
+          <div class="toolbar">
+            <label class="search"><i class="ic i-search"></i><input type="search" placeholder="Search device name, ID or IP…" aria-label="Search devices" /></label>
+            <select class="input input--sm" aria-label="Site"><option>All sites</option><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option></select>
+            <select class="input input--sm" aria-label="Type"><option>All types</option><option>Modbus TCP gateway</option><option>Data logger</option><option>4G IoT edge device</option><option>Wireless gateway</option></select>
+            <select class="input input--sm" aria-label="Status"><option>Any status</option><option>Online</option><option>Weak signal</option><option>Offline</option></select>
+          </div>
+          <div class="table-wrap">
+            <table class="table table--tree">
+              <thead><tr><th style="width:56px"></th><th>Device / Meter</th><th>Location</th><th>Meters</th><th>Network</th><th>Signal</th><th>Firmware</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody class="device">
+  <tr class="device-row">
+    <td><input type="checkbox" class="tree-toggle" id="gw-01" checked aria-label="Show meters connected to Main LT Panel Gateway" /><label for="gw-01" class="expander" title="Show connected meters"><i class="ic i-chev-right"></i></label></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-cpu"></i></span><div><strong>Main LT Panel Gateway</strong><small>GW-01 · Moxa MGate MB3170</small></div></div></td>
+    <td>Main LT Panel<div class="small muted">Plant 1 · Bengaluru</div></td>
+    <td><label for="gw-01" class="count-pill" style="cursor:pointer"><i class="ic i-gauge"></i> 3 meters</label></td>
+    <td><span class="mono">192.168.1.21</span><div class="small muted">Modbus RTU → TCP</div></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:100%;--c:var(--green)"></span></div><small>100%</small></div><div class="small muted">Ethernet</div></td>
+    <td><span class="mono">3.2.1</span><div class="small muted" style="margin-top:4px">Up to date</div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">4 s ago</div></td>
+    <td><div class="actions"><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-gauge"></i></span><div><a href="meter.html?id=MTR-1001" class="row-link"><strong>Main Incomer</strong></a><small>MTR-1001</small></div></div></td>
+    <td class="small">↳ GW-01</td>
+    <td><span class="tag">Slave ID 1</span></td>
+    <td colspan="3" class="small muted">Polled every 15 s · register map from meter settings</td>
+    <td><span class="badge badge--success"><span class="dot"></span> Online</span></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1001" class="act act--view" title="Open meter dashboard"><i class="ic i-arrow-right"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-gauge"></i></span><div><a href="meter.html?id=MTR-1005" class="row-link"><strong>Lighting</strong></a><small>MTR-1005</small></div></div></td>
+    <td class="small">↳ GW-01</td>
+    <td><span class="tag">Slave ID 2</span></td>
+    <td colspan="3" class="small muted">Polled every 15 s · register map from meter settings</td>
+    <td><span class="badge badge--success"><span class="dot"></span> Online</span></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1005" class="act act--view" title="Open meter dashboard"><i class="ic i-arrow-right"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-gauge"></i></span><div><a href="meter.html?id=MTR-1012" class="row-link"><strong>Paint Shop</strong></a><small>MTR-1012</small></div></div></td>
+    <td class="small">↳ GW-01</td>
+    <td><span class="tag">Slave ID 3</span></td>
+    <td colspan="3" class="small muted">Polled every 15 s · register map from meter settings</td>
+    <td><span class="badge badge--violet"><span class="dot"></span> Maintenance</span></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1012" class="act act--view" title="Open meter dashboard"><i class="ic i-arrow-right"></i></a></div></td>
+  </tr>
+</tbody>
+<tbody class="device">
+  <tr class="device-row">
+    <td><input type="checkbox" class="tree-toggle" id="gw-02" aria-label="Show meters connected to Utility Block Data Logger" /><label for="gw-02" class="expander" title="Show connected meters"><i class="ic i-chev-right"></i></label></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--violet)"><i class="ic i-layers"></i></span><div><strong>Utility Block Data Logger</strong><small>GW-02 · Elmeasure Edge-Logger ELG-4G</small></div></div></td>
+    <td>Utility Block<div class="small muted">Plant 1 · Bengaluru</div></td>
+    <td><label for="gw-02" class="count-pill" style="cursor:pointer"><i class="ic i-gauge"></i> 3 meters</label></td>
+    <td><span class="mono">192.168.1.40</span><div class="small muted">Modbus RTU</div></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:100%;--c:var(--green)"></span></div><small>100%</small></div><div class="small muted">Ethernet</div></td>
+    <td><span class="mono">2.8.0</span><div><a href="#update-firmware" class="badge badge--blue" style="margin-top:4px"><i class="ic i-upload"></i> 2.9.1 available</a></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">6 s ago</div></td>
+    <td><div class="actions"><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-gauge"></i></span><div><a href="meter.html?id=MTR-1002" class="row-link"><strong>HVAC</strong></a><small>MTR-1002</small></div></div></td>
+    <td class="small">↳ GW-02</td>
+    <td><span class="tag">Slave ID 1</span></td>
+    <td colspan="3" class="small muted">Polled every 15 s · register map from meter settings</td>
+    <td><span class="badge badge--success"><span class="dot"></span> Online</span></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1002" class="act act--view" title="Open meter dashboard"><i class="ic i-arrow-right"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-gauge"></i></span><div><a href="meter.html?id=MTR-1006" class="row-link"><strong>Compressor House</strong></a><small>MTR-1006</small></div></div></td>
+    <td class="small">↳ GW-02</td>
+    <td><span class="tag">Slave ID 2</span></td>
+    <td colspan="3" class="small muted">Polled every 15 s · register map from meter settings</td>
+    <td><span class="badge badge--danger"><span class="dot"></span> Offline</span></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1006" class="act act--view" title="Open meter dashboard"><i class="ic i-arrow-right"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-gauge"></i></span><div><a href="meter.html?id=MTR-1009" class="row-link"><strong>Water Pumps</strong></a><small>MTR-1009</small></div></div></td>
+    <td class="small">↳ GW-02</td>
+    <td><span class="tag">Slave ID 3</span></td>
+    <td colspan="3" class="small muted">Polled every 15 s · register map from meter settings</td>
+    <td><span class="badge badge--success"><span class="dot"></span> Online</span></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1009" class="act act--view" title="Open meter dashboard"><i class="ic i-arrow-right"></i></a></div></td>
+  </tr>
+</tbody>
+<tbody class="device">
+  <tr class="device-row">
+    <td><input type="checkbox" class="tree-toggle" id="gw-03" aria-label="Show meters connected to Admin Block Gateway" /><label for="gw-03" class="expander" title="Show connected meters"><i class="ic i-chev-right"></i></label></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-cpu"></i></span><div><strong>Admin Block Gateway</strong><small>GW-03 · Schneider Com'X 510</small></div></div></td>
+    <td>Admin Building<div class="small muted">Plant 1 · Bengaluru</div></td>
+    <td><label for="gw-03" class="count-pill" style="cursor:pointer"><i class="ic i-gauge"></i> 2 meters</label></td>
+    <td><span class="mono">192.168.2.15</span><div class="small muted">Modbus TCP</div></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:100%;--c:var(--green)"></span></div><small>100%</small></div><div class="small muted">Ethernet</div></td>
+    <td><span class="mono">6.4.2</span><div class="small muted" style="margin-top:4px">Up to date</div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">9 s ago</div></td>
+    <td><div class="actions"><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-gauge"></i></span><div><a href="meter.html?id=MTR-1003" class="row-link"><strong>Office</strong></a><small>MTR-1003</small></div></div></td>
+    <td class="small">↳ GW-03</td>
+    <td><span class="tag">Slave ID 1</span></td>
+    <td colspan="3" class="small muted">Polled every 15 s · register map from meter settings</td>
+    <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1003" class="act act--view" title="Open meter dashboard"><i class="ic i-arrow-right"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-gauge"></i></span><div><a href="meter.html?id=MTR-1010" class="row-link"><strong>Canteen</strong></a><small>MTR-1010</small></div></div></td>
+    <td class="small">↳ GW-03</td>
+    <td><span class="tag">Slave ID 2</span></td>
+    <td colspan="3" class="small muted">Polled every 15 s · register map from meter settings</td>
+    <td><span class="badge badge--success"><span class="dot"></span> Online</span></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1010" class="act act--view" title="Open meter dashboard"><i class="ic i-arrow-right"></i></a></div></td>
+  </tr>
+</tbody>
+<tbody class="device">
+  <tr class="device-row">
+    <td><input type="checkbox" class="tree-toggle" id="gw-04" aria-label="Show meters connected to Server Room Gateway" /><label for="gw-04" class="expander" title="Show connected meters"><i class="ic i-chev-right"></i></label></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-cpu"></i></span><div><strong>Server Room Gateway</strong><small>GW-04 · Schneider Link150</small></div></div></td>
+    <td>Server Room · L2<div class="small muted">Plant 1 · Bengaluru</div></td>
+    <td><label for="gw-04" class="count-pill" style="cursor:pointer"><i class="ic i-gauge"></i> 1 meter</label></td>
+    <td><span class="mono">192.168.3.10</span><div class="small muted">Modbus TCP</div></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:100%;--c:var(--green)"></span></div><small>100%</small></div><div class="small muted">Ethernet</div></td>
+    <td><span class="mono">4.1.0</span><div class="small muted" style="margin-top:4px">Up to date</div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">3 s ago</div></td>
+    <td><div class="actions"><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-gauge"></i></span><div><a href="meter.html?id=MTR-1004" class="row-link"><strong>Data Centre</strong></a><small>MTR-1004</small></div></div></td>
+    <td class="small">↳ GW-04</td>
+    <td><span class="tag">Slave ID 1</span></td>
+    <td colspan="3" class="small muted">Polled every 15 s · register map from meter settings</td>
+    <td><span class="badge badge--success"><span class="dot"></span> Online</span></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1004" class="act act--view" title="Open meter dashboard"><i class="ic i-arrow-right"></i></a></div></td>
+  </tr>
+</tbody>
+<tbody class="device">
+  <tr class="device-row">
+    <td><input type="checkbox" class="tree-toggle" id="gw-05" aria-label="Show meters connected to Rooftop Solar Edge Device" /><label for="gw-05" class="expander" title="Show connected meters"><i class="ic i-chev-right"></i></label></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--blue)"><i class="ic i-wifi"></i></span><div><strong>Rooftop Solar Edge Device</strong><small>GW-05 · Teltonika TRB245</small></div></div></td>
+    <td>Roof · Block A<div class="small muted">Plant 1 · Bengaluru</div></td>
+    <td><label for="gw-05" class="count-pill" style="cursor:pointer"><i class="ic i-gauge"></i> 1 meter</label></td>
+    <td><span class="mono">10.64.12.8</span><div class="small muted">MQTT over 4G</div></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:64%;--c:var(--amber)"></span></div><small>64%</small></div><div class="small muted">4G LTE</div></td>
+    <td><span class="mono">7.06</span><div><a href="#update-firmware" class="badge badge--blue" style="margin-top:4px"><i class="ic i-upload"></i> 7.08 available</a></div></td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">12 s ago</div></td>
+    <td><div class="actions"><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-gauge"></i></span><div><a href="meter.html?id=MTR-1007" class="row-link"><strong>Rooftop Solar</strong></a><small>MTR-1007</small></div></div></td>
+    <td class="small">↳ GW-05</td>
+    <td><span class="tag">Slave ID 1</span></td>
+    <td colspan="3" class="small muted">Polled every 15 s · register map from meter settings</td>
+    <td><span class="badge badge--blue"><span class="dot"></span> Generating</span></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1007" class="act act--view" title="Open meter dashboard"><i class="ic i-arrow-right"></i></a></div></td>
+  </tr>
+</tbody>
+<tbody class="device">
+  <tr class="device-row">
+    <td><input type="checkbox" class="tree-toggle" id="gw-06" aria-label="Show meters connected to DG & EV Yard Gateway" /><label for="gw-06" class="expander" title="Show connected meters"><i class="ic i-chev-right"></i></label></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--amber)"><i class="ic i-wifi"></i></span><div><strong>DG & EV Yard Gateway</strong><small>GW-06 · Milesight UG65</small></div></div></td>
+    <td>DG Yard<div class="small muted">Plant 1 · Bengaluru</div></td>
+    <td><label for="gw-06" class="count-pill" style="cursor:pointer"><i class="ic i-gauge"></i> 2 meters</label></td>
+    <td><span class="mono">192.168.1.60</span><div class="small muted">LoRaWAN → MQTT</div></td>
+    <td><div class="bar-cell"><div class="bar"><span style="--w:31%;--c:var(--rose)"></span></div><small>31%</small></div><div class="small muted">Wi-Fi</div></td>
+    <td><span class="mono">60.0.0.41</span><div class="small muted" style="margin-top:4px">Up to date</div></td>
+    <td><span class="badge badge--warn"><span class="dot"></span> Weak signal</span><div class="small muted" style="margin-top:4px">2 min ago</div></td>
+    <td><div class="actions"><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-gauge"></i></span><div><a href="meter.html?id=MTR-1008" class="row-link"><strong>DG Set 1</strong></a><small>MTR-1008</small></div></div></td>
+    <td class="small">↳ GW-06</td>
+    <td><span class="tag">Slave ID 1</span></td>
+    <td colspan="3" class="small muted">Polled every 15 s · register map from meter settings</td>
+    <td><span class="badge badge--info"><span class="dot"></span> Standby</span></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1008" class="act act--view" title="Open meter dashboard"><i class="ic i-arrow-right"></i></a></div></td>
+  </tr>
+  <tr class="sub-row">
+    <td></td>
+    <td><div class="cell-device"><span class="dev-icon"><i class="ic i-gauge"></i></span><div><a href="meter.html?id=MTR-1011" class="row-link"><strong>EV Charging</strong></a><small>MTR-1011</small></div></div></td>
+    <td class="small">↳ GW-06</td>
+    <td><span class="tag">Slave ID 2</span></td>
+    <td colspan="3" class="small muted">Polled every 15 s · register map from meter settings</td>
+    <td><span class="badge badge--success"><span class="dot"></span> Online</span></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1011" class="act act--view" title="Open meter dashboard"><i class="ic i-arrow-right"></i></a></div></td>
+  </tr>
+</tbody>
+            </table>
+          </div>
+          <div class="pager"><div class="pager__info">Showing <strong>1–6</strong> of <strong>6</strong> devices</div></div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>© 2026 Energy Dashboard · Tenant <span class="mono" data-bind="org.id">FEBINO</span></span>
+        <span>Data refreshed every 15 s · IST (UTC+05:30)</span>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ================= SHARED MODALS ================= -->
+  <div class="modal" id="profile" role="dialog" aria-modal="true" aria-labelledby="profile-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog">
+      <div class="modal__head">
+        <span class="modal__icon"><i class="ic i-user"></i></span>
+        <div><h3 id="profile-title">My profile</h3><p>Your personal details in this organisation.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body">
+        <div class="row" style="gap:16px;margin-bottom:20px">
+          <span class="avatar avatar--lg av-1" data-bind="user.initials">VK</span>
+          <div>
+            <strong style="font-size:17px" data-bind="user.name">Vijay Kumar</strong>
+            <div class="small muted"><span data-bind="user.role">Tenant Admin</span> · Member since <span data-bind="user.since">Jan 2026</span></div>
+            <label class="btn btn--sm" style="margin-top:8px"><i class="ic i-upload"></i> Change photo<input type="file" accept="image/*" hidden /></label>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label for="pf-first">First name <span class="req">*</span></label><input id="pf-first" class="input" required autocomplete="given-name" /></div>
+          <div class="field"><label for="pf-last">Last name</label><input id="pf-last" class="input" autocomplete="family-name" /></div>
+          <div class="field"><label for="pf-email">Email <span class="req">*</span></label><input id="pf-email" class="input" type="email" required autocomplete="email" /></div>
+          <div class="field"><label for="pf-mobile">Phone</label><input id="pf-mobile" class="input" type="tel" pattern="[+0-9 ()-]{10,18}" title="10-digit mobile number, optionally with country code" autocomplete="tel" /></div>
+          <div class="field"><label>Language</label><select class="input"><option>English (India)</option><option>हिन्दी</option><option>தமிழ்</option></select></div>
+          <div class="field"><label>Time zone</label><select class="input"><option>Asia/Kolkata (UTC+05:30)</option><option>Asia/Dubai (UTC+04:00)</option></select></div>
+        </div>
+      </div>
+      <div class="modal__foot">
+        <a href="#close" class="btn btn--ghost">Cancel</a>
+        <a href="#saved" class="btn btn--primary" data-save-profile><i class="ic i-check"></i> Save profile</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="change-password" role="dialog" aria-modal="true" aria-labelledby="cp-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="modal__head">
+        <span class="modal__icon modal__icon--violet"><i class="ic i-key"></i></span>
+        <div><h3 id="cp-title">Change password</h3><p>You'll use it the next time you sign in.</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body" style="display:grid;gap:16px">
+        <div class="field"><label for="cp-current">Current password</label><div class="input-icon"><i class="ic i-lock"></i><input id="cp-current" class="input" type="password" placeholder="••••••••" required autocomplete="current-password" /></div></div>
+        <div class="field pw-field"><label for="cp-new">New password</label>
+          <div class="input-icon"><i class="ic i-key"></i><input id="cp-new" class="input" type="password" placeholder=" " required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="At least 8 characters with an uppercase letter, a lowercase letter and a number" autocomplete="new-password" /></div>
+          <div class="strength"><span></span><span></span><span></span><span></span></div>
+          <span class="hint hint--rule">8+ characters with upper- and lowercase letters and a number</span>
+          <span class="hint hint--ok">Strong password ✓</span>
+        </div>
+        <div class="field"><label for="cp-confirm">Confirm new password</label><div class="input-icon"><i class="ic i-key"></i><input id="cp-confirm" class="input" type="password" placeholder="••••••••" required autocomplete="new-password" /></div></div>
+      </div>
+      <div class="modal__foot">
+        <a href="#close" class="btn btn--ghost">Cancel</a>
+        <a href="#saved" class="btn btn--primary" data-change-password>Update password</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="switch-org" role="dialog" aria-modal="true" aria-labelledby="so-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="modal__head">
+        <span class="modal__icon modal__icon--cyan"><i class="ic i-building"></i></span>
+        <div><h3 id="so-title">Switch organisation</h3><p data-bind="org.count">Organisations you belong to</p></div>
+        <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+      </div>
+      <div class="modal__body" style="display:grid;gap:10px">
+        <div data-org-switch style="display:grid;gap:10px"></div>
+      </div>
+      <div class="modal__foot">
+        <a href="register.html" class="btn btn--ghost left"><i class="ic i-plus"></i> New tenant</a>
+        <a href="dashboard.html" class="btn btn--primary" data-switch-org>Switch</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal modal--danger" id="logout" role="dialog" aria-modal="true" aria-labelledby="lo-title">
+    <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+    <div class="modal__dialog modal__dialog--sm">
+      <div class="confirm">
+        <span class="modal__icon modal__icon--rose"><i class="ic i-logout"></i></span>
+        <h3 id="lo-title">Sign out?</h3>
+        <p>You'll need your Organisation ID and password to sign in again.</p>
+      </div>
+      <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+        <a href="#close" class="btn">Stay signed in</a>
+        <a href="login.html?signedout=1" class="btn btn--danger" data-signout><i class="ic i-logout"></i> Sign out</a>
+      </div>
+    </div>
+  </div>
+
+    <div class="modal" id="add-device" role="dialog" aria-modal="true" aria-labelledby="add-device-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--lg">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--cyan"><i class="ic i-cpu"></i></span>
+      <div><h3 id="add-device-t">Add device</h3><p>Register a gateway, data logger or IoT device. Then link meters to it from Energy Meters.</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-section">Device</div>
+      <div class="form-grid form-grid--3">
+        <div class="field"><label>Device name <span class="req">*</span></label><input class="input" placeholder="e.g. Block C Gateway" /></div>
+        <div class="field"><label>Device ID</label><input class="input mono" value="GW-07" /></div>
+        <div class="field"><label>Device type</label><select class="input"><option>Modbus TCP gateway</option><option>Data logger</option><option>4G IoT edge device</option><option>Wireless (LoRaWAN) gateway</option></select></div>
+        <div class="field"><label>Make &amp; model</label><input class="input" placeholder="Moxa MGate MB3170" /></div>
+        <div class="field"><label>Serial number</label><input class="input mono" placeholder="TAGBB1054321" /></div>
+        <div class="field"><label>Site</label><select class="input"><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option></select></div>
+        <div class="field full"><label>Installed at</label><input class="input" placeholder="e.g. Block C · Panel room" /></div>
+      </div>
+      <div class="form-section" style="margin-top:18px">Network &amp; protocol</div>
+      <div class="form-grid form-grid--3">
+        <div class="field"><label>Connectivity</label><select class="input"><option>Ethernet</option><option>Wi-Fi</option><option>4G LTE</option></select></div>
+        <div class="field"><label>IP address</label><input class="input mono" placeholder="192.168.1.70" /></div>
+        <div class="field"><label>Port</label><input class="input mono" value="502" /></div>
+        <div class="field"><label>Field protocol</label><select class="input"><option>Modbus RTU (RS-485)</option><option>Modbus TCP</option><option>LoRaWAN</option></select></div>
+        <div class="field"><label>Uplink</label><select class="input"><option>Modbus TCP (polled)</option><option>MQTT (push)</option><option>HTTPS (push)</option></select></div>
+        <div class="field"><label>Polling interval</label><select class="input"><option>15 s</option><option>30 s</option><option>1 min</option><option>5 min</option></select></div>
+        <div class="field"><label>RS-485 baud rate</label><select class="input"><option>9600</option><option>19200</option><option>38400</option></select></div>
+        <div class="field"><label>Time sync</label><select class="input"><option>NTP · pool.ntp.org</option><option>Server time</option></select></div>
+        <label class="switch" style="align-self:end"><input type="checkbox" checked /> Alert me if the device goes offline</label>
+      </div>
+      <p class="hint" style="margin-top:14px">Every meter must report through a device — meters are linked from <a href="meters.html" class="tc-primary">Energy Meters</a> (Reports via device).</p>
+    </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#created" class="btn btn--primary"><i class="ic i-check"></i> Add device</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal" id="edit-device" role="dialog" aria-modal="true" aria-labelledby="edit-device-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--lg">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--cyan"><i class="ic i-edit"></i></span>
+      <div><h3 id="edit-device-t">Edit device</h3><p>Main LT Panel Gateway · GW-01 · 3 meters</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-section">Device</div>
+      <div class="form-grid form-grid--3">
+        <div class="field"><label>Device name <span class="req">*</span></label><input class="input" value="Main LT Panel Gateway" /></div>
+        <div class="field"><label>Device ID</label><input class="input mono" value="GW-01" readonly /></div>
+        <div class="field"><label>Device type</label><select class="input"><option selected>Modbus TCP gateway</option><option>Data logger</option><option>4G IoT edge device</option><option>Wireless (LoRaWAN) gateway</option></select></div>
+        <div class="field"><label>Make &amp; model</label><input class="input" value="Moxa MGate MB3170" /></div>
+        <div class="field"><label>Serial number</label><input class="input mono" value="TAGBB1054321" /></div>
+        <div class="field"><label>Site</label><select class="input"><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option></select></div>
+        <div class="field full"><label>Installed at</label><input class="input" value="Main LT Panel" /></div>
+      </div>
+      <div class="form-section" style="margin-top:18px">Network &amp; protocol</div>
+      <div class="form-grid form-grid--3">
+        <div class="field"><label>Connectivity</label><select class="input"><option selected>Ethernet</option><option>Wi-Fi</option><option>4G LTE</option></select></div>
+        <div class="field"><label>IP address</label><input class="input mono" value="192.168.1.21" /></div>
+        <div class="field"><label>Port</label><input class="input mono" value="502" /></div>
+        <div class="field"><label>Field protocol</label><select class="input"><option>Modbus RTU (RS-485)</option><option>Modbus TCP</option><option>LoRaWAN</option></select></div>
+        <div class="field"><label>Uplink</label><select class="input"><option>Modbus TCP (polled)</option><option>MQTT (push)</option><option>HTTPS (push)</option></select></div>
+        <div class="field"><label>Polling interval</label><select class="input"><option>15 s</option><option>30 s</option><option>1 min</option><option>5 min</option></select></div>
+        <div class="field"><label>RS-485 baud rate</label><select class="input"><option>9600</option><option>19200</option><option>38400</option></select></div>
+        <div class="field"><label>Time sync</label><select class="input"><option>NTP · pool.ntp.org</option><option>Server time</option></select></div>
+        <label class="switch" style="align-self:end"><input type="checkbox" checked /> Alert me if the device goes offline</label>
+      </div>
+      <p class="hint" style="margin-top:14px">Meters are linked to a device from <a href="meters.html" class="tc-primary">Energy Meters</a> (Reports via device).</p>
+    </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save device</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal" id="update-firmware" role="dialog" aria-modal="true" aria-labelledby="update-firmware-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--violet"><i class="ic i-upload"></i></span>
+      <div><h3 id="update-firmware-t">Firmware updates</h3><p>2 devices have a newer firmware version.</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="list">
+        <div class="list__item"><span class="icon-tile icon-tile--violet"><i class="ic i-layers"></i></span><span class="grow"><strong>Utility Block Data Logger · GW-02</strong><small class="mono">2.8.0 → 2.9.1 · Modbus timeout fixes</small></span><label class="check"><input type="checkbox" checked /> Update</label></div>
+        <div class="list__item"><span class="icon-tile"><i class="ic i-wifi"></i></span><span class="grow"><strong>Rooftop Solar Edge Device · GW-05</strong><small class="mono">7.06 → 7.08 · LTE stability</small></span><label class="check"><input type="checkbox" checked /> Update</label></div>
+      </div>
+      <div class="callout callout--warn" style="margin-top:16px"><i class="ic i-alert"></i><span>Each device restarts after updating. Its meters stop reporting for about 2 minutes; readings are buffered and back-filled.</span></div>
+    </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Later</a>
+      <a href="#saved" class="btn btn--primary"><i class="ic i-upload"></i> Update selected</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal" id="reboot-device" role="dialog" aria-modal="true" aria-labelledby="reboot-device-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--sm">
+    <div class="confirm">
+      <span class="modal__icon modal__icon--cyan"><i class="ic i-refresh"></i></span>
+      <h3 id="reboot-device-t">Restart device?</h3>
+      <p>The device restarts and its meters stop reporting for about a minute. Buffered readings are back-filled.</p>
+    </div>
+    <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+      <a href="#close" class="btn">Cancel</a>
+      <a href="#saved" class="btn btn--primary"><i class="ic i-refresh"></i> Restart</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal modal--danger" id="delete-device" role="dialog" aria-modal="true" aria-labelledby="delete-device-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--sm">
+    <div class="confirm">
+      <span class="modal__icon modal__icon--rose"><i class="ic i-trash"></i></span>
+      <h3 id="delete-device-t">Delete device?</h3>
+      <p>Every meter must stay connected to a device. Choose where this device's meters move before deleting it.</p>
+      <label class="field" style="margin-top:14px;text-align:left"><span class="label">Move its meters to <span class="req">*</span></span><select class="input"><option value="">Select a device…</option><option>GW-01 · Main LT Panel Gateway</option><option>GW-02 · Utility Block Data Logger</option><option>GW-03 · Admin Block Gateway</option><option>GW-04 · Server Room Gateway</option><option>GW-05 · Rooftop Solar Edge Device</option><option>GW-06 · DG &amp; EV Yard Gateway</option></select></label>
+    </div>
+    <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
+      <a href="#close" class="btn">Cancel</a>
+      <a href="#deleted" class="btn btn--danger"><i class="ic i-trash"></i> Move meters &amp; delete</a>
+    </div>
+  </div>
+</div>
+
+
+  <!-- ================= TOASTS ================= -->
+  <div class="toast" id="saved" role="status"><span class="toast__icon"><i class="ic i-check"></i></span><div><strong>Changes saved</strong><span>Your updates were saved successfully.</span></div></div>
+  <div class="toast" id="created" role="status"><span class="toast__icon"><i class="ic i-plus"></i></span><div><strong>Record created</strong><span>The new record has been added.</span></div></div>
+  <div class="toast" id="invited" role="status"><span class="toast__icon"><i class="ic i-send"></i></span><div><strong>Invitation sent</strong><span>An invite email is on its way.</span></div></div>
+  <div class="toast toast--danger" id="deleted" role="status"><span class="toast__icon"><i class="ic i-trash"></i></span><div><strong>Record deleted</strong><span>The item was removed permanently.</span></div></div>
+</body>
+</html>

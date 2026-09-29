@@ -153,6 +153,25 @@
       if (q[toasts[t].getAttribute("data-flow-toast")] !== undefined) toasts[t].classList.add("is-shown");
     }
 
+    // ---------- Prefill a dialog from the clicked link: data-prefill='{"element-id":"value"}' ----------
+    // Inputs/selects get the value; any other element gets it as text (e.g. a dialog subtitle).
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest("[data-prefill]");
+      if (!a) return;
+      var map;
+      try { map = JSON.parse(a.getAttribute("data-prefill")); } catch (err) { return; }
+      for (var id in map) {
+        var el = document.getElementById(id);
+        if (!el) continue;
+        if (/^(INPUT|SELECT|TEXTAREA)$/.test(el.tagName)) el.value = map[id];
+        else el.textContent = map[id];
+      }
+    });
+
+    // Alerts opened from a meter dashboard (alerts.html?target=MTR-1001#add-rule): pre-select that meter
+    var ruleTarget = document.getElementById("rule-target");
+    if (ruleTarget && q.target) ruleTarget.value = q.target.toUpperCase();
+
     // ---------- Show / hide password: <button data-pw-toggle="input-id"> ----------
     document.addEventListener("click", function (e) {
       var b = e.target.closest && e.target.closest("[data-pw-toggle]");
