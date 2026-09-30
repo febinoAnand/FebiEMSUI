@@ -81,7 +81,7 @@
   // Only same-site app pages are valid redirect targets (prevents open redirects via ?next=)
   function safeNext(n) {
     if (!n || !/^[a-z-]+\.html(?:[?#][^\s]*)?$/i.test(n)) return null;
-    return /^(login|login-approval|admin-login|register|register-success|verify-email|awaiting-approval|forgot-password|accept-invite|tenant-approvals|index)\.html/i.test(n) ? null : n;
+    return /^(login|login-approval|admin-login|register|register-success|verify-email|awaiting-approval|forgot-password|accept-invite|tenant-approvals|tenants|tenant|index)\.html/i.test(n) ? null : n;
   }
   function here() {
     return (location.pathname.split("/").pop() || "dashboard.html") + location.search + location.hash;
@@ -171,6 +171,14 @@
     // Alerts opened from a meter dashboard (alerts.html?target=MTR-1001#add-rule): pre-select that meter
     var ruleTarget = document.getElementById("rule-target");
     if (ruleTarget && q.target) ruleTarget.value = q.target.toUpperCase();
+
+    // ---------- Dropdown that drives CSS radio tabs: <select data-tab-select="mx"> checks #mx-<value> ----------
+    document.addEventListener("change", function (e) {
+      var sel = e.target;
+      if (!sel.hasAttribute || !sel.hasAttribute("data-tab-select")) return;
+      var radio = document.getElementById(sel.getAttribute("data-tab-select") + "-" + sel.value);
+      if (radio) radio.checked = true;
+    });
 
     // ---------- Show / hide password: <button data-pw-toggle="input-id"> ----------
     document.addEventListener("click", function (e) {

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shifts · Energy Dashboard</title>
+  <title>Shift Schedule · Energy Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
@@ -46,8 +46,8 @@
         <a href="alerts.html" class="nav__link"><i class="ic i-bell"></i><span>Alerts</span><em class="nav__badge">5</em></a>
 
         <div class="nav__section">Shift management</div>
-        <a href="shifts.html" class="nav__link is-active"><i class="ic i-clock"></i><span>Shift</span></a>
-        <a href="shift-schedule.html" class="nav__link"><i class="ic i-calendar"></i><span>Schedule</span></a>
+        <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift</span></a>
+        <a href="shift-schedule.html" class="nav__link is-active"><i class="ic i-calendar"></i><span>Schedule</span></a>
         <a href="shift-instances.html" class="nav__link"><i class="ic i-chart"></i><span>Instance</span></a>
 
         <div class="nav__section">Administration</div>
@@ -76,7 +76,7 @@
 
         <div class="topbar__crumbs">
           <small><span data-bind="org.short">Febino Solutions</span> / Shift management</small>
-          <strong>Shift</strong>
+          <strong>Schedule</strong>
         </div>
 
         <label class="search">
@@ -147,111 +147,130 @@
       <main class="page">
         <section class="page-head">
           <div>
-            <h1 class="page-title">Shift <span class="gradient-text">Definitions</span></h1>
-            <p class="page-sub">Define shift timings, working days and supervisors.</p>
+            <h1 class="page-title">Shift <span class="gradient-text">Schedule</span></h1>
+            <p class="page-sub">Plan when and where each shift runs, and assign staff to it.</p>
           </div>
           <div class="page-actions">
-            <a href="#add-shift" class="btn btn--sm btn--primary" data-limit="shifts"><i class="ic i-plus"></i> New shift</a>
+            <select class="input input--sm" style="width:auto" aria-label="Week"><option>Week 39 · Sep 21 – 27</option><option>Week 40 · Sep 28 – Oct 4</option></select>
+            <a href="#assign-shift" class="btn btn--sm btn--soft"><i class="ic i-user-plus"></i> Assign staff</a>
+            <a href="#add-schedule" class="btn btn--sm btn--primary" data-limit="schedules"><i class="ic i-plus"></i> New schedule</a>
           </div>
         </section>
 
         <section class="grid grid-4">
-          <article class="card stat" style="padding:18px 20px">
-            <div class="progress-ring" style="--v:25;--c:var(--orange)"></div>
-            <div><span>Current shift</span><strong style="font-size:17px;font-family:var(--font)">Shift B · Evening</strong><span class="mono">2 h of 8 h elapsed</span></div>
-          </article>
-          <div class="card stat"><span class="stat__icon" style="--c:var(--amber)"><i class="ic i-users"></i></span><div><strong>12</strong><span>Staff on shift now</span></div></div>
-          <div class="card stat"><span class="stat__icon" style="--c:var(--violet)"><i class="ic i-clock"></i></span><div><strong>7</strong><span>Shifts defined · 5 active</span></div></div>
-          <div class="card stat"><span class="stat__icon"><i class="ic i-bolt"></i></span><div><strong>0.84 <small class="muted" style="font-size:13px">kWh/unit</small></strong><span>Shift A efficiency · best this week</span></div></div>
+          <div class="card stat"><span class="stat__icon" style="--c:var(--green)"><i class="ic i-calendar"></i></span><div><strong>4</strong><span>Active schedules</span></div></div>
+          <div class="card stat"><span class="stat__icon" style="--c:var(--cyan)"><i class="ic i-clock"></i></span><div><strong>2</strong><span>Starting Oct 01</span></div></div>
+          <div class="card stat"><span class="stat__icon" style="--c:var(--amber)"><i class="ic i-users"></i></span><div><strong>45</strong><span>Staff scheduled this week</span></div></div>
+          <div class="card stat"><span class="stat__icon" style="--c:var(--rose)"><i class="ic i-alert"></i></span><div><strong>1</strong><span>Unstaffed slot · Sun, Shift C</span></div></div>
+        </section>
+
+        <section class="card">
+          <div class="card__head">
+            <div><h3 class="card__title"><i class="ic i-calendar"></i> Today's shift timeline</h3><p class="card__sub">Saturday, Sep 27 · 24-hour view</p></div>
+            <div class="legend"><span><i style="--c:var(--amber)"></i> A</span><span><i style="--c:var(--orange)"></i> B</span><span><i style="--c:var(--violet)"></i> C</span><span><i style="--c:var(--cyan)"></i> General</span></div>
+          </div>
+          <div class="card__body">
+            <div class="timeline-24">
+              <div class="timeline-24__track">
+                <div class="timeline-24__lane" style="top:12px">
+                  <div class="timeline-24__block" style="--c:var(--violet);--s:0%;--w:25%">C <small>→ 06:00</small></div>
+                  <div class="timeline-24__block" style="--c:var(--amber);--s:25%;--w:33.33%;animation-delay:.1s">Shift A · Morning <small>06:00–14:00 · 14 staff</small></div>
+                  <div class="timeline-24__block" style="--c:var(--orange);--s:58.33%;--w:33.33%;animation-delay:.2s">Shift B · Evening <small>14:00–22:00 · 12 staff</small></div>
+                  <div class="timeline-24__block" style="--c:var(--violet);--s:91.66%;--w:8.34%;animation-delay:.3s">C</div>
+                </div>
+                <div class="timeline-24__lane" style="top:58px">
+                  <div class="timeline-24__block" style="--c:var(--cyan);--s:39.58%;--w:37.5%;animation-delay:.25s">General <small>09:30–18:30 · 11 staff</small></div>
+                </div>
+                <div class="timeline-24__lane" style="top:104px">
+                  <div class="timeline-24__block" style="--c:var(--slate);--s:33.33%;--w:33.33%;animation-delay:.35s">Weekend Maintenance <small>08:00–16:00 · 5 staff</small></div>
+                </div>
+                <div class="timeline-24__now" style="--at:66.66%"></div>
+              </div>
+              <div class="timeline-24__scale"><span>00</span><span>03</span><span>06</span><span>09</span><span>12</span><span>15</span><span>18</span><span>21</span><span>24</span></div>
+            </div>
+          </div>
         </section>
 
         <section class="card paged">
-          <input type="radio" class="pg-input" name="sh-pg" id="sh-p1" value="1" checked aria-label="Page 1" />
-<input type="radio" class="pg-input" name="sh-pg" id="sh-p2" value="2" aria-label="Page 2" />
-          <div class="card__head"><div><h3 class="card__title"><i class="ic i-clock"></i> Shifts</h3><p class="card__sub">Used by schedules and shift-wise energy reports</p></div><a href="#add-shift" class="btn btn--sm btn--soft" data-limit="shifts"><i class="ic i-plus"></i> New shift</a></div>
+          <input type="radio" class="pg-input" name="sc-pg" id="sc-p1" value="1" checked aria-label="Page 1" />
+<input type="radio" class="pg-input" name="sc-pg" id="sc-p2" value="2" aria-label="Page 2" />
+          <div class="card__head"><div><h3 class="card__title"><i class="ic i-calendar"></i> Schedules</h3><p class="card__sub">When each shift runs, where, and for how long</p></div><a href="#add-schedule" class="btn btn--sm btn--soft" data-limit="schedules"><i class="ic i-plus"></i> New schedule</a></div>
           <div class="table-wrap">
             <table class="table">
-              <thead><tr><th>Shift</th><th>Timing</th><th>Duration</th><th>Working days</th><th>Supervisor</th><th class="num">Staff</th><th>Status</th><th>Actions</th></tr></thead>
+              <thead><tr><th>Schedule</th><th>Shift</th><th>Repeats</th><th>Effective</th><th class="num">Staff</th><th>Status</th><th>Actions</th></tr></thead>
 <tbody data-page="1">
   <tr>
-    <td><div class="cell-user"><span class="shift-pill shift--a" style="width:36px;height:36px;justify-content:center;padding:0"><i class="ic i-sun"></i></span><div><strong>Shift A · Morning</strong><small class="mono">SH-A</small></div></div></td>
-    <td class="mono nowrap">06:00 – 14:00</td>
-    <td class="small">8 h · break 30 min</td>
+    <td><div><strong>Production weekdays</strong><br /><small class="muted"><span class="mono">SC-01</span> · Plant 1 · Bengaluru</small></div></td>
+    <td><span class="shift-pill shift--a"><i class="ic i-sun"></i> Shift A · Morning</span></td>
     <td><div class="day-dots"><span class="on">M</span><span class="on">T</span><span class="on">W</span><span class="on">T</span><span class="on">F</span><span class="on">S</span><span class="">S</span></div></td>
-    <td>Meera Iyer</td>
+    <td class="small nowrap">Sep 01, 2026<br /><span class="muted">until Mar 31, 2027</span></td>
     <td class="num">14</td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
-    <td><div class="actions"><a href="#edit-shift" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-shift" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="#edit-schedule" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-schedule" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr>
-    <td><div class="cell-user"><span class="shift-pill shift--b" style="width:36px;height:36px;justify-content:center;padding:0"><i class="ic i-sunset"></i></span><div><strong>Shift B · Evening</strong><small class="mono">SH-B</small></div></div></td>
-    <td class="mono nowrap">14:00 – 22:00</td>
-    <td class="small">8 h · break 30 min</td>
+    <td><div><strong>Production evenings</strong><br /><small class="muted"><span class="mono">SC-02</span> · Plant 1 · Bengaluru</small></div></td>
+    <td><span class="shift-pill shift--b"><i class="ic i-sunset"></i> Shift B · Evening</span></td>
     <td><div class="day-dots"><span class="on">M</span><span class="on">T</span><span class="on">W</span><span class="on">T</span><span class="on">F</span><span class="on">S</span><span class="">S</span></div></td>
-    <td>Imran Sheikh</td>
+    <td class="small nowrap">Sep 01, 2026<br /><span class="muted">until Mar 31, 2027</span></td>
     <td class="num">12</td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
-    <td><div class="actions"><a href="#edit-shift" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-shift" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="#edit-schedule" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-schedule" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr>
-    <td><div class="cell-user"><span class="shift-pill shift--c" style="width:36px;height:36px;justify-content:center;padding:0"><i class="ic i-moon"></i></span><div><strong>Shift C · Night</strong><small class="mono">SH-C</small></div></div></td>
-    <td class="mono nowrap">22:00 – 06:00</td>
-    <td class="small">8 h · break 45 min</td>
-    <td><div class="day-dots"><span class="on">M</span><span class="on">T</span><span class="on">W</span><span class="on">T</span><span class="on">F</span><span class="">S</span><span class="">S</span></div></td>
-    <td>Divya Menon</td>
+    <td><div><strong>Night utilities</strong><br /><small class="muted"><span class="mono">SC-03</span> · Plant 1 · Bengaluru</small></div></td>
+    <td><span class="shift-pill shift--c"><i class="ic i-moon"></i> Shift C · Night</span></td>
+    <td><div class="day-dots"><span class="on">M</span><span class="on">T</span><span class="on">W</span><span class="on">T</span><span class="on">F</span><span class="on">S</span><span class="on">S</span></div></td>
+    <td class="small nowrap">Sep 01, 2026<br /><span class="muted">until Mar 31, 2027</span></td>
     <td class="num">8</td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
-    <td><div class="actions"><a href="#edit-shift" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-shift" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="#edit-schedule" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-schedule" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr>
-    <td><div class="cell-user"><span class="shift-pill shift--g" style="width:36px;height:36px;justify-content:center;padding:0"><i class="ic i-clock"></i></span><div><strong>General</strong><small class="mono">SH-G</small></div></div></td>
-    <td class="mono nowrap">09:30 – 18:30</td>
-    <td class="small">9 h · break 60 min</td>
+    <td><div><strong>Office hours</strong><br /><small class="muted"><span class="mono">SC-04</span> · Corporate Office</small></div></td>
+    <td><span class="shift-pill shift--g"><i class="ic i-clock"></i> General</span></td>
     <td><div class="day-dots"><span class="on">M</span><span class="on">T</span><span class="on">W</span><span class="on">T</span><span class="on">F</span><span class="">S</span><span class="">S</span></div></td>
-    <td>Arjun Nair</td>
+    <td class="small nowrap">Apr 01, 2026<br /><span class="muted">no end date</span></td>
     <td class="num">11</td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
-    <td><div class="actions"><a href="#edit-shift" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-shift" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="#edit-schedule" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-schedule" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr>
-    <td><div class="cell-user"><span class="shift-pill shift--c" style="width:36px;height:36px;justify-content:center;padding:0"><i class="ic i-settings"></i></span><div><strong>Weekend Maintenance</strong><small class="mono">SH-WM</small></div></div></td>
-    <td class="mono nowrap">08:00 – 16:00</td>
-    <td class="small">8 h · break 30 min</td>
-    <td><div class="day-dots"><span class="">M</span><span class="">T</span><span class="">W</span><span class="">T</span><span class="">F</span><span class="on">S</span><span class="on">S</span></div></td>
-    <td>Rahul Verma</td>
-    <td class="num">5</td>
-    <td><span class="badge badge--success"><span class="dot dot--live"></span> Active</span></td>
-    <td><div class="actions"><a href="#edit-shift" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-shift" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div><strong>Hosur production</strong><br /><small class="muted"><span class="mono">SC-05</span> · Plant 2 · Hosur</small></div></td>
+    <td><span class="shift-pill shift--a"><i class="ic i-sun"></i> Shift A · Morning</span></td>
+    <td><div class="day-dots"><span class="on">M</span><span class="on">T</span><span class="on">W</span><span class="on">T</span><span class="on">F</span><span class="on">S</span><span class="">S</span></div></td>
+    <td class="small nowrap">Oct 01, 2026<br /><span class="muted">until Mar 31, 2027</span></td>
+    <td class="num">9</td>
+    <td><span class="badge badge--info"><span class="dot"></span> Upcoming</span></td>
+    <td><div class="actions"><a href="#edit-schedule" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-schedule" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
 </tbody>
 <tbody data-page="2">
   <tr>
-    <td><div class="cell-user"><span class="shift-pill shift--b" style="width:36px;height:36px;justify-content:center;padding:0"><i class="ic i-bolt"></i></span><div><strong>Peak-hour Standby</strong><small class="mono">SH-PK</small></div></div></td>
-    <td class="mono nowrap">18:00 – 22:00</td>
-    <td class="small">4 h · break —</td>
-    <td><div class="day-dots"><span class="on">M</span><span class="on">T</span><span class="on">W</span><span class="on">T</span><span class="on">F</span><span class="">S</span><span class="">S</span></div></td>
-    <td>Karthik Rao</td>
-    <td class="num">3</td>
-    <td><span class="badge badge--warn"><span class="dot"></span> Inactive</span></td>
-    <td><div class="actions"><a href="#edit-shift" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-shift" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div><strong>Hosur evenings</strong><br /><small class="muted"><span class="mono">SC-06</span> · Plant 2 · Hosur</small></div></td>
+    <td><span class="shift-pill shift--b"><i class="ic i-sunset"></i> Shift B · Evening</span></td>
+    <td><div class="day-dots"><span class="on">M</span><span class="on">T</span><span class="on">W</span><span class="on">T</span><span class="on">F</span><span class="on">S</span><span class="">S</span></div></td>
+    <td class="small nowrap">Oct 01, 2026<br /><span class="muted">until Mar 31, 2027</span></td>
+    <td class="num">7</td>
+    <td><span class="badge badge--info"><span class="dot"></span> Upcoming</span></td>
+    <td><div class="actions"><a href="#edit-schedule" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-schedule" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr>
-    <td><div class="cell-user"><span class="shift-pill shift--g" style="width:36px;height:36px;justify-content:center;padding:0"><i class="ic i-calendar"></i></span><div><strong>Festival Skeleton</strong><small class="mono">SH-FS</small></div></div></td>
-    <td class="mono nowrap">10:00 – 16:00</td>
-    <td class="small">6 h · break 30 min</td>
-    <td><div class="day-dots"><span class="">M</span><span class="">T</span><span class="">W</span><span class="">T</span><span class="">F</span><span class="">S</span><span class="on">S</span></div></td>
-    <td>Arjun Nair</td>
-    <td class="num">4</td>
-    <td><span class="badge badge--warn"><span class="dot"></span> Inactive</span></td>
-    <td><div class="actions"><a href="#edit-shift" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-shift" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div><strong>Monsoon night cover</strong><br /><small class="muted"><span class="mono">SC-07</span> · Warehouse · Chennai</small></div></td>
+    <td><span class="shift-pill shift--c"><i class="ic i-moon"></i> Shift C · Night</span></td>
+    <td><div class="day-dots"><span class="">M</span><span class="">T</span><span class="">W</span><span class="">T</span><span class="">F</span><span class="on">S</span><span class="on">S</span></div></td>
+    <td class="small nowrap">Jun 01, 2026<br /><span class="muted">until Aug 31, 2026</span></td>
+    <td class="num">3</td>
+    <td><span class="badge badge--warn"><span class="dot"></span> Ended</span></td>
+    <td><div class="actions"><a href="#edit-schedule" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-schedule" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
 </tbody>
             </table>
           </div>
-          <div class="pager">
-  <div class="pager__info">Showing <span data-when="1"><strong>1–5</strong></span><span data-when="2"><strong>6–7</strong></span> of <strong>7</strong> shifts</div>
+            <div class="pager">
+  <div class="pager__info">Showing <span data-when="1"><strong>1–5</strong></span><span data-when="2"><strong>6–7</strong></span> of <strong>7</strong> schedules</div>
   <div class="pager__size">Rows per page <select class="input" aria-label="Rows per page"><option>5</option><option>10</option><option>20</option></select></div>
-  <div class="pager__nav"><span class="pg-btn is-disabled" data-when="1" aria-hidden="true"><i class="ic i-chev-left"></i></span><label for="sh-p1" data-when="2" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="sh-p1" data-p="1">1</label><label for="sh-p2" data-p="2">2</label><label for="sh-p2" data-when="1" aria-label="Next page"><i class="ic i-chev-right"></i></label><span class="pg-btn is-disabled" data-when="2" aria-hidden="true"><i class="ic i-chev-right"></i></span></div>
+  <div class="pager__nav"><span class="pg-btn is-disabled" data-when="1" aria-hidden="true"><i class="ic i-chev-left"></i></span><label for="sc-p1" data-when="2" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="sc-p1" data-p="1">1</label><label for="sc-p2" data-p="2">2</label><label for="sc-p2" data-when="1" aria-label="Next page"><i class="ic i-chev-right"></i></label><span class="pg-btn is-disabled" data-when="2" aria-hidden="true"><i class="ic i-chev-right"></i></span></div>
 </div>
         </section>
       </main>
@@ -355,77 +374,89 @@
     </div>
   </div>
 
-  <div class="modal" id="add-shift" role="dialog" aria-modal="true" aria-labelledby="add-shift-t">
+  <div class="modal" id="add-schedule" role="dialog" aria-modal="true" aria-labelledby="add-schedule-t">
   <a href="#close" class="modal__backdrop" aria-label="Close"></a>
   <div class="modal__dialog modal__dialog--lg">
     <div class="modal__head">
-      <span class="modal__icon modal__icon--amber"><i class="ic i-clock"></i></span>
-      <div><h3 id="add-shift-t">Create shift</h3><p>Define timing, breaks and working days.</p></div>
+      <span class="modal__icon modal__icon--amber"><i class="ic i-calendar"></i></span>
+      <div><h3 id="add-schedule-t">New schedule</h3><p>Run a shift on a repeating pattern.</p></div>
       <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
     </div>
     <div class="modal__body">
-      <div class="callout callout--danger" data-limit-full="shifts" hidden style="margin-bottom:16px"></div>
-      <div class="form-grid form-grid--3">
-        <div class="field"><label>Shift name <span class="req">*</span></label><input class="input" placeholder="Shift D · Relief" /></div>
-        <div class="field"><label>Code</label><input class="input mono" placeholder="SH-D" /></div>
-        <div class="field"><label>Colour</label><select class="input"><option>Amber</option><option>Orange</option><option>Violet</option><option>Cyan</option><option>Green</option></select></div>
-        <div class="field"><label>Start time</label><input type="time" class="input" value="06:00" /></div>
-        <div class="field"><label>End time</label><input type="time" class="input" value="14:00" /></div>
-        <div class="field"><label>Break</label><select class="input"><option>30 min</option><option>45 min</option><option>60 min</option><option>None</option></select></div>
-        <div class="field"><label>Supervisor</label><select class="input"><option>Meera Iyer</option><option>Imran Sheikh</option><option>Divya Menon</option><option>Arjun Nair</option></select></div>
-        <div class="field"><label>Grace period</label><div class="input-icon"><i class="ic i-clock"></i><input class="input mono" value="10" /><span class="suffix">min</span></div></div>
-        <div class="field"><label>Energy target</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" placeholder="320" /><span class="suffix">kWh</span></div></div>
-        <div class="field full"><label>Working days</label>
-          <div class="row wrap" style="gap:14px"><label class="check"><input type="checkbox" checked /> Mon</label><label class="check"><input type="checkbox" checked /> Tue</label><label class="check"><input type="checkbox" checked /> Wed</label><label class="check"><input type="checkbox" checked /> Thu</label><label class="check"><input type="checkbox" checked /> Fri</label><label class="check"><input type="checkbox" checked /> Sat</label><label class="check"><input type="checkbox" /> Sun</label></div>
-        </div>
-        <label class="switch full"><input type="checkbox" checked /> Generate shift-wise energy report at shift end</label>
+      <div class="callout callout--danger" data-limit-full="schedules" hidden style="margin-bottom:16px"></div>
+      <div class="form-grid">
+        <div class="field full"><label>Name <span class="req">*</span></label><input class="input" placeholder="Production weekdays" /></div>
+        <div class="field"><label>Shift <span class="req">*</span></label><select class="input"><option selected>Shift A · Morning</option><option>Shift B · Evening</option><option>Shift C · Night</option><option>General</option></select></div>
+        <div class="field"><label>Site</label><select class="input"><option selected>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option><option>Warehouse · Chennai</option></select></div>
+        <div class="field full"><label>Repeats on</label><div class="row wrap" style="gap:12px"><label class="check"><input type="checkbox" checked /> Mon</label><label class="check"><input type="checkbox" checked /> Tue</label><label class="check"><input type="checkbox" checked /> Wed</label><label class="check"><input type="checkbox" checked /> Thu</label><label class="check"><input type="checkbox" checked /> Fri</label><label class="check"><input type="checkbox" checked /> Sat</label><label class="check"><input type="checkbox" /> Sun</label></div></div>
+        <div class="field"><label>Effective from</label><input type="date" class="input" value="2026-10-01" /></div>
+        <div class="field"><label>Until</label><input type="date" class="input" value="" /><span class="hint">Leave blank to run indefinitely.</span></div>
       </div>
       </div>
     <div class="modal__foot">
       <a href="#close" class="btn btn--ghost">Cancel</a>
-      <a href="#created" class="btn btn--primary" data-limit="shifts"><i class="ic i-check"></i> Create shift</a>
+      <a href="#created" class="btn btn--primary" data-limit="schedules"><i class="ic i-check"></i> Create schedule</a>
     </div>
   </div>
 </div>
 
-  <div class="modal" id="edit-shift" role="dialog" aria-modal="true" aria-labelledby="edit-shift-t">
+  <div class="modal" id="edit-schedule" role="dialog" aria-modal="true" aria-labelledby="edit-schedule-t">
   <a href="#close" class="modal__backdrop" aria-label="Close"></a>
   <div class="modal__dialog modal__dialog--lg">
     <div class="modal__head">
       <span class="modal__icon modal__icon--cyan"><i class="ic i-edit"></i></span>
-      <div><h3 id="edit-shift-t">Edit shift</h3><p>Shift A · Morning · SH-A</p></div>
+      <div><h3 id="edit-schedule-t">Edit schedule</h3><p>SC-01 · Production weekdays</p></div>
       <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
     </div>
     <div class="modal__body">
-      <div class="form-grid form-grid--3">
-        <div class="field"><label>Shift name</label><input class="input" value="Shift A · Morning" /></div>
-        <div class="field"><label>Code</label><input class="input mono" value="SH-A" /></div>
-        <div class="field"><label>Status</label><select class="input"><option selected>Active</option><option>Inactive</option></select></div>
-        <div class="field"><label>Start time</label><input type="time" class="input" value="06:00" /></div>
-        <div class="field"><label>End time</label><input type="time" class="input" value="14:00" /></div>
-        <div class="field"><label>Break</label><select class="input"><option selected>30 min</option><option>45 min</option><option>60 min</option></select></div>
-        <div class="field"><label>Supervisor</label><select class="input"><option selected>Meera Iyer</option><option>Imran Sheikh</option><option>Divya Menon</option></select></div>
-        <div class="field"><label>Grace period</label><div class="input-icon"><i class="ic i-clock"></i><input class="input mono" value="10" /><span class="suffix">min</span></div></div>
-        <div class="field"><label>Energy target</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" value="320" /><span class="suffix">kWh</span></div></div>
-        <div class="field full"><label>Working days</label>
-          <div class="row wrap" style="gap:14px"><label class="check"><input type="checkbox" checked /> Mon</label><label class="check"><input type="checkbox" checked /> Tue</label><label class="check"><input type="checkbox" checked /> Wed</label><label class="check"><input type="checkbox" checked /> Thu</label><label class="check"><input type="checkbox" checked /> Fri</label><label class="check"><input type="checkbox" checked /> Sat</label><label class="check"><input type="checkbox" /> Sun</label></div>
-        </div>
+      <div class="form-grid">
+        <div class="field full"><label>Name <span class="req">*</span></label><input class="input" value="Production weekdays" /></div>
+        <div class="field"><label>Shift <span class="req">*</span></label><select class="input"><option selected>Shift A · Morning</option><option>Shift B · Evening</option><option>Shift C · Night</option><option>General</option></select></div>
+        <div class="field"><label>Site</label><select class="input"><option selected>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option><option>Warehouse · Chennai</option></select></div>
+        <div class="field full"><label>Repeats on</label><div class="row wrap" style="gap:12px"><label class="check"><input type="checkbox" checked /> Mon</label><label class="check"><input type="checkbox" checked /> Tue</label><label class="check"><input type="checkbox" checked /> Wed</label><label class="check"><input type="checkbox" checked /> Thu</label><label class="check"><input type="checkbox" checked /> Fri</label><label class="check"><input type="checkbox" checked /> Sat</label><label class="check"><input type="checkbox" /> Sun</label></div></div>
+        <div class="field"><label>Effective from</label><input type="date" class="input" value="2026-09-01" /></div>
+        <div class="field"><label>Until</label><input type="date" class="input" value="2027-03-31" /><span class="hint">Leave blank to run indefinitely.</span></div>
       </div>
       </div>
     <div class="modal__foot">
       <a href="#close" class="btn btn--ghost">Cancel</a>
-      <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save shift</a>
+      <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save schedule</a>
     </div>
   </div>
 </div>
 
-  <div class="modal modal--danger" id="delete-shift" role="dialog" aria-modal="true" aria-labelledby="delete-shift-t">
+  <div class="modal" id="assign-shift" role="dialog" aria-modal="true" aria-labelledby="assign-shift-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog">
+    <div class="modal__head">
+      <span class="modal__icon"><i class="ic i-user-plus"></i></span>
+      <div><h3 id="assign-shift-t">Assign staff to shift</h3><p>Add people to a shift for a date range.</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="form-grid">
+        <div class="field full"><label>Employees</label><select class="input"><option>Priya Sharma, Karthik Rao (2 selected)</option><option>Select employees…</option></select></div>
+        <div class="field full"><label>Shift</label><select class="input"><option>Shift A · 06:00–14:00</option><option>Shift B · 14:00–22:00</option><option>Shift C · 22:00–06:00</option><option>General · 09:30–18:30</option></select></div>
+        <div class="field"><label>From</label><input type="date" class="input" value="2026-09-28" /></div>
+        <div class="field"><label>To</label><input type="date" class="input" value="2026-10-04" /></div>
+        <label class="switch full"><input type="checkbox" checked /> Repeat every week</label>
+        <label class="switch full"><input type="checkbox" /> Notify employees by SMS</label>
+      </div>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Assign</a>
+    </div>
+  </div>
+</div>
+
+  <div class="modal modal--danger" id="delete-schedule" role="dialog" aria-modal="true" aria-labelledby="delete-schedule-t">
   <a href="#close" class="modal__backdrop" aria-label="Close"></a>
   <div class="modal__dialog modal__dialog--sm">
     <div class="confirm">
       <span class="modal__icon modal__icon--rose"><i class="ic i-trash"></i></span>
-      <h3 id="delete-shift-t">Delete this shift?</h3>
-      <p>Staff assigned to it will become unassigned. Past shift reports are kept.</p>
+      <h3 id="delete-schedule-t">Delete this schedule?</h3>
+      <p>Future shift instances from this schedule are cancelled. Past instances and their energy data are kept.</p>
     </div>
     <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
       <a href="#close" class="btn">Cancel</a>

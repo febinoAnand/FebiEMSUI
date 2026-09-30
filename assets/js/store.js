@@ -99,7 +99,7 @@
   function db() {
     if (cache) return cache;
     cache = readJSON(localStorage, DB_KEY);
-    if (!cache || cache.v !== 5) { cache = seed(); save(); }
+    if (!cache || cache.v !== 6) { cache = seed(); save(); }
     return cache;
   }
   function save() { writeJSON(localStorage, DB_KEY, cache); }
@@ -115,7 +115,7 @@
        GREENTECH GreenTech Campus          · greentech_admin / Greentech@123
        HX4R7TQM  Kaveri Textile Mills      · kaveri_admin / Kaveri@123      (pending approval)
        M8PW3ZKD  Deccan Data Centre        · deccan_admin / Deccan@123      (pending approval)
-       Q2LN6VEB  Metro Mall Facilities     · metromall_admin / Metro@123    (suspended)
+       Q2LN6VEB  Metro Mall Facilities     · metromall_admin / Metro@123    (suspended for 5 days)
        Platform admin (Control Center) · superadmin / Control@2026 */
   function seedTenant(id, name, extra) {
     var t = {
@@ -135,7 +135,7 @@
   }
   function seed() {
     var now = Date.now(), day = 24 * HOUR;
-    var data = { v: 5, tenants: {}, users: [], platformAdmin: { username: "superadmin", name: "Platform Admin", email: "admin@energydash.io", pw: makePassword("Control@2026") } };
+    var data = { v: 6, tenants: {}, users: [], platformAdmin: { username: "superadmin", name: "Platform Admin", email: "admin@energydash.io", pw: makePassword("Control@2026") } };
     data.tenants.FEBINO = seedTenant("FEBINO", "Febino Solutions Pvt Ltd", {
       slug: "febino", gstin: "29ABCFE1234F1Z5", sites: "2 – 5", contact: "energy@febinosolutions.com", phone: "9845012345",
       industry: "Manufacturing plant", city: "Bengaluru, Karnataka", discom: "BESCOM", contractDemand: 400, meters: "11-50", address: "Plot 12, Electronic City Phase 1, Bengaluru, Karnataka 560100",
@@ -152,6 +152,11 @@
       data.tenants[r[0]] = seedTenant(r[0], r[1], { industry: r[2], contact: r[5], city: r[8], discom: r[9], phone: r[10], contractDemand: r[11], meters: r[12], status: r[13], created: created, approvedAt: r[13] === "pending" ? null : created + HOUR });
       data.users.push(seedAdmin(r[0], r[3], r[4], r[5], r[6], r[7], created));
     });
+    // Metro Mall is temporarily suspended (lifts itself in 5 days)
+    var mm = data.tenants.Q2LN6VEB;
+    mm.suspendedUntil = now + 5 * day;
+    mm.statusReason = "Subscription invoice overdue";
+    mm.history = [{ from: "active", to: "suspended", at: now - 2 * day, until: mm.suspendedUntil, reason: mm.statusReason }];
     // FEBINO: the energy-app sample team
     // [first, last, empId, email, role, shift, dept, status, minutes since last active, mobile, username, password]
     var team = [
@@ -202,7 +207,18 @@
   function clone(o) { return JSON.parse(JSON.stringify(o)); }
 
   /* ---------- Tenants ---------- */
-  function tenant(id) { return db().tenants[String(id || "").toUpperCase()] || null; }
+  function tenant(id) { return expireSuspension(db().tenants[String(id || "").toUpperCase()] || null); }
+  // A temporary suspension ends by itself once its end time has passed
+  function expireSuspension(t) {
+    if (t && t.status === "suspended" && t.suspendedUntil && t.suspendedUntil <= Date.now()) {
+      (t.history = t.history || []).push({ from: "suspended", to: "active", at: t.suspendedUntil, auto: true });
+      t.status = "active";
+      t.suspendedUntil = null;
+      t.statusReason = "";
+      save();
+    }
+    return t;
+  }
   // 8 random characters without look-alikes (no 0/O, 1/I), unique in this store — e.g. K7M4QX2P
   var ORG_ID_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   function generateOrgId() {
@@ -215,17 +231,134 @@
   }
   function tenants() {
     var t = db().tenants, list = [];
-    for (var k in t) list.push(t[k]);
+    for (var k in t) list.push(expireSuspension(t[k]));
     return list.sort(function (a, b) { return b.created - a.created; });
   }
   // Platform admin: approve (pending → active), suspend, reactivate
-  function setTenantStatus(id, status) {
+  // Platform admin: approve / enable (→ active), disable (until enabled again),
+  // or suspend temporarily (opts.until = end time; lifts itself automatically).
+  function setTenantStatus(id, status, opts) {
+    opts = opts || {};
     var t = tenant(id);
     if (!t) return null;
+    var was = t.status;
     t.status = status;
+    t.suspendedUntil = status === "suspended" ? opts.until || null : null;
+    t.statusReason = status === "suspended" || status === "disabled" ? opts.reason || "" : "";
     if (status === "active" && !t.approvedAt) t.approvedAt = Date.now();
+    // Status history for the tenant page timeline
+    if (was !== status || opts.until) (t.history = t.history || []).push({ from: was, to: status, at: Date.now(), until: t.suspendedUntil, reason: t.statusReason });
     save();
     return t;
+  }
+  /* ---------- Resource limits (set by the platform admin) ----------
+     t.limits[key]: max count for that resource; 0 = unlimited. A key that isn't set falls
+     back to the plan default (users = plan seats; meters = top of the declared range). */
+  var LIMITS = [
+    { key: "users", label: "Users", icon: "i-users", hint: "Every account, including invited and inactive" },
+    { key: "meters", label: "Energy meters", icon: "i-gauge", hint: "Top-level meters" },
+    { key: "subMeters", label: "Sub-meters", icon: "i-layers", hint: "Circuits under a meter" },
+    { key: "devices", label: "Devices", icon: "i-cpu", hint: "Gateways and data loggers" },
+    { key: "sites", label: "Sites", icon: "i-pin", hint: "Locations with their own connection" },
+    { key: "tariffs", label: "Tariff slabs", icon: "i-rupee", hint: "ToD rates, including expired ones" },
+    { key: "shifts", label: "Shifts", icon: "i-clock", hint: "Shift definitions" },
+    { key: "schedules", label: "Shift schedules", icon: "i-calendar", hint: "Repeating shift plans" },
+    { key: "alertRules", label: "Alert rules", icon: "i-bell", hint: "Conditions that raise alerts" },
+    { key: "roles", label: "Roles", icon: "i-shield", hint: "Built-in and custom roles" },
+  ];
+  var PLAN_LIMITS = {
+    starter: { subMeters: 25, devices: 2, sites: 1, tariffs: 5, shifts: 3, schedules: 3, alertRules: 10, roles: 3 },
+    growth: { subMeters: 250, devices: 20, sites: 5, tariffs: 20, shifts: 10, schedules: 20, alertRules: 50, roles: 10 },
+    enterprise: { subMeters: 0, devices: 0, sites: 0, tariffs: 0, shifts: 0, schedules: 0, alertRules: 0, roles: 0 },
+  };
+  var RANGE_LIMIT = { "1-10": 10, "11-50": 50, "51-200": 200, "200+": 500 };
+  // Demo: how much each tenant has set up (FEBINO's numbers match its own pages)
+  var DEMO_USAGE = {
+    FEBINO: { meters: 12, subMeters: 38, devices: 6, sites: 4, tariffs: 8, shifts: 7, schedules: 7, alertRules: 10, roles: 8 },
+    SUNGRID: { meters: 64, subMeters: 120, devices: 9, sites: 3, tariffs: 4, shifts: 3, schedules: 3, alertRules: 22, roles: 5 },
+    VOLTEDGE: { meters: 118, subMeters: 236, devices: 14, sites: 2, tariffs: 6, shifts: 4, schedules: 6, alertRules: 31, roles: 6 },
+    GREENTECH: { meters: 23, subMeters: 41, devices: 4, sites: 1, tariffs: 3, shifts: 2, schedules: 2, alertRules: 8, roles: 4 },
+    Q2LN6VEB: { meters: 31, subMeters: 52, devices: 5, sites: 1, tariffs: 4, shifts: 3, schedules: 3, alertRules: 12, roles: 5 },
+  };
+  function defaultLimit(t, key) {
+    if (key === "users") return (PLANS[t.plan] || PLANS.starter).seats;
+    if (key === "meters") return RANGE_LIMIT[t.meters] || 10;
+    var p = PLAN_LIMITS[t.plan] || PLAN_LIMITS.starter;
+    return key in p ? p[key] : 0;
+  }
+  function isCustomLimit(t, key) {
+    return !!(t.limits && typeof t.limits[key] === "number") || (key === "meters" && typeof t.meterLimit === "number");
+  }
+  function limit(id, key) {
+    var t = tenant(id);
+    if (!t) return null;
+    if (t.limits && typeof t.limits[key] === "number") return t.limits[key];
+    if (key === "meters" && typeof t.meterLimit === "number") return t.meterLimit; // set before limits were generalised
+    return defaultLimit(t, key);
+  }
+  function usage(id, key) {
+    if (key === "users") return users(id).length;
+    var t = tenant(id), u = (t && t.usage) || {};
+    var base = typeof u[key] === "number" ? u[key] : (DEMO_USAGE[id] || {})[key] || 0;
+    return key === "alertRules" ? base + meterRules(id).length : base;
+  }
+  // [{ key, label, icon, hint, used, limit, custom, full, over }] for every resource
+  function limits(id) {
+    var t = tenant(id);
+    if (!t) return [];
+    return LIMITS.map(function (d) {
+      var used = usage(id, d.key), lim = limit(id, d.key);
+      return { key: d.key, label: d.label, icon: d.icon, hint: d.hint, used: used, limit: lim, custom: isCustomLimit(t, d.key),
+        def: defaultLimit(t, d.key), full: lim > 0 && used >= lim, over: lim > 0 && used > lim };
+    });
+  }
+  function limitReached(id, key) { var l = limit(id, key); return l > 0 && usage(id, key) >= l; }
+  // patch: { key: number (0 = unlimited) | null (back to the plan default) }
+  function setLimits(id, patch, reason) {
+    var t = tenant(id);
+    if (!t) return null;
+    t.limits = t.limits || {};
+    for (var key in patch) {
+      var was = limit(id, key);
+      if (patch[key] === null) { delete t.limits[key]; if (key === "meters") delete t.meterLimit; }
+      else t.limits[key] = Math.max(0, Math.floor(patch[key]) || 0);
+      var now = limit(id, key);
+      if (was !== now) (t.limitHistory = t.limitHistory || []).push({ key: key, from: was, to: now, at: Date.now(), reason: reason || "", reset: patch[key] === null });
+    }
+    save();
+    return t;
+  }
+  /* ---------- Per-meter alert rules (meter.html · meter-alerts.js) ---------- */
+  function meterRules(org) { var t = tenant(org); return (t && t.meterRules) || []; }
+  function saveMeterRule(org, rule) {
+    var t = tenant(org);
+    if (!t) return { error: "tenant" };
+    t.meterRules = t.meterRules || [];
+    var i = rule.id ? t.meterRules.findIndex(function (r) { return r.id === rule.id; }) : -1;
+    if (i > -1) { rule.updated = Date.now(); t.meterRules[i] = rule; }
+    else {
+      if (limitReached(org, "alertRules")) return { error: "limit" };
+      rule.id = "AR-" + randomHex(3).toUpperCase();
+      rule.created = Date.now();
+      t.meterRules.push(rule);
+    }
+    save();
+    return rule;
+  }
+  function deleteMeterRule(org, id) {
+    var t = tenant(org);
+    if (!t || !t.meterRules) return;
+    t.meterRules = t.meterRules.filter(function (r) { return r.id !== id; });
+    save();
+  }
+  /* ---------- Device / meter connection flow (connections.html) ---------- */
+  function flow(org) { var t = tenant(org); return t && t.flow ? clone(t.flow) : null; }
+  function saveFlow(org, f) {
+    var t = tenant(org);
+    if (!t) return null;
+    t.flow = { nodes: f.nodes, wires: f.wires, deployedAt: Date.now() };
+    save();
+    return t.flow;
   }
   function slugTaken(slug) {
     var t = db().tenants;
@@ -362,6 +495,52 @@
     return base + "accept-invite.html?token=" + (u.invite ? u.invite.token : "");
   }
 
+  /* ---------- Field-level permissions ----------
+     Per organisation → role → module → field: { view, edit }.
+     Edit implies view; no view means no edit. Anything not configured is full
+     access, and the Tenant Admin role always has full access (so an admin can
+     never lock themselves out of the settings that control this). */
+  var FULL = { view: true, edit: true };
+  // Sample restrictions shown until a role is configured for the organisation
+  var DEFAULT_FIELD_PERMS = {
+    "Operator": {
+      meters: { cost: { view: false, edit: false }, ratedLoad: { view: true, edit: false }, ct: { view: true, edit: false }, device: { view: true, edit: false } },
+      devices: { ip: { view: true, edit: false }, mac: { view: false, edit: false }, serial: { view: false, edit: false }, firmware: { view: true, edit: false } },
+      users: { mobile: { view: false, edit: false }, empId: { view: true, edit: false }, role: { view: true, edit: false } },
+      settings: { gstin: { view: false, edit: false } },
+    },
+    "Viewer": {
+      meters: { cost: { view: false, edit: false } },
+      devices: { ip: { view: false, edit: false }, mac: { view: false, edit: false }, serial: { view: false, edit: false } },
+      users: { email: { view: false, edit: false }, mobile: { view: false, edit: false } },
+      settings: { gstin: { view: false, edit: false }, address: { view: false, edit: false } },
+    },
+    "Technician": {
+      meters: { cost: { view: false, edit: false } },
+      users: { mobile: { view: false, edit: false }, role: { view: true, edit: false } },
+    },
+  };
+  function fieldPerms(org, role) {
+    var all = db().fieldPerms || {};
+    var saved = all[org] && all[org][role];
+    return clone(saved || DEFAULT_FIELD_PERMS[role] || {});
+  }
+  function setFieldPerms(org, role, perms) {
+    var d = db();
+    d.fieldPerms = d.fieldPerms || {};
+    d.fieldPerms[org] = d.fieldPerms[org] || {};
+    d.fieldPerms[org][role] = perms;
+    save();
+  }
+  // key = "module.field" → { view, edit } for that role
+  function canField(org, role, key) {
+    if (role === "Tenant Admin") return FULL;
+    var p = key.split("."), m = fieldPerms(org, role)[p[0]], f = m && m[p[1]];
+    if (!f) return FULL;
+    var view = f.view !== false;
+    return { view: view, edit: view && f.edit !== false };
+  }
+
   /* ---------- Session ---------- */
   function readSession() {
     var s = null;
@@ -479,11 +658,11 @@
   window.EDStore = {
     ROLES: ROLES, DEPARTMENTS: DEPARTMENTS, SHIFTS: SHIFTS, PLANS: PLANS,
     tenant: tenant, tenants: tenants, generateOrgId: generateOrgId, createTenant: createTenant, updateTenant: updateTenant, deleteTenant: deleteTenant,
-    setTenantStatus: setTenantStatus, adminSignIn: adminSignIn, adminSession: adminSession, adminSignOut: adminSignOut,
+    setTenantStatus: setTenantStatus, LIMITS: LIMITS, limit: limit, usage: usage, limits: limits, limitReached: limitReached, setLimits: setLimits, meterRules: meterRules, saveMeterRule: saveMeterRule, deleteMeterRule: deleteMeterRule, flow: flow, saveFlow: saveFlow, adminSignIn: adminSignIn, adminSession: adminSession, adminSignOut: adminSignOut,
     slugTaken: slugTaken, slugify: slugify, membershipsFor: membershipsFor,
     users: users, user: user, findLogin: findLogin, findContact: findContact, emailTaken: emailTaken, usernameTaken: usernameTaken, nextEmpId: nextEmpId,
     createUser: createUser, updateUser: updateUser, deleteUser: deleteUser, setPassword: setPassword, checkPassword: checkPassword,
-    hashNewPassword: makePassword,
+    hashNewPassword: makePassword, fieldPerms: fieldPerms, setFieldPerms: setFieldPerms, canField: canField,
     findInvite: findInvite, acceptInvite: acceptInvite, inviteLink: inviteLink,
     signIn: signIn, signOut: signOut, session: session, switchTenant: switchTenant,
     startPending: startPending, pending: pending, resendPending: resendPending, checkCode: checkCode, clearPending: clearPending,

@@ -86,6 +86,8 @@
   var v = [230 + 4 * R() - 2, 230 + 4 * R() - 2, 230 + 4 * R() - 2];
   var iPh = live ? v.map(function (vv, i) { return absPower * 1000 / (3 * vv * pf) * (0.94 + 0.12 * [R(), R(), R()][i]); }) : [0, 0, 0];
   var kva = live ? absPower / pf : 0, kvar = live ? Math.sqrt(Math.max(0, kva * kva - absPower * absPower)) : 0;
+  var hz = live ? 49.95 + 0.1 * R() : null;
+  var thdV = live ? 1.8 + 1.5 * R() : null, thdI = live ? 4 + (meter.id === "MTR-1004" ? 5 : 3) * R() : null;
 
   /* ---------- rules watching this meter (from Alerts → Alert rules) ---------- */
   var RULES = [
@@ -124,37 +126,42 @@
     '<h1 class="page-title" style="margin-top:2px">' + esc(meter.name) + "</h1>" +
     '<div class="meter-meta"><span class="tag">' + esc(meter.id) + "</span>" + badge(meter.status) +
     '<span class="page-sub" style="margin:0">' + esc(isSub ? meter.ct + " · via parent meter" : meter.model + " · " + meter.location) + "</span>" +
-    '<a href="devices.html" class="device-chip' + (isSub ? " device-chip--inherited" : "") + '" title="' + esc(main.deviceName) + '"><span class="dot dot--live" style="--c:var(--green)"></span>' + esc(main.device) + "</a></div></div></div>" +
+    '<a href="device.html?id=' + esc(main.device) + '" class="device-chip' + (isSub ? " device-chip--inherited" : "") + '" title="' + esc(main.deviceName) + '"><span class="dot dot--live" style="--c:var(--green)"></span>' + esc(main.device) + "</a></div></div></div>" +
     '<div class="page-actions">' +
     (isSub ? '<a href="meter.html?id=' + esc(parent.id) + '" class="btn btn--sm"><i class="ic i-arrow-left"></i> ' + esc(parent.name) + "</a>" : '<a href="meters.html" class="btn btn--sm"><i class="ic i-arrow-left"></i> All meters</a>') +
-    '<a href="#close" class="btn btn--sm"><i class="ic i-download"></i> Export CSV</a>' +
-    '<a href="alerts.html?target=' + encodeURIComponent(meter.id) + '#add-rule" class="btn btn--sm btn--primary"><i class="ic i-bell"></i> Set alert</a></div></section>';
+    '<a href="#export" class="btn btn--sm" data-export="meter" data-export-id="' + esc(meter.id) + '"><i class="ic i-download"></i> Export</a>' +
+    '<a href="#meter-rule" class="btn btn--sm btn--primary" data-rule-new data-limit="alertRules"><i class="ic i-bell"></i> Set alert</a></div></section>';
 
   var monthLabel = now.toLocaleDateString(undefined, { month: "long" });
   html += '<section class="grid grid-4">' +
-    tile(gen ? "i-sun" : "i-bolt", "--primary", live ? fmt(absPower, 1) : "0.0", "kW", gen ? "Generating now" : "Power now", meter.load > 0 ? meter.load + "% of rated " + fmt(rated, 0) + " kW" : lastSeen) +
-    tile("i-activity", "--cyan", fmt(todayKwh, 0), "kWh", gen ? "Generated today" : "Energy today", "₹" + fmt(todayKwh * TARIFF, 0) + " · " + fmt(todayKwh * CO2, 0) + " kg CO₂") +
-    tile("i-calendar", "--violet", fmt(monthKwh, 0), "kWh", (gen ? "Generated in " : "Energy in ") + monthLabel, "₹" + fmt(monthKwh * TARIFF, 0) + (gen ? " saved" : "") + " · " + fmt(monthKwh * CO2 / 1000, 2) + " t CO₂" + (gen ? " avoided" : "")) +
+    tile(gen ? "i-sun" : "i-bolt", "--primary", live ? fmt(absPower, 1) : "0.0", "kW", gen ? "Generating now" : "Power now", meter.load > 0 ? meter.load + '% <span data-field="meters.ratedLoad">of rated ' + fmt(rated, 0) + " kW</span>" : lastSeen) +
+    tile("i-activity", "--cyan", fmt(todayKwh, 0), "kWh", gen ? "Generated today" : "Energy today", '<span data-field="meters.cost">₹' + fmt(todayKwh * TARIFF, 0) + " · </span>" + fmt(todayKwh * CO2, 0) + " kg CO₂") +
+    tile("i-calendar", "--violet", fmt(monthKwh, 0), "kWh", (gen ? "Generated in " : "Energy in ") + monthLabel, '<span data-field="meters.cost">₹' + fmt(monthKwh * TARIFF, 0) + (gen ? " saved" : "") + " · </span>" + fmt(monthKwh * CO2 / 1000, 2) + " t CO₂" + (gen ? " avoided" : "")) +
     tile("i-trend-up", "--amber", fmt(peak.y, 1), "kW", "Peak today", peak.y > 0 ? "at " + hhmm(peak.x) : "No demand yet today") +
     "</section>";
 
   html += '<section class="grid grid-main">' +
     '<div class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-activity"></i> ' + (gen ? "Generation" : "Power") + ' today</h3><p class="card__sub">15-minute readings · kW · hover for values</p></div></div>' +
     '<div class="card__body"><div class="chart-box" id="chart-power"></div>' + tableFor(hourly.filter(function (p, i) { return i % 4 === 0; }), "Time", "kW", function (p) { return hhmm(p.x); }, 1) + "</div></div>" +
-    '<div class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-gauge"></i> Electrical parameters</h3><p class="card__sub">' + esc(lastSeen) + "</p></div></div>" +
+    '<div class="card" data-field="meters.electrical"><div class="card__head"><div><h3 class="card__title"><i class="ic i-gauge"></i> Electrical parameters</h3><p class="card__sub">' + esc(lastSeen) + "</p></div></div>" +
     '<div class="card__body"><table class="table param-table"><thead><tr><th>Phase</th><th>Voltage</th><th>Current</th></tr></thead><tbody>' +
     ["L1", "L2", "L3"].map(function (l, i) { return "<tr><td>" + l + "</td><td>" + fmt(v[i], 1) + " V</td><td>" + fmt(iPh[i], 1) + " A</td></tr>"; }).join("") +
     '</tbody></table><dl class="kv" style="margin-top:16px">' +
     "<dt>Power factor</dt><dd" + (pf < 0.95 && live ? ' class="tc-rose"' : "") + ">" + (live ? pf.toFixed(2) : "—") + "</dd>" +
     "<dt>Apparent power</dt><dd>" + (live ? fmt(kva, 1) + " kVA" : "—") + "</dd>" +
     "<dt>Reactive power</dt><dd>" + (live ? fmt(kvar, 1) + " kVAr" : "—") + "</dd>" +
-    "<dt>Frequency</dt><dd>" + (live ? (49.95 + 0.1 * R()).toFixed(2) + " Hz" : "—") + "</dd>" +
-    "<dt>THD (V / I)</dt><dd>" + (live ? (1.8 + 1.5 * R()).toFixed(1) + " % / " + (4 + (meter.id === "MTR-1004" ? 5 : 3) * R()).toFixed(1) + " %" : "—") + "</dd>" +
-    (isSub ? "" : "<dt>Rated load</dt><dd>" + fmt(rated, 0) + " kW</dd>") +
+    "<dt>Frequency</dt><dd>" + (live ? hz.toFixed(2) + " Hz" : "—") + "</dd>" +
+    "<dt>THD (V / I)</dt><dd>" + (live ? thdV.toFixed(1) + " % / " + thdI.toFixed(1) + " %" : "—") + "</dd>" +
+    (isSub ? "" : '<dt data-field="meters.ratedLoad">Rated load</dt><dd data-field="meters.ratedLoad">' + fmt(rated, 0) + " kW</dd>") +
     "</dl></div></div></section>";
 
   html += '<section class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-chart"></i> ' + (gen ? "Daily generation" : "Daily energy") + " · " + esc(monthLabel) + '</h3><p class="card__sub">kWh per day · today is still running (lighter bar)</p></div></div>' +
     '<div class="card__body"><div class="chart-box" id="chart-daily"></div>' + tableFor(daily, "Day", "kWh", function (p) { return p.x + " " + monthLabel.slice(0, 3) + (p.partial ? " (today)" : ""); }, 0) + "</div></section>";
+
+  // Node-RED style view of this meter's connections (connections.js fills it)
+  html += '<section class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-flow"></i> Connections</h3><p class="card__sub">' + (isSub ? "How this sub-meter's readings reach the Energy Cloud" : "Sub-meters under this meter, and the device that collects it") + "</p></div>" +
+    '<a href="connections.html?focus=' + encodeURIComponent(meter.id) + '" class="btn btn--sm btn--soft"><i class="ic i-edit"></i> Edit connections</a></div>' +
+    '<div class="flow" id="flow" data-embed="1" data-focus="' + esc(meter.id) + '"></div></section>';
 
   // Main meters: actual vs Σ sub-meters and each sub-meter's share
   if (subsSum) {
@@ -194,18 +201,21 @@
         : "<dt>Make &amp; model</dt><dd>" + esc(meter.model) + "</dd><dt>Location</dt><dd>" + esc(meter.location) + "</dd><dt>Type</dt><dd>" + (gen ? "Generator" : "Consumer") + "</dd><dt>Sub-meters</dt><dd>None</dd>") +
       "</dl></div></div>";
   }
-  var rulesHtml = rules.length ? rules.map(function (r) {
-    return '<div class="list__item"><span class="icon-tile icon-tile--amber"><i class="ic i-bell"></i></span><span class="grow"><strong>' + esc(r[0]) + '</strong><small class="mono">' + esc(r[1]) + '</small></span><span class="badge badge--' + SEV[r[2]] + '">' + r[2] + "</span></div>";
-  }).join("") : '<p class="muted small">No rules watch this meter yet.</p>';
   html += '<section class="grid ' + (!isSub && meter.subs.length ? "grid-main" : "grid-2") + '">' + bottomLeft +
     '<div class="stack">' +
     '<div class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-cpu"></i> Reporting device</h3><p class="card__sub">' + (isSub ? "Inherited from " + esc(parent.name) : "Polled every 15 s") + "</p></div></div>" +
-    '<div class="card__body"><dl class="kv"><dt>Device</dt><dd><a href="devices.html" class="tc-primary">' + esc(main.device) + " · " + esc(main.deviceName) + "</a></dd><dt>Status</dt><dd>" + esc(lastSeen) + "</dd></dl></div></div>" +
-    '<div class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-bell"></i> Alert rules (' + rules.length + ')</h3><p class="card__sub">Rules that watch this ' + (isSub ? "sub-meter" : "meter") + '</p></div><a href="alerts.html?target=' + encodeURIComponent(meter.id) + '#add-rule" class="btn btn--sm btn--soft"><i class="ic i-plus"></i> Set alert</a></div>' +
-    '<div class="card__body"><div class="list">' + rulesHtml + "</div></div></div>" +
+    '<div class="card__body"><dl class="kv"><dt>Device</dt><dd><a href="device.html?id=' + esc(main.device) + '" class="tc-primary">' + esc(main.device) + " · " + esc(main.deviceName) + "</a></dd><dt>Status</dt><dd>" + esc(lastSeen) + "</dd></dl></div></div>" +
+    '<div class="card" id="meter-rules"></div>' + // filled by meter-alerts.js
     "</div></section>";
 
   page.innerHTML = html;
+
+  // Shared with meter-alerts.js (per-meter alert rules)
+  window.ED_METER_CTX = {
+    meter: meter, parent: parent, isSub: isSub, main: main, gen: gen, live: live, rated: rated,
+    now: { kw: absPower, kva: kva, pf: live ? pf : null, v: v, i: iPh, hz: hz, thdV: thdV, thdI: thdI, kwhToday: todayKwh, load: meter.load },
+    groupRules: rules.map(function (r) { return { name: r[0], text: r[1], severity: r[2], target: r[3][0] }; }),
+  };
 
   /* ---------- charts ---------- */
   function tableFor(pts, xl, yl, xf, dp) {

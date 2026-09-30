@@ -12,6 +12,8 @@
   <script src="assets/js/store.js"></script>
   <script src="assets/js/app.js"></script>
   <script src="assets/js/workspace.js" defer></script>
+  <script src="assets/js/device-data.js" defer></script>
+  <script src="assets/js/export.js" defer></script>
 </head>
 <body class="app">
   <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
@@ -41,11 +43,14 @@
         <a href="dashboard.html" class="nav__link"><i class="ic i-grid"></i><span>Dashboard</span></a>
         <a href="meters.html" class="nav__link"><i class="ic i-gauge"></i><span>Energy Meters</span><em class="nav__badge nav__badge--green">38</em></a>
         <a href="devices.html" class="nav__link is-active"><i class="ic i-cpu"></i><span>Device Management</span></a>
+        <a href="connections.html" class="nav__link"><i class="ic i-flow"></i><span>Connections</span></a>
         <a href="analytics.html" class="nav__link"><i class="ic i-chart"></i><span>Analytics</span></a>
         <a href="alerts.html" class="nav__link"><i class="ic i-bell"></i><span>Alerts</span><em class="nav__badge">5</em></a>
 
-        <div class="nav__section">Operations</div>
-        <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift Management</span></a>
+        <div class="nav__section">Shift management</div>
+        <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift</span></a>
+        <a href="shift-schedule.html" class="nav__link"><i class="ic i-calendar"></i><span>Schedule</span></a>
+        <a href="shift-instances.html" class="nav__link"><i class="ic i-chart"></i><span>Instance</span></a>
 
         <div class="nav__section">Administration</div>
         <a href="users.html" class="nav__link"><i class="ic i-users"></i><span>Users</span></a>
@@ -148,9 +153,9 @@
             <p class="page-sub">Gateways, data loggers and IoT devices that collect readings from your energy meters. Meters and sub-meters are in <a href="meters.html" class="tc-primary">Energy Meters</a>.</p>
           </div>
           <div class="page-actions">
-            <a href="#close" class="btn btn--sm"><i class="ic i-download"></i> Export CSV</a>
+            <a href="#export" data-export="devices" class="btn btn--sm"><i class="ic i-download"></i> Export CSV</a>
             <a href="#update-firmware" class="btn btn--sm btn--soft"><i class="ic i-upload"></i> Firmware updates</a>
-            <a href="#add-device" class="btn btn--sm btn--primary"><i class="ic i-plus"></i> Add device</a>
+            <a href="#add-device" class="btn btn--sm btn--primary" data-limit="devices"><i class="ic i-plus"></i> Add device</a>
           </div>
         </section>
 
@@ -163,7 +168,7 @@
 
         <section class="card">
           <div class="card__head">
-            <div><h3 class="card__title"><i class="ic i-cpu"></i> Devices</h3><p class="card__sub">Click <i class="ic i-chev-right"></i> to see the meters each device polls · status refreshes every 15 s</p></div>
+            <div><h3 class="card__title"><i class="ic i-cpu"></i> Devices</h3><p class="card__sub">Click a device to open its details, or <i class="ic i-chev-right"></i> to see the meters it polls · status refreshes every 15 s</p></div>
           </div>
           <div class="toolbar">
             <label class="search"><i class="ic i-search"></i><input type="search" placeholder="Search device name, ID or IP…" aria-label="Search devices" /></label>
@@ -173,18 +178,18 @@
           </div>
           <div class="table-wrap">
             <table class="table table--tree">
-              <thead><tr><th style="width:56px"></th><th>Device / Meter</th><th>Location</th><th>Meters</th><th>Network</th><th>Signal</th><th>Firmware</th><th>Status</th><th>Actions</th></tr></thead>
+              <thead><tr><th style="width:56px"></th><th>Device / Meter</th><th>Location</th><th>Meters</th><th data-field="devices.ip">Network</th><th>Signal</th><th>Firmware</th><th>Status</th><th>Actions</th></tr></thead>
 <tbody class="device">
   <tr class="device-row">
     <td><input type="checkbox" class="tree-toggle" id="gw-01" checked aria-label="Show meters connected to Main LT Panel Gateway" /><label for="gw-01" class="expander" title="Show connected meters"><i class="ic i-chev-right"></i></label></td>
-    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-cpu"></i></span><div><strong>Main LT Panel Gateway</strong><small>GW-01 · Moxa MGate MB3170</small></div></div></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-cpu"></i></span><div><a href="device.html?id=GW-01" class="row-link"><strong>Main LT Panel Gateway</strong></a><small>GW-01 · Moxa MGate MB3170</small></div></div></td>
     <td>Main LT Panel<div class="small muted">Plant 1 · Bengaluru</div></td>
     <td><label for="gw-01" class="count-pill" style="cursor:pointer"><i class="ic i-gauge"></i> 3 meters</label></td>
-    <td><span class="mono">192.168.1.21</span><div class="small muted">Modbus RTU → TCP</div></td>
+    <td data-field="devices.ip"><span class="mono">192.168.1.21</span><div class="small muted">Modbus RTU → TCP</div></td>
     <td><div class="bar-cell"><div class="bar"><span style="--w:100%;--c:var(--green)"></span></div><small>100%</small></div><div class="small muted">Ethernet</div></td>
     <td><span class="mono">3.2.1</span><div class="small muted" style="margin-top:4px">Up to date</div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">4 s ago</div></td>
-    <td><div class="actions"><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="device.html?id=GW-01" class="act act--view" title="Open device details"><i class="ic i-eye"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -217,14 +222,14 @@
 <tbody class="device">
   <tr class="device-row">
     <td><input type="checkbox" class="tree-toggle" id="gw-02" aria-label="Show meters connected to Utility Block Data Logger" /><label for="gw-02" class="expander" title="Show connected meters"><i class="ic i-chev-right"></i></label></td>
-    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--violet)"><i class="ic i-layers"></i></span><div><strong>Utility Block Data Logger</strong><small>GW-02 · Elmeasure Edge-Logger ELG-4G</small></div></div></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--violet)"><i class="ic i-layers"></i></span><div><a href="device.html?id=GW-02" class="row-link"><strong>Utility Block Data Logger</strong></a><small>GW-02 · Elmeasure Edge-Logger ELG-4G</small></div></div></td>
     <td>Utility Block<div class="small muted">Plant 1 · Bengaluru</div></td>
     <td><label for="gw-02" class="count-pill" style="cursor:pointer"><i class="ic i-gauge"></i> 3 meters</label></td>
-    <td><span class="mono">192.168.1.40</span><div class="small muted">Modbus RTU</div></td>
+    <td data-field="devices.ip"><span class="mono">192.168.1.40</span><div class="small muted">Modbus RTU</div></td>
     <td><div class="bar-cell"><div class="bar"><span style="--w:100%;--c:var(--green)"></span></div><small>100%</small></div><div class="small muted">Ethernet</div></td>
     <td><span class="mono">2.8.0</span><div><a href="#update-firmware" class="badge badge--blue" style="margin-top:4px"><i class="ic i-upload"></i> 2.9.1 available</a></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">6 s ago</div></td>
-    <td><div class="actions"><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="device.html?id=GW-02" class="act act--view" title="Open device details"><i class="ic i-eye"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -257,14 +262,14 @@
 <tbody class="device">
   <tr class="device-row">
     <td><input type="checkbox" class="tree-toggle" id="gw-03" aria-label="Show meters connected to Admin Block Gateway" /><label for="gw-03" class="expander" title="Show connected meters"><i class="ic i-chev-right"></i></label></td>
-    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-cpu"></i></span><div><strong>Admin Block Gateway</strong><small>GW-03 · Schneider Com'X 510</small></div></div></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-cpu"></i></span><div><a href="device.html?id=GW-03" class="row-link"><strong>Admin Block Gateway</strong></a><small>GW-03 · Schneider Com'X 510</small></div></div></td>
     <td>Admin Building<div class="small muted">Plant 1 · Bengaluru</div></td>
     <td><label for="gw-03" class="count-pill" style="cursor:pointer"><i class="ic i-gauge"></i> 2 meters</label></td>
-    <td><span class="mono">192.168.2.15</span><div class="small muted">Modbus TCP</div></td>
+    <td data-field="devices.ip"><span class="mono">192.168.2.15</span><div class="small muted">Modbus TCP</div></td>
     <td><div class="bar-cell"><div class="bar"><span style="--w:100%;--c:var(--green)"></span></div><small>100%</small></div><div class="small muted">Ethernet</div></td>
     <td><span class="mono">6.4.2</span><div class="small muted" style="margin-top:4px">Up to date</div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">9 s ago</div></td>
-    <td><div class="actions"><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="device.html?id=GW-03" class="act act--view" title="Open device details"><i class="ic i-eye"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -288,14 +293,14 @@
 <tbody class="device">
   <tr class="device-row">
     <td><input type="checkbox" class="tree-toggle" id="gw-04" aria-label="Show meters connected to Server Room Gateway" /><label for="gw-04" class="expander" title="Show connected meters"><i class="ic i-chev-right"></i></label></td>
-    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-cpu"></i></span><div><strong>Server Room Gateway</strong><small>GW-04 · Schneider Link150</small></div></div></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-cpu"></i></span><div><a href="device.html?id=GW-04" class="row-link"><strong>Server Room Gateway</strong></a><small>GW-04 · Schneider Link150</small></div></div></td>
     <td>Server Room · L2<div class="small muted">Plant 1 · Bengaluru</div></td>
     <td><label for="gw-04" class="count-pill" style="cursor:pointer"><i class="ic i-gauge"></i> 1 meter</label></td>
-    <td><span class="mono">192.168.3.10</span><div class="small muted">Modbus TCP</div></td>
+    <td data-field="devices.ip"><span class="mono">192.168.3.10</span><div class="small muted">Modbus TCP</div></td>
     <td><div class="bar-cell"><div class="bar"><span style="--w:100%;--c:var(--green)"></span></div><small>100%</small></div><div class="small muted">Ethernet</div></td>
     <td><span class="mono">4.1.0</span><div class="small muted" style="margin-top:4px">Up to date</div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">3 s ago</div></td>
-    <td><div class="actions"><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="device.html?id=GW-04" class="act act--view" title="Open device details"><i class="ic i-eye"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -310,14 +315,14 @@
 <tbody class="device">
   <tr class="device-row">
     <td><input type="checkbox" class="tree-toggle" id="gw-05" aria-label="Show meters connected to Rooftop Solar Edge Device" /><label for="gw-05" class="expander" title="Show connected meters"><i class="ic i-chev-right"></i></label></td>
-    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--blue)"><i class="ic i-wifi"></i></span><div><strong>Rooftop Solar Edge Device</strong><small>GW-05 · Teltonika TRB245</small></div></div></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--blue)"><i class="ic i-wifi"></i></span><div><a href="device.html?id=GW-05" class="row-link"><strong>Rooftop Solar Edge Device</strong></a><small>GW-05 · Teltonika TRB245</small></div></div></td>
     <td>Roof · Block A<div class="small muted">Plant 1 · Bengaluru</div></td>
     <td><label for="gw-05" class="count-pill" style="cursor:pointer"><i class="ic i-gauge"></i> 1 meter</label></td>
-    <td><span class="mono">10.64.12.8</span><div class="small muted">MQTT over 4G</div></td>
+    <td data-field="devices.ip"><span class="mono">10.64.12.8</span><div class="small muted">MQTT over 4G</div></td>
     <td><div class="bar-cell"><div class="bar"><span style="--w:64%;--c:var(--amber)"></span></div><small>64%</small></div><div class="small muted">4G LTE</div></td>
     <td><span class="mono">7.06</span><div><a href="#update-firmware" class="badge badge--blue" style="margin-top:4px"><i class="ic i-upload"></i> 7.08 available</a></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">12 s ago</div></td>
-    <td><div class="actions"><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="device.html?id=GW-05" class="act act--view" title="Open device details"><i class="ic i-eye"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -332,14 +337,14 @@
 <tbody class="device">
   <tr class="device-row">
     <td><input type="checkbox" class="tree-toggle" id="gw-06" aria-label="Show meters connected to DG & EV Yard Gateway" /><label for="gw-06" class="expander" title="Show connected meters"><i class="ic i-chev-right"></i></label></td>
-    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--amber)"><i class="ic i-wifi"></i></span><div><strong>DG & EV Yard Gateway</strong><small>GW-06 · Milesight UG65</small></div></div></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--amber)"><i class="ic i-wifi"></i></span><div><a href="device.html?id=GW-06" class="row-link"><strong>DG & EV Yard Gateway</strong></a><small>GW-06 · Milesight UG65</small></div></div></td>
     <td>DG Yard<div class="small muted">Plant 1 · Bengaluru</div></td>
     <td><label for="gw-06" class="count-pill" style="cursor:pointer"><i class="ic i-gauge"></i> 2 meters</label></td>
-    <td><span class="mono">192.168.1.60</span><div class="small muted">LoRaWAN → MQTT</div></td>
+    <td data-field="devices.ip"><span class="mono">192.168.1.60</span><div class="small muted">LoRaWAN → MQTT</div></td>
     <td><div class="bar-cell"><div class="bar"><span style="--w:31%;--c:var(--rose)"></span></div><small>31%</small></div><div class="small muted">Wi-Fi</div></td>
     <td><span class="mono">60.0.0.41</span><div class="small muted" style="margin-top:4px">Up to date</div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Weak signal</span><div class="small muted" style="margin-top:4px">2 min ago</div></td>
-    <td><div class="actions"><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="device.html?id=GW-06" class="act act--view" title="Open device details"><i class="ic i-eye"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -474,25 +479,26 @@
       <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
     </div>
     <div class="modal__body">
+      <div class="callout callout--danger" data-limit-full="devices" hidden style="margin-bottom:16px"></div>
       <div class="form-section">Device</div>
       <div class="form-grid form-grid--3">
-        <div class="field"><label>Device name <span class="req">*</span></label><input class="input" placeholder="e.g. Block C Gateway" /></div>
+        <div class="field" data-field="devices.name"><label>Device name <span class="req">*</span></label><input class="input" placeholder="e.g. Block C Gateway" /></div>
         <div class="field"><label>Device ID</label><input class="input mono" value="GW-07" /></div>
-        <div class="field"><label>Device type</label><select class="input"><option>Modbus TCP gateway</option><option>Data logger</option><option>4G IoT edge device</option><option>Wireless (LoRaWAN) gateway</option></select></div>
-        <div class="field"><label>Make &amp; model</label><input class="input" placeholder="Moxa MGate MB3170" /></div>
-        <div class="field"><label>Serial number</label><input class="input mono" placeholder="TAGBB1054321" /></div>
-        <div class="field"><label>Site</label><select class="input"><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option></select></div>
-        <div class="field full"><label>Installed at</label><input class="input" placeholder="e.g. Block C · Panel room" /></div>
+        <div class="field" data-field="devices.type"><label>Device type</label><select class="input"><option>Modbus TCP gateway</option><option>Data logger</option><option>4G IoT edge device</option><option>Wireless (LoRaWAN) gateway</option></select></div>
+        <div class="field" data-field="devices.model"><label>Make &amp; model</label><input class="input" placeholder="Moxa MGate MB3170" /></div>
+        <div class="field" data-field="devices.serial"><label>Serial number</label><input class="input mono" placeholder="TAGBB1054321" /></div>
+        <div class="field" data-field="devices.site"><label>Site</label><select class="input"><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option></select></div>
+        <div class="field full" data-field="devices.location"><label>Installed at</label><input class="input" placeholder="e.g. Block C · Panel room" /></div>
       </div>
       <div class="form-section" style="margin-top:18px">Network &amp; protocol</div>
       <div class="form-grid form-grid--3">
-        <div class="field"><label>Connectivity</label><select class="input"><option>Ethernet</option><option>Wi-Fi</option><option>4G LTE</option></select></div>
-        <div class="field"><label>IP address</label><input class="input mono" placeholder="192.168.1.70" /></div>
-        <div class="field"><label>Port</label><input class="input mono" value="502" /></div>
-        <div class="field"><label>Field protocol</label><select class="input"><option>Modbus RTU (RS-485)</option><option>Modbus TCP</option><option>LoRaWAN</option></select></div>
-        <div class="field"><label>Uplink</label><select class="input"><option>Modbus TCP (polled)</option><option>MQTT (push)</option><option>HTTPS (push)</option></select></div>
-        <div class="field"><label>Polling interval</label><select class="input"><option>15 s</option><option>30 s</option><option>1 min</option><option>5 min</option></select></div>
-        <div class="field"><label>RS-485 baud rate</label><select class="input"><option>9600</option><option>19200</option><option>38400</option></select></div>
+        <div class="field" data-field="devices.network"><label>Connectivity</label><select class="input"><option>Ethernet</option><option>Wi-Fi</option><option>4G LTE</option></select></div>
+        <div class="field" data-field="devices.ip"><label>IP address</label><input class="input mono" placeholder="192.168.1.70" /></div>
+        <div class="field" data-field="devices.ip"><label>Port</label><input class="input mono" value="502" /></div>
+        <div class="field" data-field="devices.protocol"><label>Field protocol</label><select class="input"><option>Modbus RTU (RS-485)</option><option>Modbus TCP</option><option>LoRaWAN</option></select></div>
+        <div class="field" data-field="devices.protocol"><label>Uplink</label><select class="input"><option>Modbus TCP (polled)</option><option>MQTT (push)</option><option>HTTPS (push)</option></select></div>
+        <div class="field" data-field="devices.polling"><label>Polling interval</label><select class="input"><option>15 s</option><option>30 s</option><option>1 min</option><option>5 min</option></select></div>
+        <div class="field" data-field="devices.polling"><label>RS-485 baud rate</label><select class="input"><option>9600</option><option>19200</option><option>38400</option></select></div>
         <div class="field"><label>Time sync</label><select class="input"><option>NTP · pool.ntp.org</option><option>Server time</option></select></div>
         <label class="switch" style="align-self:end"><input type="checkbox" checked /> Alert me if the device goes offline</label>
       </div>
@@ -500,7 +506,7 @@
     </div>
     <div class="modal__foot">
       <a href="#close" class="btn btn--ghost">Cancel</a>
-      <a href="#created" class="btn btn--primary"><i class="ic i-check"></i> Add device</a>
+      <a href="#created" class="btn btn--primary" data-limit="devices"><i class="ic i-check"></i> Add device</a>
     </div>
   </div>
 </div>
@@ -516,23 +522,23 @@
     <div class="modal__body">
       <div class="form-section">Device</div>
       <div class="form-grid form-grid--3">
-        <div class="field"><label>Device name <span class="req">*</span></label><input class="input" value="Main LT Panel Gateway" /></div>
+        <div class="field" data-field="devices.name"><label>Device name <span class="req">*</span></label><input class="input" value="Main LT Panel Gateway" /></div>
         <div class="field"><label>Device ID</label><input class="input mono" value="GW-01" readonly /></div>
-        <div class="field"><label>Device type</label><select class="input"><option selected>Modbus TCP gateway</option><option>Data logger</option><option>4G IoT edge device</option><option>Wireless (LoRaWAN) gateway</option></select></div>
-        <div class="field"><label>Make &amp; model</label><input class="input" value="Moxa MGate MB3170" /></div>
-        <div class="field"><label>Serial number</label><input class="input mono" value="TAGBB1054321" /></div>
-        <div class="field"><label>Site</label><select class="input"><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option></select></div>
-        <div class="field full"><label>Installed at</label><input class="input" value="Main LT Panel" /></div>
+        <div class="field" data-field="devices.type"><label>Device type</label><select class="input"><option selected>Modbus TCP gateway</option><option>Data logger</option><option>4G IoT edge device</option><option>Wireless (LoRaWAN) gateway</option></select></div>
+        <div class="field" data-field="devices.model"><label>Make &amp; model</label><input class="input" value="Moxa MGate MB3170" /></div>
+        <div class="field" data-field="devices.serial"><label>Serial number</label><input class="input mono" value="TAGBB1054321" /></div>
+        <div class="field" data-field="devices.site"><label>Site</label><select class="input"><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option></select></div>
+        <div class="field full" data-field="devices.location"><label>Installed at</label><input class="input" value="Main LT Panel" /></div>
       </div>
       <div class="form-section" style="margin-top:18px">Network &amp; protocol</div>
       <div class="form-grid form-grid--3">
-        <div class="field"><label>Connectivity</label><select class="input"><option selected>Ethernet</option><option>Wi-Fi</option><option>4G LTE</option></select></div>
-        <div class="field"><label>IP address</label><input class="input mono" value="192.168.1.21" /></div>
-        <div class="field"><label>Port</label><input class="input mono" value="502" /></div>
-        <div class="field"><label>Field protocol</label><select class="input"><option>Modbus RTU (RS-485)</option><option>Modbus TCP</option><option>LoRaWAN</option></select></div>
-        <div class="field"><label>Uplink</label><select class="input"><option>Modbus TCP (polled)</option><option>MQTT (push)</option><option>HTTPS (push)</option></select></div>
-        <div class="field"><label>Polling interval</label><select class="input"><option>15 s</option><option>30 s</option><option>1 min</option><option>5 min</option></select></div>
-        <div class="field"><label>RS-485 baud rate</label><select class="input"><option>9600</option><option>19200</option><option>38400</option></select></div>
+        <div class="field" data-field="devices.network"><label>Connectivity</label><select class="input"><option selected>Ethernet</option><option>Wi-Fi</option><option>4G LTE</option></select></div>
+        <div class="field" data-field="devices.ip"><label>IP address</label><input class="input mono" value="192.168.1.21" /></div>
+        <div class="field" data-field="devices.ip"><label>Port</label><input class="input mono" value="502" /></div>
+        <div class="field" data-field="devices.protocol"><label>Field protocol</label><select class="input"><option>Modbus RTU (RS-485)</option><option>Modbus TCP</option><option>LoRaWAN</option></select></div>
+        <div class="field" data-field="devices.protocol"><label>Uplink</label><select class="input"><option>Modbus TCP (polled)</option><option>MQTT (push)</option><option>HTTPS (push)</option></select></div>
+        <div class="field" data-field="devices.polling"><label>Polling interval</label><select class="input"><option>15 s</option><option>30 s</option><option>1 min</option><option>5 min</option></select></div>
+        <div class="field" data-field="devices.polling"><label>RS-485 baud rate</label><select class="input"><option>9600</option><option>19200</option><option>38400</option></select></div>
         <div class="field"><label>Time sync</label><select class="input"><option>NTP · pool.ntp.org</option><option>Server time</option></select></div>
         <label class="switch" style="align-self:end"><input type="checkbox" checked /> Alert me if the device goes offline</label>
       </div>

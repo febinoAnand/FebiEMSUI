@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meter · Energy Dashboard</title>
+  <title>Shift Instances · Energy Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
@@ -12,12 +12,6 @@
   <script src="assets/js/store.js"></script>
   <script src="assets/js/app.js"></script>
   <script src="assets/js/workspace.js" defer></script>
-  <script src="assets/js/meter-data.js" defer></script>
-  <script src="assets/js/meter.js" defer></script>
-  <script src="assets/js/alert-rules-text.js" defer></script>
-  <script src="assets/js/meter-alerts.js" defer></script>
-  <script src="assets/js/device-data.js" defer></script>
-  <script src="assets/js/connections.js" defer></script>
   <script src="assets/js/export.js" defer></script>
 </head>
 <body class="app">
@@ -46,7 +40,7 @@
       <nav class="nav">
         <div class="nav__section">Monitor</div>
         <a href="dashboard.html" class="nav__link"><i class="ic i-grid"></i><span>Dashboard</span></a>
-        <a href="meters.html" class="nav__link is-active"><i class="ic i-gauge"></i><span>Energy Meters</span><em class="nav__badge nav__badge--green">38</em></a>
+        <a href="meters.html" class="nav__link"><i class="ic i-gauge"></i><span>Energy Meters</span><em class="nav__badge nav__badge--green">38</em></a>
         <a href="devices.html" class="nav__link"><i class="ic i-cpu"></i><span>Device Management</span></a>
         <a href="connections.html" class="nav__link"><i class="ic i-flow"></i><span>Connections</span></a>
         <a href="analytics.html" class="nav__link"><i class="ic i-chart"></i><span>Analytics</span></a>
@@ -55,7 +49,7 @@
         <div class="nav__section">Shift management</div>
         <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift</span></a>
         <a href="shift-schedule.html" class="nav__link"><i class="ic i-calendar"></i><span>Schedule</span></a>
-        <a href="shift-instances.html" class="nav__link"><i class="ic i-chart"></i><span>Instance</span></a>
+        <a href="shift-instances.html" class="nav__link is-active"><i class="ic i-chart"></i><span>Instance</span></a>
 
         <div class="nav__section">Administration</div>
         <a href="users.html" class="nav__link"><i class="ic i-users"></i><span>Users</span></a>
@@ -82,8 +76,8 @@
         <label for="nav-toggle" class="icon-btn burger" aria-label="Open menu"><i class="ic i-menu"></i></label>
 
         <div class="topbar__crumbs">
-          <small><span data-bind="org.short">Febino Solutions</span> / <a href="meters.html" class="row-link">Energy Meters</a></small>
-          <strong>Meter</strong>
+          <small><span data-bind="org.short">Febino Solutions</span> / Shift management</small>
+          <strong>Instance</strong>
         </div>
 
         <label class="search">
@@ -151,7 +145,164 @@
         </div>
       </header>
 
-      <main class="page" id="meter-page" aria-live="polite"><noscript><p class="page-sub">This meter dashboard needs JavaScript.</p></noscript></main>
+      <main class="page">
+        <section class="page-head">
+          <div>
+            <h1 class="page-title">Shift <span class="gradient-text">Instances</span></h1>
+            <p class="page-sub">Track every run of a shift: attendance, timing and energy used.</p>
+          </div>
+          <div class="page-actions">
+            <select class="input input--sm" style="width:auto" aria-label="Week"><option>Week 39 · Sep 21 – 27</option><option>Week 40 · Sep 28 – Oct 4</option></select>
+          </div>
+        </section>
+
+        <section class="grid grid-4">
+          <article class="card stat" style="padding:18px 20px">
+            <div class="progress-ring" style="--v:25;--c:var(--orange)"></div>
+            <div><span>Running now</span><strong style="font-size:17px;font-family:var(--font)">Shift B · Evening</strong><span class="mono">2 h of 8 h elapsed</span></div>
+          </article>
+          <div class="card stat"><span class="stat__icon" style="--c:var(--green)"><i class="ic i-chart"></i></span><div><strong>19</strong><span>Instances this week · 18 completed</span></div></div>
+          <div class="card stat"><span class="stat__icon" style="--c:var(--rose)"><i class="ic i-alert"></i></span><div><strong>1</strong><span>Missed · Thu Shift C</span></div></div>
+          <div class="card stat"><span class="stat__icon"><i class="ic i-bolt"></i></span><div><strong>5,258 <small class="muted" style="font-size:13px">kWh</small></strong><span>Energy across instances this week</span></div></div>
+        </section>
+
+        <section class="card paged">
+          <input type="radio" class="pg-input" name="in-pg" id="in-p1" value="1" checked aria-label="Page 1" />
+<input type="radio" class="pg-input" name="in-pg" id="in-p2" value="2" aria-label="Page 2" />
+          <div class="card__head"><div><h3 class="card__title"><i class="ic i-chart"></i> Shift instances</h3><p class="card__sub">Each actual run of a scheduled shift, with attendance and energy</p></div>
+            <div class="row"><select class="input input--sm" style="width:auto" aria-label="Status"><option>All statuses</option><option>Running</option><option>Completed</option><option>Missed</option><option>Upcoming</option></select><a href="#export" data-export="shifts" class="btn btn--sm btn--ghost"><i class="ic i-download"></i> Export</a></div>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>Instance</th><th>Shift</th><th>Planned / actual</th><th class="num">Staff</th><th class="num">Energy kWh</th><th class="num">kWh / unit</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody data-page="1">
+  <tr>
+    <td class="nowrap"><strong class="mono">SI-0927-B</strong><br /><small class="muted">Sat, Sep 27</small></td>
+    <td><span class="shift-pill shift--b"><i class="ic i-sunset"></i> Shift B · Evening</span></td>
+    <td class="mono small nowrap">14:00 – 22:00<br /><span class="muted">actual 14:02 → —</span></td>
+    <td class="num">12 / 12</td>
+    <td class="num">412</td>
+    <td class="num">—</td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Running</span></td>
+    <td><div class="actions"><a href="#view-instance" class="act act--view" title="View"><i class="ic i-eye"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="nowrap"><strong class="mono">SI-0927-G</strong><br /><small class="muted">Sat, Sep 27</small></td>
+    <td><span class="shift-pill shift--g"><i class="ic i-clock"></i> General</span></td>
+    <td class="mono small nowrap">09:30 – 18:30<br /><span class="muted">actual 09:34 → —</span></td>
+    <td class="num">5 / 11</td>
+    <td class="num">96</td>
+    <td class="num">—</td>
+    <td><span class="badge badge--success"><span class="dot dot--live"></span> Running</span></td>
+    <td><div class="actions"><a href="#view-instance" class="act act--view" title="View"><i class="ic i-eye"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="nowrap"><strong class="mono">SI-0927-A</strong><br /><small class="muted">Sat, Sep 27</small></td>
+    <td><span class="shift-pill shift--a"><i class="ic i-sun"></i> Shift A · Morning</span></td>
+    <td class="mono small nowrap">06:00 – 14:00<br /><span class="muted">actual 05:58 → 14:06</span></td>
+    <td class="num">14 / 14</td>
+    <td class="num">338</td>
+    <td class="num">0.82</td>
+    <td><span class="badge badge--primary"><span class="dot"></span> Completed</span></td>
+    <td><div class="actions"><a href="#view-instance" class="act act--view" title="View"><i class="ic i-eye"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="nowrap"><strong class="mono">SI-0926-C</strong><br /><small class="muted">Fri, Sep 26</small></td>
+    <td><span class="shift-pill shift--c"><i class="ic i-moon"></i> Shift C · Night</span></td>
+    <td class="mono small nowrap">22:00 – 06:00<br /><span class="muted">actual 22:05 → 06:01</span></td>
+    <td class="num">7 / 8</td>
+    <td class="num">241</td>
+    <td class="num">1.14</td>
+    <td><span class="badge badge--primary"><span class="dot"></span> Completed</span></td>
+    <td><div class="actions"><a href="#view-instance" class="act act--view" title="View"><i class="ic i-eye"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="nowrap"><strong class="mono">SI-0926-B</strong><br /><small class="muted">Fri, Sep 26</small></td>
+    <td><span class="shift-pill shift--b"><i class="ic i-sunset"></i> Shift B · Evening</span></td>
+    <td class="mono small nowrap">14:00 – 22:00<br /><span class="muted">actual 14:00 → 22:03</span></td>
+    <td class="num">11 / 12</td>
+    <td class="num">318</td>
+    <td class="num">0.90</td>
+    <td><span class="badge badge--primary"><span class="dot"></span> Completed</span></td>
+    <td><div class="actions"><a href="#view-instance" class="act act--view" title="View"><i class="ic i-eye"></i></a></div></td>
+  </tr>
+</tbody>
+<tbody data-page="2">
+  <tr>
+    <td class="nowrap"><strong class="mono">SI-0926-A</strong><br /><small class="muted">Fri, Sep 26</small></td>
+    <td><span class="shift-pill shift--a"><i class="ic i-sun"></i> Shift A · Morning</span></td>
+    <td class="mono small nowrap">06:00 – 14:00<br /><span class="muted">actual 06:03 → 14:01</span></td>
+    <td class="num">13 / 14</td>
+    <td class="num">329</td>
+    <td class="num">0.85</td>
+    <td><span class="badge badge--primary"><span class="dot"></span> Completed</span></td>
+    <td><div class="actions"><a href="#view-instance" class="act act--view" title="View"><i class="ic i-eye"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="nowrap"><strong class="mono">SI-0926-G</strong><br /><small class="muted">Fri, Sep 26</small></td>
+    <td><span class="shift-pill shift--g"><i class="ic i-clock"></i> General</span></td>
+    <td class="mono small nowrap">09:30 – 18:30<br /><span class="muted">actual 09:30 → 18:42</span></td>
+    <td class="num">11 / 11</td>
+    <td class="num">108</td>
+    <td class="num">—</td>
+    <td><span class="badge badge--primary"><span class="dot"></span> Completed</span></td>
+    <td><div class="actions"><a href="#view-instance" class="act act--view" title="View"><i class="ic i-eye"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="nowrap"><strong class="mono">SI-0925-C</strong><br /><small class="muted">Thu, Sep 25</small></td>
+    <td><span class="shift-pill shift--c"><i class="ic i-moon"></i> Shift C · Night</span></td>
+    <td class="mono small nowrap">22:00 – 06:00<br /><span class="muted">actual — → —</span></td>
+    <td class="num">0 / 8</td>
+    <td class="num">0</td>
+    <td class="num">—</td>
+    <td><span class="badge badge--danger"><span class="dot"></span> Missed</span></td>
+    <td><div class="actions"><a href="#view-instance" class="act act--view" title="View"><i class="ic i-eye"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="nowrap"><strong class="mono">SI-0927-C</strong><br /><small class="muted">Sat, Sep 27</small></td>
+    <td><span class="shift-pill shift--c"><i class="ic i-moon"></i> Shift C · Night</span></td>
+    <td class="mono small nowrap">22:00 – 06:00<br /><span class="muted">actual — → —</span></td>
+    <td class="num">— / 8</td>
+    <td class="num">—</td>
+    <td class="num">—</td>
+    <td><span class="badge badge--info"><span class="dot"></span> Upcoming</span></td>
+    <td><div class="actions"><a href="#view-instance" class="act act--view" title="View"><i class="ic i-eye"></i></a></div></td>
+  </tr>
+  <tr>
+    <td class="nowrap"><strong class="mono">SI-0929-A</strong><br /><small class="muted">Mon, Sep 29</small></td>
+    <td><span class="shift-pill shift--a"><i class="ic i-sun"></i> Shift A · Morning</span></td>
+    <td class="mono small nowrap">06:00 – 14:00<br /><span class="muted">actual — → —</span></td>
+    <td class="num">— / 14</td>
+    <td class="num">—</td>
+    <td class="num">—</td>
+    <td><span class="badge badge--info"><span class="dot"></span> Upcoming</span></td>
+    <td><div class="actions"><a href="#view-instance" class="act act--view" title="View"><i class="ic i-eye"></i></a></div></td>
+  </tr>
+</tbody>
+            </table>
+          </div>
+            <div class="pager">
+  <div class="pager__info">Showing <span data-when="1"><strong>1–5</strong></span><span data-when="2"><strong>6–10</strong></span> of <strong>10</strong> instances</div>
+  <div class="pager__size">Rows per page <select class="input" aria-label="Rows per page"><option>5</option><option>10</option><option>20</option></select></div>
+  <div class="pager__nav"><span class="pg-btn is-disabled" data-when="1" aria-hidden="true"><i class="ic i-chev-left"></i></span><label for="in-p1" data-when="2" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="in-p1" data-p="1">1</label><label for="in-p2" data-p="2">2</label><label for="in-p2" data-when="1" aria-label="Next page"><i class="ic i-chev-right"></i></label><span class="pg-btn is-disabled" data-when="2" aria-hidden="true"><i class="ic i-chev-right"></i></span></div>
+</div>
+        </section>
+
+        <section class="stack">
+          <article class="card">
+            <div class="card__head"><div><h3 class="card__title"><i class="ic i-bolt"></i> Energy per shift</h3><p class="card__sub">This week · kWh and intensity</p></div></div>
+            <div class="card__body">
+              <div class="list">
+                <div class="list__item"><span class="icon-tile icon-tile--amber"><i class="ic i-sun"></i></span><div class="grow"><div class="row-between"><strong>Shift A</strong><span class="mono">1,942 kWh</span></div><div class="bar" style="margin-top:8px"><span style="--w:88%;--c:var(--amber)"></span></div><small>0.84 kWh / unit · 2,312 units</small></div></div>
+                <div class="list__item"><span class="icon-tile icon-tile--amber" style="--c:var(--orange)"><i class="ic i-sunset"></i></span><div class="grow"><div class="row-between"><strong>Shift B</strong><span class="mono">1,562 kWh</span></div><div class="bar" style="margin-top:8px"><span style="--w:71%;--c:var(--orange)"></span></div><small>0.91 kWh / unit · 1,716 units</small></div></div>
+                <div class="list__item"><span class="icon-tile icon-tile--violet"><i class="ic i-moon"></i></span><div class="grow"><div class="row-between"><strong>Shift C</strong><span class="mono">1,108 kWh</span></div><div class="bar" style="margin-top:8px"><span style="--w:50%;--c:var(--violet)"></span></div><small>1.12 kWh / unit · 989 units</small></div></div>
+                <div class="list__item"><span class="icon-tile icon-tile--cyan"><i class="ic i-clock"></i></span><div class="grow"><div class="row-between"><strong>General</strong><span class="mono">646 kWh</span></div><div class="bar" style="margin-top:8px"><span style="--w:29%;--c:var(--cyan)"></span></div><small>Office &amp; support loads</small></div></div>
+              </div>
+              <div class="callout callout--warn" style="margin-top:14px"><i class="ic i-alert"></i><span>Shift C uses <b>33% more energy per unit</b> than Shift A. Check the compressor idle time overnight.</span></div>
+            </div>
+          </article>
+        </section>
+      </main>
 
       <footer class="footer">
         <span>© 2026 Energy Dashboard · Tenant <span class="mono" data-bind="org.id">FEBINO</span></span>
@@ -251,6 +402,26 @@
       </div>
     </div>
   </div>
+
+  <div class="modal" id="view-instance" role="dialog" aria-modal="true" aria-labelledby="view-instance-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog">
+    <div class="modal__head">
+      <span class="modal__icon"><i class="ic i-chart"></i></span>
+      <div><h3 id="view-instance-t">Shift instance</h3><p>SI-0927-A · Sat, Sep 27</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="row wrap" style="gap:10px;margin-bottom:16px"><span class="shift-pill shift--a"><i class="ic i-sun"></i> Shift A · Morning</span><span class="badge badge--primary"><span class="dot"></span> Completed</span></div>
+      <dl class="kv"><dt>Schedule</dt><dd>SC-01 · Production weekdays</dd><dt>Site</dt><dd>Plant 1 · Bengaluru</dd><dt>Planned</dt><dd class="mono">06:00 – 14:00</dd><dt>Actual</dt><dd class="mono">05:58 – 14:06</dd><dt>Supervisor</dt><dd>Meera Iyer</dd><dt>Staff present</dt><dd>14 of 14</dd><dt>Energy</dt><dd class="mono">338 kWh · peak 148.6 kW at 11:20</dd><dt>Production</dt><dd class="mono">412 units · 0.82 kWh / unit</dd></dl>
+      </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Close</a>
+      <a href="#export" data-export="shifts" class="btn btn--primary"><i class="ic i-download"></i> Download report</a>
+    </div>
+  </div>
+</div>
+
 
   <!-- ================= TOASTS ================= -->
   <div class="toast" id="saved" role="status"><span class="toast__icon"><i class="ic i-check"></i></span><div><strong>Changes saved</strong><span>Your updates were saved successfully.</span></div></div>

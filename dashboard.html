@@ -12,6 +12,9 @@
   <script src="assets/js/store.js"></script>
   <script src="assets/js/app.js"></script>
   <script src="assets/js/workspace.js" defer></script>
+  <script src="assets/js/dashboard.js" defer></script>
+  <script src="assets/js/meter-data.js" defer></script>
+  <script src="assets/js/export.js" defer></script>
 </head>
 <body class="app">
   <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
@@ -41,11 +44,14 @@
         <a href="dashboard.html" class="nav__link is-active"><i class="ic i-grid"></i><span>Dashboard</span></a>
         <a href="meters.html" class="nav__link"><i class="ic i-gauge"></i><span>Energy Meters</span><em class="nav__badge nav__badge--green">38</em></a>
         <a href="devices.html" class="nav__link"><i class="ic i-cpu"></i><span>Device Management</span></a>
+        <a href="connections.html" class="nav__link"><i class="ic i-flow"></i><span>Connections</span></a>
         <a href="analytics.html" class="nav__link"><i class="ic i-chart"></i><span>Analytics</span></a>
         <a href="alerts.html" class="nav__link"><i class="ic i-bell"></i><span>Alerts</span><em class="nav__badge">5</em></a>
 
-        <div class="nav__section">Operations</div>
-        <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift Management</span></a>
+        <div class="nav__section">Shift management</div>
+        <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift</span></a>
+        <a href="shift-schedule.html" class="nav__link"><i class="ic i-calendar"></i><span>Schedule</span></a>
+        <a href="shift-instances.html" class="nav__link"><i class="ic i-chart"></i><span>Instance</span></a>
 
         <div class="nav__section">Administration</div>
         <a href="users.html" class="nav__link"><i class="ic i-users"></i><span>Users</span></a>
@@ -150,197 +156,262 @@
           </div>
           <div class="page-actions">
             <select class="input input--sm" style="width:auto" aria-label="Period"><option>Today</option><option>Yesterday</option><option>Last 7 days</option><option>This month</option></select>
-            <a href="#close" class="btn btn--sm"><i class="ic i-download"></i> Export</a>
-            <a href="meters.html#add-meter" class="btn btn--primary btn--sm"><i class="ic i-plus"></i> Add meter</a>
+            <button type="button" class="btn btn--sm" data-dash-edit><i class="ic i-sliders"></i> Customize</button>
+            <a href="#export" data-export="energy" class="btn btn--sm"><i class="ic i-download"></i> Export</a>
+            <a href="meters.html#add-meter" class="btn btn--primary btn--sm" data-limit="meters"><i class="ic i-plus"></i> Add meter</a>
           </div>
         </section>
 
-        <!-- KPIs -->
-        <section class="grid grid-4">
-          <article class="kpi kpi--green">
-            <div class="kpi__top"><span class="kpi__icon"><i class="ic i-bolt"></i></span><span class="badge badge--success"><span class="dot dot--live"></span> Live</span></div>
-            <div class="kpi__label">Current Power</div>
-            <div class="kpi__value"><span class="count" style="--to:125" aria-label="125"></span><small>kW</small></div>
-            <div class="kpi__foot"><span class="trend trend--up"><i class="ic i-trend-up"></i> 6.2%</span><span>vs same hour yesterday</span></div>
-            <svg class="kpi__spark" viewBox="0 0 100 40" preserveAspectRatio="none"><path class="fill" d="M0,32 L12,28 L24,30 L36,20 L48,24 L60,14 L72,18 L84,8 L100,12 L100,40 L0,40Z"/><path pathLength="1" d="M0,32 L12,28 L24,30 L36,20 L48,24 L60,14 L72,18 L84,8 L100,12"/></svg>
-          </article>
-          <article class="kpi kpi--cyan">
-            <div class="kpi__top"><span class="kpi__icon"><i class="ic i-battery"></i></span><span class="tag">Today</span></div>
-            <div class="kpi__label">Energy Consumed</div>
-            <div class="kpi__value"><span class="count" style="--to:684" aria-label="684"></span><small>kWh</small></div>
-            <div class="kpi__foot"><span class="trend trend--down"><i class="ic i-trend-down"></i> 3.4%</span><span>below daily target</span></div>
-            <svg class="kpi__spark" viewBox="0 0 100 40" preserveAspectRatio="none"><path class="fill" d="M0,30 L14,26 L28,28 L42,18 L56,22 L70,16 L84,20 L100,10 L100,40 L0,40Z"/><path pathLength="1" d="M0,30 L14,26 L28,28 L42,18 L56,22 L70,16 L84,20 L100,10"/></svg>
-          </article>
-          <article class="kpi kpi--amber">
-            <div class="kpi__top"><span class="kpi__icon"><i class="ic i-rupee"></i></span><span class="tag">₹8.00 / kWh</span></div>
-            <div class="kpi__label">Energy Cost</div>
-            <div class="kpi__value">₹5,472<small>today</small></div>
-            <div class="kpi__foot"><span class="trend trend--flat">≈ 0.4%</span><span>projected ₹1.64 L / month</span></div>
-            <svg class="kpi__spark" viewBox="0 0 100 40" preserveAspectRatio="none"><path class="fill" d="M0,26 L14,30 L28,22 L42,24 L56,16 L70,20 L84,14 L100,16 L100,40 L0,40Z"/><path pathLength="1" d="M0,26 L14,30 L28,22 L42,24 L56,16 L70,20 L84,14 L100,16"/></svg>
-          </article>
-          <article class="kpi kpi--violet">
-            <div class="kpi__top"><span class="kpi__icon"><i class="ic i-leaf"></i></span><span class="tag">PF 0.96</span></div>
-            <div class="kpi__label">Carbon Emissions</div>
-            <div class="kpi__value"><span class="count" style="--to:561" aria-label="561"></span><small>kg CO₂</small></div>
-            <div class="kpi__foot"><span class="trend trend--up"><i class="ic i-trend-down"></i> 18.6%</span><span>lower than last month</span></div>
-            <svg class="kpi__spark" viewBox="0 0 100 40" preserveAspectRatio="none"><path class="fill" d="M0,10 L14,14 L28,12 L42,20 L56,18 L70,24 L84,22 L100,30 L100,40 L0,40Z"/><path pathLength="1" d="M0,10 L14,14 L28,12 L42,20 L56,18 L70,24 L84,22 L100,30"/></svg>
-          </article>
-        </section>
+        <div class="dash-editbar" id="dash-editbar" hidden>
+          <span class="icon-tile"><i class="ic i-sliders"></i></span>
+          <div class="grow"><strong>Customizing your dashboard</strong><small>Drag widgets to reorder, pick a width, or remove them. Changes are saved for your account on this browser.</small></div>
+          <a href="#add-widget" class="btn btn--sm btn--soft"><i class="ic i-plus"></i> Add widget</a>
+          <button type="button" class="btn btn--sm btn--ghost" data-dash-reset><i class="ic i-refresh"></i> Reset</button>
+          <button type="button" class="btn btn--sm btn--primary" data-dash-done><i class="ic i-check"></i> Done</button>
+        </div>
 
-        <!-- Chart + breakdown -->
-        <section class="grid grid-main">
-          <article class="card">
-            <div class="card__head">
-              <div>
-                <h3 class="card__title"><i class="ic i-activity"></i> Power Consumption</h3>
-                <p class="card__sub">Total demand across all meters · 2-hour resolution · hover the chart</p>
+        <div class="dash-grid" id="dash-grid">
+          <div class="widget" data-widget="kpi-power" data-size="3" data-min="3" data-title="Current power" data-icon="i-bolt" data-desc="Live total demand with trend vs yesterday">
+            <article class="kpi kpi--green">
+              <div class="kpi__top"><span class="kpi__icon"><i class="ic i-bolt"></i></span><span class="badge badge--success"><span class="dot dot--live"></span> Live</span></div>
+              <div class="kpi__label">Current Power</div>
+              <div class="kpi__value"><span class="count" style="--to:125" aria-label="125"></span><small>kW</small></div>
+              <div class="kpi__foot"><span class="trend trend--up"><i class="ic i-trend-up"></i> 6.2%</span><span>vs same hour yesterday</span></div>
+              <svg class="kpi__spark" viewBox="0 0 100 40" preserveAspectRatio="none"><path class="fill" d="M0,32 L12,28 L24,30 L36,20 L48,24 L60,14 L72,18 L84,8 L100,12 L100,40 L0,40Z"/><path pathLength="1" d="M0,32 L12,28 L24,30 L36,20 L48,24 L60,14 L72,18 L84,8 L100,12"/></svg>
+            </article>
+          </div>
+          <div class="widget" data-widget="kpi-energy" data-size="3" data-min="3" data-title="Energy consumed" data-icon="i-battery" data-desc="kWh used today against the daily target">
+            <article class="kpi kpi--cyan">
+              <div class="kpi__top"><span class="kpi__icon"><i class="ic i-battery"></i></span><span class="tag">Today</span></div>
+              <div class="kpi__label">Energy Consumed</div>
+              <div class="kpi__value"><span class="count" style="--to:684" aria-label="684"></span><small>kWh</small></div>
+              <div class="kpi__foot"><span class="trend trend--down"><i class="ic i-trend-down"></i> 3.4%</span><span>below daily target</span></div>
+              <svg class="kpi__spark" viewBox="0 0 100 40" preserveAspectRatio="none"><path class="fill" d="M0,30 L14,26 L28,28 L42,18 L56,22 L70,16 L84,20 L100,10 L100,40 L0,40Z"/><path pathLength="1" d="M0,30 L14,26 L28,28 L42,18 L56,22 L70,16 L84,20 L100,10"/></svg>
+            </article>
+          </div>
+          <div class="widget" data-widget="kpi-cost" data-size="3" data-min="3" data-title="Energy cost" data-icon="i-rupee" data-desc="Today's cost and monthly projection">
+            <article class="kpi kpi--amber">
+              <div class="kpi__top"><span class="kpi__icon"><i class="ic i-rupee"></i></span><span class="tag">₹8.00 / kWh</span></div>
+              <div class="kpi__label">Energy Cost</div>
+              <div class="kpi__value">₹5,472<small>today</small></div>
+              <div class="kpi__foot"><span class="trend trend--flat">≈ 0.4%</span><span>projected ₹1.64 L / month</span></div>
+              <svg class="kpi__spark" viewBox="0 0 100 40" preserveAspectRatio="none"><path class="fill" d="M0,26 L14,30 L28,22 L42,24 L56,16 L70,20 L84,14 L100,16 L100,40 L0,40Z"/><path pathLength="1" d="M0,26 L14,30 L28,22 L42,24 L56,16 L70,20 L84,14 L100,16"/></svg>
+            </article>
+          </div>
+          <div class="widget" data-widget="kpi-co2" data-size="3" data-min="3" data-title="Carbon emissions" data-icon="i-leaf" data-desc="kg CO₂ today and change vs last month">
+            <article class="kpi kpi--violet">
+              <div class="kpi__top"><span class="kpi__icon"><i class="ic i-leaf"></i></span><span class="tag">PF 0.96</span></div>
+              <div class="kpi__label">Carbon Emissions</div>
+              <div class="kpi__value"><span class="count" style="--to:561" aria-label="561"></span><small>kg CO₂</small></div>
+              <div class="kpi__foot"><span class="trend trend--up"><i class="ic i-trend-down"></i> 18.6%</span><span>lower than last month</span></div>
+              <svg class="kpi__spark" viewBox="0 0 100 40" preserveAspectRatio="none"><path class="fill" d="M0,10 L14,14 L28,12 L42,20 L56,18 L70,24 L84,22 L100,30 L100,40 L0,40Z"/><path pathLength="1" d="M0,10 L14,14 L28,12 L42,20 L56,18 L70,24 L84,22 L100,30"/></svg>
+            </article>
+          </div>
+          <div class="widget" data-widget="power-chart" data-size="8" data-min="6" data-title="Power consumption" data-icon="i-activity" data-desc="24-hour demand curve vs yesterday and contract demand">
+            <article class="card">
+              <div class="card__head">
+                <div>
+                  <h3 class="card__title"><i class="ic i-activity"></i> Power Consumption</h3>
+                  <p class="card__sub">Total demand across all meters · 2-hour resolution · hover the chart</p>
+                </div>
+                <div class="legend">
+                  <span><i class="line" style="--c: var(--primary)"></i> Today</span>
+                  <span><i class="dash" style="--c: var(--violet)"></i> Yesterday</span>
+                  <span><i class="line" style="--c: var(--rose)"></i> Contract demand</span>
+                </div>
               </div>
-              <div class="legend">
-                <span><i class="line" style="--c: var(--primary)"></i> Today</span>
-                <span><i class="dash" style="--c: var(--violet)"></i> Yesterday</span>
-                <span><i class="line" style="--c: var(--rose)"></i> Contract demand</span>
+              <div class="card__body">
+                <div class="area-chart">
+                  <div class="area-chart__y"><span>160</span><span>120</span><span>80</span><span>40</span><span>0</span></div>
+                  <div class="area-chart__plot">
+                    <svg viewBox="0 0 600 200" preserveAspectRatio="none" aria-hidden="true">
+                      <defs>
+                        <linearGradient id="g-area" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" class="stop-primary" stop-opacity=".28" />
+                          <stop offset="100%" class="stop-primary" stop-opacity="0" />
+                        </linearGradient>
+                        <linearGradient id="g-line" x1="0" y1="0" x2="1" y2="0">
+                          <stop offset="0%" class="stop-primary" />
+                          <stop offset="60%" class="stop-primary-2" />
+                          <stop offset="100%" class="stop-violet" />
+                        </linearGradient>
+                      </defs>
+                      <g class="gridlines"><line x1="0" x2="600" y1="0" y2="0"/><line x1="0" x2="600" y1="50" y2="50"/><line x1="0" x2="600" y1="100" y2="100"/><line x1="0" x2="600" y1="150" y2="150"/><line x1="0" x2="600" y1="200" y2="200"/></g>
+                      <line x1="0" x2="600" y1="12.5" y2="12.5" class="stroke-rose" stroke-width="1.5" stroke-dasharray="2 5" vector-effect="non-scaling-stroke" opacity=".8" />
+                      <path class="series-line series-line--ghost stroke-violet" d="M0,125 C25,125 25,132 50,132 S75,133 100,133 S125,115 150,115 S175,75 200,75 S225,44 250,44 S275,28 300,28 S325,25 350,25 S375,40 400,40 S425,62 450,62 S475,85 500,85 S525,100 550,100 S575,118 600,118" />
+                      <path class="series-area" fill="url(#g-area)" d="M0,127 C25,127 25,135 50,135 S75,137 100,137 S125,112 150,112 S175,60 200,60 S225,27 250,27 S275,19 300,19 S325,12 350,12 S375,35 400,35 S425,52 450,52 S475,80 500,80 S525,102 550,102 S575,120 600,120 L600,200 L0,200 Z" />
+                      <path class="series-line series-glow" pathLength="1" stroke="url(#g-line)" d="M0,127 C25,127 25,135 50,135 S75,137 100,137 S125,112 150,112 S175,60 200,60 S225,27 250,27 S275,19 300,19 S325,12 350,12 S375,35 400,35 S425,52 450,52 S475,80 500,80 S525,102 550,102 S575,120 600,120" />
+                    </svg>
+                    <span class="now-marker" style="left:66.66%;top:17.5%"></span>
+                    <span class="now-label" style="left:66.66%;top:17.5%">Now · 125 kW</span>
+                    <div class="hotspots">
+                      <div class="hotspot" style="--y:63.5%"><i></i><span class="tip">00:00<b>58.4 kW</b></span></div>
+                      <div class="hotspot" style="--y:67.5%"><i></i><span class="tip">02:00<b>52.0 kW</b></span></div>
+                      <div class="hotspot" style="--y:68.5%"><i></i><span class="tip">04:00<b>50.4 kW</b></span></div>
+                      <div class="hotspot" style="--y:56%"><i></i><span class="tip">06:00 · Shift A<b>70.4 kW</b></span></div>
+                      <div class="hotspot" style="--y:30%"><i></i><span class="tip">08:00<b>112.0 kW</b></span></div>
+                      <div class="hotspot" style="--y:13.5%"><i></i><span class="tip">10:00<b>138.4 kW</b></span></div>
+                      <div class="hotspot" style="--y:9.5%"><i></i><span class="tip">12:00<b>144.8 kW</b></span></div>
+                      <div class="hotspot" style="--y:6%"><i></i><span class="tip">14:00 · Peak<b>150.2 kW</b></span></div>
+                      <div class="hotspot" style="--y:17.5%"><i></i><span class="tip">16:00 · Now<b>125.4 kW</b></span></div>
+                      <div class="hotspot" style="--y:26%"><i></i><span class="tip">18:00 · forecast<b>118.0 kW</b></span></div>
+                      <div class="hotspot" style="--y:40%"><i></i><span class="tip">20:00 · forecast<b>96.0 kW</b></span></div>
+                      <div class="hotspot" style="--y:51%"><i></i><span class="tip">22:00 · forecast<b>78.4 kW</b></span></div>
+                      <div class="hotspot" style="--y:60%"><i></i><span class="tip">24:00 · forecast<b>64.0 kW</b></span></div>
+                    </div>
+                  </div>
+                  <div class="area-chart__x"><span>00</span><span>02</span><span>04</span><span>06</span><span>08</span><span>10</span><span>12</span><span>14</span><span>16</span><span>18</span><span>20</span><span>22</span><span>24</span></div>
+                </div>
               </div>
-            </div>
-            <div class="card__body">
-              <div class="area-chart">
-                <div class="area-chart__y"><span>160</span><span>120</span><span>80</span><span>40</span><span>0</span></div>
-                <div class="area-chart__plot">
-                  <svg viewBox="0 0 600 200" preserveAspectRatio="none" aria-hidden="true">
-                    <defs>
-                      <linearGradient id="g-area" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" class="stop-primary" stop-opacity=".28" />
-                        <stop offset="100%" class="stop-primary" stop-opacity="0" />
-                      </linearGradient>
-                      <linearGradient id="g-line" x1="0" y1="0" x2="1" y2="0">
-                        <stop offset="0%" class="stop-primary" />
-                        <stop offset="60%" class="stop-primary-2" />
-                        <stop offset="100%" class="stop-violet" />
-                      </linearGradient>
-                    </defs>
-                    <g class="gridlines"><line x1="0" x2="600" y1="0" y2="0"/><line x1="0" x2="600" y1="50" y2="50"/><line x1="0" x2="600" y1="100" y2="100"/><line x1="0" x2="600" y1="150" y2="150"/><line x1="0" x2="600" y1="200" y2="200"/></g>
-                    <line x1="0" x2="600" y1="12.5" y2="12.5" class="stroke-rose" stroke-width="1.5" stroke-dasharray="2 5" vector-effect="non-scaling-stroke" opacity=".8" />
-                    <path class="series-line series-line--ghost stroke-violet" d="M0,125 C25,125 25,132 50,132 S75,133 100,133 S125,115 150,115 S175,75 200,75 S225,44 250,44 S275,28 300,28 S325,25 350,25 S375,40 400,40 S425,62 450,62 S475,85 500,85 S525,100 550,100 S575,118 600,118" />
-                    <path class="series-area" fill="url(#g-area)" d="M0,127 C25,127 25,135 50,135 S75,137 100,137 S125,112 150,112 S175,60 200,60 S225,27 250,27 S275,19 300,19 S325,12 350,12 S375,35 400,35 S425,52 450,52 S475,80 500,80 S525,102 550,102 S575,120 600,120 L600,200 L0,200 Z" />
-                    <path class="series-line series-glow" pathLength="1" stroke="url(#g-line)" d="M0,127 C25,127 25,135 50,135 S75,137 100,137 S125,112 150,112 S175,60 200,60 S225,27 250,27 S275,19 300,19 S325,12 350,12 S375,35 400,35 S425,52 450,52 S475,80 500,80 S525,102 550,102 S575,120 600,120" />
-                  </svg>
-                  <span class="now-marker" style="left:66.66%;top:17.5%"></span>
-                  <span class="now-label" style="left:66.66%;top:17.5%">Now · 125 kW</span>
-                  <div class="hotspots">
-                    <div class="hotspot" style="--y:63.5%"><i></i><span class="tip">00:00<b>58.4 kW</b></span></div>
-                    <div class="hotspot" style="--y:67.5%"><i></i><span class="tip">02:00<b>52.0 kW</b></span></div>
-                    <div class="hotspot" style="--y:68.5%"><i></i><span class="tip">04:00<b>50.4 kW</b></span></div>
-                    <div class="hotspot" style="--y:56%"><i></i><span class="tip">06:00 · Shift A<b>70.4 kW</b></span></div>
-                    <div class="hotspot" style="--y:30%"><i></i><span class="tip">08:00<b>112.0 kW</b></span></div>
-                    <div class="hotspot" style="--y:13.5%"><i></i><span class="tip">10:00<b>138.4 kW</b></span></div>
-                    <div class="hotspot" style="--y:9.5%"><i></i><span class="tip">12:00<b>144.8 kW</b></span></div>
-                    <div class="hotspot" style="--y:6%"><i></i><span class="tip">14:00 · Peak<b>150.2 kW</b></span></div>
-                    <div class="hotspot" style="--y:17.5%"><i></i><span class="tip">16:00 · Now<b>125.4 kW</b></span></div>
-                    <div class="hotspot" style="--y:26%"><i></i><span class="tip">18:00 · forecast<b>118.0 kW</b></span></div>
-                    <div class="hotspot" style="--y:40%"><i></i><span class="tip">20:00 · forecast<b>96.0 kW</b></span></div>
-                    <div class="hotspot" style="--y:51%"><i></i><span class="tip">22:00 · forecast<b>78.4 kW</b></span></div>
-                    <div class="hotspot" style="--y:60%"><i></i><span class="tip">24:00 · forecast<b>64.0 kW</b></span></div>
+            </article>
+          </div>
+          <div class="widget" data-widget="load-breakdown" data-size="4" data-min="4" data-title="Load breakdown" data-icon="i-layers" data-desc="Share of today's energy by load type">
+            <article class="card">
+              <div class="card__head">
+                <div><h3 class="card__title"><i class="ic i-layers"></i> Load Breakdown</h3><p class="card__sub">Share of today's 684 kWh</p></div>
+                <a href="analytics.html" class="btn btn--sm btn--ghost">Details <i class="ic i-chev-right"></i></a>
+              </div>
+              <div class="card__body">
+                <div class="donut-wrap">
+                  <div class="donut-holder">
+                    <div class="donut" style="--segments: var(--primary) 0 38%, var(--cyan) 38% 60%, var(--violet) 60% 78%, var(--amber) 78% 92%, var(--rose) 92% 100%"></div>
+                    <div class="donut-center"><strong>684</strong><span>kWh today</span></div>
+                  </div>
+                  <div class="donut-legend">
+                    <div><i style="--c:var(--primary)"></i>Production<b>38%</b></div>
+                    <div><i style="--c:var(--cyan)"></i>HVAC<b>22%</b></div>
+                    <div><i style="--c:var(--violet)"></i>Data centre<b>18%</b></div>
+                    <div><i style="--c:var(--amber)"></i>Lighting<b>14%</b></div>
+                    <div><i style="--c:var(--rose)"></i>Office<b>8%</b></div>
                   </div>
                 </div>
-                <div class="area-chart__x"><span>00</span><span>02</span><span>04</span><span>06</span><span>08</span><span>10</span><span>12</span><span>14</span><span>16</span><span>18</span><span>20</span><span>22</span><span>24</span></div>
               </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card__head">
-              <div><h3 class="card__title"><i class="ic i-layers"></i> Load Breakdown</h3><p class="card__sub">Share of today's 684 kWh</p></div>
-              <a href="analytics.html" class="btn btn--sm btn--ghost">Details <i class="ic i-chev-right"></i></a>
-            </div>
-            <div class="card__body">
-              <div class="donut-wrap">
-                <div class="donut-holder">
-                  <div class="donut" style="--segments: var(--primary) 0 38%, var(--cyan) 38% 60%, var(--violet) 60% 78%, var(--amber) 78% 92%, var(--rose) 92% 100%"></div>
-                  <div class="donut-center"><strong>684</strong><span>kWh today</span></div>
-                </div>
-                <div class="donut-legend">
-                  <div><i style="--c:var(--primary)"></i>Production<b>38%</b></div>
-                  <div><i style="--c:var(--cyan)"></i>HVAC<b>22%</b></div>
-                  <div><i style="--c:var(--violet)"></i>Data centre<b>18%</b></div>
-                  <div><i style="--c:var(--amber)"></i>Lighting<b>14%</b></div>
-                  <div><i style="--c:var(--rose)"></i>Office<b>8%</b></div>
+            </article>
+          </div>
+          <div class="widget" data-widget="meters" data-size="12" data-min="8" data-title="Energy meters" data-icon="i-gauge" data-desc="Top-level meters with power, energy and load">
+            <section class="card paged">
+              <input type="radio" class="pg-input" name="dm-pg" id="dm-p1" value="1" checked aria-label="Page 1" />
+    <input type="radio" class="pg-input" name="dm-pg" id="dm-p2" value="2" aria-label="Page 2" />
+              <div class="card__head">
+                <div><h3 class="card__title"><i class="ic i-gauge"></i> Energy Meters</h3><p class="card__sub">Top-level devices · expand in <a href="meters.html" class="tc-primary">Energy Meters</a> to see sub-meters</p></div>
+                <div class="row wrap">
+                  <span class="chip is-active">All <small>10</small></span>
+                  <span class="chip"><span class="dot" style="--c:var(--green)"></span> Online <small>8</small></span>
+                  <span class="chip"><span class="dot" style="--c:var(--amber)"></span> Idle <small>1</small></span>
+                  <span class="chip"><span class="dot" style="--c:var(--rose)"></span> Offline <small>1</small></span>
                 </div>
               </div>
-            </div>
-          </article>
-        </section>
-
-        <!-- Energy meters table -->
-        <section class="card paged">
-          <input type="radio" class="pg-input" name="dm-pg" id="dm-p1" value="1" checked aria-label="Page 1" />
-<input type="radio" class="pg-input" name="dm-pg" id="dm-p2" value="2" aria-label="Page 2" />
-          <div class="card__head">
-            <div><h3 class="card__title"><i class="ic i-gauge"></i> Energy Meters</h3><p class="card__sub">Top-level devices · expand in <a href="meters.html" class="tc-primary">Energy Meters</a> to see sub-meters</p></div>
-            <div class="row wrap">
-              <span class="chip is-active">All <small>10</small></span>
-              <span class="chip"><span class="dot" style="--c:var(--green)"></span> Online <small>8</small></span>
-              <span class="chip"><span class="dot" style="--c:var(--amber)"></span> Idle <small>1</small></span>
-              <span class="chip"><span class="dot" style="--c:var(--rose)"></span> Offline <small>1</small></span>
-            </div>
-          </div>
-          <div class="table-wrap">
-            <table class="table">
-              <thead><tr><th>Meter</th><th>Location</th><th>Sub-meters</th><th class="num">Power</th><th class="num">Energy (kWh)</th><th>Load</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody data-page="1">
-                <tr><td><div class="cell-device"><span class="dev-icon"><i class="ic i-cpu"></i></span><div><a href="meter.html?id=MTR-1001" class="row-link"><strong>Main Incomer</strong></a><small>MTR-1001</small></div></div></td><td>Main LT Panel</td><td><span class="count-pill"><i class="ic i-layers"></i> 4</span></td><td class="num">67.1 kW</td><td class="num">8,712</td><td><div class="bar-cell"><div class="bar"><span style="--w:72%"></span></div><small>72%</small></div></td><td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td><td><div class="actions"><a href="meter.html?id=MTR-1001" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
-                <tr><td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-thermo"></i></span><div><a href="meter.html?id=MTR-1002" class="row-link"><strong>HVAC</strong></a><small>MTR-1002</small></div></div></td><td>Utility Block</td><td><span class="count-pill"><i class="ic i-layers"></i> 3</span></td><td class="num">22.6 kW</td><td class="num">2,236</td><td><div class="bar-cell"><div class="bar bar--amber"><span style="--w:91%"></span></div><small>91%</small></div></td><td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td><td><div class="actions"><a href="meter.html?id=MTR-1002" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
-                <tr><td><div class="cell-device"><span class="dev-icon" style="--c:var(--amber)"><i class="ic i-building"></i></span><div><a href="meter.html?id=MTR-1003" class="row-link"><strong>Office</strong></a><small>MTR-1003</small></div></div></td><td>Admin Building</td><td><span class="count-pill"><i class="ic i-layers"></i> 5</span></td><td class="num">12.3 kW</td><td class="num">1,004</td><td><div class="bar-cell"><div class="bar bar--cyan"><span style="--w:28%"></span></div><small>28%</small></div></td><td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td><td><div class="actions"><a href="meter.html?id=MTR-1003" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
-                <tr><td><div class="cell-device"><span class="dev-icon" style="--c:var(--violet)"><i class="ic i-wifi"></i></span><div><a href="meter.html?id=MTR-1004" class="row-link"><strong>Data Centre</strong></a><small>MTR-1004</small></div></div></td><td>Server Room · L2</td><td><span class="count-pill"><i class="ic i-layers"></i> 4</span></td><td class="num">12.4 kW</td><td class="num">3,108</td><td><div class="bar-cell"><div class="bar"><span style="--w:64%"></span></div><small>64%</small></div></td><td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td><td><div class="actions"><a href="meter.html?id=MTR-1004" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
-                <tr><td><div class="cell-device"><span class="dev-icon" style="--c:var(--amber)"><i class="ic i-sun"></i></span><div><a href="meter.html?id=MTR-1005" class="row-link"><strong>Lighting</strong></a><small>MTR-1005</small></div></div></td><td>Plant-wide</td><td><span class="count-pill"><i class="ic i-layers"></i> 6</span></td><td class="num">14.1 kW</td><td class="num">1,442</td><td><div class="bar-cell"><div class="bar"><span style="--w:55%"></span></div><small>55%</small></div></td><td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td><td><div class="actions"><a href="meter.html?id=MTR-1005" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
-              </tbody>
-              <tbody data-page="2">
-                <tr><td><div class="cell-device"><span class="dev-icon" style="--c:var(--green)"><i class="ic i-plug"></i></span><div><a href="meter.html?id=MTR-1006" class="row-link"><strong>Compressor House</strong></a><small>MTR-1006</small></div></div></td><td>Utility Block</td><td><span class="count-pill"><i class="ic i-layers"></i> 3</span></td><td class="num">0.0 kW</td><td class="num">4,190</td><td><div class="bar-cell"><div class="bar bar--rose"><span style="--w:0%"></span></div><small>0%</small></div></td><td><span class="badge badge--danger"><span class="dot"></span> Offline</span></td><td><div class="actions"><a href="meter.html?id=MTR-1006" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
-                <tr><td><div class="cell-device"><span class="dev-icon" style="--c:var(--blue)"><i class="ic i-sun"></i></span><div><a href="meter.html?id=MTR-1007" class="row-link"><strong>Rooftop Solar</strong></a><small>MTR-1007 · Export</small></div></div></td><td>Roof · Block A</td><td><span class="count-pill"><i class="ic i-layers"></i> 2</span></td><td class="num">−18.2 kW</td><td class="num">1,262</td><td><div class="bar-cell"><div class="bar bar--violet"><span style="--w:62%"></span></div><small>62%</small></div></td><td><span class="badge badge--info"><span class="dot dot--live"></span> Generating</span></td><td><div class="actions"><a href="meter.html?id=MTR-1007" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
-                <tr><td><div class="cell-device"><span class="dev-icon" style="--c:var(--rose)"><i class="ic i-battery"></i></span><div><a href="meter.html?id=MTR-1008" class="row-link"><strong>DG Set 1</strong></a><small>MTR-1008 · Backup</small></div></div></td><td>DG Yard</td><td><span class="count-pill"><i class="ic i-layers"></i> 1</span></td><td class="num">0.0 kW</td><td class="num">216</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td><td><span class="badge badge--warn"><span class="dot"></span> Standby</span></td><td><div class="actions"><a href="meter.html?id=MTR-1008" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
-                <tr><td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-activity"></i></span><div><a href="meter.html?id=MTR-1009" class="row-link"><strong>Water Pumps</strong></a><small>MTR-1009</small></div></div></td><td>Pump House</td><td><span class="count-pill"><i class="ic i-layers"></i> 4</span></td><td class="num">8.8 kW</td><td class="num">1,089</td><td><div class="bar-cell"><div class="bar"><span style="--w:47%"></span></div><small>47%</small></div></td><td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td><td><div class="actions"><a href="meter.html?id=MTR-1009" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
-                <tr><td><div class="cell-device"><span class="dev-icon" style="--c:var(--violet)"><i class="ic i-building"></i></span><div><a href="meter.html?id=MTR-1010" class="row-link"><strong>Canteen</strong></a><small>MTR-1010</small></div></div></td><td>Amenities Block</td><td><span class="count-pill"><i class="ic i-layers"></i> 3</span></td><td class="num">4.3 kW</td><td class="num">553</td><td><div class="bar-cell"><div class="bar bar--cyan"><span style="--w:35%"></span></div><small>35%</small></div></td><td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td><td><div class="actions"><a href="meter.html?id=MTR-1010" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="pager">
-  <div class="pager__info">Showing <span data-when="1"><strong>1–5</strong></span><span data-when="2"><strong>6–10</strong></span> of <strong>10</strong> meters</div>
-  <div class="pager__size">Rows per page <select class="input" aria-label="Rows per page"><option>5</option><option>10</option><option>20</option></select></div>
-  <div class="pager__nav"><span class="pg-btn is-disabled" data-when="1" aria-hidden="true"><i class="ic i-chev-left"></i></span><label for="dm-p1" data-when="2" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="dm-p1" data-p="1">1</label><label for="dm-p2" data-p="2">2</label><label for="dm-p2" data-when="1" aria-label="Next page"><i class="ic i-chev-right"></i></label><span class="pg-btn is-disabled" data-when="2" aria-hidden="true"><i class="ic i-chev-right"></i></span></div>
-</div>
-        </section>
-
-        <!-- Alerts + shifts -->
-        <section class="grid grid-2">
-          <article class="card">
-            <div class="card__head"><h3 class="card__title"><i class="ic i-bell"></i> Recent Alerts</h3><a href="alerts.html" class="btn btn--sm btn--ghost">View all <i class="ic i-chev-right"></i></a></div>
-            <div class="card__body">
-              <div class="timeline">
-                <div class="timeline__item" style="--c:var(--rose)"><strong>HVAC Chiller-2 overload — 95% of rated</strong><p>SM-1002-02 · threshold 90%</p><time>15:58 · 2 min ago</time></div>
-                <div class="timeline__item" style="--c:var(--amber)"><strong>Low power factor 0.86 on Main Incomer</strong><p>MTR-1001 · target ≥ 0.95</p><time>15:42 · 18 min ago</time></div>
-                <div class="timeline__item" style="--c:var(--cyan)"><strong>Sub-meter SM-1004-02 offline</strong><p>Data Centre · UPS-B feeder</p><time>15:18 · 42 min ago</time></div>
-                <div class="timeline__item" style="--c:var(--green)"><strong>Peak demand window cleared</strong><p>Load back under 140 kW</p><time>14:40</time></div>
+              <div class="table-wrap">
+                <table class="table">
+                  <thead><tr><th>Meter</th><th>Location</th><th>Sub-meters</th><th class="num">Power</th><th class="num">Energy (kWh)</th><th>Load</th><th>Status</th><th>Actions</th></tr></thead>
+                  <tbody data-page="1">
+                    <tr><td><div class="cell-device"><span class="dev-icon"><i class="ic i-cpu"></i></span><div><a href="meter.html?id=MTR-1001" class="row-link"><strong>Main Incomer</strong></a><small>MTR-1001</small></div></div></td><td>Main LT Panel</td><td><span class="count-pill"><i class="ic i-layers"></i> 4</span></td><td class="num">67.1 kW</td><td class="num">8,712</td><td><div class="bar-cell"><div class="bar"><span style="--w:72%"></span></div><small>72%</small></div></td><td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td><td><div class="actions"><a href="meter.html?id=MTR-1001" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+                    <tr><td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-thermo"></i></span><div><a href="meter.html?id=MTR-1002" class="row-link"><strong>HVAC</strong></a><small>MTR-1002</small></div></div></td><td>Utility Block</td><td><span class="count-pill"><i class="ic i-layers"></i> 3</span></td><td class="num">22.6 kW</td><td class="num">2,236</td><td><div class="bar-cell"><div class="bar bar--amber"><span style="--w:91%"></span></div><small>91%</small></div></td><td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td><td><div class="actions"><a href="meter.html?id=MTR-1002" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+                    <tr><td><div class="cell-device"><span class="dev-icon" style="--c:var(--amber)"><i class="ic i-building"></i></span><div><a href="meter.html?id=MTR-1003" class="row-link"><strong>Office</strong></a><small>MTR-1003</small></div></div></td><td>Admin Building</td><td><span class="count-pill"><i class="ic i-layers"></i> 5</span></td><td class="num">12.3 kW</td><td class="num">1,004</td><td><div class="bar-cell"><div class="bar bar--cyan"><span style="--w:28%"></span></div><small>28%</small></div></td><td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td><td><div class="actions"><a href="meter.html?id=MTR-1003" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+                    <tr><td><div class="cell-device"><span class="dev-icon" style="--c:var(--violet)"><i class="ic i-wifi"></i></span><div><a href="meter.html?id=MTR-1004" class="row-link"><strong>Data Centre</strong></a><small>MTR-1004</small></div></div></td><td>Server Room · L2</td><td><span class="count-pill"><i class="ic i-layers"></i> 4</span></td><td class="num">12.4 kW</td><td class="num">3,108</td><td><div class="bar-cell"><div class="bar"><span style="--w:64%"></span></div><small>64%</small></div></td><td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td><td><div class="actions"><a href="meter.html?id=MTR-1004" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+                    <tr><td><div class="cell-device"><span class="dev-icon" style="--c:var(--amber)"><i class="ic i-sun"></i></span><div><a href="meter.html?id=MTR-1005" class="row-link"><strong>Lighting</strong></a><small>MTR-1005</small></div></div></td><td>Plant-wide</td><td><span class="count-pill"><i class="ic i-layers"></i> 6</span></td><td class="num">14.1 kW</td><td class="num">1,442</td><td><div class="bar-cell"><div class="bar"><span style="--w:55%"></span></div><small>55%</small></div></td><td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td><td><div class="actions"><a href="meter.html?id=MTR-1005" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+                  </tbody>
+                  <tbody data-page="2">
+                    <tr><td><div class="cell-device"><span class="dev-icon" style="--c:var(--green)"><i class="ic i-plug"></i></span><div><a href="meter.html?id=MTR-1006" class="row-link"><strong>Compressor House</strong></a><small>MTR-1006</small></div></div></td><td>Utility Block</td><td><span class="count-pill"><i class="ic i-layers"></i> 3</span></td><td class="num">0.0 kW</td><td class="num">4,190</td><td><div class="bar-cell"><div class="bar bar--rose"><span style="--w:0%"></span></div><small>0%</small></div></td><td><span class="badge badge--danger"><span class="dot"></span> Offline</span></td><td><div class="actions"><a href="meter.html?id=MTR-1006" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+                    <tr><td><div class="cell-device"><span class="dev-icon" style="--c:var(--blue)"><i class="ic i-sun"></i></span><div><a href="meter.html?id=MTR-1007" class="row-link"><strong>Rooftop Solar</strong></a><small>MTR-1007 · Export</small></div></div></td><td>Roof · Block A</td><td><span class="count-pill"><i class="ic i-layers"></i> 2</span></td><td class="num">−18.2 kW</td><td class="num">1,262</td><td><div class="bar-cell"><div class="bar bar--violet"><span style="--w:62%"></span></div><small>62%</small></div></td><td><span class="badge badge--info"><span class="dot dot--live"></span> Generating</span></td><td><div class="actions"><a href="meter.html?id=MTR-1007" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+                    <tr><td><div class="cell-device"><span class="dev-icon" style="--c:var(--rose)"><i class="ic i-battery"></i></span><div><a href="meter.html?id=MTR-1008" class="row-link"><strong>DG Set 1</strong></a><small>MTR-1008 · Backup</small></div></div></td><td>DG Yard</td><td><span class="count-pill"><i class="ic i-layers"></i> 1</span></td><td class="num">0.0 kW</td><td class="num">216</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td><td><span class="badge badge--warn"><span class="dot"></span> Standby</span></td><td><div class="actions"><a href="meter.html?id=MTR-1008" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+                    <tr><td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-activity"></i></span><div><a href="meter.html?id=MTR-1009" class="row-link"><strong>Water Pumps</strong></a><small>MTR-1009</small></div></div></td><td>Pump House</td><td><span class="count-pill"><i class="ic i-layers"></i> 4</span></td><td class="num">8.8 kW</td><td class="num">1,089</td><td><div class="bar-cell"><div class="bar"><span style="--w:47%"></span></div><small>47%</small></div></td><td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td><td><div class="actions"><a href="meter.html?id=MTR-1009" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+                    <tr><td><div class="cell-device"><span class="dev-icon" style="--c:var(--violet)"><i class="ic i-building"></i></span><div><a href="meter.html?id=MTR-1010" class="row-link"><strong>Canteen</strong></a><small>MTR-1010</small></div></div></td><td>Amenities Block</td><td><span class="count-pill"><i class="ic i-layers"></i> 3</span></td><td class="num">4.3 kW</td><td class="num">553</td><td><div class="bar-cell"><div class="bar bar--cyan"><span style="--w:35%"></span></div><small>35%</small></div></td><td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td><td><div class="actions"><a href="meter.html?id=MTR-1010" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+                  </tbody>
+                </table>
               </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card__head">
-              <div><h3 class="card__title"><i class="ic i-clock"></i> Energy by Shift</h3><p class="card__sub">kWh per shift · last 7 days</p></div>
-              <div class="legend"><span><i style="--c:var(--amber)"></i> Shift A</span><span><i style="--c:var(--violet)"></i> Shift B</span></div>
-            </div>
-            <div class="card__body">
-              <div class="columns">
-                <div class="columns__col" style="--th:78%"><span class="columns__bar" style="--h:74%;--c:var(--amber)"></span><span class="columns__bar columns__bar--2" style="--h:58%"></span><span class="tip">Mon · <b>A 312 / B 244</b></span></div>
-                <div class="columns__col" style="--th:84%"><span class="columns__bar" style="--h:80%;--c:var(--amber)"></span><span class="columns__bar columns__bar--2" style="--h:62%"></span><span class="tip">Tue · <b>A 336 / B 260</b></span></div>
-                <div class="columns__col" style="--th:74%"><span class="columns__bar" style="--h:70%;--c:var(--amber)"></span><span class="columns__bar columns__bar--2" style="--h:66%"></span><span class="tip">Wed · <b>A 294 / B 277</b></span></div>
-                <div class="columns__col" style="--th:92%"><span class="columns__bar" style="--h:88%;--c:var(--amber)"></span><span class="columns__bar columns__bar--2" style="--h:60%"></span><span class="tip">Thu · <b>A 370 / B 252</b></span></div>
-                <div class="columns__col" style="--th:80%"><span class="columns__bar" style="--h:76%;--c:var(--amber)"></span><span class="columns__bar columns__bar--2" style="--h:70%"></span><span class="tip">Fri · <b>A 319 / B 294</b></span></div>
-                <div class="columns__col" style="--th:52%"><span class="columns__bar" style="--h:48%;--c:var(--amber)"></span><span class="columns__bar columns__bar--2" style="--h:36%"></span><span class="tip">Sat · <b>A 202 / B 151</b></span></div>
-                <div class="columns__col" style="--th:30%"><span class="columns__bar" style="--h:26%;--c:var(--amber)"></span><span class="columns__bar columns__bar--2" style="--h:20%"></span><span class="tip">Sun · <b>A 109 / B 84</b></span></div>
+              <div class="pager">
+      <div class="pager__info">Showing <span data-when="1"><strong>1–5</strong></span><span data-when="2"><strong>6–10</strong></span> of <strong>10</strong> meters</div>
+      <div class="pager__size">Rows per page <select class="input" aria-label="Rows per page"><option>5</option><option>10</option><option>20</option></select></div>
+      <div class="pager__nav"><span class="pg-btn is-disabled" data-when="1" aria-hidden="true"><i class="ic i-chev-left"></i></span><label for="dm-p1" data-when="2" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="dm-p1" data-p="1">1</label><label for="dm-p2" data-p="2">2</label><label for="dm-p2" data-when="1" aria-label="Next page"><i class="ic i-chev-right"></i></label><span class="pg-btn is-disabled" data-when="2" aria-hidden="true"><i class="ic i-chev-right"></i></span></div>
+    </div>
+            </section>
+          </div>
+          <div class="widget" data-widget="alerts" data-size="6" data-min="4" data-title="Recent alerts" data-icon="i-bell" data-desc="Latest alerts across all meters">
+            <article class="card">
+              <div class="card__head"><h3 class="card__title"><i class="ic i-bell"></i> Recent Alerts</h3><a href="alerts.html" class="btn btn--sm btn--ghost">View all <i class="ic i-chev-right"></i></a></div>
+              <div class="card__body">
+                <div class="timeline">
+                  <div class="timeline__item" style="--c:var(--rose)"><strong>HVAC Chiller-2 overload — 95% of rated</strong><p>SM-1002-02 · threshold 90%</p><time>15:58 · 2 min ago</time></div>
+                  <div class="timeline__item" style="--c:var(--amber)"><strong>Low power factor 0.86 on Main Incomer</strong><p>MTR-1001 · target ≥ 0.95</p><time>15:42 · 18 min ago</time></div>
+                  <div class="timeline__item" style="--c:var(--cyan)"><strong>Sub-meter SM-1004-02 offline</strong><p>Data Centre · UPS-B feeder</p><time>15:18 · 42 min ago</time></div>
+                  <div class="timeline__item" style="--c:var(--green)"><strong>Peak demand window cleared</strong><p>Load back under 140 kW</p><time>14:40</time></div>
+                </div>
               </div>
-              <div class="columns-x"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
-            </div>
-          </article>
-        </section>
+            </article>
+          </div>
+          <div class="widget" data-widget="shift-energy" data-size="6" data-min="4" data-title="Energy by shift" data-icon="i-clock" data-desc="kWh per shift over the last 7 days">
+            <article class="card">
+              <div class="card__head">
+                <div><h3 class="card__title"><i class="ic i-clock"></i> Energy by Shift</h3><p class="card__sub">kWh per shift · last 7 days</p></div>
+                <div class="legend"><span><i style="--c:var(--amber)"></i> Shift A</span><span><i style="--c:var(--violet)"></i> Shift B</span></div>
+              </div>
+              <div class="card__body">
+                <div class="columns">
+                  <div class="columns__col" style="--th:78%"><span class="columns__bar" style="--h:74%;--c:var(--amber)"></span><span class="columns__bar columns__bar--2" style="--h:58%"></span><span class="tip">Mon · <b>A 312 / B 244</b></span></div>
+                  <div class="columns__col" style="--th:84%"><span class="columns__bar" style="--h:80%;--c:var(--amber)"></span><span class="columns__bar columns__bar--2" style="--h:62%"></span><span class="tip">Tue · <b>A 336 / B 260</b></span></div>
+                  <div class="columns__col" style="--th:74%"><span class="columns__bar" style="--h:70%;--c:var(--amber)"></span><span class="columns__bar columns__bar--2" style="--h:66%"></span><span class="tip">Wed · <b>A 294 / B 277</b></span></div>
+                  <div class="columns__col" style="--th:92%"><span class="columns__bar" style="--h:88%;--c:var(--amber)"></span><span class="columns__bar columns__bar--2" style="--h:60%"></span><span class="tip">Thu · <b>A 370 / B 252</b></span></div>
+                  <div class="columns__col" style="--th:80%"><span class="columns__bar" style="--h:76%;--c:var(--amber)"></span><span class="columns__bar columns__bar--2" style="--h:70%"></span><span class="tip">Fri · <b>A 319 / B 294</b></span></div>
+                  <div class="columns__col" style="--th:52%"><span class="columns__bar" style="--h:48%;--c:var(--amber)"></span><span class="columns__bar columns__bar--2" style="--h:36%"></span><span class="tip">Sat · <b>A 202 / B 151</b></span></div>
+                  <div class="columns__col" style="--th:30%"><span class="columns__bar" style="--h:26%;--c:var(--amber)"></span><span class="columns__bar columns__bar--2" style="--h:20%"></span><span class="tip">Sun · <b>A 109 / B 84</b></span></div>
+                </div>
+                <div class="columns-x"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+              </div>
+            </article>
+          </div>
+          <div class="widget" data-widget="tod-cost" data-size="6" data-min="4" data-title="ToD cost split" data-icon="i-rupee" data-desc="Today's energy and cost in time slots T1–T5" data-default="off" hidden>
+            <article class="card">
+              <div class="card__head">
+                <div><h3 class="card__title"><i class="ic i-rupee"></i> ToD Cost Split</h3><p class="card__sub">Today's cost by time slot · ₹5,382 so far</p></div>
+                <a href="settings.html" class="btn btn--sm btn--ghost">Tariffs <i class="ic i-chev-right"></i></a>
+              </div>
+              <div class="card__body">
+                <div class="list">
+                  <div class="list__item tod--t1"><span class="shift-pill tod--t1">T1</span><div class="grow"><div class="row-between"><strong>Off-peak <small class="muted mono">22:00–06:00</small></strong><span class="mono">₹802</span></div><div class="bar" style="margin-top:8px"><span style="--w:26%"></span></div><small>118 kWh · ₹6.80 / kWh</small></div></div>
+                  <div class="list__item tod--t2"><span class="shift-pill tod--t2">T2</span><div class="grow"><div class="row-between"><strong>Morning peak <small class="muted mono">06:00–10:00</small></strong><span class="mono">₹1,306</span></div><div class="bar" style="margin-top:8px"><span style="--w:31%"></span></div><small>142 kWh · ₹9.20 / kWh</small></div></div>
+                  <div class="list__item tod--t3"><span class="shift-pill tod--t3">T3</span><div class="grow"><div class="row-between"><strong>Solar hours <small class="muted mono">10:00–14:00</small></strong><span class="mono">₹1,450</span></div><div class="bar" style="margin-top:8px"><span style="--w:43%"></span></div><small>196 kWh · ₹7.40 / kWh</small></div></div>
+                  <div class="list__item tod--t4"><span class="shift-pill tod--t4">T4</span><div class="grow"><div class="row-between"><strong>Normal <small class="muted mono">14:00–18:00</small></strong><span class="mono">₹1,824</span></div><div class="bar" style="margin-top:8px"><span style="--w:50%"></span></div><small>228 kWh · ₹8.00 / kWh</small></div></div>
+                  <div class="list__item tod--t5"><span class="shift-pill tod--t5">T5</span><div class="grow"><div class="row-between"><strong>Evening peak <small class="muted mono">18:00–22:00</small></strong><span class="mono">upcoming</span></div><div class="bar" style="margin-top:8px"><span style="--w:0%"></span></div><small>0 kWh · ₹9.60 / kWh</small></div></div>
+                </div>
+                <div class="callout" style="margin-top:14px"><i class="ic i-spark"></i><span>Shifting 10% of T4 load into T3 would save about <b>₹14 / day</b>.</span></div>
+              </div>
+            </article>
+          </div>
+          <div class="widget" data-widget="power-quality" data-size="4" data-min="3" data-title="Power quality" data-icon="i-sliders" data-desc="Power factor, voltage, frequency and THD" data-default="off" hidden>
+            <article class="card">
+              <div class="card__head"><div><h3 class="card__title"><i class="ic i-sliders"></i> Power Quality</h3><p class="card__sub">Main Incomer · MTR-1001 · live</p></div></div>
+              <div class="card__body">
+                <dl class="kv">
+                  <dt>Power factor</dt><dd class="mono">0.96 <span class="badge badge--success">Good</span></dd>
+                  <dt>Voltage R / Y / B</dt><dd class="mono">231 / 229 / 232 V</dd>
+                  <dt>Current R / Y / B</dt><dd class="mono">184 / 176 / 181 A</dd>
+                  <dt>Frequency</dt><dd class="mono">50.02 Hz</dd>
+                  <dt>Voltage THD</dt><dd class="mono">3.8 %</dd>
+                  <dt>Unbalance</dt><dd class="mono">1.2 %</dd>
+                </dl>
+              </div>
+            </article>
+          </div>
+          <div class="widget" data-widget="current-shift" data-size="3" data-min="3" data-title="Current shift" data-icon="i-clock" data-desc="The running shift instance with staff and energy" data-default="off" hidden>
+            <article class="card">
+              <div class="card__head"><div><h3 class="card__title"><i class="ic i-clock"></i> Current Shift</h3><p class="card__sub">SI-0927-B · Plant 1</p></div><a href="shift-instances.html" class="btn btn--sm btn--ghost">Open <i class="ic i-chev-right"></i></a></div>
+              <div class="card__body">
+                <div class="row" style="gap:16px">
+                  <div class="progress-ring" style="--v:25;--c:var(--orange)"></div>
+                  <div><strong>Shift B · Evening</strong><br /><small class="muted mono">14:00 – 22:00 · 2 h of 8 h</small></div>
+                </div>
+                <dl class="kv" style="margin-top:16px"><dt>Staff present</dt><dd class="mono">12 / 12</dd><dt>Energy so far</dt><dd class="mono">412 kWh</dd><dt>Supervisor</dt><dd>Imran Sheikh</dd></dl>
+              </div>
+            </article>
+          </div>
+        </div>
+        <div class="dash-empty" id="dash-empty" hidden>
+          <span class="icon-tile"><i class="ic i-grid"></i></span>
+          <strong>Your dashboard is empty</strong>
+          <small>Add widgets to build your own view.</small>
+          <a href="#add-widget" class="btn btn--sm btn--primary"><i class="ic i-plus"></i> Add widget</a>
+        </div>
       </main>
 
       <footer class="footer">
@@ -483,6 +554,23 @@
   </div>
 </div>
 
+
+  <div class="modal" id="add-widget" role="dialog" aria-modal="true" aria-labelledby="add-widget-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog modal__dialog--lg">
+    <div class="modal__head">
+      <span class="modal__icon"><i class="ic i-grid"></i></span>
+      <div><h3 id="add-widget-t">Add widget</h3><p>Pick what you want to see on your dashboard.</p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div class="widget-lib" id="widget-lib"></div>
+    </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--primary"><i class="ic i-check"></i> Done</a>
+    </div>
+  </div>
+</div>
 
   <!-- ================= TOASTS ================= -->
   <div class="toast" id="saved" role="status"><span class="toast__icon"><i class="ic i-check"></i></span><div><strong>Changes saved</strong><span>Your updates were saved successfully.</span></div></div>
