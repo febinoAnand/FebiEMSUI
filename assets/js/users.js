@@ -50,8 +50,8 @@
       var you = u.id === me().id ? ' <span class="badge badge--primary" style="height:20px;font-size:10.5px">You</span>' : "";
       return '<tr data-uid="' + u.id + '">' +
         '<td><div class="cell-user"><span class="avatar ' + avatarClass(u) + '">' + esc(S.initials(S.fullName(u))) + "</span><div><strong>" + esc(S.fullName(u)) +
-        ' <span class="tag" style="margin-left:4px">' + esc(u.empId) + "</span>" + you + "</strong><small>" + esc(u.email) + "</small></div></div></td>" +
-        "<td>" + roleBadge(u.role) + "</td><td>" + shiftPill(u.shift) + "</td><td>" + esc(u.dept || "—") + "</td><td>" + statusBadge(u.status) + "</td>" +
+        ' <span class="tag" style="margin-left:4px" data-field="users.empId">' + esc(u.empId) + "</span>" + you + '</strong><small data-field="users.email">' + esc(u.email) + "</small></div></div></td>" +
+        '<td data-field="users.role">' + roleBadge(u.role) + '</td><td data-field="users.shift">' + shiftPill(u.shift) + '</td><td data-field="users.department">' + esc(u.dept || "—") + '</td><td data-field="users.status">' + statusBadge(u.status) + "</td>" +
         '<td class="small muted nowrap">' + (u.status === "invited" ? "Invited " + S.timeAgo(u.invite && u.invite.at).toLowerCase() : S.timeAgo(u.lastActive)) + "</td>" +
         '<td><div class="actions"><a href="#view-user" class="act act--view" title="View" data-uid="' + u.id + '"><i class="ic i-eye"></i></a>' +
         (admin ? '<a href="#edit-user" class="act act--edit" title="Edit" data-uid="' + u.id + '"><i class="ic i-edit"></i></a>' +
@@ -69,10 +69,10 @@
   }
   function stats() {
     var all = S.users(org().id), count = function (st) { return all.filter(function (u) { return u.status === st; }).length; };
-    var plan = S.PLANS[org().plan] || S.PLANS.growth;
     var set = function (k, v) { $$('[data-stat="' + k + '"]').forEach(function (el) { el.textContent = v; }); };
     set("total", all.length);
-    set("seats", plan.seats >= 1000 ? "unlimited seats" : plan.seats + " seat plan");
+    var lim = S.limit(org().id, "users");
+    set("seats", lim ? "limit " + lim : "no user limit");
     set("active", count("active"));
     set("invited", count("invited"));
     set("inactive", count("inactive") + count("suspended"));
@@ -106,6 +106,7 @@
     e.preventDefault();
     var body = $("#add-user .modal__body");
     var f = ["iu-first", "iu-last", "iu-email", "iu-mobile", "iu-emp"].map(byId);
+    if (S.limitReached(org().id, "users")) return UI.formError(body, "Your organisation has reached its limit of " + S.limit(org().id, "users") + " users. Ask the platform admin to raise it.");
     if (!UI.validate(f)) return;
     if (S.emailTaken(org().id, f[2].value)) return UI.formError(body, "Someone in this organisation already uses that email.");
     if (S.users(org().id).some(function (u) { return u.empId.toLowerCase() === f[4].value.trim().toLowerCase(); })) return UI.formError(body, "That employee ID is already taken.");
@@ -116,6 +117,7 @@
     }, { invitedBy: me().id });
     page = 1;
     render();
+    window.dispatchEvent(new Event("ed:limits"));
     showInviteLink(u);
   });
   function showInviteLink(u) {

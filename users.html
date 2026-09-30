@@ -13,6 +13,7 @@
   <script src="assets/js/app.js"></script>
   <script src="assets/js/workspace.js" defer></script>
   <script src="assets/js/users.js" defer></script>
+  <script src="assets/js/export.js" defer></script>
 </head>
 <body class="app">
   <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
@@ -42,11 +43,14 @@
         <a href="dashboard.html" class="nav__link"><i class="ic i-grid"></i><span>Dashboard</span></a>
         <a href="meters.html" class="nav__link"><i class="ic i-gauge"></i><span>Energy Meters</span><em class="nav__badge nav__badge--green">38</em></a>
         <a href="devices.html" class="nav__link"><i class="ic i-cpu"></i><span>Device Management</span></a>
+        <a href="connections.html" class="nav__link"><i class="ic i-flow"></i><span>Connections</span></a>
         <a href="analytics.html" class="nav__link"><i class="ic i-chart"></i><span>Analytics</span></a>
         <a href="alerts.html" class="nav__link"><i class="ic i-bell"></i><span>Alerts</span><em class="nav__badge">5</em></a>
 
-        <div class="nav__section">Operations</div>
-        <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift Management</span></a>
+        <div class="nav__section">Shift management</div>
+        <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift</span></a>
+        <a href="shift-schedule.html" class="nav__link"><i class="ic i-calendar"></i><span>Schedule</span></a>
+        <a href="shift-instances.html" class="nav__link"><i class="ic i-chart"></i><span>Instance</span></a>
 
         <div class="nav__section">Administration</div>
         <a href="users.html" class="nav__link is-active"><i class="ic i-users"></i><span>Users</span></a>
@@ -150,8 +154,8 @@
           </div>
           <div class="page-actions">
             <a href="#close" class="btn btn--sm"><i class="ic i-upload"></i> Bulk import</a>
-            <a href="#close" class="btn btn--sm"><i class="ic i-download"></i> Export</a>
-            <a href="#add-user" class="btn btn--sm btn--primary" data-admin-only><i class="ic i-user-plus"></i> Invite user</a>
+            <a href="#export" data-export="users" class="btn btn--sm"><i class="ic i-download"></i> Export</a>
+            <a href="#add-user" class="btn btn--sm btn--primary" data-admin-only data-limit="users"><i class="ic i-user-plus"></i> Invite user</a>
           </div>
         </section>
 
@@ -171,7 +175,7 @@
           </div>
           <div class="table-wrap">
             <table class="table">
-              <thead><tr><th>User</th><th>Role</th><th>Shift</th><th>Department</th><th>Status</th><th>Last active</th><th>Actions</th></tr></thead>
+              <thead><tr><th>User</th><th data-field="users.role">Role</th><th data-field="users.shift">Shift</th><th data-field="users.department">Department</th><th data-field="users.status">Status</th><th>Last active</th><th>Actions</th></tr></thead>
 <tbody id="user-rows"></tbody>
             </table>
           </div>
@@ -290,15 +294,16 @@
       <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
     </div>
     <div class="modal__body">
+      <div class="callout callout--danger" data-limit-full="users" hidden style="margin-bottom:16px"></div>
       <div class="form-grid">
-        <div class="field"><label for="iu-first">First name <span class="req">*</span></label><input id="iu-first" class="input" placeholder="Priya" required /></div>
-        <div class="field"><label for="iu-last">Last name</label><input id="iu-last" class="input" placeholder="Sharma" /></div>
-        <div class="field"><label for="iu-email">Work email <span class="req">*</span></label><div class="input-icon"><i class="ic i-mail"></i><input id="iu-email" type="email" class="input" placeholder="name@company.com" required /></div></div>
-        <div class="field"><label for="iu-mobile">Mobile</label><div class="input-icon"><i class="ic i-phone"></i><input id="iu-mobile" type="tel" class="input" placeholder="+91 98xxx xxxxx" pattern="[+0-9 ()-]{10,18}" title="10-digit mobile number, optionally with country code" /></div></div>
-        <div class="field"><label for="iu-emp">Employee ID <span class="req">*</span></label><input id="iu-emp" class="input mono" required pattern="[A-Za-z]{2,5}-?[0-9]{1,6}" title="e.g. EMP-089" /></div>
-        <div class="field"><label for="iu-dept">Department</label><select id="iu-dept" class="input"></select></div>
-        <div class="field"><label for="iu-role">Role <span class="req">*</span></label><select id="iu-role" class="input"></select></div>
-        <div class="field"><label for="iu-shift">Shift</label><select id="iu-shift" class="input"><option>Shift A · 06:00–14:00</option><option>Shift B · 14:00–22:00</option><option>Shift C · 22:00–06:00</option><option selected>General · 09:30–18:30</option></select></div>
+        <div class="field" data-field="users.name"><label for="iu-first">First name <span class="req">*</span></label><input id="iu-first" class="input" placeholder="Priya" required /></div>
+        <div class="field" data-field="users.name"><label for="iu-last">Last name</label><input id="iu-last" class="input" placeholder="Sharma" /></div>
+        <div class="field" data-field="users.email"><label for="iu-email">Work email <span class="req">*</span></label><div class="input-icon"><i class="ic i-mail"></i><input id="iu-email" type="email" class="input" placeholder="name@company.com" required /></div></div>
+        <div class="field" data-field="users.mobile"><label for="iu-mobile">Mobile</label><div class="input-icon"><i class="ic i-phone"></i><input id="iu-mobile" type="tel" class="input" placeholder="+91 98xxx xxxxx" pattern="[+0-9 ()-]{10,18}" title="10-digit mobile number, optionally with country code" /></div></div>
+        <div class="field" data-field="users.empId"><label for="iu-emp">Employee ID <span class="req">*</span></label><input id="iu-emp" class="input mono" required pattern="[A-Za-z]{2,5}-?[0-9]{1,6}" title="e.g. EMP-089" /></div>
+        <div class="field" data-field="users.department"><label for="iu-dept">Department</label><select id="iu-dept" class="input"></select></div>
+        <div class="field" data-field="users.role"><label for="iu-role">Role <span class="req">*</span></label><select id="iu-role" class="input"></select></div>
+        <div class="field" data-field="users.shift"><label for="iu-shift">Shift</label><select id="iu-shift" class="input"><option>Shift A · 06:00–14:00</option><option>Shift B · 14:00–22:00</option><option>Shift C · 22:00–06:00</option><option selected>General · 09:30–18:30</option></select></div>
         <div class="field full"><span class="label">Site access</span>
           <div class="row wrap" style="gap:18px">
             <label class="check"><input type="checkbox" data-iu-site value="Plant 1 · Bengaluru" checked /> Plant 1 · Bengaluru</label>
@@ -311,7 +316,7 @@
     </div>
     <div class="modal__foot">
       <a href="#close" class="btn btn--ghost">Cancel</a>
-      <a href="#invite-sent" class="btn btn--primary" data-invite-user><i class="ic i-send"></i> Create invitation</a>
+      <a href="#invite-sent" class="btn btn--primary" data-invite-user data-limit="users"><i class="ic i-send"></i> Create invitation</a>
     </div>
   </div>
 </div>
@@ -331,7 +336,7 @@
       </div>
     </div>
     <div class="modal__foot">
-      <a href="#add-user" class="btn btn--ghost left"><i class="ic i-plus"></i> Invite another</a>
+      <a href="#add-user" class="btn btn--ghost left" data-limit="users"><i class="ic i-plus"></i> Invite another</a>
       <a href="#" id="invite-open" class="btn" target="_blank" rel="noopener">Open link</a>
       <a href="#close" class="btn btn--primary">Done</a>
     </div>
@@ -352,15 +357,15 @@
         <div style="flex:1;min-width:0"><strong style="font-size:16px" data-e="name">—</strong><div class="small muted" data-e="meta">—</div></div>
       </div>
       <div class="form-grid">
-        <div class="field"><label for="eu-first">First name <span class="req">*</span></label><input id="eu-first" class="input" required /></div>
-        <div class="field"><label for="eu-last">Last name</label><input id="eu-last" class="input" /></div>
-        <div class="field"><label for="eu-email">Work email <span class="req">*</span></label><div class="input-icon"><i class="ic i-mail"></i><input id="eu-email" type="email" class="input" required /></div></div>
-        <div class="field"><label for="eu-mobile">Mobile</label><div class="input-icon"><i class="ic i-phone"></i><input id="eu-mobile" type="tel" class="input" pattern="[+0-9 ()-]{10,18}" title="10-digit mobile number, optionally with country code" /></div></div>
-        <div class="field"><label for="eu-emp">Employee ID <span class="req">*</span></label><input id="eu-emp" class="input mono" required pattern="[A-Za-z]{2,5}-?[0-9]{1,6}" title="e.g. EMP-089" /></div>
-        <div class="field"><label for="eu-dept">Department</label><select id="eu-dept" class="input"></select></div>
-        <div class="field"><label for="eu-role">Role</label><select id="eu-role" class="input"></select></div>
-        <div class="field"><label for="eu-shift">Shift</label><select id="eu-shift" class="input"></select></div>
-        <div class="field"><label for="eu-status">Status</label><select id="eu-status" class="input"></select><span class="hint">Inactive and suspended users can't sign in.</span></div>
+        <div class="field" data-field="users.name"><label for="eu-first">First name <span class="req">*</span></label><input id="eu-first" class="input" required /></div>
+        <div class="field" data-field="users.name"><label for="eu-last">Last name</label><input id="eu-last" class="input" /></div>
+        <div class="field" data-field="users.email"><label for="eu-email">Work email <span class="req">*</span></label><div class="input-icon"><i class="ic i-mail"></i><input id="eu-email" type="email" class="input" required /></div></div>
+        <div class="field" data-field="users.mobile"><label for="eu-mobile">Mobile</label><div class="input-icon"><i class="ic i-phone"></i><input id="eu-mobile" type="tel" class="input" pattern="[+0-9 ()-]{10,18}" title="10-digit mobile number, optionally with country code" /></div></div>
+        <div class="field" data-field="users.empId"><label for="eu-emp">Employee ID <span class="req">*</span></label><input id="eu-emp" class="input mono" required pattern="[A-Za-z]{2,5}-?[0-9]{1,6}" title="e.g. EMP-089" /></div>
+        <div class="field" data-field="users.department"><label for="eu-dept">Department</label><select id="eu-dept" class="input"></select></div>
+        <div class="field" data-field="users.role"><label for="eu-role">Role</label><select id="eu-role" class="input"></select></div>
+        <div class="field" data-field="users.shift"><label for="eu-shift">Shift</label><select id="eu-shift" class="input"></select></div>
+        <div class="field" data-field="users.status"><label for="eu-status">Status</label><select id="eu-status" class="input"></select><span class="hint">Inactive and suspended users can't sign in.</span></div>
       </div>
     </div>
     <div class="modal__foot">
@@ -381,13 +386,13 @@
     <div class="modal__body">
       <div class="row" style="gap:16px;margin-bottom:20px;align-items:flex-start">
         <span class="avatar avatar--lg av-2" data-v="avatar">··</span>
-        <div style="min-width:0"><strong style="font-size:17px" data-v="name">—</strong><div class="small muted" data-v="email">—</div><div class="row wrap" style="margin-top:8px;gap:6px" data-v="badges"></div></div>
+        <div style="min-width:0"><strong style="font-size:17px" data-v="name">—</strong><div class="small muted" data-v="email" data-field="users.email">—</div><div class="row wrap" style="margin-top:8px;gap:6px" data-v="badges"></div></div>
       </div>
       <dl class="kv">
-        <dt>Employee ID</dt><dd class="mono" data-v="emp">—</dd>
+        <dt data-field="users.empId">Employee ID</dt><dd class="mono" data-v="emp" data-field="users.empId">—</dd>
         <dt>Username</dt><dd class="mono" data-v="username">—</dd>
-        <dt>Mobile</dt><dd data-v="mobile">—</dd>
-        <dt>Department</dt><dd data-v="dept">—</dd>
+        <dt data-field="users.mobile">Mobile</dt><dd data-v="mobile" data-field="users.mobile">—</dd>
+        <dt data-field="users.department">Department</dt><dd data-v="dept" data-field="users.department">—</dd>
         <dt>Member since</dt><dd data-v="created">—</dd>
         <dt>Last active</dt><dd data-v="last">—</dd>
       </dl>

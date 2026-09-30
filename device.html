@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meter · Energy Dashboard</title>
+  <title>Device · Energy Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
@@ -13,12 +13,9 @@
   <script src="assets/js/app.js"></script>
   <script src="assets/js/workspace.js" defer></script>
   <script src="assets/js/meter-data.js" defer></script>
-  <script src="assets/js/meter.js" defer></script>
-  <script src="assets/js/alert-rules-text.js" defer></script>
-  <script src="assets/js/meter-alerts.js" defer></script>
   <script src="assets/js/device-data.js" defer></script>
+  <script src="assets/js/device.js" defer></script>
   <script src="assets/js/connections.js" defer></script>
-  <script src="assets/js/export.js" defer></script>
 </head>
 <body class="app">
   <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
@@ -46,8 +43,8 @@
       <nav class="nav">
         <div class="nav__section">Monitor</div>
         <a href="dashboard.html" class="nav__link"><i class="ic i-grid"></i><span>Dashboard</span></a>
-        <a href="meters.html" class="nav__link is-active"><i class="ic i-gauge"></i><span>Energy Meters</span><em class="nav__badge nav__badge--green">38</em></a>
-        <a href="devices.html" class="nav__link"><i class="ic i-cpu"></i><span>Device Management</span></a>
+        <a href="meters.html" class="nav__link"><i class="ic i-gauge"></i><span>Energy Meters</span><em class="nav__badge nav__badge--green">38</em></a>
+        <a href="devices.html" class="nav__link is-active"><i class="ic i-cpu"></i><span>Device Management</span></a>
         <a href="connections.html" class="nav__link"><i class="ic i-flow"></i><span>Connections</span></a>
         <a href="analytics.html" class="nav__link"><i class="ic i-chart"></i><span>Analytics</span></a>
         <a href="alerts.html" class="nav__link"><i class="ic i-bell"></i><span>Alerts</span><em class="nav__badge">5</em></a>
@@ -82,8 +79,8 @@
         <label for="nav-toggle" class="icon-btn burger" aria-label="Open menu"><i class="ic i-menu"></i></label>
 
         <div class="topbar__crumbs">
-          <small><span data-bind="org.short">Febino Solutions</span> / <a href="meters.html" class="row-link">Energy Meters</a></small>
-          <strong>Meter</strong>
+          <small><span data-bind="org.short">Febino Solutions</span> / <a href="devices.html" class="row-link">Device Management</a></small>
+          <strong>Device</strong>
         </div>
 
         <label class="search">
@@ -151,7 +148,7 @@
         </div>
       </header>
 
-      <main class="page" id="meter-page" aria-live="polite"><noscript><p class="page-sub">This meter dashboard needs JavaScript.</p></noscript></main>
+      <main class="page" id="device-page" aria-live="polite"><noscript><p class="page-sub">This device page needs JavaScript.</p></noscript></main>
 
       <footer class="footer">
         <span>© 2026 Energy Dashboard · Tenant <span class="mono" data-bind="org.id">FEBINO</span></span>
@@ -253,6 +250,7 @@
   </div>
 
   <!-- ================= TOASTS ================= -->
+  <div class="toast" id="device-toast" role="status"><span class="toast__icon"><i class="ic i-check"></i></span><div><strong data-toast-title>Done</strong><span data-toast-text></span></div></div>
   <div class="toast" id="saved" role="status"><span class="toast__icon"><i class="ic i-check"></i></span><div><strong>Changes saved</strong><span>Your updates were saved successfully.</span></div></div>
   <div class="toast" id="created" role="status"><span class="toast__icon"><i class="ic i-plus"></i></span><div><strong>Record created</strong><span>The new record has been added.</span></div></div>
   <div class="toast" id="invited" role="status"><span class="toast__icon"><i class="ic i-send"></i></span><div><strong>Invitation sent</strong><span>An invite email is on its way.</span></div></div>

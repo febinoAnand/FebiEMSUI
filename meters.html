@@ -12,6 +12,8 @@
   <script src="assets/js/store.js"></script>
   <script src="assets/js/app.js"></script>
   <script src="assets/js/workspace.js" defer></script>
+  <script src="assets/js/meter-data.js" defer></script>
+  <script src="assets/js/export.js" defer></script>
 </head>
 <body class="app">
   <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
@@ -41,11 +43,14 @@
         <a href="dashboard.html" class="nav__link"><i class="ic i-grid"></i><span>Dashboard</span></a>
         <a href="meters.html" class="nav__link is-active"><i class="ic i-gauge"></i><span>Energy Meters</span><em class="nav__badge nav__badge--green">38</em></a>
         <a href="devices.html" class="nav__link"><i class="ic i-cpu"></i><span>Device Management</span></a>
+        <a href="connections.html" class="nav__link"><i class="ic i-flow"></i><span>Connections</span></a>
         <a href="analytics.html" class="nav__link"><i class="ic i-chart"></i><span>Analytics</span></a>
         <a href="alerts.html" class="nav__link"><i class="ic i-bell"></i><span>Alerts</span><em class="nav__badge">5</em></a>
 
-        <div class="nav__section">Operations</div>
-        <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift Management</span></a>
+        <div class="nav__section">Shift management</div>
+        <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift</span></a>
+        <a href="shift-schedule.html" class="nav__link"><i class="ic i-calendar"></i><span>Schedule</span></a>
+        <a href="shift-instances.html" class="nav__link"><i class="ic i-chart"></i><span>Instance</span></a>
 
         <div class="nav__section">Administration</div>
         <a href="users.html" class="nav__link"><i class="ic i-users"></i><span>Users</span></a>
@@ -148,14 +153,14 @@
             <p class="page-sub">Every energy meter and its sub-meters with live readings. Click <i class="ic i-chev-right"></i> on a meter to expand its sub-meters. Gateways and data loggers are in <a href="devices.html" class="tc-primary">Device Management</a>.</p>
           </div>
           <div class="page-actions">
-            <a href="#close" class="btn btn--sm"><i class="ic i-download"></i> Export CSV</a>
-            <a href="#add-submeter" class="btn btn--sm btn--soft"><i class="ic i-layers"></i> Add sub-meter</a>
-            <a href="#add-meter" class="btn btn--sm btn--primary"><i class="ic i-plus"></i> Add meter</a>
+            <a href="#export" data-export="meters" class="btn btn--sm"><i class="ic i-download"></i> Export CSV</a>
+            <a href="#add-submeter" class="btn btn--sm btn--soft" data-limit="subMeters"><i class="ic i-layers"></i> Add sub-meter</a>
+            <a href="#add-meter" class="btn btn--sm btn--primary" data-limit="meters"><i class="ic i-plus"></i> Add meter</a>
           </div>
         </section>
 
         <section class="grid grid-4">
-          <div class="card stat"><span class="stat__icon" style="--c:var(--cyan)"><i class="ic i-gauge"></i></span><div><strong>12</strong><span>Energy meters</span></div></div>
+          <div class="card stat"><span class="stat__icon" style="--c:var(--cyan)"><i class="ic i-gauge"></i></span><div><strong>12</strong><span>Energy meters</span><div class="small muted" style="margin-top:2px" data-limit-quota="meters">of 50 allowed</div></div></div>
           <div class="card stat"><span class="stat__icon" style="--c:var(--violet)"><i class="ic i-layers"></i></span><div><strong>38</strong><span>Sub-meters</span></div></div>
           <div class="card stat"><span class="stat__icon"><i class="ic i-wifi"></i></span><div><strong>44 <small class="muted" style="font-size:13px">/ 50</small></strong><span>Reporting online</span></div></div>
           <div class="card stat"><span class="stat__icon" style="--c:var(--rose)"><i class="ic i-alert"></i></span><div><strong>6</strong><span>Offline / maintenance</span></div></div>
@@ -183,7 +188,7 @@
     <td><input type="checkbox" class="tree-toggle" id="mtr-1001" checked aria-label="Show sub-meters of Main Incomer" /><label for="mtr-1001" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
     <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-cpu"></i></span><div><a href="meter.html?id=MTR-1001" class="row-link"><strong>Main Incomer</strong></a><small>MTR-1001 · Schneider PM5560</small></div></div></td>
     <td>Main LT Panel</td>
-    <td><a href="devices.html" class="device-chip" title="Main LT Panel Gateway"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a><div class="small muted">Main LT Panel Gateway</div></td>
+    <td><a href="device.html?id=GW-01" class="device-chip" title="Main LT Panel Gateway"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a><div class="small muted">Main LT Panel Gateway</div></td>
     <td><label for="mtr-1001" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 4 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>67.1 kW</strong><small>actual</small></div><div class="mv mv--sum">65.2 kW<small>Σ 4 sub</small></div></td><td class="num"><div class="mv"><strong>8,712</strong><small>actual</small></div><div class="mv mv--sum">8,450<small>Σ 4 sub</small></div><span class="gap gap--mid" title="Actual − sum of sub-meters: 1.9 kW · 262 kWh">Δ +262 · 3.1% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:72%"></span></div><small>72%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">10 s ago</div></td>
@@ -193,7 +198,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1001-01" class="row-link"><strong>Feeder A · Production Line 1</strong></a><small>SM-1001-01</small></div></div></td>
     <td class="small">↳ Main Incomer</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
+    <td><a href="device.html?id=GW-01" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
     <td><span class="tag">CT 400/5</span></td>
     <td class="num">24.8 kW</td><td class="num">3,120</td><td><div class="bar-cell"><div class="bar"><span style="--w:78%"></span></div><small>78%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -203,7 +208,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1001-02" class="row-link"><strong>Feeder B · Production Line 2</strong></a><small>SM-1001-02</small></div></div></td>
     <td class="small">↳ Main Incomer</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
+    <td><a href="device.html?id=GW-01" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
     <td><span class="tag">CT 400/5</span></td>
     <td class="num">21.6 kW</td><td class="num">2,840</td><td><div class="bar-cell"><div class="bar"><span style="--w:70%"></span></div><small>70%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -213,7 +218,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1001-03" class="row-link"><strong>Feeder C · Tool Room</strong></a><small>SM-1001-03</small></div></div></td>
     <td class="small">↳ Main Incomer</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
+    <td><a href="device.html?id=GW-01" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
     <td><span class="tag">CT 200/5</span></td>
     <td class="num">11.4 kW</td><td class="num">1,560</td><td><div class="bar-cell"><div class="bar"><span style="--w:57%"></span></div><small>57%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -223,7 +228,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1001-04" class="row-link"><strong>Feeder D · Welding Bay</strong></a><small>SM-1001-04</small></div></div></td>
     <td class="small">↳ Main Incomer</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
+    <td><a href="device.html?id=GW-01" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
     <td><span class="tag">CT 200/5</span></td>
     <td class="num">7.4 kW</td><td class="num">930</td><td><div class="bar-cell"><div class="bar"><span style="--w:41%"></span></div><small>41%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
@@ -236,7 +241,7 @@
     <td><input type="checkbox" class="tree-toggle" id="mtr-1002" aria-label="Show sub-meters of HVAC" /><label for="mtr-1002" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
     <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-thermo"></i></span><div><a href="meter.html?id=MTR-1002" class="row-link"><strong>HVAC</strong></a><small>MTR-1002 · Secure Elite 440</small></div></div></td>
     <td>Utility Block</td>
-    <td><a href="devices.html" class="device-chip" title="Utility Block Data Logger"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a><div class="small muted">Utility Block Data Logger</div></td>
+    <td><a href="device.html?id=GW-02" class="device-chip" title="Utility Block Data Logger"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a><div class="small muted">Utility Block Data Logger</div></td>
     <td><label for="mtr-1002" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 3 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>22.6 kW</strong><small>actual</small></div><div class="mv mv--sum">22.0 kW<small>Σ 3 sub</small></div></td><td class="num"><div class="mv"><strong>2,236</strong><small>actual</small></div><div class="mv mv--sum">2,180<small>Σ 3 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.6 kW · 56 kWh">Δ +56 · 2.6% unmetered</span></td><td><div class="bar-cell"><div class="bar bar--rose"><span style="--w:91%"></span></div><small>91%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">12 s ago</div></td>
@@ -246,7 +251,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1002-01" class="row-link"><strong>Chiller-1</strong></a><small>SM-1002-01</small></div></div></td>
     <td class="small">↳ HVAC</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
+    <td><a href="device.html?id=GW-02" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
     <td><span class="tag">Direct 63 A</span></td>
     <td class="num">8.6 kW</td><td class="num">860</td><td><div class="bar-cell"><div class="bar bar--amber"><span style="--w:86%"></span></div><small>86%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -256,7 +261,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1002-02" class="row-link"><strong>Chiller-2</strong></a><small>SM-1002-02</small></div></div></td>
     <td class="small">↳ HVAC</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
+    <td><a href="device.html?id=GW-02" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
     <td><span class="tag">Direct 63 A</span></td>
     <td class="num">9.5 kW</td><td class="num">905</td><td><div class="bar-cell"><div class="bar bar--rose"><span style="--w:95%"></span></div><small>95%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -266,7 +271,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1002-03" class="row-link"><strong>AHU · Level 1–3</strong></a><small>SM-1002-03</small></div></div></td>
     <td class="small">↳ HVAC</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
+    <td><a href="device.html?id=GW-02" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
     <td><span class="tag">CT 100/5</span></td>
     <td class="num">3.9 kW</td><td class="num">415</td><td><div class="bar-cell"><div class="bar"><span style="--w:52%"></span></div><small>52%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -279,7 +284,7 @@
     <td><input type="checkbox" class="tree-toggle" id="mtr-1003" aria-label="Show sub-meters of Office" /><label for="mtr-1003" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
     <td><div class="cell-device"><span class="dev-icon" style="--c:var(--amber)"><i class="ic i-building"></i></span><div><a href="meter.html?id=MTR-1003" class="row-link"><strong>Office</strong></a><small>MTR-1003 · L&T WL4405</small></div></div></td>
     <td>Admin Building</td>
-    <td><a href="devices.html" class="device-chip" title="Admin Block Gateway"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a><div class="small muted">Admin Block Gateway</div></td>
+    <td><a href="device.html?id=GW-03" class="device-chip" title="Admin Block Gateway"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a><div class="small muted">Admin Block Gateway</div></td>
     <td><label for="mtr-1003" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 5 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>12.3 kW</strong><small>actual</small></div><div class="mv mv--sum">12.0 kW<small>Σ 5 sub</small></div></td><td class="num"><div class="mv"><strong>1,004</strong><small>actual</small></div><div class="mv mv--sum">980<small>Σ 5 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.3 kW · 24 kWh">Δ +24 · 2.4% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:28%"></span></div><small>28%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Idle</span><div class="small muted" style="margin-top:4px">15 s ago</div></td>
@@ -289,7 +294,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1003-01" class="row-link"><strong>Ground floor DB</strong></a><small>SM-1003-01</small></div></div></td>
     <td class="small">↳ Office</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Admin Block Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a></td>
+    <td><a href="device.html?id=GW-03" class="device-chip device-chip--inherited" title="Admin Block Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a></td>
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">3.1 kW</td><td class="num">260</td><td><div class="bar-cell"><div class="bar"><span style="--w:31%"></span></div><small>31%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -299,7 +304,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1003-02" class="row-link"><strong>First floor DB</strong></a><small>SM-1003-02</small></div></div></td>
     <td class="small">↳ Office</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Admin Block Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a></td>
+    <td><a href="device.html?id=GW-03" class="device-chip device-chip--inherited" title="Admin Block Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a></td>
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">2.8 kW</td><td class="num">240</td><td><div class="bar-cell"><div class="bar"><span style="--w:28%"></span></div><small>28%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
@@ -309,7 +314,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1003-03" class="row-link"><strong>Second floor DB</strong></a><small>SM-1003-03</small></div></div></td>
     <td class="small">↳ Office</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Admin Block Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a></td>
+    <td><a href="device.html?id=GW-03" class="device-chip device-chip--inherited" title="Admin Block Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a></td>
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">2.4 kW</td><td class="num">205</td><td><div class="bar-cell"><div class="bar"><span style="--w:24%"></span></div><small>24%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
@@ -319,7 +324,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1003-04" class="row-link"><strong>Conference wing</strong></a><small>SM-1003-04</small></div></div></td>
     <td class="small">↳ Office</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Admin Block Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a></td>
+    <td><a href="device.html?id=GW-03" class="device-chip device-chip--inherited" title="Admin Block Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a></td>
     <td><span class="tag">Direct 16 A</span></td>
     <td class="num">1.9 kW</td><td class="num">140</td><td><div class="bar-cell"><div class="bar"><span style="--w:38%"></span></div><small>38%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -329,7 +334,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1003-05" class="row-link"><strong>Office UPS</strong></a><small>SM-1003-05</small></div></div></td>
     <td class="small">↳ Office</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Admin Block Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a></td>
+    <td><a href="device.html?id=GW-03" class="device-chip device-chip--inherited" title="Admin Block Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a></td>
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">1.8 kW</td><td class="num">135</td><td><div class="bar-cell"><div class="bar"><span style="--w:20%"></span></div><small>20%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -342,7 +347,7 @@
     <td><input type="checkbox" class="tree-toggle" id="mtr-1004" aria-label="Show sub-meters of Data Centre" /><label for="mtr-1004" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
     <td><div class="cell-device"><span class="dev-icon" style="--c:var(--violet)"><i class="ic i-wifi"></i></span><div><a href="meter.html?id=MTR-1004" class="row-link"><strong>Data Centre</strong></a><small>MTR-1004 · Schneider PM2220</small></div></div></td>
     <td>Server Room · L2</td>
-    <td><a href="devices.html" class="device-chip" title="Server Room Gateway"><span class="dot dot--live" style="--c:var(--green)"></span>GW-04</a><div class="small muted">Server Room Gateway</div></td>
+    <td><a href="device.html?id=GW-04" class="device-chip" title="Server Room Gateway"><span class="dot dot--live" style="--c:var(--green)"></span>GW-04</a><div class="small muted">Server Room Gateway</div></td>
     <td><label for="mtr-1004" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 4 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>12.4 kW</strong><small>actual</small></div><div class="mv mv--sum">10.6 kW<small>Σ 4 sub</small></div></td><td class="num"><div class="mv"><strong>3,108</strong><small>actual</small></div><div class="mv mv--sum">3,020<small>Σ 4 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 1.8 kW · 88 kWh">Δ +88 · 2.9% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:64%"></span></div><small>64%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">8 s ago</div></td>
@@ -352,7 +357,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1004-01" class="row-link"><strong>UPS-A feeder</strong></a><small>SM-1004-01</small></div></div></td>
     <td class="small">↳ Data Centre</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Server Room Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-04</a></td>
+    <td><a href="device.html?id=GW-04" class="device-chip device-chip--inherited" title="Server Room Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-04</a></td>
     <td><span class="tag">CT 100/5</span></td>
     <td class="num">6.2 kW</td><td class="num">1,480</td><td><div class="bar-cell"><div class="bar"><span style="--w:62%"></span></div><small>62%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -362,7 +367,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1004-02" class="row-link"><strong>UPS-B feeder</strong></a><small>SM-1004-02</small></div></div></td>
     <td class="small">↳ Data Centre</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Server Room Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-04</a></td>
+    <td><a href="device.html?id=GW-04" class="device-chip device-chip--inherited" title="Server Room Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-04</a></td>
     <td><span class="tag">CT 100/5</span></td>
     <td class="num">0.0 kW</td><td class="num">1,110</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--danger"><span class="dot"></span> Offline</span></td>
@@ -372,7 +377,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1004-03" class="row-link"><strong>Precision AC</strong></a><small>SM-1004-03</small></div></div></td>
     <td class="small">↳ Data Centre</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Server Room Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-04</a></td>
+    <td><a href="device.html?id=GW-04" class="device-chip device-chip--inherited" title="Server Room Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-04</a></td>
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">4.1 kW</td><td class="num">330</td><td><div class="bar-cell"><div class="bar"><span style="--w:68%"></span></div><small>68%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -382,7 +387,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1004-04" class="row-link"><strong>Rack lighting</strong></a><small>SM-1004-04</small></div></div></td>
     <td class="small">↳ Data Centre</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Server Room Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-04</a></td>
+    <td><a href="device.html?id=GW-04" class="device-chip device-chip--inherited" title="Server Room Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-04</a></td>
     <td><span class="tag">Direct 10 A</span></td>
     <td class="num">0.3 kW</td><td class="num">100</td><td><div class="bar-cell"><div class="bar"><span style="--w:22%"></span></div><small>22%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -395,7 +400,7 @@
     <td><input type="checkbox" class="tree-toggle" id="mtr-1005" aria-label="Show sub-meters of Lighting" /><label for="mtr-1005" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
     <td><div class="cell-device"><span class="dev-icon" style="--c:var(--amber)"><i class="ic i-sun"></i></span><div><a href="meter.html?id=MTR-1005" class="row-link"><strong>Lighting</strong></a><small>MTR-1005 · Elmeasure LG+ 1129</small></div></div></td>
     <td>Plant-wide</td>
-    <td><a href="devices.html" class="device-chip" title="Main LT Panel Gateway"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a><div class="small muted">Main LT Panel Gateway</div></td>
+    <td><a href="device.html?id=GW-01" class="device-chip" title="Main LT Panel Gateway"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a><div class="small muted">Main LT Panel Gateway</div></td>
     <td><label for="mtr-1005" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 6 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>14.1 kW</strong><small>actual</small></div><div class="mv mv--sum">13.8 kW<small>Σ 6 sub</small></div></td><td class="num"><div class="mv"><strong>1,442</strong><small>actual</small></div><div class="mv mv--sum">1,410<small>Σ 6 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.3 kW · 32 kWh">Δ +32 · 2.3% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:55%"></span></div><small>55%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">11 s ago</div></td>
@@ -405,7 +410,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1005-01" class="row-link"><strong>Shop floor high-bays</strong></a><small>SM-1005-01</small></div></div></td>
     <td class="small">↳ Lighting</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
+    <td><a href="device.html?id=GW-01" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
     <td><span class="tag">CT 60/5</span></td>
     <td class="num">6.4 kW</td><td class="num">640</td><td><div class="bar-cell"><div class="bar"><span style="--w:64%"></span></div><small>64%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -415,7 +420,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1005-02" class="row-link"><strong>Street lights</strong></a><small>SM-1005-02</small></div></div></td>
     <td class="small">↳ Lighting</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
+    <td><a href="device.html?id=GW-01" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">2.1 kW</td><td class="num">180</td><td><div class="bar-cell"><div class="bar"><span style="--w:42%"></span></div><small>42%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -425,7 +430,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1005-03" class="row-link"><strong>Warehouse</strong></a><small>SM-1005-03</small></div></div></td>
     <td class="small">↳ Lighting</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
+    <td><a href="device.html?id=GW-01" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">2.6 kW</td><td class="num">260</td><td><div class="bar-cell"><div class="bar"><span style="--w:52%"></span></div><small>52%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -435,7 +440,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1005-04" class="row-link"><strong>Admin corridors</strong></a><small>SM-1005-04</small></div></div></td>
     <td class="small">↳ Lighting</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
+    <td><a href="device.html?id=GW-01" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
     <td><span class="tag">Direct 16 A</span></td>
     <td class="num">1.2 kW</td><td class="num">130</td><td><div class="bar-cell"><div class="bar"><span style="--w:40%"></span></div><small>40%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -445,7 +450,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1005-05" class="row-link"><strong>Security & gate</strong></a><small>SM-1005-05</small></div></div></td>
     <td class="small">↳ Lighting</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
+    <td><a href="device.html?id=GW-01" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
     <td><span class="tag">Direct 10 A</span></td>
     <td class="num">0.7 kW</td><td class="num">90</td><td><div class="bar-cell"><div class="bar"><span style="--w:35%"></span></div><small>35%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -455,7 +460,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1005-06" class="row-link"><strong>Emergency lighting</strong></a><small>SM-1005-06</small></div></div></td>
     <td class="small">↳ Lighting</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
+    <td><a href="device.html?id=GW-01" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
     <td><span class="tag">Direct 10 A</span></td>
     <td class="num">0.8 kW</td><td class="num">110</td><td><div class="bar-cell"><div class="bar"><span style="--w:26%"></span></div><small>26%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
@@ -468,7 +473,7 @@
     <td><input type="checkbox" class="tree-toggle" id="mtr-1006" aria-label="Show sub-meters of Compressor House" /><label for="mtr-1006" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
     <td><div class="cell-device"><span class="dev-icon" style="--c:var(--green)"><i class="ic i-plug"></i></span><div><a href="meter.html?id=MTR-1006" class="row-link"><strong>Compressor House</strong></a><small>MTR-1006 · Schneider PM5560</small></div></div></td>
     <td>Utility Block</td>
-    <td><a href="devices.html" class="device-chip" title="Utility Block Data Logger"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a><div class="small muted">Utility Block Data Logger</div></td>
+    <td><a href="device.html?id=GW-02" class="device-chip" title="Utility Block Data Logger"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a><div class="small muted">Utility Block Data Logger</div></td>
     <td><label for="mtr-1006" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 3 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>0.0 kW</strong><small>actual</small></div><div class="mv mv--sum">0.0 kW<small>Σ 3 sub</small></div></td><td class="num"><div class="mv"><strong>4,190</strong><small>actual</small></div><div class="mv mv--sum">4,112<small>Σ 3 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.0 kW · 78 kWh">Δ +78 · 1.9% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--danger"><span class="dot"></span> Offline</span><div class="small muted" style="margin-top:4px">38 min ago</div></td>
@@ -478,7 +483,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1006-01" class="row-link"><strong>Screw compressor 1</strong></a><small>SM-1006-01</small></div></div></td>
     <td class="small">↳ Compressor House</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
+    <td><a href="device.html?id=GW-02" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
     <td><span class="tag">CT 200/5</span></td>
     <td class="num">0.0 kW</td><td class="num">2,210</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--danger"><span class="dot"></span> Offline</span></td>
@@ -488,7 +493,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1006-02" class="row-link"><strong>Screw compressor 2</strong></a><small>SM-1006-02</small></div></div></td>
     <td class="small">↳ Compressor House</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
+    <td><a href="device.html?id=GW-02" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
     <td><span class="tag">CT 200/5</span></td>
     <td class="num">0.0 kW</td><td class="num">1,640</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--danger"><span class="dot"></span> Offline</span></td>
@@ -498,7 +503,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1006-03" class="row-link"><strong>Air dryer</strong></a><small>SM-1006-03</small></div></div></td>
     <td class="small">↳ Compressor House</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
+    <td><a href="device.html?id=GW-02" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">0.0 kW</td><td class="num">262</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--danger"><span class="dot"></span> Offline</span></td>
@@ -511,7 +516,7 @@
     <td><input type="checkbox" class="tree-toggle" id="mtr-1007" aria-label="Show sub-meters of Rooftop Solar" /><label for="mtr-1007" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
     <td><div class="cell-device"><span class="dev-icon" style="--c:var(--blue)"><i class="ic i-sun"></i></span><div><a href="meter.html?id=MTR-1007" class="row-link"><strong>Rooftop Solar</strong></a><small>MTR-1007 · Fronius Smart Meter</small></div></div></td>
     <td>Roof · Block A</td>
-    <td><a href="devices.html" class="device-chip" title="Rooftop Solar Edge Device"><span class="dot dot--live" style="--c:var(--green)"></span>GW-05</a><div class="small muted">Rooftop Solar Edge Device</div></td>
+    <td><a href="device.html?id=GW-05" class="device-chip" title="Rooftop Solar Edge Device"><span class="dot dot--live" style="--c:var(--green)"></span>GW-05</a><div class="small muted">Rooftop Solar Edge Device</div></td>
     <td><label for="mtr-1007" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 2 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>−18.2 kW</strong><small>actual</small></div><div class="mv mv--sum">−18.6 kW<small>Σ 2 sub</small></div></td><td class="num"><div class="mv"><strong>1,262</strong><small>actual</small></div><div class="mv mv--sum">1,284<small>Σ 2 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.4 kW · −22 kWh">Δ −22 · 1.7% losses</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:62%"></span></div><small>62%</small></div></td>
     <td><span class="badge badge--info"><span class="dot dot--live"></span> Generating</span><div class="small muted" style="margin-top:4px">9 s ago</div></td>
@@ -521,7 +526,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1007-01" class="row-link"><strong>Inverter 1 · 25 kWp</strong></a><small>SM-1007-01</small></div></div></td>
     <td class="small">↳ Rooftop Solar</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Rooftop Solar Edge Device · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-05</a></td>
+    <td><a href="device.html?id=GW-05" class="device-chip device-chip--inherited" title="Rooftop Solar Edge Device · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-05</a></td>
     <td><span class="tag">Direct 63 A</span></td>
     <td class="num">−10.2 kW</td><td class="num">704</td><td><div class="bar-cell"><div class="bar"><span style="--w:68%"></span></div><small>68%</small></div></td>
     <td><span class="badge badge--info"><span class="dot dot--live"></span> Generating</span></td>
@@ -531,7 +536,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1007-02" class="row-link"><strong>Inverter 2 · 20 kWp</strong></a><small>SM-1007-02</small></div></div></td>
     <td class="small">↳ Rooftop Solar</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Rooftop Solar Edge Device · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-05</a></td>
+    <td><a href="device.html?id=GW-05" class="device-chip device-chip--inherited" title="Rooftop Solar Edge Device · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-05</a></td>
     <td><span class="tag">Direct 63 A</span></td>
     <td class="num">−8.4 kW</td><td class="num">580</td><td><div class="bar-cell"><div class="bar"><span style="--w:56%"></span></div><small>56%</small></div></td>
     <td><span class="badge badge--info"><span class="dot dot--live"></span> Generating</span></td>
@@ -544,7 +549,7 @@
     <td><input type="checkbox" class="tree-toggle" id="mtr-1008" aria-label="Show sub-meters of DG Set 1" /><label for="mtr-1008" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
     <td><div class="cell-device"><span class="dev-icon" style="--c:var(--rose)"><i class="ic i-battery"></i></span><div><a href="meter.html?id=MTR-1008" class="row-link"><strong>DG Set 1</strong></a><small>MTR-1008 · Deepsea DSE7320</small></div></div></td>
     <td>DG Yard</td>
-    <td><a href="devices.html" class="device-chip" title="DG & EV Yard Gateway"><span class="dot" style="--c:var(--amber)"></span>GW-06</a><div class="small muted">DG & EV Yard Gateway</div></td>
+    <td><a href="device.html?id=GW-06" class="device-chip" title="DG & EV Yard Gateway"><span class="dot" style="--c:var(--amber)"></span>GW-06</a><div class="small muted">DG & EV Yard Gateway</div></td>
     <td><label for="mtr-1008" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 1 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>0.0 kW</strong><small>actual</small></div><div class="mv mv--sum">0.0 kW<small>Σ 1 sub</small></div></td><td class="num"><div class="mv"><strong>216</strong><small>actual</small></div><div class="mv mv--sum">212<small>Σ 1 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.0 kW · 4 kWh">Δ +4 · 1.9% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Standby</span><div class="small muted" style="margin-top:4px">1 min ago</div></td>
@@ -554,7 +559,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1008-01" class="row-link"><strong>DG output · 250 kVA</strong></a><small>SM-1008-01</small></div></div></td>
     <td class="small">↳ DG Set 1</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="DG & EV Yard Gateway · via parent meter"><span class="dot" style="--c:var(--amber)"></span>GW-06</a></td>
+    <td><a href="device.html?id=GW-06" class="device-chip device-chip--inherited" title="DG & EV Yard Gateway · via parent meter"><span class="dot" style="--c:var(--amber)"></span>GW-06</a></td>
     <td><span class="tag">CT 400/5</span></td>
     <td class="num">0.0 kW</td><td class="num">212</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Standby</span></td>
@@ -567,7 +572,7 @@
     <td><input type="checkbox" class="tree-toggle" id="mtr-1009" aria-label="Show sub-meters of Water Pumps" /><label for="mtr-1009" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
     <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-activity"></i></span><div><a href="meter.html?id=MTR-1009" class="row-link"><strong>Water Pumps</strong></a><small>MTR-1009 · Elmeasure LG+ 5310</small></div></div></td>
     <td>Pump House</td>
-    <td><a href="devices.html" class="device-chip" title="Utility Block Data Logger"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a><div class="small muted">Utility Block Data Logger</div></td>
+    <td><a href="device.html?id=GW-02" class="device-chip" title="Utility Block Data Logger"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a><div class="small muted">Utility Block Data Logger</div></td>
     <td><label for="mtr-1009" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 4 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>8.8 kW</strong><small>actual</small></div><div class="mv mv--sum">8.6 kW<small>Σ 4 sub</small></div></td><td class="num"><div class="mv"><strong>1,089</strong><small>actual</small></div><div class="mv mv--sum">1,066<small>Σ 4 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.2 kW · 23 kWh">Δ +23 · 2.2% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:47%"></span></div><small>47%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">14 s ago</div></td>
@@ -577,7 +582,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1009-01" class="row-link"><strong>Borewell pump</strong></a><small>SM-1009-01</small></div></div></td>
     <td class="small">↳ Water Pumps</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
+    <td><a href="device.html?id=GW-02" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">3.2 kW</td><td class="num">410</td><td><div class="bar-cell"><div class="bar"><span style="--w:58%"></span></div><small>58%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -587,7 +592,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1009-02" class="row-link"><strong>Transfer pump</strong></a><small>SM-1009-02</small></div></div></td>
     <td class="small">↳ Water Pumps</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
+    <td><a href="device.html?id=GW-02" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">2.4 kW</td><td class="num">300</td><td><div class="bar-cell"><div class="bar"><span style="--w:48%"></span></div><small>48%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -597,7 +602,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1009-03" class="row-link"><strong>Fire hydrant jockey</strong></a><small>SM-1009-03</small></div></div></td>
     <td class="small">↳ Water Pumps</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
+    <td><a href="device.html?id=GW-02" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
     <td><span class="tag">Direct 16 A</span></td>
     <td class="num">0.8 kW</td><td class="num">96</td><td><div class="bar-cell"><div class="bar"><span style="--w:20%"></span></div><small>20%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
@@ -607,7 +612,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1009-04" class="row-link"><strong>STP blowers</strong></a><small>SM-1009-04</small></div></div></td>
     <td class="small">↳ Water Pumps</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
+    <td><a href="device.html?id=GW-02" class="device-chip device-chip--inherited" title="Utility Block Data Logger · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a></td>
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">2.2 kW</td><td class="num">260</td><td><div class="bar-cell"><div class="bar"><span style="--w:44%"></span></div><small>44%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -620,7 +625,7 @@
     <td><input type="checkbox" class="tree-toggle" id="mtr-1010" aria-label="Show sub-meters of Canteen" /><label for="mtr-1010" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
     <td><div class="cell-device"><span class="dev-icon" style="--c:var(--violet)"><i class="ic i-building"></i></span><div><a href="meter.html?id=MTR-1010" class="row-link"><strong>Canteen</strong></a><small>MTR-1010 · L&T WL4405</small></div></div></td>
     <td>Amenities Block</td>
-    <td><a href="devices.html" class="device-chip" title="Admin Block Gateway"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a><div class="small muted">Admin Block Gateway</div></td>
+    <td><a href="device.html?id=GW-03" class="device-chip" title="Admin Block Gateway"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a><div class="small muted">Admin Block Gateway</div></td>
     <td><label for="mtr-1010" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 3 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>4.3 kW</strong><small>actual</small></div><div class="mv mv--sum">4.2 kW<small>Σ 3 sub</small></div></td><td class="num"><div class="mv"><strong>553</strong><small>actual</small></div><div class="mv mv--sum">540<small>Σ 3 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.1 kW · 13 kWh">Δ +13 · 2.4% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:35%"></span></div><small>35%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">13 s ago</div></td>
@@ -630,7 +635,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1010-01" class="row-link"><strong>Kitchen equipment</strong></a><small>SM-1010-01</small></div></div></td>
     <td class="small">↳ Canteen</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Admin Block Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a></td>
+    <td><a href="device.html?id=GW-03" class="device-chip device-chip--inherited" title="Admin Block Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a></td>
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">2.6 kW</td><td class="num">330</td><td><div class="bar-cell"><div class="bar"><span style="--w:43%"></span></div><small>43%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -640,7 +645,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1010-02" class="row-link"><strong>Cold storage</strong></a><small>SM-1010-02</small></div></div></td>
     <td class="small">↳ Canteen</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Admin Block Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a></td>
+    <td><a href="device.html?id=GW-03" class="device-chip device-chip--inherited" title="Admin Block Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a></td>
     <td><span class="tag">Direct 16 A</span></td>
     <td class="num">1.1 kW</td><td class="num">150</td><td><div class="bar-cell"><div class="bar"><span style="--w:55%"></span></div><small>55%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -650,7 +655,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1010-03" class="row-link"><strong>Dining hall</strong></a><small>SM-1010-03</small></div></div></td>
     <td class="small">↳ Canteen</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Admin Block Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a></td>
+    <td><a href="device.html?id=GW-03" class="device-chip device-chip--inherited" title="Admin Block Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a></td>
     <td><span class="tag">Direct 16 A</span></td>
     <td class="num">0.5 kW</td><td class="num">60</td><td><div class="bar-cell"><div class="bar"><span style="--w:12%"></span></div><small>12%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
@@ -663,7 +668,7 @@
     <td><input type="checkbox" class="tree-toggle" id="mtr-1011" aria-label="Show sub-meters of EV Charging" /><label for="mtr-1011" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
     <td><div class="cell-device"><span class="dev-icon" style="--c:var(--green)"><i class="ic i-plug"></i></span><div><a href="meter.html?id=MTR-1011" class="row-link"><strong>EV Charging</strong></a><small>MTR-1011 · Secure Elite 440</small></div></div></td>
     <td>Parking · P1</td>
-    <td><a href="devices.html" class="device-chip" title="DG & EV Yard Gateway"><span class="dot" style="--c:var(--amber)"></span>GW-06</a><div class="small muted">DG & EV Yard Gateway</div></td>
+    <td><a href="device.html?id=GW-06" class="device-chip" title="DG & EV Yard Gateway"><span class="dot" style="--c:var(--amber)"></span>GW-06</a><div class="small muted">DG & EV Yard Gateway</div></td>
     <td><label for="mtr-1011" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 2 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>7.6 kW</strong><small>actual</small></div><div class="mv mv--sum">7.4 kW<small>Σ 2 sub</small></div></td><td class="num"><div class="mv"><strong>397</strong><small>actual</small></div><div class="mv mv--sum">388<small>Σ 2 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.2 kW · 9 kWh">Δ +9 · 2.3% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:49%"></span></div><small>49%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">10 s ago</div></td>
@@ -673,7 +678,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1011-01" class="row-link"><strong>Charger 1 · 7.4 kW AC</strong></a><small>SM-1011-01</small></div></div></td>
     <td class="small">↳ EV Charging</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="DG & EV Yard Gateway · via parent meter"><span class="dot" style="--c:var(--amber)"></span>GW-06</a></td>
+    <td><a href="device.html?id=GW-06" class="device-chip device-chip--inherited" title="DG & EV Yard Gateway · via parent meter"><span class="dot" style="--c:var(--amber)"></span>GW-06</a></td>
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">7.4 kW</td><td class="num">240</td><td><div class="bar-cell"><div class="bar bar--rose"><span style="--w:100%"></span></div><small>100%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
@@ -683,7 +688,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1011-02" class="row-link"><strong>Charger 2 · 7.4 kW AC</strong></a><small>SM-1011-02</small></div></div></td>
     <td class="small">↳ EV Charging</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="DG & EV Yard Gateway · via parent meter"><span class="dot" style="--c:var(--amber)"></span>GW-06</a></td>
+    <td><a href="device.html?id=GW-06" class="device-chip device-chip--inherited" title="DG & EV Yard Gateway · via parent meter"><span class="dot" style="--c:var(--amber)"></span>GW-06</a></td>
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">0.0 kW</td><td class="num">148</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
@@ -696,7 +701,7 @@
     <td><input type="checkbox" class="tree-toggle" id="mtr-1012" aria-label="Show sub-meters of Paint Shop" /><label for="mtr-1012" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
     <td><div class="cell-device"><span class="dev-icon" style="--c:var(--rose)"><i class="ic i-cpu"></i></span><div><a href="meter.html?id=MTR-1012" class="row-link"><strong>Paint Shop</strong></a><small>MTR-1012 · Schneider PM5560</small></div></div></td>
     <td>Block C</td>
-    <td><a href="devices.html" class="device-chip" title="Main LT Panel Gateway"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a><div class="small muted">Main LT Panel Gateway</div></td>
+    <td><a href="device.html?id=GW-01" class="device-chip" title="Main LT Panel Gateway"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a><div class="small muted">Main LT Panel Gateway</div></td>
     <td><label for="mtr-1012" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 3 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>0.0 kW</strong><small>actual</small></div><div class="mv mv--sum">0.0 kW<small>Σ 3 sub</small></div></td><td class="num"><div class="mv"><strong>2,968</strong><small>actual</small></div><div class="mv mv--sum">2,905<small>Σ 3 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.0 kW · 63 kWh">Δ +63 · 2.2% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--orange"><span class="dot"></span> Maintenance</span><div class="small muted" style="margin-top:4px">2 h ago</div></td>
@@ -706,7 +711,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1012-01" class="row-link"><strong>Spray booth</strong></a><small>SM-1012-01</small></div></div></td>
     <td class="small">↳ Paint Shop</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
+    <td><a href="device.html?id=GW-01" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
     <td><span class="tag">CT 200/5</span></td>
     <td class="num">0.0 kW</td><td class="num">1,420</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--orange"><span class="dot"></span> Maintenance</span></td>
@@ -716,7 +721,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1012-02" class="row-link"><strong>Curing oven</strong></a><small>SM-1012-02</small></div></div></td>
     <td class="small">↳ Paint Shop</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
+    <td><a href="device.html?id=GW-01" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
     <td><span class="tag">CT 200/5</span></td>
     <td class="num">0.0 kW</td><td class="num">1,210</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--orange"><span class="dot"></span> Maintenance</span></td>
@@ -726,7 +731,7 @@
     <td></td>
     <td><div class="cell-device"><span class="dev-icon"><i class="ic i-layers"></i></span><div><a href="meter.html?id=SM-1012-03" class="row-link"><strong>Exhaust fans</strong></a><small>SM-1012-03</small></div></div></td>
     <td class="small">↳ Paint Shop</td>
-    <td><a href="devices.html" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
+    <td><a href="device.html?id=GW-01" class="device-chip device-chip--inherited" title="Main LT Panel Gateway · via parent meter"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a></td>
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">0.0 kW</td><td class="num">275</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--orange"><span class="dot"></span> Maintenance</span></td>
@@ -853,18 +858,18 @@
     </div>
     <div class="modal__body">
       <div class="form-grid form-grid--3">
-        <div class="field full"><label for="ma-target">Applies to <span class="req">*</span></label><select id="ma-target" class="input"><optgroup label="Groups"><option value="ALL" selected>All meters &amp; sub-meters</option><option value="ALL-METERS">All meters (main meters only)</option><option value="ALL-SUBS">All sub-meters</option></optgroup><optgroup label="Main Incomer · MTR-1001"><option value="MTR-1001">Main Incomer — this meter only</option><option value="MTR-1001+">Main Incomer + all 4 sub-meters</option><option value="SM-1001-01">↳ Feeder A · Production Line 1 · SM-1001-01</option><option value="SM-1001-02">↳ Feeder B · Production Line 2 · SM-1001-02</option><option value="SM-1001-03">↳ Feeder C · Tool Room · SM-1001-03</option><option value="SM-1001-04">↳ Feeder D · Welding Bay · SM-1001-04</option></optgroup><optgroup label="HVAC · MTR-1002"><option value="MTR-1002">HVAC — this meter only</option><option value="MTR-1002+">HVAC + all 3 sub-meters</option><option value="SM-1002-01">↳ Chiller-1 · SM-1002-01</option><option value="SM-1002-02">↳ Chiller-2 · SM-1002-02</option><option value="SM-1002-03">↳ AHU · Level 1–3 · SM-1002-03</option></optgroup><optgroup label="Office · MTR-1003"><option value="MTR-1003">Office — this meter only</option><option value="MTR-1003+">Office + all 5 sub-meters</option><option value="SM-1003-01">↳ Ground floor DB · SM-1003-01</option><option value="SM-1003-02">↳ First floor DB · SM-1003-02</option><option value="SM-1003-03">↳ Second floor DB · SM-1003-03</option><option value="SM-1003-04">↳ Conference wing · SM-1003-04</option><option value="SM-1003-05">↳ Office UPS · SM-1003-05</option></optgroup><optgroup label="Data Centre · MTR-1004"><option value="MTR-1004">Data Centre — this meter only</option><option value="MTR-1004+">Data Centre + all 4 sub-meters</option><option value="SM-1004-01">↳ UPS-A feeder · SM-1004-01</option><option value="SM-1004-02">↳ UPS-B feeder · SM-1004-02</option><option value="SM-1004-03">↳ Precision AC · SM-1004-03</option><option value="SM-1004-04">↳ Rack lighting · SM-1004-04</option></optgroup><optgroup label="Lighting · MTR-1005"><option value="MTR-1005">Lighting — this meter only</option><option value="MTR-1005+">Lighting + all 6 sub-meters</option><option value="SM-1005-01">↳ Shop floor high-bays · SM-1005-01</option><option value="SM-1005-02">↳ Street lights · SM-1005-02</option><option value="SM-1005-03">↳ Warehouse · SM-1005-03</option><option value="SM-1005-04">↳ Admin corridors · SM-1005-04</option><option value="SM-1005-05">↳ Security &amp; gate · SM-1005-05</option><option value="SM-1005-06">↳ Emergency lighting · SM-1005-06</option></optgroup><optgroup label="Compressor House · MTR-1006"><option value="MTR-1006">Compressor House — this meter only</option><option value="MTR-1006+">Compressor House + all 3 sub-meters</option><option value="SM-1006-01">↳ Screw compressor 1 · SM-1006-01</option><option value="SM-1006-02">↳ Screw compressor 2 · SM-1006-02</option><option value="SM-1006-03">↳ Air dryer · SM-1006-03</option></optgroup><optgroup label="Rooftop Solar · MTR-1007"><option value="MTR-1007">Rooftop Solar — this meter only</option><option value="MTR-1007+">Rooftop Solar + all 2 sub-meters</option><option value="SM-1007-01">↳ Inverter 1 · 25 kWp · SM-1007-01</option><option value="SM-1007-02">↳ Inverter 2 · 20 kWp · SM-1007-02</option></optgroup><optgroup label="DG Set 1 · MTR-1008"><option value="MTR-1008">DG Set 1 — this meter only</option><option value="MTR-1008+">DG Set 1 + all 1 sub-meters</option><option value="SM-1008-01">↳ DG output · 250 kVA · SM-1008-01</option></optgroup><optgroup label="Water Pumps · MTR-1009"><option value="MTR-1009">Water Pumps — this meter only</option><option value="MTR-1009+">Water Pumps + all 4 sub-meters</option><option value="SM-1009-01">↳ Borewell pump · SM-1009-01</option><option value="SM-1009-02">↳ Transfer pump · SM-1009-02</option><option value="SM-1009-03">↳ Fire hydrant jockey · SM-1009-03</option><option value="SM-1009-04">↳ STP blowers · SM-1009-04</option></optgroup><optgroup label="Canteen · MTR-1010"><option value="MTR-1010">Canteen — this meter only</option><option value="MTR-1010+">Canteen + all 3 sub-meters</option><option value="SM-1010-01">↳ Kitchen equipment · SM-1010-01</option><option value="SM-1010-02">↳ Cold storage · SM-1010-02</option><option value="SM-1010-03">↳ Dining hall · SM-1010-03</option></optgroup><optgroup label="EV Charging · MTR-1011"><option value="MTR-1011">EV Charging — this meter only</option><option value="MTR-1011+">EV Charging + all 2 sub-meters</option><option value="SM-1011-01">↳ Charger 1 · 7.4 kW AC · SM-1011-01</option><option value="SM-1011-02">↳ Charger 2 · 7.4 kW AC · SM-1011-02</option></optgroup><optgroup label="Paint Shop · MTR-1012"><option value="MTR-1012">Paint Shop — this meter only</option><option value="MTR-1012+">Paint Shop + all 3 sub-meters</option><option value="SM-1012-01">↳ Spray booth · SM-1012-01</option><option value="SM-1012-02">↳ Curing oven · SM-1012-02</option><option value="SM-1012-03">↳ Exhaust fans · SM-1012-03</option></optgroup></select><span class="hint">Choose a whole group, one meter, a meter with its sub-meters, or a single sub-meter.</span></div>
-        <div class="field full"><label>Rule name <span class="req">*</span></label><input class="input" placeholder="e.g. Compressor idle at night" /></div>
-        <div class="field"><label>Metric</label><select class="input"><option>Power (kW)</option><option>Energy (kWh)</option><option>Load %</option><option>Power factor</option><option>Voltage</option><option>Current</option><option>THD %</option><option>Heartbeat</option></select></div>
-        <div class="field"><label>Condition</label><select class="input"><option>Greater than</option><option>Less than</option><option>Outside range</option><option>No data for</option></select></div>
-        <div class="field"><label>Threshold</label><input class="input mono" placeholder="90" /></div>
-        <div class="field"><label>For at least</label><select class="input"><option>Instantly</option><option>5 min</option><option>15 min</option><option>1 hour</option></select></div>
-        <div class="field"><label>Severity</label><select class="input"><option>Critical</option><option selected>Warning</option><option>Info</option></select></div>
-        <div class="field"><label>Active during</label><select class="input"><option>Always</option><option>Shift A</option><option>Shift B</option><option>Shift C</option><option>Outside all shifts</option></select></div>
-        <div class="field full"><label>Notify</label>
+        <div class="field full" data-field="alerts.target"><label for="ma-target">Applies to <span class="req">*</span></label><select id="ma-target" class="input"><optgroup label="Groups"><option value="ALL" selected>All meters &amp; sub-meters</option><option value="ALL-METERS">All meters (main meters only)</option><option value="ALL-SUBS">All sub-meters</option></optgroup><optgroup label="Main Incomer · MTR-1001"><option value="MTR-1001">Main Incomer — this meter only</option><option value="MTR-1001+">Main Incomer + all 4 sub-meters</option><option value="SM-1001-01">↳ Feeder A · Production Line 1 · SM-1001-01</option><option value="SM-1001-02">↳ Feeder B · Production Line 2 · SM-1001-02</option><option value="SM-1001-03">↳ Feeder C · Tool Room · SM-1001-03</option><option value="SM-1001-04">↳ Feeder D · Welding Bay · SM-1001-04</option></optgroup><optgroup label="HVAC · MTR-1002"><option value="MTR-1002">HVAC — this meter only</option><option value="MTR-1002+">HVAC + all 3 sub-meters</option><option value="SM-1002-01">↳ Chiller-1 · SM-1002-01</option><option value="SM-1002-02">↳ Chiller-2 · SM-1002-02</option><option value="SM-1002-03">↳ AHU · Level 1–3 · SM-1002-03</option></optgroup><optgroup label="Office · MTR-1003"><option value="MTR-1003">Office — this meter only</option><option value="MTR-1003+">Office + all 5 sub-meters</option><option value="SM-1003-01">↳ Ground floor DB · SM-1003-01</option><option value="SM-1003-02">↳ First floor DB · SM-1003-02</option><option value="SM-1003-03">↳ Second floor DB · SM-1003-03</option><option value="SM-1003-04">↳ Conference wing · SM-1003-04</option><option value="SM-1003-05">↳ Office UPS · SM-1003-05</option></optgroup><optgroup label="Data Centre · MTR-1004"><option value="MTR-1004">Data Centre — this meter only</option><option value="MTR-1004+">Data Centre + all 4 sub-meters</option><option value="SM-1004-01">↳ UPS-A feeder · SM-1004-01</option><option value="SM-1004-02">↳ UPS-B feeder · SM-1004-02</option><option value="SM-1004-03">↳ Precision AC · SM-1004-03</option><option value="SM-1004-04">↳ Rack lighting · SM-1004-04</option></optgroup><optgroup label="Lighting · MTR-1005"><option value="MTR-1005">Lighting — this meter only</option><option value="MTR-1005+">Lighting + all 6 sub-meters</option><option value="SM-1005-01">↳ Shop floor high-bays · SM-1005-01</option><option value="SM-1005-02">↳ Street lights · SM-1005-02</option><option value="SM-1005-03">↳ Warehouse · SM-1005-03</option><option value="SM-1005-04">↳ Admin corridors · SM-1005-04</option><option value="SM-1005-05">↳ Security &amp; gate · SM-1005-05</option><option value="SM-1005-06">↳ Emergency lighting · SM-1005-06</option></optgroup><optgroup label="Compressor House · MTR-1006"><option value="MTR-1006">Compressor House — this meter only</option><option value="MTR-1006+">Compressor House + all 3 sub-meters</option><option value="SM-1006-01">↳ Screw compressor 1 · SM-1006-01</option><option value="SM-1006-02">↳ Screw compressor 2 · SM-1006-02</option><option value="SM-1006-03">↳ Air dryer · SM-1006-03</option></optgroup><optgroup label="Rooftop Solar · MTR-1007"><option value="MTR-1007">Rooftop Solar — this meter only</option><option value="MTR-1007+">Rooftop Solar + all 2 sub-meters</option><option value="SM-1007-01">↳ Inverter 1 · 25 kWp · SM-1007-01</option><option value="SM-1007-02">↳ Inverter 2 · 20 kWp · SM-1007-02</option></optgroup><optgroup label="DG Set 1 · MTR-1008"><option value="MTR-1008">DG Set 1 — this meter only</option><option value="MTR-1008+">DG Set 1 + all 1 sub-meters</option><option value="SM-1008-01">↳ DG output · 250 kVA · SM-1008-01</option></optgroup><optgroup label="Water Pumps · MTR-1009"><option value="MTR-1009">Water Pumps — this meter only</option><option value="MTR-1009+">Water Pumps + all 4 sub-meters</option><option value="SM-1009-01">↳ Borewell pump · SM-1009-01</option><option value="SM-1009-02">↳ Transfer pump · SM-1009-02</option><option value="SM-1009-03">↳ Fire hydrant jockey · SM-1009-03</option><option value="SM-1009-04">↳ STP blowers · SM-1009-04</option></optgroup><optgroup label="Canteen · MTR-1010"><option value="MTR-1010">Canteen — this meter only</option><option value="MTR-1010+">Canteen + all 3 sub-meters</option><option value="SM-1010-01">↳ Kitchen equipment · SM-1010-01</option><option value="SM-1010-02">↳ Cold storage · SM-1010-02</option><option value="SM-1010-03">↳ Dining hall · SM-1010-03</option></optgroup><optgroup label="EV Charging · MTR-1011"><option value="MTR-1011">EV Charging — this meter only</option><option value="MTR-1011+">EV Charging + all 2 sub-meters</option><option value="SM-1011-01">↳ Charger 1 · 7.4 kW AC · SM-1011-01</option><option value="SM-1011-02">↳ Charger 2 · 7.4 kW AC · SM-1011-02</option></optgroup><optgroup label="Paint Shop · MTR-1012"><option value="MTR-1012">Paint Shop — this meter only</option><option value="MTR-1012+">Paint Shop + all 3 sub-meters</option><option value="SM-1012-01">↳ Spray booth · SM-1012-01</option><option value="SM-1012-02">↳ Curing oven · SM-1012-02</option><option value="SM-1012-03">↳ Exhaust fans · SM-1012-03</option></optgroup></select><span class="hint">Choose a whole group, one meter, a meter with its sub-meters, or a single sub-meter.</span></div>
+        <div class="field full" data-field="alerts.ruleName"><label>Rule name <span class="req">*</span></label><input class="input" placeholder="e.g. Compressor idle at night" /></div>
+        <div class="field" data-field="alerts.metric"><label>Metric</label><select class="input"><option>Power (kW)</option><option>Energy (kWh)</option><option>Load %</option><option>Power factor</option><option>Voltage</option><option>Current</option><option>THD %</option><option>Heartbeat</option></select></div>
+        <div class="field" data-field="alerts.metric"><label>Condition</label><select class="input"><option>Greater than</option><option>Less than</option><option>Outside range</option><option>No data for</option></select></div>
+        <div class="field" data-field="alerts.threshold"><label>Threshold</label><input class="input mono" placeholder="90" /></div>
+        <div class="field" data-field="alerts.threshold"><label>For at least</label><select class="input"><option>Instantly</option><option>5 min</option><option>15 min</option><option>1 hour</option></select></div>
+        <div class="field" data-field="alerts.severity"><label>Severity</label><select class="input"><option>Critical</option><option selected>Warning</option><option>Info</option></select></div>
+        <div class="field" data-field="alerts.schedule"><label>Active during</label><select class="input"><option>Always</option><option>Shift A</option><option>Shift B</option><option>Shift C</option><option>Outside all shifts</option></select></div>
+        <div class="field full" data-field="alerts.notify"><label>Notify</label>
           <div class="row wrap" style="gap:16px"><label class="check"><input type="checkbox" checked /> Email</label><label class="check"><input type="checkbox" /> SMS</label><label class="check"><input type="checkbox" checked /> Push</label><label class="check"><input type="checkbox" /> WhatsApp</label><label class="check"><input type="checkbox" /> Webhook</label></div>
         </div>
-        <div class="field full"><label>Recipients</label><select class="input"><option>Role: Supervisor + Energy Manager</option><option>Current shift supervisor</option><option>Specific users…</option></select></div>
+        <div class="field full" data-field="alerts.recipients"><label>Recipients</label><select class="input"><option>Role: Supervisor + Energy Manager</option><option>Current shift supervisor</option><option>Specific users…</option></select></div>
       </div>
       <p class="hint" style="margin-top:14px">All rules, including group rules, are listed in <a href="alerts.html" class="tc-primary">Alerts → Alert rules</a>.</p>
     </div>
@@ -884,23 +889,24 @@
       <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
     </div>
     <div class="modal__body">
+      <div class="callout callout--danger" data-limit-full="meters" hidden style="margin-bottom:16px"></div>
       <div class="form-section">Meter</div>
       <div class="form-grid form-grid--3">
-        <div class="field"><label>Meter name <span class="req">*</span></label><input class="input" placeholder="e.g. Compressor House" /></div>
+        <div class="field" data-field="meters.name"><label>Meter name <span class="req">*</span></label><input class="input" placeholder="e.g. Compressor House" /></div>
         <div class="field"><label>Meter ID</label><input class="input mono" value="MTR-1013" /></div>
-        <div class="field"><label>Category</label><select class="input"><option>Incomer</option><option>HVAC</option><option>Lighting</option><option>Process</option><option>Utility</option><option>Generation (Solar/DG)</option></select></div>
-        <div class="field"><label>Make &amp; model</label><input class="input" placeholder="Schneider PM5560" /></div>
-        <div class="field"><label>Site</label><select class="input"><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option></select></div>
-        <div class="field"><label>Location / panel</label><input class="input" placeholder="Main LT Panel" /></div>
+        <div class="field" data-field="meters.category"><label>Category</label><select class="input"><option>Incomer</option><option>HVAC</option><option>Lighting</option><option>Process</option><option>Utility</option><option>Generation (Solar/DG)</option></select></div>
+        <div class="field" data-field="meters.model"><label>Make &amp; model</label><input class="input" placeholder="Schneider PM5560" /></div>
+        <div class="field" data-field="meters.site"><label>Site</label><select class="input"><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option></select></div>
+        <div class="field" data-field="meters.location"><label>Location / panel</label><input class="input" placeholder="Main LT Panel" /></div>
       </div>
       <div class="form-section" style="margin-top:18px">Connection &amp; rating</div>
       <div class="form-grid form-grid--3">
-        <div class="field"><label>Reports via device <span class="req">*</span></label><select class="input"><option selected>GW-01 · Main LT Panel Gateway</option><option>GW-02 · Utility Block Data Logger</option><option>GW-03 · Admin Block Gateway</option><option>GW-04 · Server Room Gateway</option><option>GW-05 · Rooftop Solar Edge Device</option><option>GW-06 · DG & EV Yard Gateway</option></select><span class="hint">Protocol, IP and polling are set on the device · <a href="devices.html#add-device" class="tc-primary">add a device</a></span></div>
-        <div class="field"><label>Modbus slave ID</label><input class="input mono" placeholder="4" /></div>
-        <div class="field"><label>Register map</label><select class="input"><option>Schneider PM5xxx</option><option>Secure Elite 4xx</option><option>L&amp;T WL44xx</option><option>Elmeasure LG+</option><option>Generic IEC 62053</option></select></div>
-        <div class="field"><label>Meter type</label><select class="input"><option>Consumer</option><option>Generator (Solar / DG)</option></select></div>
-        <div class="field"><label>Rated load</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" placeholder="90" /><span class="suffix">kW</span></div></div>
-        <div class="field"><label>CT ratio</label><input class="input mono" placeholder="400/5" /></div>
+        <div class="field" data-field="meters.device"><label>Reports via device <span class="req">*</span></label><select class="input"><option selected>GW-01 · Main LT Panel Gateway</option><option>GW-02 · Utility Block Data Logger</option><option>GW-03 · Admin Block Gateway</option><option>GW-04 · Server Room Gateway</option><option>GW-05 · Rooftop Solar Edge Device</option><option>GW-06 · DG & EV Yard Gateway</option></select><span class="hint">Protocol, IP and polling are set on the device · <a href="devices.html#add-device" class="tc-primary">add a device</a></span></div>
+        <div class="field" data-field="meters.slave"><label>Modbus slave ID</label><input class="input mono" placeholder="4" /></div>
+        <div class="field" data-field="meters.registerMap"><label>Register map</label><select class="input"><option>Schneider PM5xxx</option><option>Secure Elite 4xx</option><option>L&amp;T WL44xx</option><option>Elmeasure LG+</option><option>Generic IEC 62053</option></select></div>
+        <div class="field" data-field="meters.type"><label>Meter type</label><select class="input"><option>Consumer</option><option>Generator (Solar / DG)</option></select></div>
+        <div class="field" data-field="meters.ratedLoad"><label>Rated load</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" placeholder="90" /><span class="suffix">kW</span></div></div>
+        <div class="field" data-field="meters.ct"><label>CT ratio</label><input class="input mono" placeholder="400/5" /></div>
       </div>
       <div class="form-section" style="margin-top:18px">Sub-meters <span class="count-pill" style="letter-spacing:0;text-transform:none">optional</span></div>
       <div class="sub-editor">
@@ -911,7 +917,7 @@
       </div>
     <div class="modal__foot">
       <a href="#close" class="btn btn--ghost">Cancel</a>
-      <a href="#created" class="btn btn--primary"><i class="ic i-check"></i> Create meter</a>
+      <a href="#created" class="btn btn--primary" data-limit="meters"><i class="ic i-check"></i> Create meter</a>
     </div>
   </div>
 </div>
@@ -926,15 +932,15 @@
     </div>
     <div class="modal__body">
       <div class="form-grid form-grid--3">
-        <div class="field"><label>Meter name</label><input class="input" value="Main Incomer" /></div>
+        <div class="field" data-field="meters.name"><label>Meter name</label><input class="input" value="Main Incomer" /></div>
         <div class="field"><label>Meter ID</label><input class="input mono" value="MTR-1001" readonly /></div>
-        <div class="field"><label>Category</label><select class="input"><option selected>Incomer</option><option>HVAC</option><option>Lighting</option><option>Process</option></select></div>
-        <div class="field"><label>Make &amp; model</label><input class="input" value="Schneider PM5560" /></div>
-        <div class="field"><label>Location / panel</label><input class="input" value="Main LT Panel" /></div>
-        <div class="field"><label>Status</label><select class="input"><option selected>Online</option><option>Maintenance</option><option>Disabled</option></select></div>
-        <div class="field"><label>Rated load</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" value="90" /><span class="suffix">kW</span></div></div>
-        <div class="field"><label>CT ratio</label><input class="input mono" value="400/5" /></div>
-        <div class="field"><label>Reports via device <span class="req">*</span></label><select class="input"><option selected>GW-01 · Main LT Panel Gateway</option><option>GW-02 · Utility Block Data Logger</option><option>GW-03 · Admin Block Gateway</option><option>GW-04 · Server Room Gateway</option><option>GW-05 · Rooftop Solar Edge Device</option><option>GW-06 · DG & EV Yard Gateway</option></select></div>
+        <div class="field" data-field="meters.category"><label>Category</label><select class="input"><option selected>Incomer</option><option>HVAC</option><option>Lighting</option><option>Process</option></select></div>
+        <div class="field" data-field="meters.model"><label>Make &amp; model</label><input class="input" value="Schneider PM5560" /></div>
+        <div class="field" data-field="meters.location"><label>Location / panel</label><input class="input" value="Main LT Panel" /></div>
+        <div class="field" data-field="meters.status"><label>Status</label><select class="input"><option selected>Online</option><option>Maintenance</option><option>Disabled</option></select></div>
+        <div class="field" data-field="meters.ratedLoad"><label>Rated load</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" value="90" /><span class="suffix">kW</span></div></div>
+        <div class="field" data-field="meters.ct"><label>CT ratio</label><input class="input mono" value="400/5" /></div>
+        <div class="field" data-field="meters.device"><label>Reports via device <span class="req">*</span></label><select class="input"><option selected>GW-01 · Main LT Panel Gateway</option><option>GW-02 · Utility Block Data Logger</option><option>GW-03 · Admin Block Gateway</option><option>GW-04 · Server Room Gateway</option><option>GW-05 · Rooftop Solar Edge Device</option><option>GW-06 · DG & EV Yard Gateway</option></select></div>
       </div>
       <div class="form-section" style="margin-top:18px">Sub-meters (4)</div>
       <div class="sub-editor">
@@ -961,20 +967,21 @@
       <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
     </div>
     <div class="modal__body">
+      <div class="callout callout--danger" data-limit-full="subMeters" hidden style="margin-bottom:16px"></div>
       <div class="form-grid">
         <div class="field full"><label>Parent meter <span class="req">*</span></label><select class="input"><option>Main Incomer · MTR-1001</option><option>HVAC · MTR-1002</option><option>Office · MTR-1003</option><option>Data Centre · MTR-1004</option><option>Lighting · MTR-1005</option><option>Compressor House · MTR-1006</option><option>Rooftop Solar · MTR-1007</option><option>Water Pumps · MTR-1009</option></select><span class="hint">Sub-meters report through the same device as their parent meter.</span></div>
-        <div class="field"><label>Sub-meter name <span class="req">*</span></label><input class="input" placeholder="Feeder E · Packing line" /></div>
+        <div class="field" data-field="meters.name"><label>Sub-meter name <span class="req">*</span></label><input class="input" placeholder="Feeder E · Packing line" /></div>
         <div class="field"><label>Sub-meter ID</label><input class="input mono" value="SM-1001-05" /></div>
-        <div class="field"><label>Connection</label><select class="input"><option>CT 100/5</option><option>CT 200/5</option><option>CT 400/5</option><option>Direct 32 A</option><option>Direct 63 A</option></select></div>
-        <div class="field"><label>Rated load</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" placeholder="20" /><span class="suffix">kW</span></div></div>
-        <div class="field"><label>Cost centre</label><select class="input"><option>CC-PROD</option><option>CC-UTIL</option><option>CC-ADMIN</option><option>CC-IT</option></select></div>
-        <div class="field"><label>Modbus register offset</label><input class="input mono" placeholder="3000" /></div>
+        <div class="field" data-field="meters.ct"><label>Connection</label><select class="input"><option>CT 100/5</option><option>CT 200/5</option><option>CT 400/5</option><option>Direct 32 A</option><option>Direct 63 A</option></select></div>
+        <div class="field" data-field="meters.ratedLoad"><label>Rated load</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" placeholder="20" /><span class="suffix">kW</span></div></div>
+        <div class="field" data-field="meters.costCentre"><label>Cost centre</label><select class="input"><option>CC-PROD</option><option>CC-UTIL</option><option>CC-ADMIN</option><option>CC-IT</option></select></div>
+        <div class="field" data-field="meters.slave"><label>Modbus register offset</label><input class="input mono" placeholder="3000" /></div>
         <label class="switch full"><input type="checkbox" checked /> Include in parent's total (roll-up)</label>
       </div>
       </div>
     <div class="modal__foot">
       <a href="#close" class="btn btn--ghost">Cancel</a>
-      <a href="#created" class="btn btn--primary"><i class="ic i-check"></i> Add sub-meter</a>
+      <a href="#created" class="btn btn--primary" data-limit="subMeters"><i class="ic i-check"></i> Add sub-meter</a>
     </div>
   </div>
 </div>
@@ -990,12 +997,12 @@
     <div class="modal__body">
       <div class="form-grid">
         <div class="field full"><label>Parent meter</label><select class="input"><option selected>Main Incomer · MTR-1001</option><option>HVAC · MTR-1002</option><option>Office · MTR-1003</option></select><span class="hint">Move this sub-meter to another meter by changing its parent.</span></div>
-        <div class="field"><label>Sub-meter name</label><input class="input" value="Feeder A · Production Line 1" /></div>
+        <div class="field" data-field="meters.name"><label>Sub-meter name</label><input class="input" value="Feeder A · Production Line 1" /></div>
         <div class="field"><label>Sub-meter ID</label><input class="input mono" value="SM-1001-01" readonly /></div>
-        <div class="field"><label>Connection</label><select class="input"><option selected>CT 400/5</option><option>CT 200/5</option><option>Direct 63 A</option></select></div>
-        <div class="field"><label>Rated load</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" value="32" /><span class="suffix">kW</span></div></div>
-        <div class="field"><label>Cost centre</label><select class="input"><option selected>CC-PROD</option><option>CC-UTIL</option><option>CC-ADMIN</option></select></div>
-        <div class="field"><label>Status</label><select class="input"><option selected>Online</option><option>Maintenance</option><option>Disabled</option></select></div>
+        <div class="field" data-field="meters.ct"><label>Connection</label><select class="input"><option selected>CT 400/5</option><option>CT 200/5</option><option>Direct 63 A</option></select></div>
+        <div class="field" data-field="meters.ratedLoad"><label>Rated load</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" value="32" /><span class="suffix">kW</span></div></div>
+        <div class="field" data-field="meters.costCentre"><label>Cost centre</label><select class="input"><option selected>CC-PROD</option><option>CC-UTIL</option><option>CC-ADMIN</option></select></div>
+        <div class="field" data-field="meters.status"><label>Status</label><select class="input"><option selected>Online</option><option>Maintenance</option><option>Disabled</option></select></div>
         <label class="switch full"><input type="checkbox" checked /> Include in parent's total (roll-up)</label>
       </div>
       </div>

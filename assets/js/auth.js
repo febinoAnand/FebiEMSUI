@@ -140,7 +140,7 @@
           ? "You haven't accepted your invitation yet. Use the link your admin sent you to set a password."
           : "Invalid organisation ID, username or password.");
       }
-      if (t.status !== "active") { ss.set(PENDING_ORG, t.id); location.href = "awaiting-approval.html"; return; }
+      if (t.status !== "active") { markError(LOGIN_IDS, false); showError(loginForm, ""); showAwaiting(t); return; }
       if (u.status === "suspended") return showError(loginForm, "Your account is suspended. Contact your administrator.");
       if (u.status !== "active") return showError(loginForm, "Your account is inactive. Contact your administrator.");
       var remember = rememberBox.checked;
@@ -166,8 +166,7 @@
       var t = S.tenant(org), u = t && S.findLogin(t.id, user);
       if (!t || !u || !S.checkPassword(u, pw)) { markError(PV_IDS, true); return showError(previewForm, "Invalid organisation ID, username or password."); }
       if (t.status === "active") return showError(previewForm, "This organisation is already approved — use the main sign-in page.");
-      ss.set(PENDING_ORG, t.id);
-      location.href = "awaiting-approval.html";
+      showAwaiting(t);
     });
   }
 
@@ -315,21 +314,67 @@
     });
   }
 
-  /* ---------------- Awaiting approval ---------------- */
-  if (byId("awaiting-approval")) {
-    var pt = S.tenant(ss.get(PENDING_ORG));
-    if (pt) {
-      setText("[data-pending-id]", pt.id);
-      $$("[data-pending-chip]").forEach(function (el) { el.hidden = false; });
-      fillOrgSummary(pt);
-      if (pt.status === "suspended") {
-        setText(".auth-title", "Organisation suspended");
-        setText("[data-aw-sub]", "The platform administrator has suspended this organisation. Contact support to restore access.");
-      }
+  /* ---------------- Awaiting approval ----------------
+     On login.html / login-approval.html the card is part of the page ([data-inline]):
+     signing in to an organisation that isn't active swaps the sign-in card for it,
+     and "Return to sign in" swaps back. awaiting-approval.html still works on its own. */
+  var awCard = byId("awaiting-approval");
+  function fillAwaiting(pt) {
+    var title = $(".auth-title", awCard), sub = $("[data-aw-sub]", awCard);
+    if (!awCard._defaults) awCard._defaults = { title: title.textContent, sub: sub.textContent };
+    title.textContent = awCard._defaults.title;
+    sub.textContent = awCard._defaults.sub;
+    $$(".progress-steps, .callout", awCard).forEach(function (el) { el.hidden = false; });
+    if (!pt) return;
+    setText("[data-pending-id]", pt.id);
+    $$("[data-pending-chip]", awCard).forEach(function (el) { el.hidden = false; });
+    fillOrgSummary(pt);
+    if (pt.status === "suspended" || pt.status === "disabled") {
+      var why = pt.statusReason ? " Reason: " + pt.statusReason + "." : "";
+      var till = pt.suspendedUntil ? new Date(pt.suspendedUntil).toLocaleString(undefined, { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "";
+      title.textContent = pt.status === "disabled" ? "Organisation disabled" : "Organisation temporarily suspended";
+      sub.textContent = pt.status === "disabled"
+        ? "The platform administrator has disabled this organisation. Contact support to restore access." + why
+        : "The platform administrator has suspended this organisation" + (till ? " until " + till + ". Access comes back automatically after that." : ". Contact support to restore access.") + why;
+      // Approval steps and "what happens next" don't apply to a blocked organisation
+      $$(".progress-steps, .callout", awCard).forEach(function (el) { el.hidden = true; });
     }
-    $("[data-return-login]").addEventListener("click", function () {
+  }
+  // login.html holds three cards — sign in, approval preview, awaiting approval — and swaps between them in place
+  var returnTo = "signin";
+  function currentCard() { var c = $$("[data-card]").filter(function (el) { return !el.hidden; })[0]; return c ? c.getAttribute("data-card") : null; }
+  function showCard(name) {
+    var target = $('[data-card="' + name + '"]');
+    if (!target) return false;
+    $$("[data-card]").forEach(function (c) { c.hidden = c !== target; });
+    window.scrollTo(0, 0);
+    var title = $(".auth-title", target); if (title) title.focus();
+    var first = $("input:not([type=hidden]):not([type=checkbox])", target);
+    if (first && !first.value) first.focus();
+    return true;
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("[data-show-card]");
+    if (!a || !$('[data-card="' + a.getAttribute("data-show-card") + '"]')) return; // no such card here → follow the link
+    e.preventDefault();
+    $$(".auth-form").forEach(function (f) { showError(f, ""); });
+    showCard(a.getAttribute("data-show-card"));
+  });
+  function showAwaiting(t) {
+    if (!awCard) { ss.set(PENDING_ORG, t.id); location.href = "awaiting-approval.html"; return; }
+    fillAwaiting(t);
+    returnTo = currentCard() || "signin";
+    showCard("awaiting");
+  }
+  if (awCard) {
+    var inline = awCard.hasAttribute("data-inline");
+    if (!inline) fillAwaiting(S.tenant(ss.get(PENDING_ORG)));
+    $("[data-return-login]", awCard).addEventListener("click", function () {
       ss.del(PENDING_ORG);
-      location.href = "login.html";
+      if (!inline) { location.href = "login.html"; return; }
+      showCard(returnTo);
+      var pw = $('[data-card="' + returnTo + '"] input[type=password]');
+      if (pw) { pw.value = ""; pw.focus(); }
     });
   }
 

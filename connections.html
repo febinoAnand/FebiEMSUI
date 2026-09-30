@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meter · Energy Dashboard</title>
+  <title>Connections · Energy Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
@@ -12,13 +12,9 @@
   <script src="assets/js/store.js"></script>
   <script src="assets/js/app.js"></script>
   <script src="assets/js/workspace.js" defer></script>
-  <script src="assets/js/meter-data.js" defer></script>
-  <script src="assets/js/meter.js" defer></script>
-  <script src="assets/js/alert-rules-text.js" defer></script>
-  <script src="assets/js/meter-alerts.js" defer></script>
   <script src="assets/js/device-data.js" defer></script>
+  <script src="assets/js/meter-data.js" defer></script>
   <script src="assets/js/connections.js" defer></script>
-  <script src="assets/js/export.js" defer></script>
 </head>
 <body class="app">
   <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
@@ -46,9 +42,9 @@
       <nav class="nav">
         <div class="nav__section">Monitor</div>
         <a href="dashboard.html" class="nav__link"><i class="ic i-grid"></i><span>Dashboard</span></a>
-        <a href="meters.html" class="nav__link is-active"><i class="ic i-gauge"></i><span>Energy Meters</span><em class="nav__badge nav__badge--green">38</em></a>
+        <a href="meters.html" class="nav__link"><i class="ic i-gauge"></i><span>Energy Meters</span><em class="nav__badge nav__badge--green">38</em></a>
         <a href="devices.html" class="nav__link"><i class="ic i-cpu"></i><span>Device Management</span></a>
-        <a href="connections.html" class="nav__link"><i class="ic i-flow"></i><span>Connections</span></a>
+        <a href="connections.html" class="nav__link is-active"><i class="ic i-flow"></i><span>Connections</span></a>
         <a href="analytics.html" class="nav__link"><i class="ic i-chart"></i><span>Analytics</span></a>
         <a href="alerts.html" class="nav__link"><i class="ic i-bell"></i><span>Alerts</span><em class="nav__badge">5</em></a>
 
@@ -82,8 +78,8 @@
         <label for="nav-toggle" class="icon-btn burger" aria-label="Open menu"><i class="ic i-menu"></i></label>
 
         <div class="topbar__crumbs">
-          <small><span data-bind="org.short">Febino Solutions</span> / <a href="meters.html" class="row-link">Energy Meters</a></small>
-          <strong>Meter</strong>
+          <small><span data-bind="org.short">Febino Solutions</span> / Monitor</small>
+          <strong>Connections</strong>
         </div>
 
         <label class="search">
@@ -151,7 +147,16 @@
         </div>
       </header>
 
-      <main class="page" id="meter-page" aria-live="polite"><noscript><p class="page-sub">This meter dashboard needs JavaScript.</p></noscript></main>
+      <main class="page page--flow">
+        <section class="page-head">
+          <div>
+            <h1 class="page-title">Device <span class="gradient-text">Connections</span></h1>
+            <p class="page-sub">How readings travel from sub-meters and meters, through devices, to the Energy Cloud. Blue lines join meters to their device, violet dotted lines join sub-meters to their meter, and an amber dashed line means a sub-meter is read by a different device. Point at any box to trace its lines. Loops are never allowed.</p>
+          </div>
+          <div class="page-actions"><label for="fl-show" class="small muted">Show</label><select class="input input--sm flow__show" id="fl-show"></select></div>
+        </section>
+        <section class="flow card" id="flow" aria-label="Connection editor"><noscript><p class="page-sub" style="padding:20px">The connection editor needs JavaScript.</p></noscript></section>
+      </main>
 
       <footer class="footer">
         <span>© 2026 Energy Dashboard · Tenant <span class="mono" data-bind="org.id">FEBINO</span></span>

@@ -70,9 +70,38 @@
       el.classList.toggle("is-disabled", !isAdmin());
       if (!isAdmin()) { el.setAttribute("aria-disabled", "true"); el.setAttribute("title", "Only a Tenant Admin can do this"); }
     });
+    applyLimits();
   }
+  /* ---------- Limits set by the platform admin ----------
+     [data-limit="key"]       add / create buttons → disabled when the limit is reached
+     [data-limit-full="key"]  callout shown in the add dialog when the limit is reached
+     [data-limit-quota="key"] "of 50 allowed" text */
+  function applyLimits() {
+    var org = ctx.tenant.id, byKey = {};
+    S.limits(org).forEach(function (r) { byKey[r.key] = r; });
+    $$("[data-limit-quota]").forEach(function (el) {
+      var r = byKey[el.getAttribute("data-limit-quota")];
+      if (r) el.textContent = r.limit ? "of " + r.limit + " allowed" : "no limit";
+    });
+    $$("[data-limit-full]").forEach(function (el) {
+      var r = byKey[el.getAttribute("data-limit-full")];
+      el.hidden = !(r && r.full);
+      if (r && r.full) el.innerHTML = '<i class="ic i-alert"></i><span><b>' + r.label + " limit reached.</b> Your organisation can have " + r.limit + " " + r.label.toLowerCase() + " and has " + r.used + ". Contact the platform admin to raise the limit.</span>";
+    });
+    $$("[data-limit]").forEach(function (el) {
+      var r = byKey[el.getAttribute("data-limit")], adminBlocked = el.hasAttribute("data-admin-only") && !isAdmin();
+      if (!r) return;
+      el.classList.toggle("is-disabled", r.full || adminBlocked);
+      el.classList.toggle("is-limited", r.full);
+      if (r.full) { el.setAttribute("aria-disabled", "true"); el.setAttribute("title", r.label + " limit reached (" + r.used + " of " + r.limit + ") · ask the platform admin to raise it"); }
+      else if (!adminBlocked) { el.removeAttribute("aria-disabled"); el.removeAttribute("title"); }
+    });
+  }
+  window.addEventListener("ed:limits", function () { ctx = S.session(); if (ctx.status === "ok") applyLimits(); });
+  window.addEventListener("storage", function (e) { if (e.key === "ed-db") { ctx = S.session(); if (ctx.status === "ok") applyLimits(); } });
+
   document.addEventListener("click", function (e) {
-    var el = e.target.closest && e.target.closest("[data-admin-only].is-disabled");
+    var el = e.target.closest && e.target.closest("[data-admin-only].is-disabled, [data-limit].is-disabled");
     if (el) { e.preventDefault(); e.stopImmediatePropagation(); }
   }, true);
 
@@ -208,5 +237,36 @@
   window.addEventListener("hashchange", onHash);
   onHash();
 
-  window.EDUI = { formError: formError, validate: validate, toast: toast, refresh: refresh, session: function () { return ctx; }, isAdmin: isAdmin };
+  /* ---------- Field-level permissions (Roles & Permissions → Field-level) ----------
+     Anything marked data-field="module.field" follows the signed-in user's role:
+       no view → hidden (form field, table column, value)
+       view without edit → inputs inside become read-only with a 🔒 hint */
+  function applyFieldPerms() {
+    var role = ctx.user.role, org = ctx.tenant.id;
+    $$("[data-field]").forEach(function (el) {
+      var p = S.canField(org, role, el.getAttribute("data-field"));
+      el.classList.toggle("fp-hidden", !p.view);
+      var locked = p.view && !p.edit;
+      var inputs = /^(INPUT|SELECT|TEXTAREA)$/.test(el.tagName) ? [el] : $$("input, select, textarea", el);
+      inputs.forEach(function (i) {
+        if (locked) {
+          if (!i.hasAttribute("data-fp-locked")) i.setAttribute("data-fp-locked", i.disabled ? "was" : "");
+          i.disabled = true;
+          i.title = "View only for your role (" + role + ")";
+        } else if (i.hasAttribute("data-fp-locked")) {
+          if (i.getAttribute("data-fp-locked") !== "was") i.disabled = false;
+          i.removeAttribute("data-fp-locked");
+          i.removeAttribute("title");
+        }
+      });
+      el.classList.toggle("fp-locked", locked && inputs.length > 0);
+    });
+  }
+  // Tables and dialogs are re-rendered by page scripts — re-apply after DOM changes
+  var fpTimer;
+  new MutationObserver(function () { clearTimeout(fpTimer); fpTimer = setTimeout(applyFieldPerms, 30); })
+    .observe(document.body, { childList: true, subtree: true });
+  applyFieldPerms();
+
+  window.EDUI = { formError: formError, validate: validate, toast: toast, refresh: refresh, session: function () { return ctx; }, isAdmin: isAdmin, applyFieldPerms: applyFieldPerms };
 })();
