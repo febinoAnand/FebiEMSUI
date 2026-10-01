@@ -50,12 +50,12 @@
     days(from, to).forEach(function (d) {
       list.forEach(function (x) {
         var kwh = dailyKwh(x.m, d), R = rng(x.m.id + iso(d) + "pk");
-        rows.push([iso(d), x.m.id, x.m.name, x.parent || "—", x.m.location || x.where || "—", round(kwh, 1), round(kwh / 24 * (1.6 + 0.6 * R()), 1), round(kwh * TARIFF, 0), round(kwh * CO2, 1)]);
+        rows.push([iso(d), x.m.id, x.m.name, x.parent || "—", x.m.location || x.where || "—", x.m.phase === 1 ? "1φ" : "3φ", round(kwh, 1), round(kwh / 24 * (1.6 + 0.6 * R()), 1), round(kwh * TARIFF, 0), round(kwh * CO2, 1)]);
       });
     });
     return rows;
   }
-  var ENERGY_COLS = ["Date", "Meter ID", "Meter", "Parent meter", "Location", "Energy (kWh)", "Peak (kW)", "Cost (₹)", "CO₂ (kg)"];
+  var ENERGY_COLS = ["Date", "Meter ID", "Meter", "Parent meter", "Location", "Phase", "Energy (kWh)", "Peak (kW)", "Cost (₹)", "CO₂ (kg)"];
   function meterList(withSubs, onlySubs, only) {
     var out = [];
     METERS().forEach(function (m) {
@@ -106,15 +106,20 @@
         var dow = d.getDay();
         SH.forEach(function (s) {
           if (s[0] === "G" && (dow === 0 || dow === 6)) return;
+          if (s[0] === "C" && (dow === 0 || dow === 6)) return; // night shift starts Mon–Fri
           if (s[0] !== "C" && dow === 0) return;
           var R = rng(s[0] + iso(d)), start = new Date(d.getFullYear(), d.getMonth(), d.getDate(), +s[2].slice(0, 2), +s[2].slice(3));
           var state = start > now ? "Upcoming" : start.getTime() + 8 * 36e5 > now.getTime() ? "Running" : R() < 0.03 ? "Missed" : "Completed";
           var present = state === "Missed" ? 0 : state === "Upcoming" ? "" : Math.max(1, s[4] - (R() < 0.3 ? 1 : 0));
           var kwh = state === "Completed" ? Math.round((s[0] === "G" ? 100 : 300) * (0.85 + 0.3 * R())) : "";
-          rows.push(["SI-" + pad(d.getMonth() + 1) + pad(d.getDate()) + "-" + s[0], iso(d), s[1], s[2] + "–" + s[3], present === "" ? "" : present + " / " + s[4], kwh, s[5] && kwh ? s[5] : "", state]);
+          var cross = s[3] < s[2], end = cross ? new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1) : d;
+          var before = cross ? (1440 - (+s[2].slice(0, 2) * 60 + +s[2].slice(3))) : 0, after = cross ? +s[3].slice(0, 2) * 60 + +s[3].slice(3) : 0;
+          var k0 = cross && kwh !== "" ? Math.round(kwh * before / (before + after)) : "", k1 = cross && kwh !== "" ? kwh - k0 : "";
+          rows.push(["SI-" + pad(d.getMonth() + 1) + pad(d.getDate()) + "-" + s[0], iso(d), s[1], s[2] + "–" + s[3] + (cross ? " (+1 day)" : ""), cross ? "Yes" : "No", iso(end) + " " + s[3],
+            present === "" ? "" : present + " / " + s[4], kwh, k0, k1, s[5] && kwh ? s[5] : "", state]);
         });
       });
-      return { title: "Shift instances", columns: ["Instance", "Date", "Shift", "Planned", "Staff present", "Energy (kWh)", "kWh / unit", "Status"], rows: rows, note: "Every run of every shift in the period." };
+      return { title: "Shift instances", columns: ["Instance", "Date (counted on)", "Shift", "Planned", "Midnight crossover", "Ends", "Staff present", "Energy (kWh)", "kWh before midnight", "kWh after midnight", "kWh / unit", "Status"], rows: rows, note: "Every run of every shift in the period. Midnight-crossover shifts are counted on the day they start; their energy is split by the hours before and after midnight." };
     },
   };
 
@@ -178,7 +183,9 @@
     var b = e.target.closest && e.target.closest("[data-export]");
     if (b) open(b.getAttribute("data-export"), b.getAttribute("data-export-id"));
   }, true);
-  window.addEventListener("hashchange", function () { if (location.hash === "#export" && !job) { var b = $("[data-export]"); open(b.getAttribute("data-export"), b.getAttribute("data-export-id")); } });
+  // Opened by a link / reload (…#export) rather than a button: use the page's first export
+  function openFromHash() { if (location.hash === "#export" && !job) { var b = $("[data-export]"); if (b) open(b.getAttribute("data-export"), b.getAttribute("data-export-id")); } }
+  window.addEventListener("hashchange", openFromHash);
   M.addEventListener("click", function (e) {
     var q = e.target.closest("[data-range]");
     if (q) { setRange(q.getAttribute("data-range")); q.classList.add("is-active"); }
@@ -186,6 +193,7 @@
   });
   from.addEventListener("change", update); to.addEventListener("change", update);
   from.max = to.max = iso(today());
+  setTimeout(openFromHash, 0); // meter.html builds its Export button a moment later
 
   /* ---------- output ---------- */
   function fileName(rep, f, t, ext) {
@@ -217,7 +225,7 @@
       .then(function () { if (!has()) throw new Error("jsPDF missing"); return window.jspdf.jsPDF; });
     return pdfLib;
   }
-  var ascii = function (v) { return String(v == null ? "" : v).replace(/₹/g, "Rs ").replace(/₂/g, "2").replace(/[–—]/g, "-").replace(/[·•]/g, "-").replace(/→/g, "->").replace(/[^\x20-\x7E]/g, ""); };
+  var ascii = function (v) { return String(v == null ? "" : v).replace(/₹/g, "Rs ").replace(/₂/g, "2").replace(/φ/g, "-ph").replace(/[–—]/g, "-").replace(/[·•]/g, "-").replace(/→/g, "->").replace(/[^\x20-\x7E]/g, ""); };
   function toPdf(rep, f, t) {
     return jsPDF().then(function (PDF) {
       var doc = new PDF({ orientation: rep.columns.length > 6 ? "landscape" : "portrait", unit: "pt", format: "a4" });

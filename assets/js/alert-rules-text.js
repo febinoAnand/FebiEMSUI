@@ -44,7 +44,7 @@
   function activeText(a) {
     if (a.mode === "shifts") return a.shifts.map(function (s) { return s === "G" ? "General" : "Shift " + s; }).join(", ");
     if (a.mode === "slots") return a.slots.join(", ");
-    if (a.mode === "hours") return a.from + "–" + a.to + " · " + dayRange(a.days);
+    if (a.mode === "hours") return a.from + "–" + a.to + (a.to < a.from ? " (+1)" : "") + " · " + dayRange(a.days);
     return "Always";
   }
   function condText(r) {

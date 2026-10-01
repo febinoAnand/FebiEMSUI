@@ -235,8 +235,8 @@
         "r-org": val("r-org").length >= 3,
         "r-facility": byId("r-facility").value !== "",
         "r-city": val("r-city").length >= 2,
-        "r-discom": val("r-discom").length >= 2,
-        "r-demand": demand >= 1 && demand <= 100000,
+        "r-discom": !val("r-discom") || val("r-discom").length >= 2,          // optional
+        "r-demand": !val("r-demand") || (demand >= 1 && demand <= 100000),  // optional
         "r-meters": byId("r-meters").value !== "",
         "r-name": val("r-name").length >= 2,
         "r-email": /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val("r-email")),
@@ -253,7 +253,7 @@
         return;
       }
       ss.set(PENDING_REG, JSON.stringify({
-        org: val("r-org"), facility: byId("r-facility").value, city: val("r-city"), discom: val("r-discom"), demand: String(demand),
+        org: val("r-org"), facility: byId("r-facility").value, city: val("r-city"), discom: val("r-discom"), demand: val("r-demand") ? String(demand) : "",
         meters: byId("r-meters").value, name: val("r-name"), email: val("r-email"), mobile: val("r-mobile"), username: username,
         pw: S.hashNewPassword(password),
       }));
@@ -274,7 +274,7 @@
       // Email confirmed → create the organisation (status "pending") and its Tenant Admin
       var t = S.createTenant({
         name: pending.org, industry: pending.facility, city: pending.city, discom: pending.discom,
-        contractDemand: Number(pending.demand), meters: pending.meters, contact: pending.email, phone: pending.mobile,
+        contractDemand: pending.demand ? Number(pending.demand) : 0, meters: pending.meters, contact: pending.email, phone: pending.mobile,
       });
       var parts = pending.name.split(/\s+/);
       S.createUser(t.id, {

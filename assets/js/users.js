@@ -81,6 +81,7 @@
   ["uf-search", "uf-role", "uf-shift", "uf-status"].forEach(function (id) {
     byId(id).addEventListener(id === "uf-search" ? "input" : "change", function () { page = 1; render(); });
   });
+  byId("user-page-size").addEventListener("change", function (e) { PAGE = +e.target.value || 6; page = 1; render(); });
   byId("user-pager-nav").addEventListener("click", function (e) {
     var b = e.target.closest("[data-page]");
     if (b && !b.disabled) { page = +b.getAttribute("data-page"); render(); }

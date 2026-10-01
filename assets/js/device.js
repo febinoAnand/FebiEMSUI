@@ -130,7 +130,7 @@
     '<div class="table-wrap"><table class="table"><thead><tr><th>Meter</th><th>Address</th><th>Location</th><th class="num">Power now</th><th class="num">Sub-meters</th><th>Status</th><th>Polling</th><th></th></tr></thead><tbody>' + rows + "</tbody></table></div></section>";
 
   // Node-RED style view of this device's connections (connections.js fills it)
-  html += '<section class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-flow"></i> Connections</h3><p class="card__sub">Meters and sub-meters this device collects from, and where it sends them</p></div>' +
+  html += '<section class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-flow"></i> Connections</h3><p class="card__sub">Meters and sub-meters this device collects readings from</p></div>' +
     '<a href="connections.html?focus=' + encodeURIComponent(dev.id) + '" class="btn btn--sm btn--soft"><i class="ic i-edit"></i> Edit connections</a></div>' +
     '<div class="flow" id="flow" data-embed="1" data-focus="' + esc(dev.id) + '"></div></section>';
 

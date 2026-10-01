@@ -15,6 +15,8 @@
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function fmt(n, d) { return Number(n).toLocaleString("en-IN", { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }); }
   function kw(n) { return (n < 0 ? "−" : "") + fmt(Math.abs(n), 1) + " kW"; }
+  function avg3(a) { return a.reduce(function (x, y) { return x + y; }, 0) / a.length; }
+  function imb3(a) { var m = avg3(a); return m ? (Math.max.apply(null, a) - Math.min.apply(null, a)) / m * 100 : 0; }
   function hhmm(h) { var hh = Math.floor(h), mm = Math.round((h - hh) * 60); if (mm === 60) { hh++; mm = 0; } return ("0" + hh).slice(-2) + ":" + ("0" + mm).slice(-2); }
   function rng(seed) { // mulberry32
     var t = 0; for (var i = 0; i < seed.length; i++) t = (t * 31 + seed.charCodeAt(i)) | 0;
@@ -83,8 +85,11 @@
   /* ---------- electrical parameters (demo, consistent with power) ---------- */
   var pf = meter.id === "MTR-1001" ? 0.86 : gen ? 0.99 : +(0.9 + 0.08 * R()).toFixed(2);
   var live = absPower > 0 && stoppedAt === null;
-  var v = [230 + 4 * R() - 2, 230 + 4 * R() - 2, 230 + 4 * R() - 2];
-  var iPh = live ? v.map(function (vv, i) { return absPower * 1000 / (3 * vv * pf) * (0.94 + 0.12 * [R(), R(), R()][i]); }) : [0, 0, 0];
+  // Supply: three-phase (L1, L2, L3) or single-phase (L-N). Power splits over the phases that exist.
+  var PH = meter.phase === 1 ? 1 : 3, PHASES = PH === 1 ? ["L–N"] : ["L1", "L2", "L3"];
+  var v3 = [230 + 4 * R() - 2, 230 + 4 * R() - 2, 230 + 4 * R() - 2], j3 = [R(), R(), R()];
+  var v = v3.slice(0, PH);
+  var iPh = v.map(function (vv, i) { return live ? absPower * 1000 / (PH * vv * pf) * (0.94 + 0.12 * j3[i]) : 0; });
   var kva = live ? absPower / pf : 0, kvar = live ? Math.sqrt(Math.max(0, kva * kva - absPower * absPower)) : 0;
   var hz = live ? 49.95 + 0.1 * R() : null;
   var thdV = live ? 1.8 + 1.5 * R() : null, thdI = live ? 4 + (meter.id === "MTR-1004" ? 5 : 3) * R() : null;
@@ -124,7 +129,7 @@
     '<span class="dev-icon" style="--c:var(' + (isSub ? "--primary" : main.color) + ')"><i class="ic ' + (isSub ? "i-layers" : main.icon) + '"></i></span>' +
     '<div style="min-width:0"><span class="eyebrow">' + (isSub ? "Sub-meter of " + esc(parent.name) : gen ? "Main meter · generation" : "Main meter") + "</span>" +
     '<h1 class="page-title" style="margin-top:2px">' + esc(meter.name) + "</h1>" +
-    '<div class="meter-meta"><span class="tag">' + esc(meter.id) + "</span>" + badge(meter.status) +
+    '<div class="meter-meta"><span class="tag">' + esc(meter.id) + "</span>" + badge(meter.status) + ' <span class="tag tag--phase" title="' + (PH === 1 ? "Single-phase supply · 2-wire · 230 V" : "Three-phase supply · 4-wire · 415 V") + '">' + (PH === 1 ? "1φ Single-phase" : "3φ Three-phase") + "</span>" +
     '<span class="page-sub" style="margin:0">' + esc(isSub ? meter.ct + " · via parent meter" : meter.model + " · " + meter.location) + "</span>" +
     '<a href="device.html?id=' + esc(main.device) + '" class="device-chip' + (isSub ? " device-chip--inherited" : "") + '" title="' + esc(main.deviceName) + '"><span class="dot dot--live" style="--c:var(--green)"></span>' + esc(main.device) + "</a></div></div></div>" +
     '<div class="page-actions">' +
@@ -140,12 +145,35 @@
     tile("i-trend-up", "--amber", fmt(peak.y, 1), "kW", "Peak today", peak.y > 0 ? "at " + hhmm(peak.x) : "No demand yet today") +
     "</section>";
 
+  /* ---------- speedometer gauges (latest reading against its normal range) ---------- */
+  // bands: [from, to, state, label]  state: ok | warn | bad
+  var vAvg = avg3(v), iMax = Math.max.apply(null, iPh);
+  var iRated = rated * 1000 / (PH * 230 * 0.9); // full-load current per phase (or of the single phase)
+  var GAUGES = [
+    { label: gen ? "Output" : "Load", unit: "% of rated", min: 0, max: 120, d: 0, value: live ? meter.load : null,
+      bands: [[0, 80, "ok", "Normal"], [80, 95, "warn", "High"], [95, 120, "bad", "Overload"]], note: "Rated " + fmt(rated, 0) + " kW" },
+    { label: "Power factor", unit: "", min: 0.6, max: 1, d: 2, value: live ? pf : null,
+      bands: [[0.6, 0.85, "bad", "Poor"], [0.85, 0.95, "warn", "Low"], [0.95, 1, "ok", "Good"]], note: "Target ≥ 0.95" },
+    { label: "Voltage", unit: PH === 1 ? "V L–N" : "V avg L–N", min: 190, max: 270, d: 1, value: live ? vAvg : null,
+      bands: [[190, 207, "bad", "Too low"], [207, 216, "warn", "Low"], [216, 244, "ok", "Normal"], [244, 253, "warn", "High"], [253, 270, "bad", "Too high"]], note: "230 V ± 6 %" },
+    { label: "Current", unit: PH === 1 ? "A" : "A max phase", min: 0, max: Math.max(10, Math.ceil(iRated * 1.2 / 10) * 10), d: 1, value: live ? iMax : null,
+      bands: [[0, iRated * 0.8, "ok", "Normal"], [iRated * 0.8, iRated, "warn", "High"], [iRated, Math.max(10, Math.ceil(iRated * 1.2 / 10) * 10), "bad", "Over rated"]], note: "Full load " + fmt(iRated, 0) + " A" },
+    { label: "Frequency", unit: "Hz", min: 49, max: 51, d: 2, value: hz,
+      bands: [[49, 49.5, "bad", "Low"], [49.5, 49.8, "warn", "Slightly low"], [49.8, 50.2, "ok", "Normal"], [50.2, 50.5, "warn", "Slightly high"], [50.5, 51, "bad", "High"]], note: "50 Hz grid" },
+    { label: "Current THD", unit: "%", min: 0, max: 20, d: 1, value: thdI,
+      bands: [[0, 8, "ok", "Normal"], [8, 12, "warn", "High"], [12, 20, "bad", "Very high"]], note: "Limit 8 %" },
+  ];
+  html += '<section class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-gauge"></i> Live gauges</h3>' +
+    '<p class="card__sub">' + esc(lastSeen) + " · needle shows the latest reading · green normal, amber watch, red out of range</p></div></div>" +
+    '<div class="card__body"><div class="speedos">' + GAUGES.map(gauge).join("") + "</div></div></section>";
+
   html += '<section class="grid grid-main">' +
     '<div class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-activity"></i> ' + (gen ? "Generation" : "Power") + ' today</h3><p class="card__sub">15-minute readings · kW · hover for values</p></div></div>' +
     '<div class="card__body"><div class="chart-box" id="chart-power"></div>' + tableFor(hourly.filter(function (p, i) { return i % 4 === 0; }), "Time", "kW", function (p) { return hhmm(p.x); }, 1) + "</div></div>" +
     '<div class="card" data-field="meters.electrical"><div class="card__head"><div><h3 class="card__title"><i class="ic i-gauge"></i> Electrical parameters</h3><p class="card__sub">' + esc(lastSeen) + "</p></div></div>" +
     '<div class="card__body"><table class="table param-table"><thead><tr><th>Phase</th><th>Voltage</th><th>Current</th></tr></thead><tbody>' +
-    ["L1", "L2", "L3"].map(function (l, i) { return "<tr><td>" + l + "</td><td>" + fmt(v[i], 1) + " V</td><td>" + fmt(iPh[i], 1) + " A</td></tr>"; }).join("") +
+    PHASES.map(function (l, i) { return "<tr><td>" + l + "</td><td>" + fmt(v[i], 1) + " V</td><td>" + fmt(iPh[i], 1) + " A</td></tr>"; }).join("") +
+    (PH === 3 ? '<tr class="muted"><td>L–L</td><td>' + fmt(avg3(v) * Math.sqrt(3), 0) + " V</td><td>imbalance " + fmt(imb3(iPh), 1) + " %</td></tr>" : "") +
     '</tbody></table><dl class="kv" style="margin-top:16px">' +
     "<dt>Power factor</dt><dd" + (pf < 0.95 && live ? ' class="tc-rose"' : "") + ">" + (live ? pf.toFixed(2) : "—") + "</dd>" +
     "<dt>Apparent power</dt><dd>" + (live ? fmt(kva, 1) + " kVA" : "—") + "</dd>" +
@@ -159,7 +187,7 @@
     '<div class="card__body"><div class="chart-box" id="chart-daily"></div>' + tableFor(daily, "Day", "kWh", function (p) { return p.x + " " + monthLabel.slice(0, 3) + (p.partial ? " (today)" : ""); }, 0) + "</div></section>";
 
   // Node-RED style view of this meter's connections (connections.js fills it)
-  html += '<section class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-flow"></i> Connections</h3><p class="card__sub">' + (isSub ? "How this sub-meter's readings reach the Energy Cloud" : "Sub-meters under this meter, and the device that collects it") + "</p></div>" +
+  html += '<section class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-flow"></i> Connections</h3><p class="card__sub">' + (isSub ? "The meter this sub-meter sits under, and the device that reads it" : "Sub-meters under this meter, and the device that collects it") + "</p></div>" +
     '<a href="connections.html?focus=' + encodeURIComponent(meter.id) + '" class="btn btn--sm btn--soft"><i class="ic i-edit"></i> Edit connections</a></div>' +
     '<div class="flow" id="flow" data-embed="1" data-focus="' + esc(meter.id) + '"></div></section>';
 
@@ -213,11 +241,42 @@
   // Shared with meter-alerts.js (per-meter alert rules)
   window.ED_METER_CTX = {
     meter: meter, parent: parent, isSub: isSub, main: main, gen: gen, live: live, rated: rated,
-    now: { kw: absPower, kva: kva, pf: live ? pf : null, v: v, i: iPh, hz: hz, thdV: thdV, thdI: thdI, kwhToday: todayKwh, load: meter.load },
+    phase: PH, now: { kw: absPower, kva: kva, pf: live ? pf : null, v: v, i: iPh, hz: hz, thdV: thdV, thdI: thdI, kwhToday: todayKwh, load: meter.load },
     groupRules: rules.map(function (r) { return { name: r[0], text: r[1], severity: r[2], target: r[3][0] }; }),
   };
 
   /* ---------- charts ---------- */
+  // Speedometer: 240° dial, coloured bands for the normal / watch / out-of-range zones,
+  // a needle at the latest value, and the state written out (never colour alone)
+  function gauge(g) {
+    var A0 = -120, A1 = 120, cx = 100, cy = 92, R = 72;
+    var clamp = function (x) { return Math.min(g.max, Math.max(g.min, x)); };
+    var ang = function (x) { return A0 + (clamp(x) - g.min) / (g.max - g.min) * (A1 - A0); };
+    var pt = function (a, r) { var t = (a - 90) * Math.PI / 180; return (cx + r * Math.cos(t)).toFixed(2) + "," + (cy + r * Math.sin(t)).toFixed(2); };
+    var arc = function (a0, a1, r) { return "M" + pt(a0, r) + " A" + r + "," + r + " 0 " + (a1 - a0 > 180 ? 1 : 0) + " 1 " + pt(a1, r); };
+    var has = g.value != null && !isNaN(g.value);
+    var band = has ? g.bands.filter(function (b) { return g.value >= b[0] && g.value <= b[1]; })[0] || g.bands[g.value < g.min ? 0 : g.bands.length - 1] : null;
+    var STATE = { ok: ["success", "i-check"], warn: ["warn", "i-alert"], bad: ["danger", "i-alert"] };
+    var ticks = "";
+    for (var i = 0; i <= 10; i++) {
+      var a = A0 + i * (A1 - A0) / 10, major = i % 5 === 0;
+      ticks += '<line class="speedo__tick' + (major ? " is-major" : "") + '" x1="' + pt(a, R - 12).split(",")[0] + '" y1="' + pt(a, R - 12).split(",")[1] + '" x2="' + pt(a, R - (major ? 22 : 17)).split(",")[0] + '" y2="' + pt(a, R - (major ? 22 : 17)).split(",")[1] + '"></line>';
+    }
+    var lab = function (x, a) { var p = pt(a, R + 14).split(","); return '<text class="speedo__lim" x="' + p[0] + '" y="' + (+p[1] + 4) + '" text-anchor="middle">' + fmt(x, g.d > 1 ? 1 : 0) + "</text>"; };
+    var tip = g.label + ": " + (has ? fmt(g.value, g.d) + " " + g.unit : "no reading") + ". Normal " + g.bands.filter(function (b) { return b[2] === "ok"; }).map(function (b) { return fmt(b[0], g.d > 1 ? 2 : 0) + "–" + fmt(b[1], g.d > 1 ? 2 : 0); }).join(", ") + (g.unit ? " " + g.unit : "") + ".";
+    return '<figure class="speedo' + (has ? "" : " is-off") + '" title="' + esc(tip) + '">' +
+      '<svg viewBox="0 0 200 150" role="img" aria-label="' + esc(tip) + '">' +
+      '<path class="speedo__track" d="' + arc(A0, A1, R) + '"></path>' +
+      g.bands.map(function (b) { var a0 = ang(b[0]), a1 = ang(b[1]); return a1 - a0 < 0.5 ? "" : '<path class="speedo__band speedo__band--' + b[2] + '" d="' + arc(a0 + 0.6, a1 - 0.6, R) + '"></path>'; }).join("") +
+      ticks + lab(g.min, A0) + lab(g.max, A1) +
+      '<g class="speedo__needle" style="--a:' + (has ? ang(g.value) : A0).toFixed(1) + 'deg;transform-origin:' + cx + "px " + cy + 'px"><path d="M' + (cx - 3.5) + "," + cy + " L" + cx + "," + (cy - R + 16) + " L" + (cx + 3.5) + "," + cy + ' Z"></path></g>' +
+      '<circle class="speedo__hub" cx="' + cx + '" cy="' + cy + '" r="7"></circle>' +
+      '<text class="speedo__value" x="' + cx + '" y="' + (cy + 40) + '" text-anchor="middle">' + (has ? fmt(g.value, g.d) : "—") + "</text>" +
+      "</svg>" +
+      '<figcaption><strong>' + esc(g.label) + '</strong> <span class="muted">' + esc(g.unit) + "</span>" +
+      '<span class="badge badge--' + (band ? STATE[band[2]][0] : "info") + '"><i class="ic ' + (band ? STATE[band[2]][1] : "i-wifi") + '"></i> ' + esc(band ? band[3] : "No reading") + "</span>" +
+      '<small class="muted">' + esc(g.note) + "</small></figcaption></figure>";
+  }
   function tableFor(pts, xl, yl, xf, dp) {
     return '<details class="chart-table"><summary>View as table</summary><div class="table-wrap"><table class="table"><thead><tr><th>' + xl + '</th><th class="num">' + yl + "</th></tr></thead><tbody>" +
       pts.map(function (p) { return "<tr><td>" + xf(p) + '</td><td class="num">' + (p.y == null ? "—" : fmt(p.y, dp)) + "</td></tr>"; }).join("") + "</tbody></table></div></details>";

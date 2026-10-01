@@ -12,6 +12,8 @@
   <script src="assets/js/store.js"></script>
   <script src="assets/js/app.js"></script>
   <script src="assets/js/auth.js" defer></script>
+  <script src="assets/js/table-scroll.js" defer></script>
+  <script src="assets/js/pager.js" defer></script>
 </head>
 <body class="auth">
   <div class="auth-shell">
@@ -102,51 +104,21 @@
           <button type="submit" class="btn btn--primary btn--lg btn--block">Sign In</button>
         </form>
 
-        <div class="demo-hint">
-          <span>Demo login — Org <b>FEBINO</b>, user <b>vijay</b> / <b>Admin@123</b></span>
-          <button type="button" class="btn btn--sm btn--soft" data-autofill="FEBINO|vijay|Admin@123">Autofill</button>
+        <div class="demo-hint demo-hint--pair">
+          <div class="demo-hint__row">
+            <span><b class="demo-hint__label">Demo login</b> Org <b>FEBINO</b>, user <b>vijay</b> / <b>Admin@123</b></span>
+            <button type="button" class="btn btn--sm btn--soft" data-autofill="FEBINO|vijay|Admin@123">Autofill</button>
+          </div>
+          <div class="demo-hint__row">
+            <span><b class="demo-hint__label">Approval login</b> Org <b>HX4R7TQM</b>, user <b>kaveri_admin</b> / <b>Kaveri@123</b><small class="muted demo-hint__note">Organisation still waiting for approval</small></span>
+            <button type="button" class="btn btn--sm btn--soft" data-autofill="HX4R7TQM|kaveri_admin|Kaveri@123">Autofill</button>
+          </div>
         </div>
 
         <p class="auth-foot">
           New organisation? <a href="register.html">Create an account</a><br />
-          Curious about pending accounts? <a href="login-approval.html" data-show-card="preview">Preview the Awaiting Approval screen</a><br />
           <span class="small">Invited by your admin? <a href="accept-invite.html">Accept invitation</a> · Platform admin? <a href="admin-login.html">Control Center</a></span>
         </p>
-      </section>
-
-      <section class="auth-card" data-card="preview" hidden>
-        <a href="login.html" class="brand auth-mobile-brand"><span class="brand__logo"><i class="ic i-bolt-fill"></i></span><span><span class="brand__name">Energy Dashboard</span><br /><span class="brand__tag">Smart Energy Cloud</span></span></a>
-        <span class="preview-badge"><i class="ic i-alert"></i> Preview only</span>
-        <h2 class="auth-title" tabindex="-1">Approval Preview Login</h2>
-        <p class="auth-sub">Sign in with an organisation that is still waiting for approval to see the Awaiting Approval screen.</p>
-
-        <form id="preview-form" class="auth-form" action="#" method="post" autocomplete="off" novalidate>
-          <div class="field">
-            <label for="pv-org">Organisation ID</label>
-            <div class="input-icon"><i class="ic i-building"></i><input id="pv-org" class="input mono" placeholder="e.g. HX4R7TQM" autocomplete="off" autocapitalize="characters" spellcheck="false" /></div>
-          </div>
-          <div class="field">
-            <label for="pv-user">Username</label>
-            <div class="input-icon"><i class="ic i-user"></i><input id="pv-user" class="input" placeholder="e.g. kaveri_admin" autocomplete="off" autocapitalize="none" spellcheck="false" /></div>
-          </div>
-          <div class="field">
-            <label for="pv-pw">Password</label>
-            <div class="input-icon">
-              <i class="ic i-lock"></i>
-              <input id="pv-pw" name="password" type="password" class="input input--pw" placeholder="Enter your password" autocomplete="off" />
-              <button type="button" class="pw-toggle" data-pw-toggle="pv-pw" aria-label="Show password">Show</button>
-            </div>
-          </div>
-          <div class="auth-row" style="justify-content:flex-end"><a href="forgot-password.html">Forgot password?</a></div>
-          <button type="submit" class="btn btn--primary btn--lg btn--block">Sign In</button>
-        </form>
-
-        <div class="demo-hint">
-          <span>Pending organisation — Org <b>HX4R7TQM</b>, user <b>kaveri_admin</b> / <b>Kaveri@123</b></span>
-          <button type="button" class="btn btn--sm btn--soft" data-autofill="HX4R7TQM|kaveri_admin|Kaveri@123" data-autofill-target="pv">Autofill</button>
-        </div>
-
-        <p class="auth-foot">Not what you're after? <a href="login.html" data-show-card="signin">Back to the real login</a></p>
       </section>
 
       <section id="awaiting-approval" class="auth-card" style="text-align:center" data-card="awaiting" data-inline hidden aria-live="polite">

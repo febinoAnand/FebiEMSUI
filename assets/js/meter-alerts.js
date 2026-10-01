@@ -34,7 +34,7 @@
     if (!m) return null;
     var kw = Math.abs(m.power || 0), on = kw > 0 && !/offline|maintenance/i.test(m.status || "");
     return { meter: m, parent: parent, isSub: !!parent, live: on, partial: true, rated: m.load > 0 ? kw / (m.load / 100) : null, groupRules: [],
-      now: { kw: on ? kw : 0, kva: null, load: on ? m.load : 0, pf: null, v: [null, null, null], i: [null, null, null], hz: null, thdV: null, thdI: null, kwhToday: null } };
+      phase: m.phase === 1 ? 1 : 3, now: { kw: on ? kw : 0, kva: null, load: on ? m.load : 0, pf: null, v: m.phase === 1 ? [null] : [null, null, null], i: m.phase === 1 ? [null] : [null, null, null], hz: null, thdV: null, thdI: null, kwhToday: null } };
   }
 
   // Everything that depends on the meter; setMeter() recomputes it
@@ -58,12 +58,18 @@
       { g: "Energy & cost", key: "cost", label: "Cost in the window", short: "Cost", unit: "₹", now: N.kwhToday == null ? null : N.kwhToday * TARIFF, nowNote: "today", d: 0, pre: true },
       { g: "Communication", key: "nodata", label: "Time without readings", short: "No readings", unit: "min", now: live && !C.partial ? 0 : null, d: 0, only: ["gt"] },
     ];
+    var one = (C.phase || C.meter.phase) === 1;
+    if (one) {
+      PARAMS = PARAMS.filter(function (p) { return p.key !== "v_imb" && p.key !== "i_imb"; });
+      PARAMS.forEach(function (p) { if (p.key === "v_min" || p.key === "v_max") p.label = p.key === "v_min" ? "Voltage (lowest)" : "Voltage (highest)"; if (p.key === "i_max") p.label = "Current"; });
+    }
     P = {};
     PARAMS.forEach(function (p) { P[p.key] = p; });
     VARS = {
       kw: N.kw, kva: N.kva, load: N.load, pf: N.pf, v1: N.v[0], v2: N.v[1], v3: N.v[2], i1: N.i[0], i2: N.i[1], i3: N.i[2],
-      v_imb: imb(N.v), i_imb: imb(N.i), hz: N.hz, thd_v: N.thdV, thd_i: N.thdI, kwh: N.kwhToday, cost: N.kwhToday == null ? null : N.kwhToday * TARIFF,
+      v_imb: one ? undefined : imb(N.v), i_imb: one ? undefined : imb(N.i), hz: N.hz, thd_v: N.thdV, thd_i: N.thdI, kwh: N.kwhToday, cost: N.kwhToday == null ? null : N.kwhToday * TARIFF,
     };
+    if (one) ["v2", "v3", "i2", "i3", "v_imb", "i_imb"].forEach(function (k) { delete VARS[k]; });
     subs = !C.isSub ? meter.subs || [] : [];
     kindName = C.isSub ? "sub-meter" : "meter";
   }
@@ -221,6 +227,9 @@
     section(5, "notify", "i-send", "Response",
       '<div class="form-grid"><div class="field full"><label>Send by</label><div class="picks">' + CHANNELS.map(function (c) { return pill("mr-ch", c[0], '<i class="ic ' + c[2] + '"></i> ' + c[1], c[0] === "app" || c[0] === "email"); }).join("") + "</div></div>" +
       '<div class="field full"><label>To</label><div class="picks">' + ROLES.map(function (r) { return pill("mr-role", r[0], r[1], r[0] === "Energy Manager" || r[0] === "Supervisor"); }).join("") + "</div></div>" +
+      '<div class="field full"><label for="mr-user-q">Specific users</label><div class="upick" id="mr-users"><div class="upick__chips" id="mr-user-chips"></div>' +
+      '<input id="mr-user-q" class="input" autocomplete="off" placeholder="Search a name, email or employee ID to add…" role="combobox" aria-expanded="false" aria-controls="mr-user-list" />' +
+      '<ul class="upick__list" id="mr-user-list" role="listbox" hidden></ul></div><span class="hint">Get this alert even if their role isn\'t selected above.</span></div>' +
       '<div class="field full"><label for="mr-emails">Also email</label><input id="mr-emails" class="input" placeholder="name@company.com, another@company.com" /></div>' +
       '<div class="field"><label for="mr-repeat">While it stays true</label><select id="mr-repeat" class="input">' + opt("once", "Notify once", "once") + opt("15", "Remind every 15 min", "") + opt("60", "Remind every hour", "") + "</select></div>" +
       '<div class="field"><label for="mr-resolve">Close the alert</label><select id="mr-resolve" class="input">' + opt("auto5", "Automatically after 5 min back to normal", "auto5") + opt("auto15", "Automatically after 15 min back to normal", "") + opt("manual", "Only when someone acknowledges it", "") + "</select></div>" +
@@ -261,6 +270,50 @@
   }
   var editing = null; // rule id being edited, or null for a new rule
 
+  /* specific users */
+  var picked = []; // user ids
+  function people() { return S.users(ORG).filter(function (u) { return u.status !== "suspended"; }); }
+  function who(id) { return S.users(ORG).filter(function (u) { return u.id === id; })[0]; }
+  function drawChips() {
+    $("#mr-user-chips", M).innerHTML = picked.map(function (id) {
+      var u = who(id); if (!u) return "";
+      return '<span class="upick__chip"><span class="avatar av-' + (u.username.length % 6 + 1) + '">' + esc(S.initials(S.fullName(u))) + "</span>" + esc(S.fullName(u)) +
+        ' <small class="muted">' + esc(u.role) + '</small><button type="button" data-user-del="' + esc(id) + '" aria-label="Remove ' + esc(S.fullName(u)) + '"><i class="ic i-x"></i></button></span>';
+    }).join("");
+  }
+  function drawList() {
+    var q = $("#mr-user-q", M).value.trim().toLowerCase(), list = $("#mr-user-list", M);
+    var hits = people().filter(function (u) {
+      return picked.indexOf(u.id) < 0 && (!q || [S.fullName(u), u.email, u.empId, u.username, u.role].join(" ").toLowerCase().indexOf(q) > -1);
+    }).slice(0, 8);
+    list.innerHTML = hits.length ? hits.map(function (u, i) {
+      return '<li role="option" data-user-add="' + esc(u.id) + '"' + (i === 0 ? ' class="is-active"' : "") + '><span class="avatar av-' + (u.username.length % 6 + 1) + '">' + esc(S.initials(S.fullName(u))) + "</span>" +
+        "<span><b>" + esc(S.fullName(u)) + "</b><small>" + esc(u.role) + " · " + esc(u.email) + (u.status === "invited" ? " · invited" : "") + "</small></span></li>";
+    }).join("") : '<li class="upick__none">' + (q ? "No one matches “" + esc(q) + "”" : "Everyone is already added") + "</li>";
+    list.hidden = false;
+    $("#mr-user-q", M).setAttribute("aria-expanded", "true");
+  }
+  function closeList() { $("#mr-user-list", M).hidden = true; $("#mr-user-q", M).setAttribute("aria-expanded", "false"); }
+  function addUser(id) { if (id && picked.indexOf(id) < 0) picked.push(id); $("#mr-user-q", M).value = ""; drawChips(); drawList(); sync(); }
+  M.addEventListener("focusin", function (e) { if (e.target.id === "mr-user-q") drawList(); });
+  M.addEventListener("input", function (e) { if (e.target.id === "mr-user-q") drawList(); });
+  M.addEventListener("mousedown", function (e) {
+    var li = e.target.closest("[data-user-add]");
+    if (li) { e.preventDefault(); addUser(li.getAttribute("data-user-add")); }
+  });
+  M.addEventListener("keydown", function (e) {
+    if (e.target.id !== "mr-user-q") return;
+    var items = $$("#mr-user-list [data-user-add]", M), cur = items.findIndex(function (li) { return li.classList.contains("is-active"); });
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault(); if (!items.length) return;
+      var n = (cur + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length;
+      items.forEach(function (li, i) { li.classList.toggle("is-active", i === n); }); items[n].scrollIntoView({ block: "nearest" });
+    } else if (e.key === "Enter") { e.preventDefault(); if (items[cur]) addUser(items[cur].getAttribute("data-user-add")); }
+    else if (e.key === "Escape") { closeList(); }
+    else if (e.key === "Backspace" && !e.target.value && picked.length) { picked.pop(); drawChips(); sync(); }
+  });
+  M.addEventListener("focusout", function (e) { if (e.target.id === "mr-user-q") setTimeout(closeList, 120); });
+
   /* condition rows */
   function rowHtml(r) {
     var p = P[r.param] || PARAMS[0], ops = p.only || Object.keys(OPS);
@@ -293,7 +346,7 @@
       enabled: $("#mr-enabled", M).checked, scope: checked("mr-scope")[0] || "meter", subs: checked("mr-subs"), evaluate: $("#mr-eval", M).value,
       cond: { mode: mode, match: $("#mr-match", M).value, rows: readRows(), expr: $("#mr-code", M).value.trim(), hold: Number($("#mr-hold", M).value) },
       active: { mode: when, shifts: checked("mr-shift"), slots: checked("mr-slot"), from: $("#mr-from", M).value, to: $("#mr-to", M).value, days: checked("mr-day") },
-      notify: { channels: checked("mr-ch"), roles: checked("mr-role"), emails: $("#mr-emails", M).value.split(/[,;\s]+/).filter(Boolean),
+      notify: { channels: checked("mr-ch"), roles: checked("mr-role"), users: picked.slice(), emails: $("#mr-emails", M).value.split(/[,;\s]+/).filter(Boolean),
         repeat: $("#mr-repeat", M).value, resolve: $("#mr-resolve", M).value, escalate: Number($("#mr-escalate", M).value) },
     };
   }
@@ -329,6 +382,7 @@
     $("#mr-from", M).value = r.active.from; $("#mr-to", M).value = r.active.to;
     setChecked("mr-ch", r.notify.channels); setChecked("mr-role", r.notify.roles);
     $("#mr-emails", M).value = (r.notify.emails || []).join(", ");
+    picked = (r.notify.users || []).filter(function (id) { return who(id); }); drawChips(); $("#mr-user-q", M).value = ""; closeList();
     $("#mr-repeat", M).value = r.notify.repeat; $("#mr-resolve", M).value = r.notify.resolve; $("#mr-escalate", M).value = String(r.notify.escalate);
     $("#mr-errors", M).hidden = true;
     $$("details.rb", M).forEach(function (d, i) { d.open = i < 3 || !!editing; });
@@ -361,7 +415,7 @@
     if (r.active.mode === "hours" && (!r.active.from || !r.active.to || r.active.from === r.active.to)) e.push("Set different start and end times.");
     if (r.active.mode === "hours" && !r.active.days.length) e.push("Pick at least one day.");
     if (!r.notify.channels.length) e.push("Choose how to send the alert.");
-    if (!r.notify.roles.length && !r.notify.emails.length) e.push("Choose who gets the alert.");
+    if (!r.notify.roles.length && !r.notify.users.length && !r.notify.emails.length) e.push("Choose who gets the alert: a role, specific users or an email address.");
     var bad = r.notify.emails.filter(function (m) { return !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m); });
     if (bad.length) e.push("Check these email addresses: " + bad.join(", "));
     return e;
@@ -390,7 +444,7 @@
     sum("watch", scopeText(r) + " · " + EVAL[r.evaluate]);
     sum("cond", ok ? condText(r) : "Incomplete");
     sum("when", activeText(r.active));
-    sum("notify", r.notify.channels.length + " channel" + (r.notify.channels.length === 1 ? "" : "s") + " · " + (r.notify.roles.length + r.notify.emails.length) + " recipient group" + (r.notify.roles.length + r.notify.emails.length === 1 ? "" : "s"));
+    sum("notify", r.notify.channels.length + " channel" + (r.notify.channels.length === 1 ? "" : "s") + " · " + (r.notify.roles.length + r.notify.users.length + r.notify.emails.length) + " recipient group" + (r.notify.roles.length + r.notify.emails.length === 1 ? "" : "s"));
     $("#mr-preview", M).innerHTML = ok ? "<b>" + esc(r.severity) + "</b> alert when " + esc(condText(r)) + (r.active.mode !== "always" ? " · " + esc(activeText(r.active)) : "") : "";
   }
 
@@ -410,6 +464,7 @@
   M.addEventListener("click", function (e) {
     var b = e.target.closest("button");
     if (!b || !M.contains(b)) return;
+    if (b.hasAttribute("data-user-del")) { picked = picked.filter(function (id) { return id !== b.getAttribute("data-user-del"); }); drawChips(); sync(); return; }
     if (b.hasAttribute("data-mode")) { setSeg("mr-mode", "data-mode", b.getAttribute("data-mode")); if (b.getAttribute("data-mode") === "expr" && !$("#mr-code", M).value) $("#mr-code", M).value = toExpr(readRows(), $("#mr-match", M).value); sync(); }
     else if (b.hasAttribute("data-when")) { setSeg("mr-when", "data-when", b.getAttribute("data-when")); sync(); }
     else if (b.id === "mr-add-row") { var rows = readRows(); rows.push({ param: rows.length ? "pf" : "kw", op: rows.length ? "lt" : "gt", v1: null }); setRows(rows); sync(); }
@@ -449,7 +504,11 @@
   document.addEventListener("click", function (e) {
     var t = e.target.closest && e.target.closest("[data-rule-new], [data-rule-edit], [data-rule-del]");
     if (!t || t.classList.contains("is-disabled")) return;
-    if (t.hasAttribute("data-rule-new")) fillForm(null);
+    if (t.hasAttribute("data-rule-new")) {
+      var start = t.getAttribute("data-rule-meter");
+      if (PICK && start && ctxFor(start)) setMeter(ctxFor(start));
+      fillForm(null);
+    }
     else if (t.hasAttribute("data-rule-edit")) fillForm(S.meterRules(ORG).filter(function (r) { return r.id === t.getAttribute("data-rule-edit"); })[0] || null);
     else {
       var r = S.meterRules(ORG).filter(function (x) { return x.id === t.getAttribute("data-rule-del"); })[0];
