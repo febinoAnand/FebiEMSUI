@@ -218,6 +218,14 @@
       }
     });
 
+    // ---------- Reset: put every checkbox in the same card back to how the page loaded ----------
+    document.addEventListener("click", function (e) {
+      var b = e.target.closest && e.target.closest("[data-reset-checks]");
+      if (!b) return;
+      var card = b.closest(".card, .tab-panel") || document;
+      Array.prototype.forEach.call(card.querySelectorAll('input[type="checkbox"]'), function (c) { c.checked = c.defaultChecked; });
+    });
+
     // ---------- Sign out ----------
     if (q.signedout !== undefined && window.EDStore) EDStore.signOut();
     document.addEventListener("click", function (e) {

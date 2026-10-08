@@ -113,6 +113,7 @@
     var title = table.closest("details") || table.closest(".card") || table.closest("section") || document.body;
     var t = ((title.querySelector(".card__title, summary") || {}).textContent || "").toLowerCase();
     var m = t.match(/(users|meters|sub-meters|tenants|requests|runs|shifts|resources|permissions|modules|instances)/);
+    if (/telemetry/.test(t)) return "messages";
     if (/limits/.test(t)) return "resources";
     if (/permission/.test(t)) return "modules";
     if (/view as table/.test(t)) return "readings";

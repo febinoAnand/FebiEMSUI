@@ -155,7 +155,7 @@
       var own = r.meter === meter.id, st = r.enabled ? nowState(r) : null, sev = SEV[r.severity] || SEV.Warning;
       var controls = own ? '<label class="switch" title="' + (r.enabled ? "Active" : "Paused") + '"><input type="checkbox" data-rule-toggle="' + r.id + '"' + (r.enabled ? " checked" : "") + ' aria-label="Rule ' + esc(r.name) + ' active" /></label>' +
           '<div class="actions"><a href="#meter-rule" class="act act--edit" data-rule-edit="' + r.id + '" title="Edit"><i class="ic i-edit"></i></a><button type="button" class="act act--del" data-rule-del="' + r.id + '" title="Delete"><i class="ic i-trash"></i></button></div>'
-        : '<a href="meter.html?id=' + esc(C.parent.id) + '#meter-rules" class="btn btn--sm btn--ghost">Open parent</a>';
+        : '<a href="meter.html?id=' + esc(C.parent.id) + '&tab=alerts#meter-rules" class="btn btn--sm btn--ghost">Open parent</a>';
       return '<div class="mrule' + (r.enabled ? "" : " is-off") + '" style="--c:var(' + sev[1] + ')">' +
         '<span class="mrule__sev" title="' + esc(r.severity) + '"><i class="ic i-bell"></i></span>' +
         '<div class="grow"><div class="mrule__top"><strong>' + esc(r.name) + '</strong><div class="mrule__ctl">' + controls + "</div></div>" +

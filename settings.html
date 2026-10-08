@@ -51,6 +51,9 @@
         <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift</span></a>
         <a href="shift-schedule.html" class="nav__link"><i class="ic i-calendar"></i><span>Schedule</span></a>
         <a href="shift-instances.html" class="nav__link"><i class="ic i-chart"></i><span>Instance</span></a>
+        <div class="nav__section">Energy cost</div>
+        <a href="tariffs.html" class="nav__link"><i class="ic i-rupee"></i><span>Tariff</span></a>
+        <a href="tariff-instances.html" class="nav__link"><i class="ic i-activity"></i><span>Instances</span></a>
 
         <div class="nav__section">Administration</div>
         <a href="users.html" class="nav__link"><i class="ic i-users"></i><span>Users</span></a>
@@ -67,7 +70,7 @@
         </div>
       </div>
 
-      <div class="sidebar__foot"><span>v2.4.0</span><a href="#close" class="muted">Help &amp; docs</a></div>
+      <div class="sidebar__foot"><span>v2.4.0</span></div>
     </aside>
     <label for="nav-toggle" class="nav-scrim" aria-hidden="true"></label>
 
@@ -80,12 +83,6 @@
           <small><span data-bind="org.short">Febino Solutions</span> / Administration</small>
           <strong>Settings</strong>
         </div>
-
-        <label class="search">
-          <i class="ic i-search"></i>
-          <input type="search" placeholder="Search meters, users, alerts…" aria-label="Search" />
-          <kbd>Ctrl K</kbd>
-        </label>
 
         <div class="topbar__actions">
           <button type="button" class="icon-btn theme-toggle" data-theme-toggle aria-label="Toggle dark mode"><i class="ic i-moon"></i><i class="ic i-sun"></i></button>
@@ -161,15 +158,13 @@
           <input type="radio" class="tab-input" name="set" id="set-4" value="4" />
           <input type="radio" class="tab-input" name="set" id="set-5" value="5" />
           <input type="radio" class="tab-input" name="set" id="set-6" value="6" />
-          <input type="radio" class="tab-input" name="set" id="set-7" value="7" />
           <nav class="tab-list card">
             <label for="set-1" data-t="1"><i class="ic i-building"></i> Organisation</label>
             <label for="set-2" data-t="2"><i class="ic i-pin"></i> Sites</label>
-            <label for="set-3" data-t="3"><i class="ic i-rupee"></i> Tariffs</label>
-            <label for="set-4" data-t="4"><i class="ic i-bell"></i> Notifications</label>
-            <label for="set-5" data-t="5"><i class="ic i-lock"></i> Security</label>
-            <label for="set-6" data-t="6"><i class="ic i-card"></i> Plan &amp; billing</label>
-            <label for="set-7" data-t="7"><i class="ic i-palette"></i> Appearance</label>
+            <label for="set-3" data-t="3"><i class="ic i-bell"></i> Notifications</label>
+            <label for="set-4" data-t="4"><i class="ic i-lock"></i> Security</label>
+            <label for="set-5" data-t="5"><i class="ic i-card"></i> Plan &amp; billing</label>
+            <label for="set-6" data-t="6"><i class="ic i-palette"></i> Appearance</label>
           </nav>
 
           <!-- Organisation -->
@@ -200,7 +195,7 @@
             <article class="card" style="border-color:color-mix(in srgb, var(--rose) 30%, transparent)">
               <div class="card__head"><div><h3 class="card__title" style="color:var(--rose)"><i class="ic i-alert" style="color:var(--rose)"></i> Danger zone</h3><p class="card__sub">These actions affect every user in this tenant</p></div></div>
               <div class="card__body">
-                <div class="setting-row"><div><strong>Transfer ownership</strong><span>Make another admin the tenant owner.</span></div><a href="#close" class="btn btn--sm">Transfer</a></div>
+                
                 <div class="setting-row"><div><strong>Delete organisation</strong><span>Permanently delete all meters, readings and users.</span></div><a href="#delete-org" class="btn btn--sm btn--danger" data-admin-only>Delete tenant</a></div>
               </div>
             </article>
@@ -230,42 +225,8 @@
             </article>
           </div>
 
-          <!-- Tariffs -->
-          <div class="tab-panel" data-tab="3">
-            <article class="card paged">
-              <input type="radio" class="pg-input" name="tf-pg" id="tf-p1" value="1" checked aria-label="Page 1" />
-<input type="radio" class="pg-input" name="tf-pg" id="tf-p2" value="2" aria-label="Page 2" />
-              <div class="card__head"><div><h3 class="card__title"><i class="ic i-rupee"></i> Tariff slabs</h3><p class="card__sub">Time-of-Day slots T1–T5 used for cost calculation</p></div><a href="#add-tariff" class="btn btn--sm btn--primary" data-limit="tariffs"><i class="ic i-plus"></i> Add tariff</a></div>
-              <div class="card__body tod">
-                <div class="tod__strip" role="img" aria-label="Weekday time slots: T1 22:00–06:00, T2 06:00–10:00, T3 10:00–14:00, T4 14:00–18:00, T5 18:00–22:00">
-                  <span class="tod--t1" style="--h:6"><b>T1</b></span><span class="tod--t2" style="--h:4"><b>T2</b></span><span class="tod--t3" style="--h:4"><b>T3</b></span><span class="tod--t4" style="--h:4"><b>T4</b></span><span class="tod--t5" style="--h:4"><b>T5</b></span><span class="tod--t1" style="--h:2"><b>T1</b></span>
-                </div>
-                <div class="tod__axis mono"><span>00</span><span>06</span><span>10</span><span>14</span><span>18</span><span>22</span><span>24</span></div>
-              </div>
-              <div class="table-wrap"><table class="table"><thead><tr><th>Slot</th><th>Tariff</th><th>Time</th><th>Days</th><th class="num">Energy rate / kWh</th><th class="num">Demand charge</th><th>Status</th><th>Actions</th></tr></thead>
-<tbody data-page="1">
-  <tr><td><span class="shift-pill tod--t1">T1</span></td><td><strong>Off-peak (night)</strong></td><td class="mono small">22:00 – 06:00</td><td>Mon – Sat</td><td class="num">₹6.80</td><td class="num">₹350 / kVA</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Current</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
-  <tr><td><span class="shift-pill tod--t2">T2</span></td><td><strong>Morning peak</strong></td><td class="mono small">06:00 – 10:00</td><td>Mon – Sat</td><td class="num">₹9.20</td><td class="num">₹350 / kVA</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Current</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
-  <tr><td><span class="shift-pill tod--t3">T3</span></td><td><strong>Solar hours</strong></td><td class="mono small">10:00 – 14:00</td><td>Mon – Sat</td><td class="num">₹7.40</td><td class="num">₹350 / kVA</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Current</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
-  <tr><td><span class="shift-pill tod--t4">T4</span></td><td><strong>Normal</strong></td><td class="mono small">14:00 – 18:00</td><td>Mon – Sat</td><td class="num">₹8.00</td><td class="num">₹350 / kVA</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Current</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
-  <tr><td><span class="shift-pill tod--t5">T5</span></td><td><strong>Evening peak</strong></td><td class="mono small">18:00 – 22:00</td><td>Mon – Sat</td><td class="num">₹9.60</td><td class="num">₹350 / kVA</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Current</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
-</tbody>
-<tbody data-page="2">
-  <tr><td><span class="tag">Flat</span></td><td><strong>Sunday flat</strong></td><td class="mono small">00:00 – 24:00</td><td>Sunday</td><td class="num">₹7.20</td><td class="num">₹350 / kVA</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Current</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
-  <tr><td><span class="shift-pill tod--t4">T4</span></td><td><strong>FY 2025-26 Normal</strong></td><td class="mono small">14:00 – 18:00</td><td>Mon – Sat</td><td class="num">₹7.60</td><td class="num">₹330 / kVA</td><td><span class="badge badge--warn"><span class="dot"></span> Expired</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
-  <tr><td><span class="shift-pill tod--t5">T5</span></td><td><strong>FY 2025-26 Evening peak</strong></td><td class="mono small">18:00 – 22:00</td><td>Mon – Sat</td><td class="num">₹9.10</td><td class="num">₹330 / kVA</td><td><span class="badge badge--warn"><span class="dot"></span> Expired</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
-</tbody>
-              </table></div>
-              <div class="pager">
-  <div class="pager__info">Showing <span data-when="1"><strong>1–5</strong></span><span data-when="2"><strong>6–8</strong></span> of <strong>8</strong> tariffs</div>
-  <div class="pager__size">Rows per page <select class="input" aria-label="Rows per page"><option>5</option><option>10</option><option>20</option></select></div>
-  <div class="pager__nav"><span class="pg-btn is-disabled" data-when="1" aria-hidden="true"><i class="ic i-chev-left"></i></span><label for="tf-p1" data-when="2" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="tf-p1" data-p="1">1</label><label for="tf-p2" data-p="2">2</label><label for="tf-p2" data-when="1" aria-label="Next page"><i class="ic i-chev-right"></i></label><span class="pg-btn is-disabled" data-when="2" aria-hidden="true"><i class="ic i-chev-right"></i></span></div>
-</div>
-            </article>
-          </div>
-
           <!-- Notifications -->
-          <div class="tab-panel" data-tab="4">
+          <div class="tab-panel" data-tab="3">
             <article class="card">
               <div class="card__head"><div><h3 class="card__title"><i class="ic i-bell"></i> Notification preferences</h3><p class="card__sub">Defaults for all users — people can override their own</p></div></div>
               <div class="card__body">
@@ -281,7 +242,7 @@
           </div>
 
           <!-- Security -->
-          <div class="tab-panel stack" data-tab="5">
+          <div class="tab-panel stack" data-tab="4">
             <article class="card">
               <div class="card__head"><div><h3 class="card__title"><i class="ic i-shield"></i> Sign-in &amp; password policy</h3></div></div>
               <div class="card__body">
@@ -315,7 +276,7 @@
           </div>
 
           <!-- Billing -->
-          <div class="tab-panel stack" data-tab="6">
+          <div class="tab-panel stack" data-tab="5">
             <article class="card" style="overflow:hidden">
               <div class="card__body row wrap" style="gap:24px;justify-content:space-between">
                 <div>
@@ -323,7 +284,7 @@
                   <h3 style="font-size:26px;margin-top:4px">Growth <span class="badge badge--success">Trial · 18 days left</span></h3>
                   <p class="muted" style="margin-top:4px">₹4,999 / month · renews Oct 15, 2026</p>
                 </div>
-                <div class="row"><a href="#close" class="btn">Compare plans</a><a href="#saved" class="btn btn--primary"><i class="ic i-spark"></i> Upgrade to Enterprise</a></div>
+                <div class="row"><a href="#saved" class="btn btn--primary"><i class="ic i-spark"></i> Upgrade to Enterprise</a></div>
               </div>
               <div class="card__foot grid grid-3" style="gap:24px">
                 <div><div class="row-between small"><span class="muted">Meters</span><span class="mono">12 / 100</span></div><div class="bar" style="margin-top:8px"><span style="--w:12%"></span></div></div>
@@ -334,7 +295,7 @@
           </div>
 
           <!-- Appearance (personal preference, saved in this browser) -->
-          <div class="tab-panel" data-tab="7">
+          <div class="tab-panel" data-tab="6">
             <article class="card">
               <div class="card__head"><div><h3 class="card__title"><i class="ic i-palette"></i> Appearance</h3><p class="card__sub">Choose a theme — saved on this device and applied to every page</p></div></div>
               <div class="card__body">
@@ -524,61 +485,6 @@
   </div>
 </div>
 
-  <div class="modal" id="add-tariff" role="dialog" aria-modal="true" aria-labelledby="add-tariff-t">
-  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
-  <div class="modal__dialog">
-    <div class="modal__head">
-      <span class="modal__icon modal__icon--amber"><i class="ic i-rupee"></i></span>
-      <div><h3 id="add-tariff-t">Add tariff slab</h3><p>Rates apply to all meters at the selected site.</p></div>
-      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
-    </div>
-    <div class="modal__body">
-      <div class="callout callout--danger" data-limit-full="tariffs" hidden style="margin-bottom:16px"></div>
-      <div class="form-grid">
-        <div class="field"><label>Time slot <span class="req">*</span></label><select class="input"><option>T1</option><option>T2</option><option>T3</option><option>T4</option><option selected>T5</option></select></div>
-        <div class="field"><label>Name <span class="req">*</span></label><input class="input" placeholder="Evening peak" /></div>
-        <div class="field"><label>From</label><input type="time" class="input" value="18:00" /></div>
-        <div class="field"><label>To</label><input type="time" class="input" value="22:00" /></div>
-        <div class="field"><label>Energy rate</label><div class="input-icon"><i class="ic i-rupee"></i><input class="input mono" placeholder="9.60" /><span class="suffix">/ kWh</span></div></div>
-        <div class="field"><label>Demand charge</label><div class="input-icon"><i class="ic i-rupee"></i><input class="input mono" placeholder="350" /><span class="suffix">/ kVA</span></div></div>
-        <div class="field"><label>Days</label><select class="input"><option>Mon – Sat</option><option>All days</option><option>Sunday</option></select></div>
-        <div class="field"><label>Effective from</label><input type="date" class="input" value="2026-04-01" /></div>
-      </div>
-      </div>
-    <div class="modal__foot">
-      <a href="#close" class="btn btn--ghost">Cancel</a>
-      <a href="#created" class="btn btn--primary" data-limit="tariffs"><i class="ic i-check"></i> Add tariff</a>
-    </div>
-  </div>
-</div>
-
-  <div class="modal" id="edit-tariff" role="dialog" aria-modal="true" aria-labelledby="edit-tariff-t">
-  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
-  <div class="modal__dialog">
-    <div class="modal__head">
-      <span class="modal__icon modal__icon--cyan"><i class="ic i-edit"></i></span>
-      <div><h3 id="edit-tariff-t">Edit tariff slab</h3><p>T5 · Evening peak</p></div>
-      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
-    </div>
-    <div class="modal__body">
-      <div class="form-grid">
-        <div class="field"><label>Time slot</label><select class="input"><option>T1</option><option>T2</option><option>T3</option><option>T4</option><option selected>T5</option></select></div>
-        <div class="field"><label>Name</label><input class="input" value="Evening peak" /></div>
-        <div class="field"><label>From</label><input type="time" class="input" value="18:00" /></div>
-        <div class="field"><label>To</label><input type="time" class="input" value="22:00" /></div>
-        <div class="field"><label>Energy rate</label><div class="input-icon"><i class="ic i-rupee"></i><input class="input mono" value="9.60" /><span class="suffix">/ kWh</span></div></div>
-        <div class="field"><label>Demand charge</label><div class="input-icon"><i class="ic i-rupee"></i><input class="input mono" value="350" /><span class="suffix">/ kVA</span></div></div>
-        <div class="field"><label>Days</label><select class="input"><option selected>Mon – Sat</option><option>All days</option></select></div>
-        <div class="field"><label>Status</label><select class="input"><option selected>Current</option><option>Expired</option></select></div>
-      </div>
-      </div>
-    <div class="modal__foot">
-      <a href="#close" class="btn btn--ghost">Cancel</a>
-      <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save tariff</a>
-    </div>
-  </div>
-</div>
-
   <div class="modal" id="edit-session" role="dialog" aria-modal="true" aria-labelledby="edit-session-t">
   <a href="#close" class="modal__backdrop" aria-label="Close"></a>
   <div class="modal__dialog modal__dialog--sm">
@@ -606,20 +512,6 @@
       <span class="modal__icon modal__icon--rose"><i class="ic i-trash"></i></span>
       <h3 id="delete-site-t">Delete this site?</h3>
       <p>Devices at this site must be moved or deleted first.</p>
-    </div>
-    <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
-      <a href="#close" class="btn">Cancel</a>
-      <a href="#deleted" class="btn btn--danger"><i class="ic i-trash"></i> Yes, delete</a>
-    </div>
-  </div>
-</div>
-  <div class="modal modal--danger" id="delete-tariff" role="dialog" aria-modal="true" aria-labelledby="delete-tariff-t">
-  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
-  <div class="modal__dialog modal__dialog--sm">
-    <div class="confirm">
-      <span class="modal__icon modal__icon--rose"><i class="ic i-trash"></i></span>
-      <h3 id="delete-tariff-t">Delete tariff slab?</h3>
-      <p>Cost for past readings is not recalculated.</p>
     </div>
     <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
       <a href="#close" class="btn">Cancel</a>
