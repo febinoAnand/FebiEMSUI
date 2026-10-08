@@ -14,6 +14,8 @@
   <script src="assets/js/workspace.js" defer></script>
   <script src="assets/js/users.js" defer></script>
   <script src="assets/js/export.js" defer></script>
+  <script src="assets/js/table-scroll.js" defer></script>
+  <script src="assets/js/pager.js" defer></script>
 </head>
 <body class="app">
   <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
@@ -181,6 +183,7 @@
           </div>
           <div class="pager">
             <div class="pager__info" id="user-pager-info"></div>
+            <div class="pager__size">Rows per page <select class="input" id="user-page-size" aria-label="Rows per page"><option>6</option><option>12</option><option>24</option><option value="1000">All</option></select></div>
             <div class="pager__nav" id="user-pager-nav"></div>
           </div>
         </section>

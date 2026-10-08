@@ -12,6 +12,8 @@
   <script src="assets/js/store.js"></script>
   <script src="assets/js/app.js"></script>
   <script src="assets/js/auth.js" defer></script>
+  <script src="assets/js/table-scroll.js" defer></script>
+  <script src="assets/js/pager.js" defer></script>
 </head>
 <body class="auth">
   <div class="auth-shell">
@@ -99,15 +101,15 @@
               <span class="field-error" data-err="r-city">Enter the city where your site is.</span>
             </div>
             <div class="field">
-              <label for="r-discom">Electricity provider (DISCOM) <span class="req">*</span></label>
+              <label for="r-discom">Electricity provider (DISCOM) <span class="muted">(optional)</span></label>
               <div class="input-icon"><i class="ic i-plug"></i><input id="r-discom" class="input" placeholder="e.g. BESCOM" list="discoms" /></div>
               <datalist id="discoms"><option>BESCOM</option><option>TANGEDCO</option><option>MSEDCL</option><option>BSES Rajdhani</option><option>Tata Power</option><option>KSEB</option><option>TSSPDCL</option><option>Adani Electricity</option></datalist>
-              <span class="field-error" data-err="r-discom">Enter your electricity provider.</span>
+              <span class="field-error" data-err="r-discom">Enter at least 2 characters, or leave it blank.</span>
             </div>
             <div class="field">
-              <label for="r-demand">Contract demand <span class="req">*</span></label>
+              <label for="r-demand">Contract demand <span class="muted">(optional)</span></label>
               <div class="input-icon"><i class="ic i-bolt"></i><input id="r-demand" class="input mono" inputmode="decimal" placeholder="e.g. 250" /><span class="suffix">kVA</span></div>
-              <span class="field-error" data-err="r-demand">Enter the sanctioned load in kVA (1 – 100,000).</span>
+              <span class="field-error" data-err="r-demand">Enter the sanctioned load in kVA (1 – 100,000), or leave it blank.</span>
             </div>
             <div class="field full">
               <label for="r-meters">Number of energy meters <span class="req">*</span></label>

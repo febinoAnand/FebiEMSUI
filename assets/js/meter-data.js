@@ -1,8 +1,10 @@
 /* Energy Dashboard — demo meter registry (generated from the meter tree on meters.html).
-   Main meters carry their own (actual) reading; each sub-meter reports through its parent's device. */
+   Main meters carry their own (actual) reading; each sub-meter reports through its parent's device.
+   phase: 3 = three-phase (4-wire, 415 V L-L / 230 V L-N), 1 = single-phase (2-wire, 230 V). */
 window.ED_METERS = [
  {
   "id": "MTR-1001",
+  "phase": 3,
   "name": "Main Incomer",
   "model": "Schneider PM5560",
   "location": "Main LT Panel",
@@ -17,6 +19,7 @@ window.ED_METERS = [
   "subs": [
    {
     "id": "SM-1001-01",
+    "phase": 3,
     "name": "Feeder A · Production Line 1",
     "ct": "CT 400/5",
     "power": 24.8,
@@ -26,6 +29,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1001-02",
+    "phase": 3,
     "name": "Feeder B · Production Line 2",
     "ct": "CT 400/5",
     "power": 21.6,
@@ -35,6 +39,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1001-03",
+    "phase": 3,
     "name": "Feeder C · Tool Room",
     "ct": "CT 200/5",
     "power": 11.4,
@@ -44,6 +49,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1001-04",
+    "phase": 3,
     "name": "Feeder D · Welding Bay",
     "ct": "CT 200/5",
     "power": 7.4,
@@ -56,6 +62,7 @@ window.ED_METERS = [
  },
  {
   "id": "MTR-1002",
+  "phase": 3,
   "name": "HVAC",
   "model": "Secure Elite 440",
   "location": "Utility Block",
@@ -70,6 +77,7 @@ window.ED_METERS = [
   "subs": [
    {
     "id": "SM-1002-01",
+    "phase": 3,
     "name": "Chiller-1",
     "ct": "Direct 63 A",
     "power": 8.6,
@@ -79,6 +87,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1002-02",
+    "phase": 3,
     "name": "Chiller-2",
     "ct": "Direct 63 A",
     "power": 9.5,
@@ -88,6 +97,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1002-03",
+    "phase": 3,
     "name": "AHU · Level 1–3",
     "ct": "CT 100/5",
     "power": 3.9,
@@ -100,6 +110,7 @@ window.ED_METERS = [
  },
  {
   "id": "MTR-1003",
+  "phase": 3,
   "name": "Office",
   "model": "L&T WL4405",
   "location": "Admin Building",
@@ -114,6 +125,7 @@ window.ED_METERS = [
   "subs": [
    {
     "id": "SM-1003-01",
+    "phase": 3,
     "name": "Ground floor DB",
     "ct": "Direct 32 A",
     "power": 3.1,
@@ -123,6 +135,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1003-02",
+    "phase": 3,
     "name": "First floor DB",
     "ct": "Direct 32 A",
     "power": 2.8,
@@ -132,6 +145,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1003-03",
+    "phase": 3,
     "name": "Second floor DB",
     "ct": "Direct 32 A",
     "power": 2.4,
@@ -141,6 +155,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1003-04",
+    "phase": 1,
     "name": "Conference wing",
     "ct": "Direct 16 A",
     "power": 1.9,
@@ -150,6 +165,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1003-05",
+    "phase": 3,
     "name": "Office UPS",
     "ct": "Direct 32 A",
     "power": 1.8,
@@ -162,6 +178,7 @@ window.ED_METERS = [
  },
  {
   "id": "MTR-1004",
+  "phase": 3,
   "name": "Data Centre",
   "model": "Schneider PM2220",
   "location": "Server Room · L2",
@@ -176,6 +193,7 @@ window.ED_METERS = [
   "subs": [
    {
     "id": "SM-1004-01",
+    "phase": 3,
     "name": "UPS-A feeder",
     "ct": "CT 100/5",
     "power": 6.2,
@@ -185,6 +203,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1004-02",
+    "phase": 3,
     "name": "UPS-B feeder",
     "ct": "CT 100/5",
     "power": 0,
@@ -194,6 +213,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1004-03",
+    "phase": 3,
     "name": "Precision AC",
     "ct": "Direct 32 A",
     "power": 4.1,
@@ -203,6 +223,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1004-04",
+    "phase": 1,
     "name": "Rack lighting",
     "ct": "Direct 10 A",
     "power": 0.3,
@@ -215,6 +236,7 @@ window.ED_METERS = [
  },
  {
   "id": "MTR-1005",
+  "phase": 3,
   "name": "Lighting",
   "model": "Elmeasure LG+ 1129",
   "location": "Plant-wide",
@@ -229,6 +251,7 @@ window.ED_METERS = [
   "subs": [
    {
     "id": "SM-1005-01",
+    "phase": 3,
     "name": "Shop floor high-bays",
     "ct": "CT 60/5",
     "power": 6.4,
@@ -238,6 +261,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1005-02",
+    "phase": 1,
     "name": "Street lights",
     "ct": "Direct 32 A",
     "power": 2.1,
@@ -247,6 +271,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1005-03",
+    "phase": 3,
     "name": "Warehouse",
     "ct": "Direct 32 A",
     "power": 2.6,
@@ -256,6 +281,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1005-04",
+    "phase": 1,
     "name": "Admin corridors",
     "ct": "Direct 16 A",
     "power": 1.2,
@@ -265,6 +291,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1005-05",
+    "phase": 1,
     "name": "Security & gate",
     "ct": "Direct 10 A",
     "power": 0.7,
@@ -274,6 +301,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1005-06",
+    "phase": 1,
     "name": "Emergency lighting",
     "ct": "Direct 10 A",
     "power": 0.8,
@@ -286,6 +314,7 @@ window.ED_METERS = [
  },
  {
   "id": "MTR-1006",
+  "phase": 3,
   "name": "Compressor House",
   "model": "Schneider PM5560",
   "location": "Utility Block",
@@ -300,6 +329,7 @@ window.ED_METERS = [
   "subs": [
    {
     "id": "SM-1006-01",
+    "phase": 3,
     "name": "Screw compressor 1",
     "ct": "CT 200/5",
     "power": 0,
@@ -309,6 +339,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1006-02",
+    "phase": 3,
     "name": "Screw compressor 2",
     "ct": "CT 200/5",
     "power": 0,
@@ -318,6 +349,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1006-03",
+    "phase": 3,
     "name": "Air dryer",
     "ct": "Direct 32 A",
     "power": 0,
@@ -330,6 +362,7 @@ window.ED_METERS = [
  },
  {
   "id": "MTR-1007",
+  "phase": 3,
   "name": "Rooftop Solar",
   "model": "Fronius Smart Meter",
   "location": "Roof · Block A",
@@ -344,6 +377,7 @@ window.ED_METERS = [
   "subs": [
    {
     "id": "SM-1007-01",
+    "phase": 3,
     "name": "Inverter 1 · 25 kWp",
     "ct": "Direct 63 A",
     "power": -10.2,
@@ -353,6 +387,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1007-02",
+    "phase": 3,
     "name": "Inverter 2 · 20 kWp",
     "ct": "Direct 63 A",
     "power": -8.4,
@@ -365,6 +400,7 @@ window.ED_METERS = [
  },
  {
   "id": "MTR-1008",
+  "phase": 3,
   "name": "DG Set 1",
   "model": "Deepsea DSE7320",
   "location": "DG Yard",
@@ -379,6 +415,7 @@ window.ED_METERS = [
   "subs": [
    {
     "id": "SM-1008-01",
+    "phase": 3,
     "name": "DG output · 250 kVA",
     "ct": "CT 400/5",
     "power": 0,
@@ -391,6 +428,7 @@ window.ED_METERS = [
  },
  {
   "id": "MTR-1009",
+  "phase": 3,
   "name": "Water Pumps",
   "model": "Elmeasure LG+ 5310",
   "location": "Pump House",
@@ -405,6 +443,7 @@ window.ED_METERS = [
   "subs": [
    {
     "id": "SM-1009-01",
+    "phase": 3,
     "name": "Borewell pump",
     "ct": "Direct 32 A",
     "power": 3.2,
@@ -414,6 +453,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1009-02",
+    "phase": 3,
     "name": "Transfer pump",
     "ct": "Direct 32 A",
     "power": 2.4,
@@ -423,6 +463,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1009-03",
+    "phase": 3,
     "name": "Fire hydrant jockey",
     "ct": "Direct 16 A",
     "power": 0.8,
@@ -432,6 +473,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1009-04",
+    "phase": 3,
     "name": "STP blowers",
     "ct": "Direct 32 A",
     "power": 2.2,
@@ -444,6 +486,7 @@ window.ED_METERS = [
  },
  {
   "id": "MTR-1010",
+  "phase": 3,
   "name": "Canteen",
   "model": "L&T WL4405",
   "location": "Amenities Block",
@@ -458,6 +501,7 @@ window.ED_METERS = [
   "subs": [
    {
     "id": "SM-1010-01",
+    "phase": 3,
     "name": "Kitchen equipment",
     "ct": "Direct 32 A",
     "power": 2.6,
@@ -467,6 +511,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1010-02",
+    "phase": 3,
     "name": "Cold storage",
     "ct": "Direct 16 A",
     "power": 1.1,
@@ -476,6 +521,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1010-03",
+    "phase": 1,
     "name": "Dining hall",
     "ct": "Direct 16 A",
     "power": 0.5,
@@ -488,6 +534,7 @@ window.ED_METERS = [
  },
  {
   "id": "MTR-1011",
+  "phase": 3,
   "name": "EV Charging",
   "model": "Secure Elite 440",
   "location": "Parking · P1",
@@ -502,6 +549,7 @@ window.ED_METERS = [
   "subs": [
    {
     "id": "SM-1011-01",
+    "phase": 1,
     "name": "Charger 1 · 7.4 kW AC",
     "ct": "Direct 32 A",
     "power": 7.4,
@@ -511,6 +559,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1011-02",
+    "phase": 1,
     "name": "Charger 2 · 7.4 kW AC",
     "ct": "Direct 32 A",
     "power": 0,
@@ -523,6 +572,7 @@ window.ED_METERS = [
  },
  {
   "id": "MTR-1012",
+  "phase": 3,
   "name": "Paint Shop",
   "model": "Schneider PM5560",
   "location": "Block C",
@@ -537,6 +587,7 @@ window.ED_METERS = [
   "subs": [
    {
     "id": "SM-1012-01",
+    "phase": 3,
     "name": "Spray booth",
     "ct": "CT 200/5",
     "power": 0,
@@ -546,6 +597,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1012-02",
+    "phase": 3,
     "name": "Curing oven",
     "ct": "CT 200/5",
     "power": 0,
@@ -555,6 +607,7 @@ window.ED_METERS = [
    },
    {
     "id": "SM-1012-03",
+    "phase": 3,
     "name": "Exhaust fans",
     "ct": "Direct 32 A",
     "power": 0,

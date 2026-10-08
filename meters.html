@@ -13,7 +13,12 @@
   <script src="assets/js/app.js"></script>
   <script src="assets/js/workspace.js" defer></script>
   <script src="assets/js/meter-data.js" defer></script>
+  <script src="assets/js/phase.js" defer></script>
   <script src="assets/js/export.js" defer></script>
+  <script src="assets/js/alert-rules-text.js" defer></script>
+  <script src="assets/js/meter-alerts.js" defer></script>
+  <script src="assets/js/pager.js" defer></script>
+  <script src="assets/js/table-scroll.js" defer></script>
 </head>
 <body class="app">
   <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
@@ -192,7 +197,7 @@
     <td><label for="mtr-1001" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 4 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>67.1 kW</strong><small>actual</small></div><div class="mv mv--sum">65.2 kW<small>Σ 4 sub</small></div></td><td class="num"><div class="mv"><strong>8,712</strong><small>actual</small></div><div class="mv mv--sum">8,450<small>Σ 4 sub</small></div><span class="gap gap--mid" title="Actual − sum of sub-meters: 1.9 kW · 262 kWh">Δ +262 · 3.1% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:72%"></span></div><small>72%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">10 s ago</div></td>
-    <td><div class="actions"><a href="meter.html?id=MTR-1001" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"MTR-1001","ma-sub":"Main Incomer · MTR-1001"}'><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1001" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="MTR-1001" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -202,7 +207,7 @@
     <td><span class="tag">CT 400/5</span></td>
     <td class="num">24.8 kW</td><td class="num">3,120</td><td><div class="bar-cell"><div class="bar"><span style="--w:78%"></span></div><small>78%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1001-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1001-01","ma-sub":"Feeder A · Production Line 1 · SM-1001-01"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1001-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1001-01" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -212,7 +217,7 @@
     <td><span class="tag">CT 400/5</span></td>
     <td class="num">21.6 kW</td><td class="num">2,840</td><td><div class="bar-cell"><div class="bar"><span style="--w:70%"></span></div><small>70%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1001-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1001-02","ma-sub":"Feeder B · Production Line 2 · SM-1001-02"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1001-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1001-02" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -222,7 +227,7 @@
     <td><span class="tag">CT 200/5</span></td>
     <td class="num">11.4 kW</td><td class="num">1,560</td><td><div class="bar-cell"><div class="bar"><span style="--w:57%"></span></div><small>57%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1001-03" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1001-03","ma-sub":"Feeder C · Tool Room · SM-1001-03"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1001-03" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1001-03" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -232,7 +237,7 @@
     <td><span class="tag">CT 200/5</span></td>
     <td class="num">7.4 kW</td><td class="num">930</td><td><div class="bar-cell"><div class="bar"><span style="--w:41%"></span></div><small>41%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1001-04" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1001-04","ma-sub":"Feeder D · Welding Bay · SM-1001-04"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1001-04" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1001-04" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row sub-row--add"><td></td><td colspan="9"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to Main Incomer</a></td></tr>
 </tbody>
@@ -245,7 +250,7 @@
     <td><label for="mtr-1002" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 3 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>22.6 kW</strong><small>actual</small></div><div class="mv mv--sum">22.0 kW<small>Σ 3 sub</small></div></td><td class="num"><div class="mv"><strong>2,236</strong><small>actual</small></div><div class="mv mv--sum">2,180<small>Σ 3 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.6 kW · 56 kWh">Δ +56 · 2.6% unmetered</span></td><td><div class="bar-cell"><div class="bar bar--rose"><span style="--w:91%"></span></div><small>91%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">12 s ago</div></td>
-    <td><div class="actions"><a href="meter.html?id=MTR-1002" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"MTR-1002","ma-sub":"HVAC · MTR-1002"}'><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1002" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="MTR-1002" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -255,7 +260,7 @@
     <td><span class="tag">Direct 63 A</span></td>
     <td class="num">8.6 kW</td><td class="num">860</td><td><div class="bar-cell"><div class="bar bar--amber"><span style="--w:86%"></span></div><small>86%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1002-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1002-01","ma-sub":"Chiller-1 · SM-1002-01"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1002-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1002-01" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -265,7 +270,7 @@
     <td><span class="tag">Direct 63 A</span></td>
     <td class="num">9.5 kW</td><td class="num">905</td><td><div class="bar-cell"><div class="bar bar--rose"><span style="--w:95%"></span></div><small>95%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1002-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1002-02","ma-sub":"Chiller-2 · SM-1002-02"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1002-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1002-02" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -275,7 +280,7 @@
     <td><span class="tag">CT 100/5</span></td>
     <td class="num">3.9 kW</td><td class="num">415</td><td><div class="bar-cell"><div class="bar"><span style="--w:52%"></span></div><small>52%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1002-03" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1002-03","ma-sub":"AHU · Level 1–3 · SM-1002-03"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1002-03" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1002-03" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row sub-row--add"><td></td><td colspan="9"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to HVAC</a></td></tr>
 </tbody>
@@ -288,7 +293,7 @@
     <td><label for="mtr-1003" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 5 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>12.3 kW</strong><small>actual</small></div><div class="mv mv--sum">12.0 kW<small>Σ 5 sub</small></div></td><td class="num"><div class="mv"><strong>1,004</strong><small>actual</small></div><div class="mv mv--sum">980<small>Σ 5 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.3 kW · 24 kWh">Δ +24 · 2.4% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:28%"></span></div><small>28%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Idle</span><div class="small muted" style="margin-top:4px">15 s ago</div></td>
-    <td><div class="actions"><a href="meter.html?id=MTR-1003" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"MTR-1003","ma-sub":"Office · MTR-1003"}'><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1003" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="MTR-1003" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -298,7 +303,7 @@
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">3.1 kW</td><td class="num">260</td><td><div class="bar-cell"><div class="bar"><span style="--w:31%"></span></div><small>31%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1003-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1003-01","ma-sub":"Ground floor DB · SM-1003-01"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1003-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1003-01" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -308,7 +313,7 @@
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">2.8 kW</td><td class="num">240</td><td><div class="bar-cell"><div class="bar"><span style="--w:28%"></span></div><small>28%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1003-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1003-02","ma-sub":"First floor DB · SM-1003-02"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1003-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1003-02" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -318,7 +323,7 @@
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">2.4 kW</td><td class="num">205</td><td><div class="bar-cell"><div class="bar"><span style="--w:24%"></span></div><small>24%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1003-03" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1003-03","ma-sub":"Second floor DB · SM-1003-03"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1003-03" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1003-03" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -328,7 +333,7 @@
     <td><span class="tag">Direct 16 A</span></td>
     <td class="num">1.9 kW</td><td class="num">140</td><td><div class="bar-cell"><div class="bar"><span style="--w:38%"></span></div><small>38%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1003-04" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1003-04","ma-sub":"Conference wing · SM-1003-04"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1003-04" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1003-04" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -338,7 +343,7 @@
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">1.8 kW</td><td class="num">135</td><td><div class="bar-cell"><div class="bar"><span style="--w:20%"></span></div><small>20%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1003-05" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1003-05","ma-sub":"Office UPS · SM-1003-05"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1003-05" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1003-05" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row sub-row--add"><td></td><td colspan="9"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to Office</a></td></tr>
 </tbody>
@@ -351,7 +356,7 @@
     <td><label for="mtr-1004" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 4 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>12.4 kW</strong><small>actual</small></div><div class="mv mv--sum">10.6 kW<small>Σ 4 sub</small></div></td><td class="num"><div class="mv"><strong>3,108</strong><small>actual</small></div><div class="mv mv--sum">3,020<small>Σ 4 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 1.8 kW · 88 kWh">Δ +88 · 2.9% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:64%"></span></div><small>64%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">8 s ago</div></td>
-    <td><div class="actions"><a href="meter.html?id=MTR-1004" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"MTR-1004","ma-sub":"Data Centre · MTR-1004"}'><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1004" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="MTR-1004" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -361,7 +366,7 @@
     <td><span class="tag">CT 100/5</span></td>
     <td class="num">6.2 kW</td><td class="num">1,480</td><td><div class="bar-cell"><div class="bar"><span style="--w:62%"></span></div><small>62%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1004-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1004-01","ma-sub":"UPS-A feeder · SM-1004-01"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1004-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1004-01" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -371,7 +376,7 @@
     <td><span class="tag">CT 100/5</span></td>
     <td class="num">0.0 kW</td><td class="num">1,110</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--danger"><span class="dot"></span> Offline</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1004-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1004-02","ma-sub":"UPS-B feeder · SM-1004-02"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1004-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1004-02" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -381,7 +386,7 @@
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">4.1 kW</td><td class="num">330</td><td><div class="bar-cell"><div class="bar"><span style="--w:68%"></span></div><small>68%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1004-03" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1004-03","ma-sub":"Precision AC · SM-1004-03"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1004-03" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1004-03" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -391,7 +396,7 @@
     <td><span class="tag">Direct 10 A</span></td>
     <td class="num">0.3 kW</td><td class="num">100</td><td><div class="bar-cell"><div class="bar"><span style="--w:22%"></span></div><small>22%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1004-04" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1004-04","ma-sub":"Rack lighting · SM-1004-04"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1004-04" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1004-04" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row sub-row--add"><td></td><td colspan="9"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to Data Centre</a></td></tr>
 </tbody>
@@ -404,7 +409,7 @@
     <td><label for="mtr-1005" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 6 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>14.1 kW</strong><small>actual</small></div><div class="mv mv--sum">13.8 kW<small>Σ 6 sub</small></div></td><td class="num"><div class="mv"><strong>1,442</strong><small>actual</small></div><div class="mv mv--sum">1,410<small>Σ 6 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.3 kW · 32 kWh">Δ +32 · 2.3% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:55%"></span></div><small>55%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">11 s ago</div></td>
-    <td><div class="actions"><a href="meter.html?id=MTR-1005" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"MTR-1005","ma-sub":"Lighting · MTR-1005"}'><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1005" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="MTR-1005" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -414,7 +419,7 @@
     <td><span class="tag">CT 60/5</span></td>
     <td class="num">6.4 kW</td><td class="num">640</td><td><div class="bar-cell"><div class="bar"><span style="--w:64%"></span></div><small>64%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1005-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1005-01","ma-sub":"Shop floor high-bays · SM-1005-01"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1005-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1005-01" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -424,7 +429,7 @@
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">2.1 kW</td><td class="num">180</td><td><div class="bar-cell"><div class="bar"><span style="--w:42%"></span></div><small>42%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1005-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1005-02","ma-sub":"Street lights · SM-1005-02"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1005-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1005-02" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -434,7 +439,7 @@
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">2.6 kW</td><td class="num">260</td><td><div class="bar-cell"><div class="bar"><span style="--w:52%"></span></div><small>52%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1005-03" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1005-03","ma-sub":"Warehouse · SM-1005-03"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1005-03" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1005-03" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -444,7 +449,7 @@
     <td><span class="tag">Direct 16 A</span></td>
     <td class="num">1.2 kW</td><td class="num">130</td><td><div class="bar-cell"><div class="bar"><span style="--w:40%"></span></div><small>40%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1005-04" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1005-04","ma-sub":"Admin corridors · SM-1005-04"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1005-04" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1005-04" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -454,7 +459,7 @@
     <td><span class="tag">Direct 10 A</span></td>
     <td class="num">0.7 kW</td><td class="num">90</td><td><div class="bar-cell"><div class="bar"><span style="--w:35%"></span></div><small>35%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1005-05" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1005-05","ma-sub":"Security & gate · SM-1005-05"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1005-05" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1005-05" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -464,7 +469,7 @@
     <td><span class="tag">Direct 10 A</span></td>
     <td class="num">0.8 kW</td><td class="num">110</td><td><div class="bar-cell"><div class="bar"><span style="--w:26%"></span></div><small>26%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1005-06" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1005-06","ma-sub":"Emergency lighting · SM-1005-06"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1005-06" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1005-06" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row sub-row--add"><td></td><td colspan="9"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to Lighting</a></td></tr>
 </tbody>
@@ -477,7 +482,7 @@
     <td><label for="mtr-1006" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 3 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>0.0 kW</strong><small>actual</small></div><div class="mv mv--sum">0.0 kW<small>Σ 3 sub</small></div></td><td class="num"><div class="mv"><strong>4,190</strong><small>actual</small></div><div class="mv mv--sum">4,112<small>Σ 3 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.0 kW · 78 kWh">Δ +78 · 1.9% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--danger"><span class="dot"></span> Offline</span><div class="small muted" style="margin-top:4px">38 min ago</div></td>
-    <td><div class="actions"><a href="meter.html?id=MTR-1006" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"MTR-1006","ma-sub":"Compressor House · MTR-1006"}'><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1006" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="MTR-1006" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -487,7 +492,7 @@
     <td><span class="tag">CT 200/5</span></td>
     <td class="num">0.0 kW</td><td class="num">2,210</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--danger"><span class="dot"></span> Offline</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1006-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1006-01","ma-sub":"Screw compressor 1 · SM-1006-01"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1006-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1006-01" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -497,7 +502,7 @@
     <td><span class="tag">CT 200/5</span></td>
     <td class="num">0.0 kW</td><td class="num">1,640</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--danger"><span class="dot"></span> Offline</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1006-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1006-02","ma-sub":"Screw compressor 2 · SM-1006-02"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1006-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1006-02" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -507,7 +512,7 @@
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">0.0 kW</td><td class="num">262</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--danger"><span class="dot"></span> Offline</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1006-03" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1006-03","ma-sub":"Air dryer · SM-1006-03"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1006-03" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1006-03" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row sub-row--add"><td></td><td colspan="9"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to Compressor House</a></td></tr>
 </tbody>
@@ -520,7 +525,7 @@
     <td><label for="mtr-1007" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 2 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>−18.2 kW</strong><small>actual</small></div><div class="mv mv--sum">−18.6 kW<small>Σ 2 sub</small></div></td><td class="num"><div class="mv"><strong>1,262</strong><small>actual</small></div><div class="mv mv--sum">1,284<small>Σ 2 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.4 kW · −22 kWh">Δ −22 · 1.7% losses</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:62%"></span></div><small>62%</small></div></td>
     <td><span class="badge badge--info"><span class="dot dot--live"></span> Generating</span><div class="small muted" style="margin-top:4px">9 s ago</div></td>
-    <td><div class="actions"><a href="meter.html?id=MTR-1007" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"MTR-1007","ma-sub":"Rooftop Solar · MTR-1007"}'><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1007" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="MTR-1007" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -530,7 +535,7 @@
     <td><span class="tag">Direct 63 A</span></td>
     <td class="num">−10.2 kW</td><td class="num">704</td><td><div class="bar-cell"><div class="bar"><span style="--w:68%"></span></div><small>68%</small></div></td>
     <td><span class="badge badge--info"><span class="dot dot--live"></span> Generating</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1007-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1007-01","ma-sub":"Inverter 1 · 25 kWp · SM-1007-01"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1007-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1007-01" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -540,7 +545,7 @@
     <td><span class="tag">Direct 63 A</span></td>
     <td class="num">−8.4 kW</td><td class="num">580</td><td><div class="bar-cell"><div class="bar"><span style="--w:56%"></span></div><small>56%</small></div></td>
     <td><span class="badge badge--info"><span class="dot dot--live"></span> Generating</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1007-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1007-02","ma-sub":"Inverter 2 · 20 kWp · SM-1007-02"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1007-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1007-02" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row sub-row--add"><td></td><td colspan="9"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to Rooftop Solar</a></td></tr>
 </tbody>
@@ -553,7 +558,7 @@
     <td><label for="mtr-1008" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 1 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>0.0 kW</strong><small>actual</small></div><div class="mv mv--sum">0.0 kW<small>Σ 1 sub</small></div></td><td class="num"><div class="mv"><strong>216</strong><small>actual</small></div><div class="mv mv--sum">212<small>Σ 1 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.0 kW · 4 kWh">Δ +4 · 1.9% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Standby</span><div class="small muted" style="margin-top:4px">1 min ago</div></td>
-    <td><div class="actions"><a href="meter.html?id=MTR-1008" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"MTR-1008","ma-sub":"DG Set 1 · MTR-1008"}'><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1008" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="MTR-1008" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -563,7 +568,7 @@
     <td><span class="tag">CT 400/5</span></td>
     <td class="num">0.0 kW</td><td class="num">212</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Standby</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1008-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1008-01","ma-sub":"DG output · 250 kVA · SM-1008-01"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1008-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1008-01" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row sub-row--add"><td></td><td colspan="9"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to DG Set 1</a></td></tr>
 </tbody>
@@ -576,7 +581,7 @@
     <td><label for="mtr-1009" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 4 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>8.8 kW</strong><small>actual</small></div><div class="mv mv--sum">8.6 kW<small>Σ 4 sub</small></div></td><td class="num"><div class="mv"><strong>1,089</strong><small>actual</small></div><div class="mv mv--sum">1,066<small>Σ 4 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.2 kW · 23 kWh">Δ +23 · 2.2% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:47%"></span></div><small>47%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">14 s ago</div></td>
-    <td><div class="actions"><a href="meter.html?id=MTR-1009" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"MTR-1009","ma-sub":"Water Pumps · MTR-1009"}'><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1009" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="MTR-1009" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -586,7 +591,7 @@
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">3.2 kW</td><td class="num">410</td><td><div class="bar-cell"><div class="bar"><span style="--w:58%"></span></div><small>58%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1009-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1009-01","ma-sub":"Borewell pump · SM-1009-01"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1009-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1009-01" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -596,7 +601,7 @@
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">2.4 kW</td><td class="num">300</td><td><div class="bar-cell"><div class="bar"><span style="--w:48%"></span></div><small>48%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1009-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1009-02","ma-sub":"Transfer pump · SM-1009-02"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1009-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1009-02" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -606,7 +611,7 @@
     <td><span class="tag">Direct 16 A</span></td>
     <td class="num">0.8 kW</td><td class="num">96</td><td><div class="bar-cell"><div class="bar"><span style="--w:20%"></span></div><small>20%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1009-03" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1009-03","ma-sub":"Fire hydrant jockey · SM-1009-03"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1009-03" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1009-03" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -616,7 +621,7 @@
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">2.2 kW</td><td class="num">260</td><td><div class="bar-cell"><div class="bar"><span style="--w:44%"></span></div><small>44%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1009-04" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1009-04","ma-sub":"STP blowers · SM-1009-04"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1009-04" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1009-04" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row sub-row--add"><td></td><td colspan="9"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to Water Pumps</a></td></tr>
 </tbody>
@@ -629,7 +634,7 @@
     <td><label for="mtr-1010" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 3 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>4.3 kW</strong><small>actual</small></div><div class="mv mv--sum">4.2 kW<small>Σ 3 sub</small></div></td><td class="num"><div class="mv"><strong>553</strong><small>actual</small></div><div class="mv mv--sum">540<small>Σ 3 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.1 kW · 13 kWh">Δ +13 · 2.4% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:35%"></span></div><small>35%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">13 s ago</div></td>
-    <td><div class="actions"><a href="meter.html?id=MTR-1010" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"MTR-1010","ma-sub":"Canteen · MTR-1010"}'><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1010" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="MTR-1010" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -639,7 +644,7 @@
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">2.6 kW</td><td class="num">330</td><td><div class="bar-cell"><div class="bar"><span style="--w:43%"></span></div><small>43%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1010-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1010-01","ma-sub":"Kitchen equipment · SM-1010-01"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1010-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1010-01" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -649,7 +654,7 @@
     <td><span class="tag">Direct 16 A</span></td>
     <td class="num">1.1 kW</td><td class="num">150</td><td><div class="bar-cell"><div class="bar"><span style="--w:55%"></span></div><small>55%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1010-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1010-02","ma-sub":"Cold storage · SM-1010-02"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1010-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1010-02" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -659,7 +664,7 @@
     <td><span class="tag">Direct 16 A</span></td>
     <td class="num">0.5 kW</td><td class="num">60</td><td><div class="bar-cell"><div class="bar"><span style="--w:12%"></span></div><small>12%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1010-03" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1010-03","ma-sub":"Dining hall · SM-1010-03"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1010-03" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1010-03" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row sub-row--add"><td></td><td colspan="9"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to Canteen</a></td></tr>
 </tbody>
@@ -672,7 +677,7 @@
     <td><label for="mtr-1011" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 2 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>7.6 kW</strong><small>actual</small></div><div class="mv mv--sum">7.4 kW<small>Σ 2 sub</small></div></td><td class="num"><div class="mv"><strong>397</strong><small>actual</small></div><div class="mv mv--sum">388<small>Σ 2 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.2 kW · 9 kWh">Δ +9 · 2.3% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:49%"></span></div><small>49%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">10 s ago</div></td>
-    <td><div class="actions"><a href="meter.html?id=MTR-1011" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"MTR-1011","ma-sub":"EV Charging · MTR-1011"}'><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1011" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="MTR-1011" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -682,7 +687,7 @@
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">7.4 kW</td><td class="num">240</td><td><div class="bar-cell"><div class="bar bar--rose"><span style="--w:100%"></span></div><small>100%</small></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1011-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1011-01","ma-sub":"Charger 1 · 7.4 kW AC · SM-1011-01"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1011-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1011-01" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -692,7 +697,7 @@
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">0.0 kW</td><td class="num">148</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--warn"><span class="dot"></span> Idle</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1011-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1011-02","ma-sub":"Charger 2 · 7.4 kW AC · SM-1011-02"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1011-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1011-02" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row sub-row--add"><td></td><td colspan="9"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to EV Charging</a></td></tr>
 </tbody>
@@ -705,7 +710,7 @@
     <td><label for="mtr-1012" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 3 sub-meters</label></td>
     <td class="num"><div class="mv"><strong>0.0 kW</strong><small>actual</small></div><div class="mv mv--sum">0.0 kW<small>Σ 3 sub</small></div></td><td class="num"><div class="mv"><strong>2,968</strong><small>actual</small></div><div class="mv mv--sum">2,905<small>Σ 3 sub</small></div><span class="gap gap--ok" title="Actual − sum of sub-meters: 0.0 kW · 63 kWh">Δ +63 · 2.2% unmetered</span></td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--orange"><span class="dot"></span> Maintenance</span><div class="small muted" style="margin-top:4px">2 h ago</div></td>
-    <td><div class="actions"><a href="meter.html?id=MTR-1012" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"MTR-1012","ma-sub":"Paint Shop · MTR-1012"}'><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=MTR-1012" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="MTR-1012" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#add-submeter" class="act act--ok" title="Add sub-meter"><i class="ic i-plus"></i></a><a href="#edit-meter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-meter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -715,7 +720,7 @@
     <td><span class="tag">CT 200/5</span></td>
     <td class="num">0.0 kW</td><td class="num">1,420</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--orange"><span class="dot"></span> Maintenance</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1012-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1012-01","ma-sub":"Spray booth · SM-1012-01"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1012-01" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1012-01" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -725,7 +730,7 @@
     <td><span class="tag">CT 200/5</span></td>
     <td class="num">0.0 kW</td><td class="num">1,210</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--orange"><span class="dot"></span> Maintenance</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1012-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1012-02","ma-sub":"Curing oven · SM-1012-02"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1012-02" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1012-02" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row">
     <td></td>
@@ -735,7 +740,7 @@
     <td><span class="tag">Direct 32 A</span></td>
     <td class="num">0.0 kW</td><td class="num">275</td><td><div class="bar-cell"><div class="bar"><span style="--w:0%"></span></div><small>0%</small></div></td>
     <td><span class="badge badge--orange"><span class="dot"></span> Maintenance</span></td>
-    <td><div class="actions"><a href="meter.html?id=SM-1012-03" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-alert" class="act act--view" title="Set alert" data-prefill='{"ma-target":"SM-1012-03","ma-sub":"Exhaust fans · SM-1012-03"}'><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
+    <td><div class="actions"><a href="meter.html?id=SM-1012-03" class="act act--view" title="Open meter dashboard"><i class="ic i-eye"></i></a><a href="#meter-rule" class="act act--view" title="Set alert" data-rule-new data-rule-meter="SM-1012-03" data-limit="alertRules"><i class="ic i-bell"></i></a><a href="#edit-submeter" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-submeter" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
   <tr class="sub-row sub-row--add"><td></td><td colspan="9"><a href="#add-submeter" class="link-add"><i class="ic i-plus"></i> Add sub-meter to Paint Shop</a></td></tr>
 </tbody>
@@ -848,38 +853,6 @@
     </div>
   </div>
 
-  <div class="modal" id="meter-alert" role="dialog" aria-modal="true" aria-labelledby="meter-alert-t">
-  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
-  <div class="modal__dialog modal__dialog--lg">
-    <div class="modal__head">
-      <span class="modal__icon modal__icon--amber"><i class="ic i-bell"></i></span>
-      <div><h3 id="meter-alert-t">Set alert</h3><p id="ma-sub">Choose the meter this rule watches.</p></div>
-      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
-    </div>
-    <div class="modal__body">
-      <div class="form-grid form-grid--3">
-        <div class="field full" data-field="alerts.target"><label for="ma-target">Applies to <span class="req">*</span></label><select id="ma-target" class="input"><optgroup label="Groups"><option value="ALL" selected>All meters &amp; sub-meters</option><option value="ALL-METERS">All meters (main meters only)</option><option value="ALL-SUBS">All sub-meters</option></optgroup><optgroup label="Main Incomer · MTR-1001"><option value="MTR-1001">Main Incomer — this meter only</option><option value="MTR-1001+">Main Incomer + all 4 sub-meters</option><option value="SM-1001-01">↳ Feeder A · Production Line 1 · SM-1001-01</option><option value="SM-1001-02">↳ Feeder B · Production Line 2 · SM-1001-02</option><option value="SM-1001-03">↳ Feeder C · Tool Room · SM-1001-03</option><option value="SM-1001-04">↳ Feeder D · Welding Bay · SM-1001-04</option></optgroup><optgroup label="HVAC · MTR-1002"><option value="MTR-1002">HVAC — this meter only</option><option value="MTR-1002+">HVAC + all 3 sub-meters</option><option value="SM-1002-01">↳ Chiller-1 · SM-1002-01</option><option value="SM-1002-02">↳ Chiller-2 · SM-1002-02</option><option value="SM-1002-03">↳ AHU · Level 1–3 · SM-1002-03</option></optgroup><optgroup label="Office · MTR-1003"><option value="MTR-1003">Office — this meter only</option><option value="MTR-1003+">Office + all 5 sub-meters</option><option value="SM-1003-01">↳ Ground floor DB · SM-1003-01</option><option value="SM-1003-02">↳ First floor DB · SM-1003-02</option><option value="SM-1003-03">↳ Second floor DB · SM-1003-03</option><option value="SM-1003-04">↳ Conference wing · SM-1003-04</option><option value="SM-1003-05">↳ Office UPS · SM-1003-05</option></optgroup><optgroup label="Data Centre · MTR-1004"><option value="MTR-1004">Data Centre — this meter only</option><option value="MTR-1004+">Data Centre + all 4 sub-meters</option><option value="SM-1004-01">↳ UPS-A feeder · SM-1004-01</option><option value="SM-1004-02">↳ UPS-B feeder · SM-1004-02</option><option value="SM-1004-03">↳ Precision AC · SM-1004-03</option><option value="SM-1004-04">↳ Rack lighting · SM-1004-04</option></optgroup><optgroup label="Lighting · MTR-1005"><option value="MTR-1005">Lighting — this meter only</option><option value="MTR-1005+">Lighting + all 6 sub-meters</option><option value="SM-1005-01">↳ Shop floor high-bays · SM-1005-01</option><option value="SM-1005-02">↳ Street lights · SM-1005-02</option><option value="SM-1005-03">↳ Warehouse · SM-1005-03</option><option value="SM-1005-04">↳ Admin corridors · SM-1005-04</option><option value="SM-1005-05">↳ Security &amp; gate · SM-1005-05</option><option value="SM-1005-06">↳ Emergency lighting · SM-1005-06</option></optgroup><optgroup label="Compressor House · MTR-1006"><option value="MTR-1006">Compressor House — this meter only</option><option value="MTR-1006+">Compressor House + all 3 sub-meters</option><option value="SM-1006-01">↳ Screw compressor 1 · SM-1006-01</option><option value="SM-1006-02">↳ Screw compressor 2 · SM-1006-02</option><option value="SM-1006-03">↳ Air dryer · SM-1006-03</option></optgroup><optgroup label="Rooftop Solar · MTR-1007"><option value="MTR-1007">Rooftop Solar — this meter only</option><option value="MTR-1007+">Rooftop Solar + all 2 sub-meters</option><option value="SM-1007-01">↳ Inverter 1 · 25 kWp · SM-1007-01</option><option value="SM-1007-02">↳ Inverter 2 · 20 kWp · SM-1007-02</option></optgroup><optgroup label="DG Set 1 · MTR-1008"><option value="MTR-1008">DG Set 1 — this meter only</option><option value="MTR-1008+">DG Set 1 + all 1 sub-meters</option><option value="SM-1008-01">↳ DG output · 250 kVA · SM-1008-01</option></optgroup><optgroup label="Water Pumps · MTR-1009"><option value="MTR-1009">Water Pumps — this meter only</option><option value="MTR-1009+">Water Pumps + all 4 sub-meters</option><option value="SM-1009-01">↳ Borewell pump · SM-1009-01</option><option value="SM-1009-02">↳ Transfer pump · SM-1009-02</option><option value="SM-1009-03">↳ Fire hydrant jockey · SM-1009-03</option><option value="SM-1009-04">↳ STP blowers · SM-1009-04</option></optgroup><optgroup label="Canteen · MTR-1010"><option value="MTR-1010">Canteen — this meter only</option><option value="MTR-1010+">Canteen + all 3 sub-meters</option><option value="SM-1010-01">↳ Kitchen equipment · SM-1010-01</option><option value="SM-1010-02">↳ Cold storage · SM-1010-02</option><option value="SM-1010-03">↳ Dining hall · SM-1010-03</option></optgroup><optgroup label="EV Charging · MTR-1011"><option value="MTR-1011">EV Charging — this meter only</option><option value="MTR-1011+">EV Charging + all 2 sub-meters</option><option value="SM-1011-01">↳ Charger 1 · 7.4 kW AC · SM-1011-01</option><option value="SM-1011-02">↳ Charger 2 · 7.4 kW AC · SM-1011-02</option></optgroup><optgroup label="Paint Shop · MTR-1012"><option value="MTR-1012">Paint Shop — this meter only</option><option value="MTR-1012+">Paint Shop + all 3 sub-meters</option><option value="SM-1012-01">↳ Spray booth · SM-1012-01</option><option value="SM-1012-02">↳ Curing oven · SM-1012-02</option><option value="SM-1012-03">↳ Exhaust fans · SM-1012-03</option></optgroup></select><span class="hint">Choose a whole group, one meter, a meter with its sub-meters, or a single sub-meter.</span></div>
-        <div class="field full" data-field="alerts.ruleName"><label>Rule name <span class="req">*</span></label><input class="input" placeholder="e.g. Compressor idle at night" /></div>
-        <div class="field" data-field="alerts.metric"><label>Metric</label><select class="input"><option>Power (kW)</option><option>Energy (kWh)</option><option>Load %</option><option>Power factor</option><option>Voltage</option><option>Current</option><option>THD %</option><option>Heartbeat</option></select></div>
-        <div class="field" data-field="alerts.metric"><label>Condition</label><select class="input"><option>Greater than</option><option>Less than</option><option>Outside range</option><option>No data for</option></select></div>
-        <div class="field" data-field="alerts.threshold"><label>Threshold</label><input class="input mono" placeholder="90" /></div>
-        <div class="field" data-field="alerts.threshold"><label>For at least</label><select class="input"><option>Instantly</option><option>5 min</option><option>15 min</option><option>1 hour</option></select></div>
-        <div class="field" data-field="alerts.severity"><label>Severity</label><select class="input"><option>Critical</option><option selected>Warning</option><option>Info</option></select></div>
-        <div class="field" data-field="alerts.schedule"><label>Active during</label><select class="input"><option>Always</option><option>Shift A</option><option>Shift B</option><option>Shift C</option><option>Outside all shifts</option></select></div>
-        <div class="field full" data-field="alerts.notify"><label>Notify</label>
-          <div class="row wrap" style="gap:16px"><label class="check"><input type="checkbox" checked /> Email</label><label class="check"><input type="checkbox" /> SMS</label><label class="check"><input type="checkbox" checked /> Push</label><label class="check"><input type="checkbox" /> WhatsApp</label><label class="check"><input type="checkbox" /> Webhook</label></div>
-        </div>
-        <div class="field full" data-field="alerts.recipients"><label>Recipients</label><select class="input"><option>Role: Supervisor + Energy Manager</option><option>Current shift supervisor</option><option>Specific users…</option></select></div>
-      </div>
-      <p class="hint" style="margin-top:14px">All rules, including group rules, are listed in <a href="alerts.html" class="tc-primary">Alerts → Alert rules</a>.</p>
-    </div>
-    <div class="modal__foot">
-      <a href="#close" class="btn btn--ghost">Cancel</a>
-      <a href="#created" class="btn btn--primary"><i class="ic i-check"></i> Create alert rule</a>
-    </div>
-  </div>
-</div>
-
   <div class="modal" id="add-meter" role="dialog" aria-modal="true" aria-labelledby="add-meter-t">
   <a href="#close" class="modal__backdrop" aria-label="Close"></a>
   <div class="modal__dialog modal__dialog--lg">
@@ -895,6 +868,7 @@
         <div class="field" data-field="meters.name"><label>Meter name <span class="req">*</span></label><input class="input" placeholder="e.g. Compressor House" /></div>
         <div class="field"><label>Meter ID</label><input class="input mono" value="MTR-1013" /></div>
         <div class="field" data-field="meters.category"><label>Category</label><select class="input"><option>Incomer</option><option>HVAC</option><option>Lighting</option><option>Process</option><option>Utility</option><option>Generation (Solar/DG)</option></select></div>
+        <div class="field" data-field="meters.phase"><label>Supply</label><select class="input" data-phase-select><option value="3" selected>3φ Three-phase · 4-wire · 415 V</option><option value="1">1φ Single-phase · 2-wire · 230 V</option></select><span class="hint" data-phase-hint>Measures L1, L2, L3 and phase imbalance</span></div>
         <div class="field" data-field="meters.model"><label>Make &amp; model</label><input class="input" placeholder="Schneider PM5560" /></div>
         <div class="field" data-field="meters.site"><label>Site</label><select class="input"><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option></select></div>
         <div class="field" data-field="meters.location"><label>Location / panel</label><input class="input" placeholder="Main LT Panel" /></div>
@@ -935,6 +909,7 @@
         <div class="field" data-field="meters.name"><label>Meter name</label><input class="input" value="Main Incomer" /></div>
         <div class="field"><label>Meter ID</label><input class="input mono" value="MTR-1001" readonly /></div>
         <div class="field" data-field="meters.category"><label>Category</label><select class="input"><option selected>Incomer</option><option>HVAC</option><option>Lighting</option><option>Process</option></select></div>
+        <div class="field" data-field="meters.phase"><label>Supply</label><select class="input" data-phase-select><option value="3" selected>3φ Three-phase · 4-wire · 415 V</option><option value="1">1φ Single-phase · 2-wire · 230 V</option></select><span class="hint" data-phase-hint>Measures L1, L2, L3 and phase imbalance</span></div>
         <div class="field" data-field="meters.model"><label>Make &amp; model</label><input class="input" value="Schneider PM5560" /></div>
         <div class="field" data-field="meters.location"><label>Location / panel</label><input class="input" value="Main LT Panel" /></div>
         <div class="field" data-field="meters.status"><label>Status</label><select class="input"><option selected>Online</option><option>Maintenance</option><option>Disabled</option></select></div>
@@ -973,6 +948,7 @@
         <div class="field" data-field="meters.name"><label>Sub-meter name <span class="req">*</span></label><input class="input" placeholder="Feeder E · Packing line" /></div>
         <div class="field"><label>Sub-meter ID</label><input class="input mono" value="SM-1001-05" /></div>
         <div class="field" data-field="meters.ct"><label>Connection</label><select class="input"><option>CT 100/5</option><option>CT 200/5</option><option>CT 400/5</option><option>Direct 32 A</option><option>Direct 63 A</option></select></div>
+        <div class="field" data-field="meters.phase"><label>Supply</label><select class="input" data-phase-select><option value="3">3φ Three-phase · 4-wire · 415 V</option><option value="1" selected>1φ Single-phase · 2-wire · 230 V</option></select><span class="hint" data-phase-hint>Measures L1, L2, L3 and phase imbalance</span></div>
         <div class="field" data-field="meters.ratedLoad"><label>Rated load</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" placeholder="20" /><span class="suffix">kW</span></div></div>
         <div class="field" data-field="meters.costCentre"><label>Cost centre</label><select class="input"><option>CC-PROD</option><option>CC-UTIL</option><option>CC-ADMIN</option><option>CC-IT</option></select></div>
         <div class="field" data-field="meters.slave"><label>Modbus register offset</label><input class="input mono" placeholder="3000" /></div>
@@ -1000,6 +976,7 @@
         <div class="field" data-field="meters.name"><label>Sub-meter name</label><input class="input" value="Feeder A · Production Line 1" /></div>
         <div class="field"><label>Sub-meter ID</label><input class="input mono" value="SM-1001-01" readonly /></div>
         <div class="field" data-field="meters.ct"><label>Connection</label><select class="input"><option selected>CT 400/5</option><option>CT 200/5</option><option>Direct 63 A</option></select></div>
+        <div class="field" data-field="meters.phase"><label>Supply</label><select class="input" data-phase-select><option value="3" selected>3φ Three-phase · 4-wire · 415 V</option><option value="1">1φ Single-phase · 2-wire · 230 V</option></select><span class="hint" data-phase-hint>Measures L1, L2, L3 and phase imbalance</span></div>
         <div class="field" data-field="meters.ratedLoad"><label>Rated load</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" value="32" /><span class="suffix">kW</span></div></div>
         <div class="field" data-field="meters.costCentre"><label>Cost centre</label><select class="input"><option selected>CC-PROD</option><option>CC-UTIL</option><option>CC-ADMIN</option></select></div>
         <div class="field" data-field="meters.status"><label>Status</label><select class="input"><option selected>Online</option><option>Maintenance</option><option>Disabled</option></select></div>

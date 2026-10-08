@@ -1,7 +1,7 @@
 /* ==========================================================================
    Energy Dashboard — Connections (connections.html)
    A Node-RED-style editor for how readings travel:
-     Sub-meter → Meter → Device (gateway / logger) → Energy Cloud
+     Sub-meter → Meter → Device (gateway / logger)
    plus Virtual meters (Σ) that add up meters / sub-meters.
    The graph must stay acyclic: any wire that would close a loop is refused.
    Starts from the device + meter registry; "Deploy" saves the flow per tenant.
@@ -31,15 +31,14 @@
     submeter: { label: "Sub-meter", icon: "i-layers", color: "--violet", in: false, out: true, hint: "A circuit measured under a meter" },
     meter: { label: "Meter", icon: "i-gauge", color: "--cyan", in: true, out: true, hint: "An energy meter on a Modbus address" },
     virtual: { label: "Virtual meter", icon: "i-spark", color: "--amber", in: true, out: true, hint: "Adds up the meters wired into it (Σ)" },
-    device: { label: "Device", icon: "i-cpu", color: "--blue", in: true, out: true, hint: "Gateway or data logger that polls meters" },
-    cloud: { label: "Energy Cloud", icon: "i-globe", color: "--green", in: true, out: false, hint: "Where readings are stored and alerts run" },
+    device: { label: "Device", icon: "i-cpu", color: "--blue", in: true, out: false, hint: "Gateway or data logger that polls meters" },
   };
-  var ORDER = ["submeter", "meter", "virtual", "device", "cloud"];
+  var ORDER = ["submeter", "meter", "virtual", "device"];
   // Which node types each type may send its readings to
-  var FEEDS = { submeter: ["meter", "device", "virtual"], meter: ["device", "virtual"], virtual: ["virtual", "cloud"], device: ["cloud"], cloud: [] };
+  var FEEDS = { submeter: ["meter", "device", "virtual"], meter: ["device", "virtual"], virtual: ["virtual"], device: [] };
   // At most one outgoing wire to each of these target types: a meter reports through one device;
   // a sub-meter sits under one meter and is read by one device
-  var ONE = { submeter: ["meter", "device"], meter: ["device"], device: ["cloud"] };
+  var ONE = { submeter: ["meter", "device"], meter: ["device"] };
   // Line styles (as drawn on paper): solid = device ↔ meter, dotted = meter ↔ its sub-meter,
   // dashed = the device that reads the sub-meter (it can be a different device from its meter's)
   var KINDS = {
@@ -57,10 +56,8 @@
   /* ---------- starting flow from the registry ---------- */
   function fromRegistry() {
     var n = [], w = [];
-    n.push({ id: "CLOUD", type: "cloud", name: "Energy Cloud", ref: null });
     (window.ED_DEVICES || []).forEach(function (d) {
       n.push({ id: d.id, type: "device", name: d.name, ref: d.id, fromRegistry: true, props: { model: d.model, ip: d.ip + ":" + d.port, field: d.fieldProtocol, uplink: d.uplink, polling: d.polling } });
-      w.push({ from: d.id, to: "CLOUD" });
     });
     var slaves = {}, next = {};
     (window.ED_DEVICES || []).forEach(function (d) { (d.meters || []).forEach(function (m) { slaves[m[0]] = m[1]; next[d.id] = Math.max(next[d.id] || 0, m[1]); }); });
@@ -79,7 +76,7 @@
     return { nodes: n, wires: w };
   }
   function load(f) {
-    nodes = f.nodes; index();
+    nodes = f.nodes.filter(function (n) { return TYPES[n.type]; }); index();
     wires = f.wires.filter(function (w) { var a = byId[w.from], b = byId[w.to]; return a && b && FEEDS[a.type].indexOf(b.type) > -1; });
     nodes.filter(function (n) { return n.type === "submeter"; }).forEach(function (sm) {
       if (wires.some(function (w) { return w.from === sm.id && byId[w.to].type === "device"; })) return;
@@ -87,7 +84,7 @@
       var d = m && wires.filter(function (w) { return w.from === m.to && byId[w.to].type === "device"; })[0];
       if (d) wires.push({ from: sm.id, to: d.to });
     });
-    if (nodes.some(function (n) { return n.x == null; })) arrange();
+    arrange(); // blocks have fixed, automatic positions
   }
   function index() { byId = {}; nodes.forEach(function (n) { byId[n.id] = n; }); }
   function snapshot() { return JSON.stringify({ nodes: nodes, wires: wires }); }
@@ -135,7 +132,7 @@
     if (!TYPES[A.type].out) return { ok: false, reason: TYPES[A.type].label + " only receives readings." };
     if (!TYPES[B.type].in) return { ok: false, reason: TYPES[B.type].label + " nodes don't take inputs." };
     if (FEEDS[A.type].indexOf(B.type) < 0) {
-      var ok = FEEDS[A.type].map(function (t) { var l = t === "cloud" ? TYPES[t].label : TYPES[t].label.toLowerCase(); return (/^[aeiou]/i.test(l) ? "an " : "a ") + l; });
+      var ok = FEEDS[A.type].map(function (t) { var l = TYPES[t].label.toLowerCase(); return (/^[aeiou]/i.test(l) ? "an " : "a ") + l; });
       return { ok: false, reason: TYPES[A.type].label + " can only connect to " + ok.join(" or ") + "." };
     }
     if (wires.some(function (w) { return w.from === a && w.to === b; })) return { ok: false, reason: "These two are already connected." };
@@ -157,60 +154,60 @@
     while (q.length) { var id = q.shift(); seen++; outs(id).forEach(function (w) { if (!--deg[w.to]) q.push(w.to); }); }
     return seen === nodes.length;
   }
-  function reachesCloud(id) { return nodes.some(function (n) { return n.type === "cloud" && path(id, n.id); }); }
+  // The device that ends up collecting a node's readings (following its lines upward)
+  function deviceFor(id) { var w = outs(id).filter(function (x) { return byId[x.to] && byId[x.to].type === "device"; })[0]; if (w) return byId[w.to]; var m = outs(id).filter(function (x) { return byId[x.to] && byId[x.to].type === "meter"; })[0]; return m ? deviceFor(m.to) : null; }
   function issues() {
     var list = [];
     shown().forEach(function (n) {
       if (n.type === "submeter" && !outs(n.id).some(function (w) { return byId[w.to].type === "meter"; })) list.push([n.id, n.name + " isn't under any meter."]);
       else if (n.type === "submeter" && !outs(n.id).some(function (w) { return byId[w.to].type === "device"; })) list.push([n.id, n.name + " isn't read by any device, so its readings aren't collected."]);
       else if (n.type === "meter" && !outs(n.id).some(function (w) { return byId[w.to].type === "device"; })) list.push([n.id, n.name + " has no device, so its readings aren't collected."]);
-      else if (n.type === "device" && !outs(n.id).length) list.push([n.id, n.name + " isn't sending to the Energy Cloud."]);
+      else if (n.type === "device" && !ins(n.id).length) list.push([n.id, n.name + " has no meters connected."]);
       else if (n.type === "virtual" && !ins(n.id).length) list.push([n.id, n.name + " has nothing wired into it."]);
-      else if (n.type === "virtual" && !reachesCloud(n.id)) list.push([n.id, n.name + " doesn't reach the Energy Cloud."]);
     });
-    if (!nodes.some(function (n) { return n.type === "cloud"; })) list.unshift([null, "There is no Energy Cloud node. Add one from the palette."]);
     return list;
   }
 
   /* ---------- layout ---------- */
-  // Top-down like the sketch: Energy Cloud, devices, their meters, and each meter's sub-meters
-  // in a small grid underneath it (up to 3 across)
+  // Left to right (as in the first version): sub-meters on the left, then meters, then devices.
+  // Each meter sits level with the middle of its sub-meters; each device level with the middle of its meters.
+  var GAP = H + 14, COLW = W + 90;
   function arrange() {
-    var list = shown(), inView = {}, placed = {};
+    var list = shown(), inView = {}, placed = {}, y = 30;
     list.forEach(function (n) { inView[n.id] = true; });
-    var CW = W + 36, ROW = H + 90, SROW = H + 26, PER = 3, GAPX = 28;
-    var yCloud = 30, yDev = yCloud + ROW, yMeter = yDev + ROW, ySub = yMeter + ROW, xCur = 40;
+    var types = ["submeter", "meter", "virtual", "device"].filter(function (t) { return list.some(function (n) { return n.type === t; }); });
+    var col = {};
+    types.forEach(function (t, i) { col[t] = 40 + i * COLW; });
     var from = function (id, type) { return ins(id).map(function (w) { return byId[w.from]; }).filter(function (n) { return inView[n.id] && (!type || n.type === type); }); };
     function hasMeter(sm) { return outs(sm.id).some(function (w) { return byId[w.to] && byId[w.to].type === "meter" && inView[w.to]; }); }
-    function block(m) {
+    function put(n, yy) { setXY(n, col[n.type], Math.round(yy)); placed[n.id] = true; }
+    function mid(arr) { return arr.length ? arr.reduce(function (sum, n) { return sum + Y(n); }, 0) / arr.length : null; }
+    function placeMeter(m) {
       if (placed[m.id]) return;
-      var subs = from(m.id, "submeter").filter(function (sm) { return !placed[sm.id]; }), cols = Math.max(1, Math.min(PER, subs.length));
-      setXY(m, Math.round(xCur + (cols - 1) * CW / 2), yMeter); placed[m.id] = true;
-      subs.forEach(function (sm, i) { setXY(sm, xCur + (i % cols) * CW, ySub + Math.floor(i / cols) * SROW); placed[sm.id] = true; });
-      xCur += cols * CW + GAPX;
+      var subs = from(m.id, "submeter").filter(function (sm) { return !placed[sm.id]; });
+      if (subs.length) { var y0 = y; subs.forEach(function (sm) { put(sm, y); y += GAP; }); put(m, (y0 + y - GAP) / 2); }
+      else { put(m, y); y += GAP; }
     }
-    function loose(arr) { arr.forEach(function (sm) { if (placed[sm.id]) return; setXY(sm, xCur, ySub); placed[sm.id] = true; xCur += CW + GAPX; }); }
     list.filter(function (n) { return n.type === "device"; }).forEach(function (d) {
-      var x0 = xCur, ms = from(d.id, "meter");
-      ms.forEach(block);
-      loose(from(d.id, "submeter").filter(function (sm) { return !hasMeter(sm); })); // read by this device, meter not shown
-      var kids = ms.concat(from(d.id, "submeter")).filter(function (n) { return placed[n.id]; });
-      if (xCur === x0) xCur += CW + GAPX;
-      var xs = kids.map(function (n) { return X(n); });
-      setXY(d, xs.length ? Math.round((Math.min.apply(null, xs) + Math.max.apply(null, xs)) / 2) : x0, yDev); placed[d.id] = true;
+      var y0 = y, ms = from(d.id, "meter");
+      ms.forEach(placeMeter);
+      from(d.id, "submeter").filter(function (sm) { return !hasMeter(sm) && !placed[sm.id]; }).forEach(function (sm) { put(sm, y); y += GAP; });
+      var kids = ms.concat(from(d.id, "submeter")).filter(function (n) { return placed[n.id] && n.type === "meter"; });
+      put(d, kids.length ? mid(kids) : y);
+      if (y === y0) y += GAP;
+      y += 18;
     });
-    list.filter(function (n) { return n.type === "meter"; }).forEach(block);
-    loose(list.filter(function (n) { return n.type === "submeter"; }));
-    list.filter(function (n) { return n.type === "virtual"; }).forEach(function (v) { setXY(v, xCur, yDev); xCur += CW + GAPX; placed[v.id] = true; });
-    var top = list.filter(function (n) { return (n.type === "device" || n.type === "virtual") && placed[n.id]; });
-    if (!top.length) top = list.filter(function (n) { return placed[n.id]; });
-    var xs = top.map(function (n) { return X(n); });
-    var cx = xs.length ? (Math.min.apply(null, xs) + Math.max.apply(null, xs)) / 2 : 40;
-    list.filter(function (n) { return n.type === "cloud"; }).forEach(function (c, i) { setXY(c, Math.round(cx) + i * CW, yCloud); });
+    list.filter(function (n) { return n.type === "meter"; }).forEach(placeMeter);
+    list.filter(function (n) { return n.type === "submeter" && !placed[n.id]; }).forEach(function (sm) { put(sm, y); y += GAP; });
+    var vy = 30;
+    list.filter(function (n) { return n.type === "virtual"; }).forEach(function (v) {
+      var src = from(v.id).filter(function (n) { return placed[n.id]; });
+      put(v, src.length ? mid(src) : vy); vy += GAP;
+    });
   }
 
   /* ---------- DOM ---------- */
-  var CANVAS = '<div class="flow__canvas" id="fl-canvas" tabindex="0" aria-label="Connection canvas. Drag nodes; drag from a node\'s top port up to connect it to a meter or device."><div class="flow__world" id="fl-world"><svg class="flow__wires" id="fl-wires" width="1" height="1"></svg><div id="fl-nodes"></div></div>' +
+  var CANVAS = '<div class="flow__canvas" id="fl-canvas" tabindex="0" aria-label="Connection canvas. Blocks stay in place; drag the background to move around, and drag from a block\'s right port to connect it."><div class="flow__world" id="fl-world"><svg class="flow__wires" id="fl-wires" width="1" height="1"></svg><div id="fl-nodes"></div></div>' +
     '<div class="flow__toast" id="fl-toast" role="status" hidden></div></div>';
   var LEGEND = { direct: "Meter → its device", sub: "Sub-meter → its meter", link: "Sub-meter read by another device" };
   var LINES = '<span class="flow__lines">' + ["direct", "sub", "link"].map(function (k) {
@@ -229,7 +226,7 @@
         '<span class="fn__band"><i class="ic ' + TYPES[t].icon + '"></i></span><span class="fn__label">' + TYPES[t].label + "</span></button>";
     }).join("") +
     '<div class="flow__rules"><strong>Rules</strong><ul>' +
-    "<li>Readings flow upwards (arrows) to the device and on to the cloud.</li>" +
+    "<li>Readings flow left to right (arrows): sub-meter → meter → device.</li>" +
     '<li><b class="tc-blue">Blue solid</b>: a meter and the device that polls it.</li>' +
     '<li><b class="tc-violet">Violet dotted</b>: a sub-meter and the meter it sits under.</li>' +
     '<li><b class="tc-amber">Amber dashed</b>: a sub-meter read by a <i>different</i> device from its meter. Each sub-meter box also says which device reads it.</li>' +
@@ -239,7 +236,6 @@
     '<div class="flow__bar">' +
     '<label class="search flow__search"><i class="ic i-search"></i><input type="search" id="fl-find" placeholder="Find a node…" aria-label="Find a node" list="fl-names" /></label><datalist id="fl-names"></datalist>' +
     ZOOM +
-    '<button type="button" class="btn btn--sm btn--ghost btn--icon" data-arrange title="Arrange automatically" aria-label="Arrange automatically"><i class="ic i-grid"></i></button>' +
     '<button type="button" class="btn btn--sm btn--ghost btn--icon" data-reset title="Rebuild from the registry" aria-label="Rebuild from the registry"><i class="ic i-refresh"></i></button>' +
     '<button type="button" class="btn btn--sm btn--primary" data-deploy><i class="ic i-send"></i> <span>Deploy</span></button>' +
     '<div class="flow__bar2 small muted">' + LINES + "</div></div>" +
@@ -250,16 +246,14 @@
   }
   var canvas = $("#fl-canvas"), world = $("#fl-world"), svg = $("#fl-wires"), layer = $("#fl-nodes"), inspect = $("#fl-inspect");
 
-  // a sends to b: from a's top port up to b's bottom port
-  function outPort(n) { return { x: X(n) + W / 2, y: Y(n) }; }
-  function inPort(n) { return { x: X(n) + W / 2, y: Y(n) + H }; }
+  // a sends to b: out of a's right edge, into b's left edge
+  function outPort(n) { return { x: X(n) + W, y: Y(n) + H / 2 }; }
+  function inPort(n) { return { x: X(n), y: Y(n) + H / 2 }; }
   function curve(p, q) {
-    var dy = Math.max(40, Math.abs(p.y - q.y) / 2);
-    return "M" + p.x + "," + p.y + " C" + p.x + "," + (p.y - dy) + " " + q.x + "," + (q.y + dy) + " " + q.x + "," + q.y;
+    var dx = Math.max(50, Math.abs(q.x - p.x) / 2);
+    return "M" + p.x + "," + p.y + " C" + (p.x + dx) + "," + p.y + " " + (q.x - dx) + "," + q.y + " " + q.x + "," + q.y;
   }
-  function wirePath(a, b) {
-    return curve(outPort(a), inPort(b));
-  }
+  function wirePath(a, b) { return curve(outPort(a), inPort(b)); }
   // The device that reads a sub-meter, and whether that just repeats its meter's device
   function readerOf(id) { var w = outs(id).filter(function (x) { return byId[x.to] && byId[x.to].type === "device"; })[0]; return w ? byId[w.to] : null; }
   function meterOf(id) { var w = outs(id).filter(function (x) { return byId[x.to] && byId[x.to].type === "meter"; })[0]; return w ? byId[w.to] : null; }
@@ -295,10 +289,10 @@
     var t = TYPES[n.type], isSel = sel && sel.kind === "node" && sel.id === n.id;
     var warn = issueIds[n.id];
     return '<div class="fn fn--' + n.type + (isSel ? " is-sel" : "") + (warn ? " is-warn" : "") + (n.id === focus ? " is-focus" : "") + '" data-node="' + esc(n.id) + '" tabindex="0" role="button" aria-label="' + esc(t.label + " " + n.name) + '" style="--c:var(' + t.color + ');left:' + X(n) + "px;top:" + Y(n) + 'px">' +
-      (t.out && !EMBED ? '<span class="fn__port fn__port--out" data-port="out" title="Drag up to the device or meter it reports to"></span>' : "") +
-      '<span class="fn__head"><i></i><i></i><i class="ic ' + t.icon + '"></i></span><span class="fn__label"><b>' + esc(n.name) + "</b><small>" + esc(n.ref || (n.type === "cloud" ? "platform" : "new")) + (n.type === "submeter" && readerOf(n.id) ? " · via " + esc(readerOf(n.id).ref || readerOf(n.id).name) : "") + "</small></span>" +
+      (t.out && !EMBED ? '<span class="fn__port fn__port--out" data-port="out" title="Drag to the device or meter it reports to"></span>' : "") +
+      '<span class="fn__head"><i></i><i></i><i class="ic ' + t.icon + '"></i></span><span class="fn__label"><b>' + esc(n.name) + "</b><small>" + esc(n.ref || "new") + (n.type === "submeter" && readerOf(n.id) ? " · via " + esc(readerOf(n.id).ref || readerOf(n.id).name) : "") + "</small></span>" +
       (warn ? '<i class="ic i-alert fn__warn" title="' + esc(warn) + '"></i>' : "") +
-      (t.in && !EMBED ? '<span class="fn__port fn__port--in" data-port="in" title="Drag down to a meter to connect it here"></span>' : "") + "</div>";
+      (t.in && !EMBED ? '<span class="fn__port fn__port--in" data-port="in" title="Drag to a block on the left to connect it here"></span>' : "") + "</div>";
   }
   var issueIds = {};
   function render() {
@@ -316,7 +310,7 @@
       var f = byId[focus];
       $("#fl-status").innerHTML = (loops ? '<span class="tc-rose"><i class="ic i-alert"></i> The flow has a loop</span>' : '<span class="tc-green"><i class="ic i-check"></i> No loops</span>') +
         "<span>" + counts + "</span>" +
-        (!f ? '<span class="tc-amber">Not in the deployed flow</span>' : f.type === "cloud" || reachesCloud(focus) ? '<span class="tc-green">Reaches the Energy Cloud</span>' : '<span class="tc-amber"><i class="ic i-alert"></i> Doesn\'t reach the Energy Cloud</span>') +
+        (!f ? '<span class="tc-amber">Not in the deployed flow</span>' : f.type === "device" || f.type === "virtual" ? "" : deviceFor(focus) ? '<span class="tc-green">Collected by ' + esc(deviceFor(focus).name) + "</span>" : '<span class="tc-amber"><i class="ic i-alert"></i> No device collects it</span>') +
         '<span class="muted">Double-click a node to open it</span>';
       return;
     }
@@ -326,7 +320,7 @@
     $("span", dep).textContent = dirty ? "Deploy changes" : "Deployed";
     $("#fl-status").innerHTML = (loops ? '<span class="tc-rose"><i class="ic i-alert"></i> The flow has a loop</span>' : '<span class="tc-green"><i class="ic i-check"></i> No loops</span>') +
       "<span>" + (v ? "Showing " + esc(name(focus)) + " · " + list2.length + " of " + nodes.length + " nodes · " + nWires + " wires" : nodes.length + " nodes · " + wires.length + " wires") + "</span>" +
-      (list.length ? '<button type="button" class="linklike tc-amber" data-show-issues>' + list.length + " warning" + (list.length === 1 ? "" : "s") + "</button>" : '<span class="tc-green">Everything reaches the cloud</span>') +
+      (list.length ? '<button type="button" class="linklike tc-amber" data-show-issues>' + list.length + " warning" + (list.length === 1 ? "" : "s") + "</button>" : '<span class="tc-green">Every meter has a device</span>') +
       '<span class="muted">' + (dirty ? "Unsaved changes" : S.flow(ORG) ? "Deployed " + new Date(S.flow(ORG).deployedAt).toLocaleString(undefined, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "Built from the device and meter registry") + "</span>";
     fillShow();
     $("#fl-names").innerHTML = list2.map(function (n) { return '<option value="' + esc(n.name) + '">' + esc(n.ref || "") + "</option>"; }).join("");
@@ -348,14 +342,21 @@
     el.innerHTML = '<option value="">Whole flow</option>' + group("Devices", devs) + group("Meters", ms) + group("Virtual meters", vs);
     el.value = focus || "";
   }
+  // Device / meter pages: make the card tall enough to show the whole tree at a readable size
+  function sizeEmbed() {
+    var ys = shown().map(function (n) { return Y(n); });
+    if (!ys.length) return;
+    var tall = (Math.max.apply(null, ys) - Math.min.apply(null, ys) + H) * 0.85 + 60;
+    canvas.style.height = Math.max(240, Math.min(900, Math.round(tall))) + "px";
+  }
   function setFocus(id) {
     focus = id && byId[id] ? id : null;
     lp = {}; extra = {};
     sel = null;
-    if (focus) arrange();
+    arrange();
     if (!EMBED) history.replaceState(null, "", location.pathname + (focus ? "?focus=" + encodeURIComponent(focus) : ""));
     render();
-    fit(focus ? 0.55 : 0.7);
+    fit(0.8);
   }
   function applyView() {
     world.style.transform = "translate(" + view.x + "px," + view.y + "px) scale(" + view.k + ")";
@@ -380,7 +381,7 @@
       inspect.innerHTML = '<div class="fi__head" style="--c:var(' + t.color + ')"><span class="fn__band"><i class="ic ' + t.icon + '"></i></span><div><small>' + t.label + "</small><strong>" + esc(n.name) + "</strong></div></div>" +
         (issueIds[n.id] ? '<div class="callout callout--warn" style="margin-bottom:12px"><i class="ic i-alert"></i><span>' + esc(issueIds[n.id]) + "</span></div>" : "") +
         '<div class="field"><label for="fi-name">Name</label><input id="fi-name" class="input input--sm" value="' + esc(n.name) + '" /></div>' +
-        (n.type !== "cloud" ? '<div class="field"><label for="fi-ref">ID</label><input id="fi-ref" class="input input--sm mono" value="' + esc(n.ref || "") + '"' + (n.fromRegistry ? " readonly" : "") + ' placeholder="e.g. MTR-1013" /></div>' : "") +
+        '<div class="field"><label for="fi-ref">ID</label><input id="fi-ref" class="input input--sm mono" value="' + esc(n.ref || "") + '"' + (n.fromRegistry ? " readonly" : "") + ' placeholder="e.g. MTR-1013" /></div>' +
         (Object.keys(p).length ? '<dl class="kv fi__kv">' + Object.keys(p).filter(function (k) { return p[k]; }).map(function (k) { return row({ model: "Model", ip: "Address", field: "Field bus", uplink: "Uplink", polling: "Polling", location: "Location", ct: "CT" }[k] || k, esc(p[k])); }).join("") + "</dl>" : "") +
         (t.in ? '<div class="fi__sec">Receives from</div><ul class="fi__list">' + conn(ins(n.id), "in") + "</ul>" : "") +
         (t.out ? '<div class="fi__sec">Sends to</div><ul class="fi__list">' + conn(outs(n.id), "out") + "</ul>" : "") +
@@ -404,8 +405,8 @@
       '<dl class="kv fi__kv">' + ORDER.map(function (t) { return row(TYPES[t].label + "s", count(t)); }).join("") + row("Wires", wires.length) + "</dl>" +
       '<div class="fi__sec">Warnings</div>' +
       (list.length ? '<ul class="fi__list fi__issues">' + list.map(function (i) { return "<li>" + (i[0] ? '<button type="button" class="linklike" data-goto="' + esc(i[0]) + '">' + esc(i[1]) + "</button>" : esc(i[1])) + "</li>"; }).join("") + "</ul>"
-        : '<p class="small tc-green"><i class="ic i-check"></i> Every meter reaches the Energy Cloud and there are no loops.</p>') +
-      '<p class="small muted" style="margin-top:14px">Select a node or line to see its details. Drag a meter\'s top port up to its device. Drag a sub-meter\'s top port up to its meter (dotted) and to the device that reads it (dashed). You can also drag down from a bottom port. <kbd>Delete</kbd> removes the selection.</p>';
+        : '<p class="small tc-green"><i class="ic i-check"></i> Every meter and sub-meter has a device, and there are no loops.</p>') +
+      '<p class="small muted" style="margin-top:14px">Select a node or line to see its details. Drag from a meter\'s right port to its device. Drag from a sub-meter\'s right port to its meter (dotted) and to the device that reads it (dashed). You can also drag from a block\'s left port back to a block on its left. <kbd>Delete</kbd> removes the selection.</p>';
   }
   function slaveField(n) {
     var w = outs(n.id).filter(function (x) { return byId[x.to].type === "device"; })[0];
@@ -434,6 +435,7 @@
     var w = { from: a, to: b };
     if ((byId[a].type === "meter" || byId[a].type === "submeter") && byId[b].type === "device") w.slave = nextSlave(b);
     wires.push(w);
+    arrange();
     select({ kind: "wire", id: wires.length - 1 });
     toast({ sub: name(a) + " is now under " + name(b), link: name(a) + " is now read by " + name(b), direct: "Connected " + name(a) + " → " + name(b) }[kindOf(w)]);
     return true;
@@ -443,26 +445,34 @@
     ids.forEach(function (id) { var el = $('[data-node="' + CSS.escape(id) + '"]', layer); if (el) el.classList.add("is-loop"); });
     setTimeout(function () { $$(".is-loop", layer).forEach(function (el) { el.classList.remove("is-loop"); }); }, 2200);
   }
-  function removeWire(i) { wires.splice(i, 1); sel = null; render(); }
+  function removeWire(i) { wires.splice(i, 1); sel = null; arrange(); render(); }
   function removeNode(id) {
     var n = byId[id];
     if (!n) return;
     wires = wires.filter(function (w) { return w.from !== id && w.to !== id; });
     nodes = nodes.filter(function (x) { return x.id !== id; });
-    index(); sel = null; render();
+    index(); sel = null; arrange(); render();
     toast("Removed " + n.name);
   }
   var seq = 0;
   function addNode(type, x, y) {
-    if (type === "cloud" && nodes.some(function (n) { return n.type === "cloud"; })) { toast("There is already an Energy Cloud node.", true); return; }
     var id;
     do { id = "N" + Date.now().toString(36).slice(-4).toUpperCase() + (++seq); } while (byId[id]);
     var count = nodes.filter(function (n) { return n.type === type; }).length + 1;
-    var n = { id: id, type: type, name: type === "cloud" ? "Energy Cloud" : "New " + TYPES[type].label.toLowerCase() + " " + count, ref: "", x: Math.round(x), y: Math.round(y) };
+    var n = { id: id, type: type, name: "New " + TYPES[type].label.toLowerCase() + " " + count, ref: "", x: Math.round(x), y: Math.round(y) };
     nodes.push(n); index();
-    if (focus) { extra[id] = true; lp[id] = { x: n.x, y: n.y }; }
+    if (focus) extra[id] = true;
+    arrange();
     select({ kind: "node", id: id });
+    focusOn(id);
     var nm = $("#fi-name"); if (nm) { nm.focus(); nm.select(); }
+  }
+  // Bring a block into view without changing the zoom
+  function focusOn(id) {
+    var n = byId[id], r = canvas.getBoundingClientRect();
+    if (!n) return;
+    view.x = r.width / 2 - (X(n) + W / 2) * view.k; view.y = r.height / 2 - (Y(n) + H / 2) * view.k;
+    applyView();
   }
   function toWorld(cx, cy) { var r = canvas.getBoundingClientRect(); return { x: (cx - r.left - view.x) / view.k, y: (cy - r.top - view.y) / view.k }; }
   function zoomAt(k, cx, cy) {
@@ -475,7 +485,7 @@
   function fit(minK) {
     if (!nodes.length) return;
     var r = canvas.getBoundingClientRect(), x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
-    if (r.width < 700) minK = Math.min(minK || 0.25, 0.3); // phones: show more of the diagram at once
+    if (r.width < 500) minK = Math.min(minK || 0.25, 0.5); // phones: show more of the diagram at once
     shown().forEach(function (n) { x0 = Math.min(x0, X(n)); y0 = Math.min(y0, Y(n)); x1 = Math.max(x1, X(n) + W); y1 = Math.max(y1, Y(n) + H); });
     if (x0 === Infinity) return;
     var k = Math.min(1.2, Math.max(minK || 0.25, Math.min((r.width - 60) / (x1 - x0), (r.height - 60) / (y1 - y0))));
@@ -514,7 +524,7 @@
     if (nodeEl) {
       var n = byId[nodeEl.getAttribute("data-node")];
       if (!sel || sel.kind !== "node" || sel.id !== n.id) select({ kind: "node", id: n.id });
-      drag = { mode: "node", id: n.id, dx: p.x - X(n), dy: p.y - Y(n), moved: false };
+      drag = { mode: "pan", sx: e.clientX - view.x, sy: e.clientY - view.y, moved: true }; // blocks don't move; the view does
       capture(e);
       return;
     }
@@ -525,13 +535,7 @@
   canvas.addEventListener("pointermove", function (e) {
     if (!drag) return;
     var p = toWorld(e.clientX, e.clientY);
-    if (drag.mode === "node") {
-      var n = byId[drag.id];
-      setXY(n, Math.round((p.x - drag.dx) / 6) * 6, Math.round((p.y - drag.dy) / 6) * 6); drag.moved = true;
-      var el = $('[data-node="' + CSS.escape(n.id) + '"]', layer);
-      el.style.left = X(n) + "px"; el.style.top = Y(n) + "px";
-      drawWires();
-    } else if (drag.mode === "wire") {
+    if (drag.mode === "wire") {
       var t = $("#fl-temp");
       t.hidden = false;
       t.setAttribute("d", drag.reverse ? curve(p, inPort(byId[drag.to])) : curve(outPort(byId[drag.from]), p));
@@ -548,12 +552,16 @@
       var other = target && target.getAttribute("data-node");
       if (other && other !== (d.reverse ? d.to : d.from)) connect(d.reverse ? other : d.from, d.reverse ? d.to : other);
       else drawWires();
-    } else if (d.mode === "node" && d.moved) render();
-    else if (d.mode === "pan" && !d.moved) select(null);
+    } else if (d.mode === "pan" && !d.moved) select(null);
   }
   canvas.addEventListener("pointerup", endDrag);
   canvas.addEventListener("pointercancel", function () { drag = null; render(); });
-  canvas.addEventListener("wheel", function (e) { e.preventDefault(); zoomAt(view.k * (e.deltaY < 0 ? 1.1 : 1 / 1.1), e.clientX, e.clientY); }, { passive: false });
+  canvas.addEventListener("wheel", function (e) {
+    if (e.ctrlKey || e.metaKey) { e.preventDefault(); zoomAt(view.k * (e.deltaY < 0 ? 1.1 : 1 / 1.1), e.clientX, e.clientY); return; }
+    if (EMBED) return; // let the page scroll
+    e.preventDefault();
+    view.x -= e.deltaX; view.y -= e.deltaY; applyView();
+  }, { passive: false });
 
   // Palette: drag onto the canvas, or click to add in view
   host.addEventListener("dragstart", function (e) {
@@ -576,7 +584,6 @@
     if (b.hasAttribute("data-add")) { var r = canvas.getBoundingClientRect(), p = toWorld(r.left + r.width / 2, r.top + r.height / 2); addNode(b.getAttribute("data-add"), p.x - W / 2, p.y - H / 2); }
     else if (b.hasAttribute("data-z")) zoomAt(view.k * (b.getAttribute("data-z") === "1" ? 1.2 : 1 / 1.2));
     else if (b.hasAttribute("data-fit")) fit();
-    else if (b.hasAttribute("data-arrange")) { arrange(); render(); fit(focus ? 0.55 : 0.7); }
     else if (b.hasAttribute("data-reset")) {
       if (!window.confirm("Throw away every change and rebuild the flow from the device and meter registry?")) return;
       load(fromRegistry()); setFocus(focus);
@@ -608,13 +615,6 @@
   canvas.addEventListener("keydown", function (e) {
     if (!sel) return;
     if ((e.key === "Delete" || e.key === "Backspace") && !EMBED) { e.preventDefault(); if (sel.kind === "node") removeNode(sel.id); else removeWire(sel.id); }
-    if (sel.kind === "node" && /^Arrow/.test(e.key)) {
-      e.preventDefault();
-      var n = byId[sel.id], step = e.shiftKey ? 30 : 6;
-      var nx = X(n) + (e.key === "ArrowLeft" ? -step : e.key === "ArrowRight" ? step : 0), ny = Y(n) + (e.key === "ArrowUp" ? -step : e.key === "ArrowDown" ? step : 0);
-      setXY(n, nx, ny);
-      render(); var el = $('[data-node="' + CSS.escape(n.id) + '"]', layer); if (el) el.focus();
-    }
   });
   canvas.addEventListener("focusin", function (e) { var el = e.target.closest && e.target.closest("[data-node]"); if (el && (!sel || sel.id !== el.getAttribute("data-node"))) { sel = { kind: "node", id: el.getAttribute("data-node") }; renderInspector(issues()); $$(".fn.is-sel", layer).forEach(function (x) { x.classList.remove("is-sel"); }); el.classList.add("is-sel"); } });
   if ($("#fl-show")) $("#fl-show").addEventListener("change", function (e) { setFocus(e.target.value); });
@@ -656,5 +656,6 @@
   }
   if (focus) arrange();
   render();
-  requestAnimationFrame(function () { fit(focus ? 0.55 : 0.7); });
+  if (EMBED) sizeEmbed();
+  requestAnimationFrame(function () { fit(0.8); });
 })();
