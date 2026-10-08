@@ -15,10 +15,13 @@
   <script src="assets/js/meter-data.js" defer></script>
   <script src="assets/js/device-data.js" defer></script>
   <script src="assets/js/device.js" defer></script>
+  <script src="assets/js/device-telemetry.js" defer></script>
+  <script src="assets/js/device-ops.js" defer></script>
   <script src="assets/js/phase.js" defer></script>
   <script src="assets/js/connections.js" defer></script>
   <script src="assets/js/table-scroll.js" defer></script>
   <script src="assets/js/pager.js" defer></script>
+  <script src="assets/js/page-tabs.js" defer></script>
 </head>
 <body class="app">
   <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
@@ -56,6 +59,9 @@
         <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift</span></a>
         <a href="shift-schedule.html" class="nav__link"><i class="ic i-calendar"></i><span>Schedule</span></a>
         <a href="shift-instances.html" class="nav__link"><i class="ic i-chart"></i><span>Instance</span></a>
+        <div class="nav__section">Energy cost</div>
+        <a href="tariffs.html" class="nav__link"><i class="ic i-rupee"></i><span>Tariff</span></a>
+        <a href="tariff-instances.html" class="nav__link"><i class="ic i-activity"></i><span>Instances</span></a>
 
         <div class="nav__section">Administration</div>
         <a href="users.html" class="nav__link"><i class="ic i-users"></i><span>Users</span></a>
@@ -72,7 +78,7 @@
         </div>
       </div>
 
-      <div class="sidebar__foot"><span>v2.4.0</span><a href="#close" class="muted">Help &amp; docs</a></div>
+      <div class="sidebar__foot"><span>v2.4.0</span></div>
     </aside>
     <label for="nav-toggle" class="nav-scrim" aria-hidden="true"></label>
 
@@ -85,12 +91,6 @@
           <small><span data-bind="org.short">Febino Solutions</span> / <a href="devices.html" class="row-link">Device Management</a></small>
           <strong>Device</strong>
         </div>
-
-        <label class="search">
-          <i class="ic i-search"></i>
-          <input type="search" placeholder="Search meters, users, alerts…" aria-label="Search" />
-          <kbd>Ctrl K</kbd>
-        </label>
 
         <div class="topbar__actions">
           <button type="button" class="icon-btn theme-toggle" data-theme-toggle aria-label="Toggle dark mode"><i class="ic i-moon"></i><i class="ic i-sun"></i></button>
@@ -151,7 +151,7 @@
         </div>
       </header>
 
-      <main class="page" id="device-page" aria-live="polite"><noscript><p class="page-sub">This device page needs JavaScript.</p></noscript></main>
+      <main class="page" id="device-page" data-page-tabs="device" aria-live="polite"><noscript><p class="page-sub">This device page needs JavaScript.</p></noscript></main>
 
       <footer class="footer">
         <span>© 2026 Energy Dashboard · Tenant <span class="mono" data-bind="org.id">FEBINO</span></span>
@@ -253,6 +253,25 @@
   </div>
 
   <!-- ================= TOASTS ================= -->
+  <div class="modal" id="telemetry-raw" role="dialog" aria-modal="true" aria-labelledby="telemetry-raw-t">
+  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
+  <div class="modal__dialog">
+    <div class="modal__head">
+      <span class="modal__icon modal__icon--cyan"><i class="ic i-file"></i></span>
+      <div><h3 id="telemetry-raw-t">Raw message</h3><p id="tr-sub"></p></div>
+      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
+    </div>
+    <div class="modal__body">
+      <div id="tr-meta" class="row wrap" style="gap:8px;margin-bottom:12px"></div>
+      <pre class="code-block mono" id="tr-json"></pre>
+    </div>
+    <div class="modal__foot">
+      <a href="#close" class="btn btn--ghost">Close</a>
+      <button type="button" class="btn btn--primary" data-copy="#tr-json"><i class="ic i-copy"></i> <span>Copy JSON</span></button>
+    </div>
+  </div>
+</div>
+
   <div class="toast" id="device-toast" role="status"><span class="toast__icon"><i class="ic i-check"></i></span><div><strong data-toast-title>Done</strong><span data-toast-text></span></div></div>
   <div class="toast" id="saved" role="status"><span class="toast__icon"><i class="ic i-check"></i></span><div><strong>Changes saved</strong><span>Your updates were saved successfully.</span></div></div>
   <div class="toast" id="created" role="status"><span class="toast__icon"><i class="ic i-plus"></i></span><div><strong>Record created</strong><span>The new record has been added.</span></div></div>

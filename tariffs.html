@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Users · Energy Dashboard</title>
+  <title>Tariff · Energy Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
@@ -12,10 +12,9 @@
   <script src="assets/js/store.js"></script>
   <script src="assets/js/app.js"></script>
   <script src="assets/js/workspace.js" defer></script>
-  <script src="assets/js/users.js" defer></script>
-  <script src="assets/js/export.js" defer></script>
-  <script src="assets/js/table-scroll.js" defer></script>
   <script src="assets/js/pager.js" defer></script>
+  <script src="assets/js/table-scroll.js" defer></script>
+  <script src="assets/js/tariff.js" defer></script>
 </head>
 <body class="app">
   <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" />
@@ -54,11 +53,11 @@
         <a href="shift-schedule.html" class="nav__link"><i class="ic i-calendar"></i><span>Schedule</span></a>
         <a href="shift-instances.html" class="nav__link"><i class="ic i-chart"></i><span>Instance</span></a>
         <div class="nav__section">Energy cost</div>
-        <a href="tariffs.html" class="nav__link"><i class="ic i-rupee"></i><span>Tariff</span></a>
+        <a href="tariffs.html" class="nav__link is-active"><i class="ic i-rupee"></i><span>Tariff</span></a>
         <a href="tariff-instances.html" class="nav__link"><i class="ic i-activity"></i><span>Instances</span></a>
 
         <div class="nav__section">Administration</div>
-        <a href="users.html" class="nav__link is-active"><i class="ic i-users"></i><span>Users</span></a>
+        <a href="users.html" class="nav__link"><i class="ic i-users"></i><span>Users</span></a>
         <a href="roles.html" class="nav__link"><i class="ic i-shield"></i><span>Roles &amp; Permissions</span></a>
         <a href="settings.html" class="nav__link"><i class="ic i-settings"></i><span>Settings</span></a>
       </nav>
@@ -82,8 +81,8 @@
         <label for="nav-toggle" class="icon-btn burger" aria-label="Open menu"><i class="ic i-menu"></i></label>
 
         <div class="topbar__crumbs">
-          <small><span data-bind="org.short">Febino Solutions</span> / Administration</small>
-          <strong>Users</strong>
+          <small><span data-bind="org.short">Febino Solutions</span> / Energy cost</small>
+          <strong>Tariff</strong>
         </div>
 
         <div class="topbar__actions">
@@ -148,41 +147,49 @@
       <main class="page">
         <section class="page-head">
           <div>
-            <h1 class="page-title">Users</h1>
-            <p class="page-sub">Everyone with access to <b>Febino Solutions</b> (<span class="mono">FEBINO</span>).</p>
+            <h1 class="page-title">Tariff <span class="gradient-text">Slots</span></h1>
+            <p class="page-sub">Time-of-Day rates used to work out the cost of every kWh. Each run of a slot is listed under <a href="tariff-instances.html" class="tc-primary">Instances</a>.</p>
           </div>
-          <div class="page-actions">
-            <a href="#close" class="btn btn--sm"><i class="ic i-upload"></i> Bulk import</a>
-            <a href="#export" data-export="users" class="btn btn--sm"><i class="ic i-download"></i> Export</a>
-            <a href="#add-user" class="btn btn--sm btn--primary" data-admin-only data-limit="users"><i class="ic i-user-plus"></i> Invite user</a>
-          </div>
+          <div class="page-actions"><a href="tariff-instances.html" class="btn btn--ghost"><i class="ic i-activity"></i> View instances</a></div>
         </section>
 
-        <section class="grid grid-4">
-          <div class="card stat"><span class="stat__icon"><i class="ic i-users"></i></span><div><strong data-stat="total">0</strong><span>Total users · <span data-stat="seats">seat plan</span></span></div></div>
-          <div class="card stat"><span class="stat__icon" style="--c:var(--cyan)"><i class="ic i-activity"></i></span><div><strong data-stat="active">0</strong><span>Active</span></div></div>
-          <div class="card stat"><span class="stat__icon" style="--c:var(--violet)"><i class="ic i-send"></i></span><div><strong data-stat="invited">0</strong><span>Pending invitations</span></div></div>
-          <div class="card stat"><span class="stat__icon" style="--c:var(--rose)"><i class="ic i-lock"></i></span><div><strong data-stat="inactive">0</strong><span>Inactive / suspended</span></div></div>
+        <section class="grid grid-3">
+          <div class="card stat"><span class="stat__icon" style="--c:var(--orange)"><i class="ic i-clock"></i></span><div><strong style="font-size:17px;font-family:var(--font)" data-tariff-now="name">—</strong><span>Running now · <span data-tariff-now="ends"></span></span></div></div>
+          <div class="card stat"><span class="stat__icon" style="--c:var(--green)"><i class="ic i-rupee"></i></span><div><strong data-tariff-now="rate">—</strong><span>Current energy rate</span></div></div>
+          <div class="card stat"><span class="stat__icon" style="--c:var(--violet)"><i class="ic i-bolt"></i></span><div><strong>₹350 <small class="muted" style="font-size:13px">/ kVA</small></strong><span>Demand charge on the month's maximum demand</span></div></div>
         </section>
 
-        <section class="card">
-          <div class="toolbar">
-            <label class="search"><i class="ic i-search"></i><input id="uf-search" type="search" placeholder="Search name, email, employee ID…" aria-label="Search users" /></label>
-            <select id="uf-role" class="input input--sm" aria-label="Role"><option>All roles</option><option>Tenant Admin</option><option>Energy Manager</option><option>Supervisor</option><option>Operator</option><option>Technician</option><option>Viewer</option><option>Auditor</option></select>
-            <select id="uf-shift" class="input input--sm" aria-label="Shift"><option>All shifts</option><option>Shift A</option><option>Shift B</option><option>Shift C</option><option>General</option></select>
-            <select id="uf-status" class="input input--sm" aria-label="Status"><option>Any status</option><option>Active</option><option>Invited</option><option>Inactive</option><option>Suspended</option></select>
-          </div>
-          <div class="table-wrap">
-            <table class="table">
-              <thead><tr><th>User</th><th data-field="users.role">Role</th><th data-field="users.shift">Shift</th><th data-field="users.department">Department</th><th data-field="users.status">Status</th><th>Last active</th><th>Actions</th></tr></thead>
-<tbody id="user-rows"></tbody>
-            </table>
-          </div>
-          <div class="pager">
-            <div class="pager__info" id="user-pager-info"></div>
-            <div class="pager__size">Rows per page <select class="input" id="user-page-size" aria-label="Rows per page"><option>6</option><option>12</option><option>24</option><option value="1000">All</option></select></div>
-            <div class="pager__nav" id="user-pager-nav"></div>
-          </div>
+        <section>
+            <article class="card paged">
+              <input type="radio" class="pg-input" name="tf-pg" id="tf-p1" value="1" checked aria-label="Page 1" />
+<input type="radio" class="pg-input" name="tf-pg" id="tf-p2" value="2" aria-label="Page 2" />
+              <div class="card__head"><div><h3 class="card__title"><i class="ic i-rupee"></i> Tariff slabs</h3><p class="card__sub">Time-of-Day slots T1–T5 used for cost calculation</p></div><a href="#add-tariff" class="btn btn--sm btn--primary" data-limit="tariffs"><i class="ic i-plus"></i> Add tariff</a></div>
+              <div class="card__body tod">
+                <div class="tod__strip" role="img" aria-label="Weekday time slots: T1 22:00–06:00, T2 06:00–10:00, T3 10:00–14:00, T4 14:00–18:00, T5 18:00–22:00">
+                  <span class="tod--t1" style="--h:6"><b>T1</b></span><span class="tod--t2" style="--h:4"><b>T2</b></span><span class="tod--t3" style="--h:4"><b>T3</b></span><span class="tod--t4" style="--h:4"><b>T4</b></span><span class="tod--t5" style="--h:4"><b>T5</b></span><span class="tod--t1" style="--h:2"><b>T1</b></span>
+                </div>
+                <div class="tod__axis mono"><span>00</span><span>06</span><span>10</span><span>14</span><span>18</span><span>22</span><span>24</span></div>
+              </div>
+              <div class="table-wrap"><table class="table"><thead><tr><th>Slot</th><th>Tariff</th><th>Time</th><th>Days</th><th class="num">Energy rate / kWh</th><th class="num">Demand charge</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody data-page="1">
+  <tr><td><span class="shift-pill tod--t1">T1</span></td><td><strong>Off-peak (night)</strong></td><td class="mono small">22:00 – 06:00</td><td>Mon – Sat</td><td class="num">₹6.80</td><td class="num">₹350 / kVA</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Current</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+  <tr><td><span class="shift-pill tod--t2">T2</span></td><td><strong>Morning peak</strong></td><td class="mono small">06:00 – 10:00</td><td>Mon – Sat</td><td class="num">₹9.20</td><td class="num">₹350 / kVA</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Current</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+  <tr><td><span class="shift-pill tod--t3">T3</span></td><td><strong>Solar hours</strong></td><td class="mono small">10:00 – 14:00</td><td>Mon – Sat</td><td class="num">₹7.40</td><td class="num">₹350 / kVA</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Current</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+  <tr><td><span class="shift-pill tod--t4">T4</span></td><td><strong>Normal</strong></td><td class="mono small">14:00 – 18:00</td><td>Mon – Sat</td><td class="num">₹8.00</td><td class="num">₹350 / kVA</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Current</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+  <tr><td><span class="shift-pill tod--t5">T5</span></td><td><strong>Evening peak</strong></td><td class="mono small">18:00 – 22:00</td><td>Mon – Sat</td><td class="num">₹9.60</td><td class="num">₹350 / kVA</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Current</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+</tbody>
+<tbody data-page="2">
+  <tr><td><span class="tag">Flat</span></td><td><strong>Sunday flat</strong></td><td class="mono small">00:00 – 24:00</td><td>Sunday</td><td class="num">₹7.20</td><td class="num">₹350 / kVA</td><td><span class="badge badge--success"><span class="dot dot--live"></span> Current</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+  <tr><td><span class="shift-pill tod--t4">T4</span></td><td><strong>FY 2025-26 Normal</strong></td><td class="mono small">14:00 – 18:00</td><td>Mon – Sat</td><td class="num">₹7.60</td><td class="num">₹330 / kVA</td><td><span class="badge badge--warn"><span class="dot"></span> Expired</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+  <tr><td><span class="shift-pill tod--t5">T5</span></td><td><strong>FY 2025-26 Evening peak</strong></td><td class="mono small">18:00 – 22:00</td><td>Mon – Sat</td><td class="num">₹9.10</td><td class="num">₹330 / kVA</td><td><span class="badge badge--warn"><span class="dot"></span> Expired</span></td><td><div class="actions"><a href="#edit-tariff" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#delete-tariff" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td></tr>
+</tbody>
+              </table></div>
+              <div class="pager">
+  <div class="pager__info">Showing <span data-when="1"><strong>1–5</strong></span><span data-when="2"><strong>6–8</strong></span> of <strong>8</strong> tariffs</div>
+  <div class="pager__size">Rows per page <select class="input" aria-label="Rows per page"><option>5</option><option>10</option><option>20</option></select></div>
+  <div class="pager__nav"><span class="pg-btn is-disabled" data-when="1" aria-hidden="true"><i class="ic i-chev-left"></i></span><label for="tf-p1" data-when="2" aria-label="Previous page"><i class="ic i-chev-left"></i></label><label for="tf-p1" data-p="1">1</label><label for="tf-p2" data-p="2">2</label><label for="tf-p2" data-when="1" aria-label="Next page"><i class="ic i-chev-right"></i></label><span class="pg-btn is-disabled" data-when="2" aria-hidden="true"><i class="ic i-chev-right"></i></span></div>
+</div>
+            </article>
         </section>
       </main>
 
@@ -285,149 +292,79 @@
     </div>
   </div>
 
-  <div class="modal" id="add-user" role="dialog" aria-modal="true" aria-labelledby="add-user-t">
-  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
-  <div class="modal__dialog modal__dialog--lg">
-    <div class="modal__head">
-      <span class="modal__icon"><i class="ic i-user-plus"></i></span>
-      <div><h3 id="add-user-t">Invite user</h3><p>They'll get a link to join <span data-bind="org.id">your organisation</span> and set their own password.</p></div>
-      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
-    </div>
-    <div class="modal__body">
-      <div class="callout callout--danger" data-limit-full="users" hidden style="margin-bottom:16px"></div>
-      <div class="form-grid">
-        <div class="field" data-field="users.name"><label for="iu-first">First name <span class="req">*</span></label><input id="iu-first" class="input" placeholder="Priya" required /></div>
-        <div class="field" data-field="users.name"><label for="iu-last">Last name</label><input id="iu-last" class="input" placeholder="Sharma" /></div>
-        <div class="field" data-field="users.email"><label for="iu-email">Work email <span class="req">*</span></label><div class="input-icon"><i class="ic i-mail"></i><input id="iu-email" type="email" class="input" placeholder="name@company.com" required /></div></div>
-        <div class="field" data-field="users.mobile"><label for="iu-mobile">Mobile</label><div class="input-icon"><i class="ic i-phone"></i><input id="iu-mobile" type="tel" class="input" placeholder="+91 98xxx xxxxx" pattern="[+0-9 ()-]{10,18}" title="10-digit mobile number, optionally with country code" /></div></div>
-        <div class="field" data-field="users.empId"><label for="iu-emp">Employee ID <span class="req">*</span></label><input id="iu-emp" class="input mono" required pattern="[A-Za-z]{2,5}-?[0-9]{1,6}" title="e.g. EMP-089" /></div>
-        <div class="field" data-field="users.department"><label for="iu-dept">Department</label><select id="iu-dept" class="input"></select></div>
-        <div class="field" data-field="users.role"><label for="iu-role">Role <span class="req">*</span></label><select id="iu-role" class="input"></select></div>
-        <div class="field" data-field="users.shift"><label for="iu-shift">Shift</label><select id="iu-shift" class="input"><option>Shift A · 06:00–14:00</option><option>Shift B · 14:00–22:00</option><option>Shift C · 22:00–06:00</option><option selected>General · 09:30–18:30</option></select></div>
-        <div class="field full"><span class="label">Site access</span>
-          <div class="row wrap" style="gap:18px">
-            <label class="check"><input type="checkbox" data-iu-site value="Plant 1 · Bengaluru" checked /> Plant 1 · Bengaluru</label>
-            <label class="check"><input type="checkbox" data-iu-site value="Plant 2 · Hosur" /> Plant 2 · Hosur</label>
-            <label class="check"><input type="checkbox" data-iu-site value="Corporate Office" /> Corporate Office</label>
-          </div>
-        </div>
-        <label class="switch full"><input id="iu-2fa" type="checkbox" checked /> Require two-factor authentication on first login</label>
-      </div>
-    </div>
-    <div class="modal__foot">
-      <a href="#close" class="btn btn--ghost">Cancel</a>
-      <a href="#invite-sent" class="btn btn--primary" data-invite-user data-limit="users"><i class="ic i-send"></i> Create invitation</a>
-    </div>
-  </div>
-</div>
-
-  <div class="modal" id="invite-sent" role="dialog" aria-modal="true" aria-labelledby="invite-sent-t">
+  <div class="modal" id="add-tariff" role="dialog" aria-modal="true" aria-labelledby="add-tariff-t">
   <a href="#close" class="modal__backdrop" aria-label="Close"></a>
   <div class="modal__dialog">
     <div class="modal__head">
-      <span class="modal__icon"><i class="ic i-send"></i></span>
-      <div><h3 id="invite-sent-t">Invitation created</h3><p><b data-il-name>The user</b> is now listed as <b>Invited</b>.</p></div>
+      <span class="modal__icon modal__icon--amber"><i class="ic i-rupee"></i></span>
+      <div><h3 id="add-tariff-t">Add tariff slab</h3><p>Rates apply to all meters at the selected site.</p></div>
       <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
     </div>
-    <div class="modal__body" style="display:grid;gap:14px">
-      <div class="callout callout--warn"><i class="ic i-spark"></i><span><b>Demo mode:</b> no email is sent. Share this link with <b data-il-email>them</b> — it lets them set a password and join.</span></div>
-      <div class="field"><label for="invite-link">Invitation link</label>
-        <div class="row"><input id="invite-link" class="input mono" readonly style="flex:1;font-size:12px" /><button type="button" class="btn" data-copy="#invite-link"><i class="ic i-copy"></i> <span>Copy</span></button></div>
+    <div class="modal__body">
+      <div class="callout callout--danger" data-limit-full="tariffs" hidden style="margin-bottom:16px"></div>
+      <div class="form-grid">
+        <div class="field"><label>Time slot <span class="req">*</span></label><select class="input"><option>T1</option><option>T2</option><option>T3</option><option>T4</option><option selected>T5</option></select></div>
+        <div class="field"><label>Name <span class="req">*</span></label><input class="input" placeholder="Evening peak" /></div>
+        <div class="field"><label>From</label><input type="time" class="input" value="18:00" /></div>
+        <div class="field"><label>To</label><input type="time" class="input" value="22:00" /></div>
+        <div class="field"><label>Energy rate</label><div class="input-icon"><i class="ic i-rupee"></i><input class="input mono" placeholder="9.60" /><span class="suffix">/ kWh</span></div></div>
+        <div class="field"><label>Demand charge</label><div class="input-icon"><i class="ic i-rupee"></i><input class="input mono" placeholder="350" /><span class="suffix">/ kVA</span></div></div>
+        <div class="field"><label>Days</label><select class="input"><option>Mon – Sat</option><option>All days</option><option>Sunday</option></select></div>
+        <div class="field"><label>Effective from</label><input type="date" class="input" value="2026-04-01" /></div>
       </div>
-    </div>
+      </div>
     <div class="modal__foot">
-      <a href="#add-user" class="btn btn--ghost left" data-limit="users"><i class="ic i-plus"></i> Invite another</a>
-      <a href="#" id="invite-open" class="btn" target="_blank" rel="noopener">Open link</a>
-      <a href="#close" class="btn btn--primary">Done</a>
+      <a href="#close" class="btn btn--ghost">Cancel</a>
+      <a href="#created" class="btn btn--primary" data-limit="tariffs"><i class="ic i-check"></i> Add tariff</a>
     </div>
   </div>
 </div>
 
-  <div class="modal" id="edit-user" role="dialog" aria-modal="true" aria-labelledby="edit-user-t">
+  <div class="modal" id="edit-tariff" role="dialog" aria-modal="true" aria-labelledby="edit-tariff-t">
   <a href="#close" class="modal__backdrop" aria-label="Close"></a>
-  <div class="modal__dialog modal__dialog--lg">
+  <div class="modal__dialog">
     <div class="modal__head">
       <span class="modal__icon modal__icon--cyan"><i class="ic i-edit"></i></span>
-      <div><h3 id="edit-user-t">Edit user</h3><p data-e="sub">—</p></div>
+      <div><h3 id="edit-tariff-t">Edit tariff slab</h3><p>T5 · Evening peak</p></div>
       <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
     </div>
     <div class="modal__body">
-      <div class="row" style="gap:16px;margin-bottom:20px">
-        <span class="avatar avatar--lg av-2" data-e="avatar">··</span>
-        <div style="flex:1;min-width:0"><strong style="font-size:16px" data-e="name">—</strong><div class="small muted" data-e="meta">—</div></div>
-      </div>
       <div class="form-grid">
-        <div class="field" data-field="users.name"><label for="eu-first">First name <span class="req">*</span></label><input id="eu-first" class="input" required /></div>
-        <div class="field" data-field="users.name"><label for="eu-last">Last name</label><input id="eu-last" class="input" /></div>
-        <div class="field" data-field="users.email"><label for="eu-email">Work email <span class="req">*</span></label><div class="input-icon"><i class="ic i-mail"></i><input id="eu-email" type="email" class="input" required /></div></div>
-        <div class="field" data-field="users.mobile"><label for="eu-mobile">Mobile</label><div class="input-icon"><i class="ic i-phone"></i><input id="eu-mobile" type="tel" class="input" pattern="[+0-9 ()-]{10,18}" title="10-digit mobile number, optionally with country code" /></div></div>
-        <div class="field" data-field="users.empId"><label for="eu-emp">Employee ID <span class="req">*</span></label><input id="eu-emp" class="input mono" required pattern="[A-Za-z]{2,5}-?[0-9]{1,6}" title="e.g. EMP-089" /></div>
-        <div class="field" data-field="users.department"><label for="eu-dept">Department</label><select id="eu-dept" class="input"></select></div>
-        <div class="field" data-field="users.role"><label for="eu-role">Role</label><select id="eu-role" class="input"></select></div>
-        <div class="field" data-field="users.shift"><label for="eu-shift">Shift</label><select id="eu-shift" class="input"></select></div>
-        <div class="field" data-field="users.status"><label for="eu-status">Status</label><select id="eu-status" class="input"></select><span class="hint">Inactive and suspended users can't sign in.</span></div>
+        <div class="field"><label>Time slot</label><select class="input"><option>T1</option><option>T2</option><option>T3</option><option>T4</option><option selected>T5</option></select></div>
+        <div class="field"><label>Name</label><input class="input" value="Evening peak" /></div>
+        <div class="field"><label>From</label><input type="time" class="input" value="18:00" /></div>
+        <div class="field"><label>To</label><input type="time" class="input" value="22:00" /></div>
+        <div class="field"><label>Energy rate</label><div class="input-icon"><i class="ic i-rupee"></i><input class="input mono" value="9.60" /><span class="suffix">/ kWh</span></div></div>
+        <div class="field"><label>Demand charge</label><div class="input-icon"><i class="ic i-rupee"></i><input class="input mono" value="350" /><span class="suffix">/ kVA</span></div></div>
+        <div class="field"><label>Days</label><select class="input"><option selected>Mon – Sat</option><option>All days</option></select></div>
+        <div class="field"><label>Status</label><select class="input"><option selected>Current</option><option>Expired</option></select></div>
       </div>
-    </div>
+      </div>
     <div class="modal__foot">
       <a href="#close" class="btn btn--ghost">Cancel</a>
-      <a href="#saved" class="btn btn--primary" data-save-user><i class="ic i-check"></i> Save changes</a>
+      <a href="#saved" class="btn btn--primary"><i class="ic i-check"></i> Save tariff</a>
     </div>
   </div>
 </div>
 
-  <div class="modal" id="view-user" role="dialog" aria-modal="true" aria-labelledby="view-user-t">
-  <a href="#close" class="modal__backdrop" aria-label="Close"></a>
-  <div class="modal__dialog">
-    <div class="modal__head">
-      <span class="modal__icon modal__icon--violet"><i class="ic i-user"></i></span>
-      <div><h3 id="view-user-t">User details</h3><p>Read-only summary</p></div>
-      <a href="#close" class="modal__close" aria-label="Close"><i class="ic i-x"></i></a>
-    </div>
-    <div class="modal__body">
-      <div class="row" style="gap:16px;margin-bottom:20px;align-items:flex-start">
-        <span class="avatar avatar--lg av-2" data-v="avatar">··</span>
-        <div style="min-width:0"><strong style="font-size:17px" data-v="name">—</strong><div class="small muted" data-v="email" data-field="users.email">—</div><div class="row wrap" style="margin-top:8px;gap:6px" data-v="badges"></div></div>
-      </div>
-      <dl class="kv">
-        <dt data-field="users.empId">Employee ID</dt><dd class="mono" data-v="emp" data-field="users.empId">—</dd>
-        <dt>Username</dt><dd class="mono" data-v="username">—</dd>
-        <dt data-field="users.mobile">Mobile</dt><dd data-v="mobile" data-field="users.mobile">—</dd>
-        <dt data-field="users.department">Department</dt><dd data-v="dept" data-field="users.department">—</dd>
-        <dt>Member since</dt><dd data-v="created">—</dd>
-        <dt>Last active</dt><dd data-v="last">—</dd>
-      </dl>
-      <div class="field" style="margin-top:18px" data-v="invite" hidden>
-        <label for="view-invite-link">Invitation link (not accepted yet)</label>
-        <div class="row"><input id="view-invite-link" class="input mono" readonly style="flex:1;font-size:12px" /><button type="button" class="btn" data-copy="#view-invite-link"><i class="ic i-copy"></i> <span>Copy</span></button></div>
-      </div>
-    </div>
-    <div class="modal__foot">
-      <a href="#close" class="btn btn--ghost">Close</a>
-      <a href="#edit-user" class="btn btn--primary" data-v="edit"><i class="ic i-edit"></i> Edit user</a>
-    </div>
-  </div>
-</div>
-
-  <div class="modal modal--danger" id="delete-user" role="dialog" aria-modal="true" aria-labelledby="delete-user-t">
+  <div class="modal modal--danger" id="delete-tariff" role="dialog" aria-modal="true" aria-labelledby="delete-tariff-t">
   <a href="#close" class="modal__backdrop" aria-label="Close"></a>
   <div class="modal__dialog modal__dialog--sm">
     <div class="confirm">
       <span class="modal__icon modal__icon--rose"><i class="ic i-trash"></i></span>
-      <h3 id="delete-user-t">Remove <span data-d="name">this user</span>?</h3>
-      <p>They'll lose access to <span data-bind="org.id">FEBINO</span> immediately. Their activity history is kept for audit.</p>
+      <h3 id="delete-tariff-t">Delete tariff slab?</h3>
+      <p>Cost for past readings is not recalculated.</p>
     </div>
     <div class="modal__foot" style="justify-content:center;border:0;background:none;padding-bottom:26px">
       <a href="#close" class="btn">Cancel</a>
-      <a href="#deleted" class="btn btn--danger" data-delete-user><i class="ic i-trash"></i> Yes, remove</a>
+      <a href="#deleted" class="btn btn--danger"><i class="ic i-trash"></i> Yes, delete</a>
     </div>
   </div>
 </div>
-
-
-  <!-- ================= TOASTS ================= -->
+<!-- ================= TOASTS ================= -->
   <div class="toast" id="saved" role="status"><span class="toast__icon"><i class="ic i-check"></i></span><div><strong>Changes saved</strong><span>Your updates were saved successfully.</span></div></div>
   <div class="toast" id="created" role="status"><span class="toast__icon"><i class="ic i-plus"></i></span><div><strong>Record created</strong><span>The new record has been added.</span></div></div>
-  <div class="toast" id="invited" role="status"><span class="toast__icon"><i class="ic i-send"></i></span><div><strong>Invitation created</strong><span>Share the invite link with the new user.</span></div></div>
+  <div class="toast" id="invited" role="status"><span class="toast__icon"><i class="ic i-send"></i></span><div><strong>Invitation sent</strong><span>An invite email is on its way.</span></div></div>
   <div class="toast toast--danger" id="deleted" role="status"><span class="toast__icon"><i class="ic i-trash"></i></span><div><strong>Record deleted</strong><span>The item was removed permanently.</span></div></div>
 </body>
 </html>

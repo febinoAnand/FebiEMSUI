@@ -92,7 +92,8 @@
   var iPh = v.map(function (vv, i) { return live ? absPower * 1000 / (PH * vv * pf) * (0.94 + 0.12 * j3[i]) : 0; });
   var kva = live ? absPower / pf : 0, kvar = live ? Math.sqrt(Math.max(0, kva * kva - absPower * absPower)) : 0;
   var hz = live ? 49.95 + 0.1 * R() : null;
-  var thdV = live ? 1.8 + 1.5 * R() : null, thdI = live ? 4 + (meter.id === "MTR-1004" ? 5 : 3) * R() : null;
+  var thdV = live ? (meter.id === "MTR-1004" ? 4.2 + 2.4 * R() : 1.8 + 1.5 * R()) : null, // data centre UPS loads distort the voltage more
+      thdI = live ? 4 + (meter.id === "MTR-1004" ? 5 : 3) * R() : null;
 
   /* ---------- rules watching this meter (from Alerts → Alert rules) ---------- */
   var RULES = [
@@ -156,12 +157,14 @@
       bands: [[0.6, 0.85, "bad", "Poor"], [0.85, 0.95, "warn", "Low"], [0.95, 1, "ok", "Good"]], note: "Target ≥ 0.95" },
     { label: "Voltage", unit: PH === 1 ? "V L–N" : "V avg L–N", min: 190, max: 270, d: 1, value: live ? vAvg : null,
       bands: [[190, 207, "bad", "Too low"], [207, 216, "warn", "Low"], [216, 244, "ok", "Normal"], [244, 253, "warn", "High"], [253, 270, "bad", "Too high"]], note: "230 V ± 6 %" },
+    { label: "Voltage THD", unit: "%", min: 0, max: 12, d: 1, value: thdV,
+      bands: [[0, 5, "ok", "Normal"], [5, 8, "warn", "High"], [8, 12, "bad", "Very high"]], note: "Limit 8 % · IEEE 519" },
     { label: "Current", unit: PH === 1 ? "A" : "A max phase", min: 0, max: Math.max(10, Math.ceil(iRated * 1.2 / 10) * 10), d: 1, value: live ? iMax : null,
       bands: [[0, iRated * 0.8, "ok", "Normal"], [iRated * 0.8, iRated, "warn", "High"], [iRated, Math.max(10, Math.ceil(iRated * 1.2 / 10) * 10), "bad", "Over rated"]], note: "Full load " + fmt(iRated, 0) + " A" },
-    { label: "Frequency", unit: "Hz", min: 49, max: 51, d: 2, value: hz,
-      bands: [[49, 49.5, "bad", "Low"], [49.5, 49.8, "warn", "Slightly low"], [49.8, 50.2, "ok", "Normal"], [50.2, 50.5, "warn", "Slightly high"], [50.5, 51, "bad", "High"]], note: "50 Hz grid" },
     { label: "Current THD", unit: "%", min: 0, max: 20, d: 1, value: thdI,
       bands: [[0, 8, "ok", "Normal"], [8, 12, "warn", "High"], [12, 20, "bad", "Very high"]], note: "Limit 8 %" },
+    { label: "Frequency", unit: "Hz", min: 49, max: 51, d: 2, value: hz,
+      bands: [[49, 49.5, "bad", "Low"], [49.5, 49.8, "warn", "Slightly low"], [49.8, 50.2, "ok", "Normal"], [50.2, 50.5, "warn", "Slightly high"], [50.5, 51, "bad", "High"]], note: "50 Hz grid" },
   ];
   html += '<section class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-gauge"></i> Live gauges</h3>' +
     '<p class="card__sub">' + esc(lastSeen) + " · needle shows the latest reading · green normal, amber watch, red out of range</p></div></div>" +
@@ -264,7 +267,10 @@
     }
     var lab = function (x, a) { var p = pt(a, R + 14).split(","); return '<text class="speedo__lim" x="' + p[0] + '" y="' + (+p[1] + 4) + '" text-anchor="middle">' + fmt(x, g.d > 1 ? 1 : 0) + "</text>"; };
     var tip = g.label + ": " + (has ? fmt(g.value, g.d) + " " + g.unit : "no reading") + ". Normal " + g.bands.filter(function (b) { return b[2] === "ok"; }).map(function (b) { return fmt(b[0], g.d > 1 ? 2 : 0) + "–" + fmt(b[1], g.d > 1 ? 2 : 0); }).join(", ") + (g.unit ? " " + g.unit : "") + ".";
+    // name, unit and status sit above the dial; the range note goes underneath
     return '<figure class="speedo' + (has ? "" : " is-off") + '" title="' + esc(tip) + '">' +
+      '<figcaption class="speedo__head"><strong>' + esc(g.label) + '</strong> <span class="muted">' + (g.unit ? esc(g.unit) : "&nbsp;") + "</span>" + // empty unit keeps its line so every dial lines up
+      '<span class="badge badge--' + (band ? STATE[band[2]][0] : "info") + '"><i class="ic ' + (band ? STATE[band[2]][1] : "i-wifi") + '"></i> ' + esc(band ? band[3] : "No reading") + "</span></figcaption>" +
       '<svg viewBox="0 0 200 150" role="img" aria-label="' + esc(tip) + '">' +
       '<path class="speedo__track" d="' + arc(A0, A1, R) + '"></path>' +
       g.bands.map(function (b) { var a0 = ang(b[0]), a1 = ang(b[1]); return a1 - a0 < 0.5 ? "" : '<path class="speedo__band speedo__band--' + b[2] + '" d="' + arc(a0 + 0.6, a1 - 0.6, R) + '"></path>'; }).join("") +
@@ -273,9 +279,7 @@
       '<circle class="speedo__hub" cx="' + cx + '" cy="' + cy + '" r="7"></circle>' +
       '<text class="speedo__value" x="' + cx + '" y="' + (cy + 40) + '" text-anchor="middle">' + (has ? fmt(g.value, g.d) : "—") + "</text>" +
       "</svg>" +
-      '<figcaption><strong>' + esc(g.label) + '</strong> <span class="muted">' + esc(g.unit) + "</span>" +
-      '<span class="badge badge--' + (band ? STATE[band[2]][0] : "info") + '"><i class="ic ' + (band ? STATE[band[2]][1] : "i-wifi") + '"></i> ' + esc(band ? band[3] : "No reading") + "</span>" +
-      '<small class="muted">' + esc(g.note) + "</small></figcaption></figure>";
+      '<small class="muted speedo__note">' + esc(g.note) + "</small></figure>";
   }
   function tableFor(pts, xl, yl, xf, dp) {
     return '<details class="chart-table"><summary>View as table</summary><div class="table-wrap"><table class="table"><thead><tr><th>' + xl + '</th><th class="num">' + yl + "</th></tr></thead><tbody>" +

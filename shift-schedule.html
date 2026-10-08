@@ -51,6 +51,9 @@
         <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift</span></a>
         <a href="shift-schedule.html" class="nav__link is-active"><i class="ic i-calendar"></i><span>Schedule</span></a>
         <a href="shift-instances.html" class="nav__link"><i class="ic i-chart"></i><span>Instance</span></a>
+        <div class="nav__section">Energy cost</div>
+        <a href="tariffs.html" class="nav__link"><i class="ic i-rupee"></i><span>Tariff</span></a>
+        <a href="tariff-instances.html" class="nav__link"><i class="ic i-activity"></i><span>Instances</span></a>
 
         <div class="nav__section">Administration</div>
         <a href="users.html" class="nav__link"><i class="ic i-users"></i><span>Users</span></a>
@@ -67,7 +70,7 @@
         </div>
       </div>
 
-      <div class="sidebar__foot"><span>v2.4.0</span><a href="#close" class="muted">Help &amp; docs</a></div>
+      <div class="sidebar__foot"><span>v2.4.0</span></div>
     </aside>
     <label for="nav-toggle" class="nav-scrim" aria-hidden="true"></label>
 
@@ -80,12 +83,6 @@
           <small><span data-bind="org.short">Febino Solutions</span> / Shift management</small>
           <strong>Schedule</strong>
         </div>
-
-        <label class="search">
-          <i class="ic i-search"></i>
-          <input type="search" placeholder="Search meters, users, alerts…" aria-label="Search" />
-          <kbd>Ctrl K</kbd>
-        </label>
 
         <div class="topbar__actions">
           <button type="button" class="icon-btn theme-toggle" data-theme-toggle aria-label="Toggle dark mode"><i class="ic i-moon"></i><i class="ic i-sun"></i></button>
@@ -389,7 +386,6 @@
       <div class="form-grid">
         <div class="field full"><label>Name <span class="req">*</span></label><input class="input" placeholder="Production weekdays" /></div>
         <div class="field"><label>Shift <span class="req">*</span></label><select class="input"><option selected>Shift A · Morning</option><option>Shift B · Evening</option><option>Shift C · Night</option><option>General</option></select></div>
-        <div class="field"><label>Site</label><select class="input"><option selected>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option><option>Warehouse · Chennai</option></select></div>
         <div class="field full"><label>Repeats on</label><div class="row wrap" style="gap:12px"><label class="check"><input type="checkbox" checked /> Mon</label><label class="check"><input type="checkbox" checked /> Tue</label><label class="check"><input type="checkbox" checked /> Wed</label><label class="check"><input type="checkbox" checked /> Thu</label><label class="check"><input type="checkbox" checked /> Fri</label><label class="check"><input type="checkbox" checked /> Sat</label><label class="check"><input type="checkbox" /> Sun</label></div></div>
         <div class="field"><label>Effective from</label><input type="date" class="input" value="2026-10-01" /></div>
         <div class="field"><label>Until</label><input type="date" class="input" value="" /><span class="hint">Leave blank to run indefinitely.</span></div>
@@ -414,7 +410,6 @@
       <div class="form-grid">
         <div class="field full"><label>Name <span class="req">*</span></label><input class="input" value="Production weekdays" /></div>
         <div class="field"><label>Shift <span class="req">*</span></label><select class="input"><option selected>Shift A · Morning</option><option>Shift B · Evening</option><option>Shift C · Night</option><option>General</option></select></div>
-        <div class="field"><label>Site</label><select class="input"><option selected>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option><option>Warehouse · Chennai</option></select></div>
         <div class="field full"><label>Repeats on</label><div class="row wrap" style="gap:12px"><label class="check"><input type="checkbox" checked /> Mon</label><label class="check"><input type="checkbox" checked /> Tue</label><label class="check"><input type="checkbox" checked /> Wed</label><label class="check"><input type="checkbox" checked /> Thu</label><label class="check"><input type="checkbox" checked /> Fri</label><label class="check"><input type="checkbox" checked /> Sat</label><label class="check"><input type="checkbox" /> Sun</label></div></div>
         <div class="field"><label>Effective from</label><input type="date" class="input" value="2026-09-01" /></div>
         <div class="field"><label>Until</label><input type="date" class="input" value="2027-03-31" /><span class="hint">Leave blank to run indefinitely.</span></div>

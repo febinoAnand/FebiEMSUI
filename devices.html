@@ -13,6 +13,7 @@
   <script src="assets/js/app.js"></script>
   <script src="assets/js/workspace.js" defer></script>
   <script src="assets/js/device-data.js" defer></script>
+  <script src="assets/js/device-token.js" defer></script>
   <script src="assets/js/export.js" defer></script>
   <script src="assets/js/table-scroll.js" defer></script>
   <script src="assets/js/pager.js" defer></script>
@@ -53,6 +54,9 @@
         <a href="shifts.html" class="nav__link"><i class="ic i-clock"></i><span>Shift</span></a>
         <a href="shift-schedule.html" class="nav__link"><i class="ic i-calendar"></i><span>Schedule</span></a>
         <a href="shift-instances.html" class="nav__link"><i class="ic i-chart"></i><span>Instance</span></a>
+        <div class="nav__section">Energy cost</div>
+        <a href="tariffs.html" class="nav__link"><i class="ic i-rupee"></i><span>Tariff</span></a>
+        <a href="tariff-instances.html" class="nav__link"><i class="ic i-activity"></i><span>Instances</span></a>
 
         <div class="nav__section">Administration</div>
         <a href="users.html" class="nav__link"><i class="ic i-users"></i><span>Users</span></a>
@@ -69,7 +73,7 @@
         </div>
       </div>
 
-      <div class="sidebar__foot"><span>v2.4.0</span><a href="#close" class="muted">Help &amp; docs</a></div>
+      <div class="sidebar__foot"><span>v2.4.0</span></div>
     </aside>
     <label for="nav-toggle" class="nav-scrim" aria-hidden="true"></label>
 
@@ -82,12 +86,6 @@
           <small><span data-bind="org.short">Febino Solutions</span> / Monitor</small>
           <strong>Device Management</strong>
         </div>
-
-        <label class="search">
-          <i class="ic i-search"></i>
-          <input type="search" placeholder="Search meters, users, alerts…" aria-label="Search" />
-          <kbd>Ctrl K</kbd>
-        </label>
 
         <div class="topbar__actions">
           <button type="button" class="icon-btn theme-toggle" data-theme-toggle aria-label="Toggle dark mode"><i class="ic i-moon"></i><i class="ic i-sun"></i></button>
@@ -485,12 +483,24 @@
       <div class="form-section">Device</div>
       <div class="form-grid form-grid--3">
         <div class="field" data-field="devices.name"><label>Device name <span class="req">*</span></label><input class="input" placeholder="e.g. Block C Gateway" /></div>
-        <div class="field"><label>Device ID</label><input class="input mono" value="GW-07" /></div>
+        <div class="field"><label>Device ID</label><input class="input mono" value="GW-07" data-device-id /></div>
         <div class="field" data-field="devices.type"><label>Device type</label><select class="input"><option>Modbus TCP gateway</option><option>Data logger</option><option>4G IoT edge device</option><option>Wireless (LoRaWAN) gateway</option></select></div>
         <div class="field" data-field="devices.model"><label>Make &amp; model</label><input class="input" placeholder="Moxa MGate MB3170" /></div>
         <div class="field" data-field="devices.serial"><label>Serial number</label><input class="input mono" placeholder="TAGBB1054321" /></div>
         <div class="field" data-field="devices.site"><label>Site</label><select class="input"><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option></select></div>
         <div class="field full" data-field="devices.location"><label>Installed at</label><input class="input" placeholder="e.g. Block C · Panel room" /></div>
+      </div>
+      <div class="form-section" style="margin-top:18px">Authentication</div>
+      <div class="form-grid form-grid--3" data-token-new>
+        <div class="field"><label for="tok-client">Client ID</label><input class="input mono" id="tok-client" data-token-client readonly /></div>
+        <div class="field" style="grid-column:span 2"><label for="tok-new">Device token <span class="req">*</span></label>
+          <div class="row" style="gap:8px"><input class="input mono" id="tok-new" data-token-value readonly style="flex:1;min-width:0" aria-describedby="tok-new-hint" />
+            <button type="button" class="btn btn--sm btn--ghost" data-copy="#tok-new"><i class="ic i-copy"></i> <span>Copy</span></button>
+            <button type="button" class="icon-btn" data-token-regen title="Generate a different token" aria-label="Generate a different token"><i class="ic i-refresh"></i></button></div>
+        </div>
+        <p class="hint full" id="tok-new-hint"><i class="ic i-key"></i> The device uses this token to send readings — as the MQTT password (username = Client ID) or as <span class="mono">Authorization: Bearer</span> for HTTPS. <strong>It is shown only now</strong>; only a fingerprint is kept, so copy it into the device's settings before you continue.</p>
+        <label class="check full"><input type="checkbox" data-token-ack /> I've copied the token and will enter it in the device</label>
+        <p class="hint full" data-token-warn hidden style="color:var(--rose)">Tick the box above after copying the token — it can't be shown again once the device is added.</p>
       </div>
       <div class="form-section" style="margin-top:18px">Network &amp; protocol</div>
       <div class="form-grid form-grid--3">
@@ -508,7 +518,7 @@
     </div>
     <div class="modal__foot">
       <a href="#close" class="btn btn--ghost">Cancel</a>
-      <a href="#created" class="btn btn--primary" data-limit="devices"><i class="ic i-check"></i> Add device</a>
+      <a href="#created" class="btn btn--primary" data-limit="devices" data-token-submit><i class="ic i-check"></i> Add device</a>
     </div>
   </div>
 </div>
@@ -531,6 +541,23 @@
         <div class="field" data-field="devices.serial"><label>Serial number</label><input class="input mono" value="TAGBB1054321" /></div>
         <div class="field" data-field="devices.site"><label>Site</label><select class="input"><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option></select></div>
         <div class="field full" data-field="devices.location"><label>Installed at</label><input class="input" value="Main LT Panel" /></div>
+      </div>
+      <div class="form-section" style="margin-top:18px">Authentication</div>
+      <div class="form-grid form-grid--3" data-token-edit>
+        <div class="field"><label>Client ID</label><input class="input mono" value="FEBINO.GW-01" readonly /></div>
+        <div class="field" style="grid-column:span 2"><label>Device token</label>
+          <div class="row" style="gap:8px"><span class="input mono" data-token-masked style="flex:1;min-width:0;display:flex;align-items:center;color:var(--muted)">edt_••••••••••••a91F · created 18 Nov 2025</span>
+            <button type="button" class="btn btn--sm btn--ghost" data-token-regen><i class="ic i-refresh"></i> Regenerate</button></div>
+        </div>
+        <div class="callout callout--danger full" data-token-confirm hidden>
+          <div><strong>Replace this device's token?</strong> The old token stops working immediately, so the device goes offline until the new token is entered in it.
+          <div class="row" style="gap:8px;margin-top:10px"><button type="button" class="btn btn--sm btn--danger" data-token-do><i class="ic i-refresh"></i> Regenerate token</button><button type="button" class="btn btn--sm btn--ghost" data-token-cancel>Cancel</button></div></div>
+        </div>
+        <div class="field full" data-token-shown hidden><label for="tok-edit">New device token · shown only now</label>
+          <div class="row" style="gap:8px"><input class="input mono" id="tok-edit" data-token-value readonly style="flex:1;min-width:0" />
+            <button type="button" class="btn btn--sm btn--ghost" data-copy="#tok-edit"><i class="ic i-copy"></i> <span>Copy</span></button></div>
+          <p class="hint" style="margin-top:6px">Enter it in the device now — it won't be shown again after you close this dialog.</p>
+        </div>
       </div>
       <div class="form-section" style="margin-top:18px">Network &amp; protocol</div>
       <div class="form-grid form-grid--3">

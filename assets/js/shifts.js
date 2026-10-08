@@ -16,14 +16,6 @@
   function overnight(start, end) { return mins(end) < mins(start); }
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
-  var DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-  function dayList(on) {
-    var idx = []; on.forEach(function (o, i) { if (o) idx.push(i); });
-    if (!idx.length) return "—";
-    if (idx.length === 7) return "every day";
-    var run = idx.every(function (d, i) { return !i || d === idx[i - 1] + 1; });
-    return run && idx.length > 2 ? DAYS[idx[0]] + "–" + DAYS[idx[idx.length - 1]] : idx.map(function (i) { return DAYS[i]; }).join(", ");
-  }
   var XTAG = '<span class="tag tag--night"><i class="ic i-moon"></i> Midnight crossover</span>';
 
   /* ---------- Shifts page: mark crossover shifts and list them on their own ---------- */
@@ -39,28 +31,25 @@
       xShifts.push({
         row: row, name: ($(".cell-user strong", row) || {}).textContent, code: ($(".cell-user small", row) || {}).textContent,
         icon: $(".cell-user .shift-pill", row) ? $(".cell-user .shift-pill", row).outerHTML : "", start: m[1], end: m[2],
-        days: $$(".day-dots span", row).map(function (d) { return d.classList.contains("on"); }),
-        boss: (row.cells[4] || {}).textContent, staff: (row.cells[5] || {}).textContent, status: row.cells[6] ? row.cells[6].innerHTML : "",
+        boss: (row.cells[3] || {}).textContent, staff: (row.cells[4] || {}).textContent, status: row.cells[5] ? row.cells[5].innerHTML : "",
       });
     });
     var tableCard = $("table td.mono.nowrap") && $("table td.mono.nowrap").closest("section");
     if (tableCard) {
       var rows = xShifts.map(function (x) {
         var before = 1440 - mins(x.start), after = mins(x.end);
-        var ends = x.days.slice(6).concat(x.days.slice(0, 6)); // each start day ends on the following day
         return '<tr><td><div class="cell-user">' + x.icon.replace('style="', 'style="flex:none;') + "<div><strong>" + esc(x.name) + '</strong><small class="mono">' + esc(x.code) + "</small></div></div></td>" +
           '<td class="mono nowrap">' + x.start + " → " + x.end + '<sup class="plus1">+1</sup><div class="small muted" style="font-family:var(--font)">' + dur(before + after) + "</div></td>" +
           '<td class="num nowrap" style="font-family:var(--font)">' + dur(before) + '<div class="small muted">on the start day</div></td>' +
           '<td class="num nowrap" style="font-family:var(--font)">' + dur(after) + '<div class="small muted">on the next day</div></td>' +
-          "<td>" + dayList(x.days) + ' <span class="muted">→ ends</span> ' + dayList(ends) + "</td>" +
-          '<td>The start day<div class="small muted">e.g. ' + DAYS[x.days.indexOf(true) < 0 ? 0 : x.days.indexOf(true)] + " " + x.start + " → " + DAYS[(x.days.indexOf(true) + 1) % 7] + " " + x.end + " counts as " + DAYS[x.days.indexOf(true) < 0 ? 0 : x.days.indexOf(true)] + "</div></td>" +
+          '<td>The start day<div class="small muted">e.g. Mon ' + x.start + " → Tue " + x.end + " counts as Mon</div></td>" +
           "<td>" + esc(x.boss) + '</td><td class="num">' + esc(x.staff) + "</td></tr>";
       }).join("");
       tableCard.insertAdjacentHTML("afterend",
         '<section class="card" id="midnight-crossover"><div class="card__head"><div><h3 class="card__title"><i class="ic i-moon"></i> Midnight crossover shifts</h3>' +
         "<p class=\"card__sub\">Shifts that start on one day and end on the next · picked up automatically whenever a shift's end time is earlier than its start</p></div>" +
         '<span class="badge badge--violet">' + xShifts.length + " shift" + (xShifts.length === 1 ? "" : "s") + "</span></div>" +
-        (xShifts.length ? '<div class="table-wrap"><table class="table"><thead><tr><th>Shift</th><th>Runs</th><th class="num">Before midnight</th><th class="num">After midnight</th><th>Start days → end days</th><th>Counted on</th><th>Supervisor</th><th class="num">Staff</th></tr></thead><tbody>' + rows + "</tbody></table></div>" +
+        (xShifts.length ? '<div class="table-wrap"><table class="table"><thead><tr><th>Shift</th><th>Runs</th><th class="num">Before midnight</th><th class="num">After midnight</th><th>Counted on</th><th>Supervisor</th><th class="num">Staff</th></tr></thead><tbody>' + rows + "</tbody></table></div>" +
           '<div class="card__foot small muted"><i class="ic i-alert"></i> These shifts span two dates. Attendance and the shift instance are counted on the day the shift starts; its energy is split between the two days by the hours on each side of midnight (see Shift instances).</div>'
           : '<div class="card__body small muted">No shift crosses midnight. A shift with an end time earlier than its start (e.g. 22:00 → 06:00) will appear here.</div>') +
         "</section>");
@@ -169,16 +158,13 @@
       if (code && inputs[1] && /mono/.test(inputs[1].className)) inputs[1].value = code.textContent.trim();
       if (m) { start.value = m[1]; end.value = m[2]; }
       if (brk && br) $$("option", brk).forEach(function (o) { if (parseInt(o.textContent, 10) === +br[1]) brk.value = o.value || o.textContent; });
-      // supervisor and working days from the row
-      var boss = ((row.cells[4] || {}).textContent || "").trim();
+      // supervisor from the row
+      var boss = ((row.cells[3] || {}).textContent || "").trim();
       var sup = $$("select", modal).filter(function (sel) { return /Meera Iyer/.test(sel.textContent); })[0];
       if (sup && boss) {
         if (!$$("option", sup).some(function (o) { return o.textContent.trim() === boss; })) sup.insertAdjacentHTML("beforeend", "<option>" + boss.replace(/[<&>]/g, "") + "</option>");
         sup.value = boss;
       }
-      var on = $$(".day-dots span", row).map(function (d) { return d.classList.contains("on"); });
-      var days = $$(".check input[type=checkbox]", modal).filter(function (c) { return /^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)$/.test(c.parentNode.textContent.trim()); });
-      if (on.length === 7 && days.length === 7) days.forEach(function (c, i) { c.checked = on[i]; });
       var sub = $(".modal__head p", modal); if (sub && name) sub.textContent = name.textContent.trim();
       update();
     };
