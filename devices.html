@@ -12,7 +12,12 @@
   <script src="assets/js/store.js"></script>
   <script src="assets/js/app.js"></script>
   <script src="assets/js/workspace.js" defer></script>
+  <script src="assets/js/hw-catalog.js" defer></script>
+  <script src="assets/js/meter-data.js" defer></script>
   <script src="assets/js/device-data.js" defer></script>
+  <script src="assets/js/telemetry-core.js" defer></script>
+  <script src="assets/js/devices-telemetry.js" defer></script>
+  <script src="assets/js/hw-forms.js" defer></script>
   <script src="assets/js/device-token.js" defer></script>
   <script src="assets/js/export.js" defer></script>
   <script src="assets/js/table-scroll.js" defer></script>
@@ -173,7 +178,7 @@
           <div class="toolbar">
             <label class="search"><i class="ic i-search"></i><input type="search" placeholder="Search device name, ID or IP…" aria-label="Search devices" /></label>
             <select class="input input--sm" aria-label="Site"><option>All sites</option><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option></select>
-            <select class="input input--sm" aria-label="Type"><option>All types</option><option>Modbus TCP gateway</option><option>Data logger</option><option>4G IoT edge device</option><option>Wireless gateway</option></select>
+            <select class="input input--sm" aria-label="Type"><option>All types</option><option>Modbus TCP gateway</option><option>Energy server / data logger</option><option>Edge device (Node-RED)</option><option>4G IoT edge device</option><option>Wireless gateway</option></select>
             <select class="input input--sm" aria-label="Status"><option>Any status</option><option>Online</option><option>Weak signal</option><option>Offline</option></select>
           </div>
           <div class="table-wrap">
@@ -187,7 +192,7 @@
     <td><label for="gw-01" class="count-pill" style="cursor:pointer"><i class="ic i-gauge"></i> 3 meters</label></td>
     <td data-field="devices.ip"><span class="mono">192.168.1.21</span><div class="small muted">Modbus RTU → TCP</div></td>
     <td><div class="bar-cell"><div class="bar"><span style="--w:100%;--c:var(--green)"></span></div><small>100%</small></div><div class="small muted">Ethernet</div></td>
-    <td><span class="mono">3.2.1</span><div class="small muted" style="margin-top:4px">Up to date</div></td>
+    <td><span class="mono">v4.2</span><div class="small muted" style="margin-top:4px">Up to date</div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">4 s ago</div></td>
     <td><div class="actions"><a href="device.html?id=GW-01" class="act act--view" title="Open device details"><i class="ic i-eye"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
@@ -222,12 +227,12 @@
 <tbody class="device">
   <tr class="device-row">
     <td><input type="checkbox" class="tree-toggle" id="gw-02" aria-label="Show meters connected to Utility Block Data Logger" /><label for="gw-02" class="expander" title="Show connected meters"><i class="ic i-chev-right"></i></label></td>
-    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--violet)"><i class="ic i-layers"></i></span><div><a href="device.html?id=GW-02" class="row-link"><strong>Utility Block Data Logger</strong></a><small>GW-02 · Elmeasure Edge-Logger ELG-4G</small></div></div></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--violet)"><i class="ic i-layers"></i></span><div><a href="device.html?id=GW-02" class="row-link"><strong>Utility Block Data Logger</strong></a><small>GW-02 · Siemens SIMATIC IOT2050</small></div></div></td>
     <td>Utility Block<div class="small muted">Plant 1 · Bengaluru</div></td>
     <td><label for="gw-02" class="count-pill" style="cursor:pointer"><i class="ic i-gauge"></i> 3 meters</label></td>
-    <td data-field="devices.ip"><span class="mono">192.168.1.40</span><div class="small muted">Modbus RTU</div></td>
+    <td data-field="devices.ip"><span class="mono">192.168.1.40</span><div class="small muted">Modbus RTU → MQTT</div></td>
     <td><div class="bar-cell"><div class="bar"><span style="--w:100%;--c:var(--green)"></span></div><small>100%</small></div><div class="small muted">Ethernet</div></td>
-    <td><span class="mono">2.8.0</span><div><a href="#update-firmware" class="badge badge--blue" style="margin-top:4px"><i class="ic i-upload"></i> 2.9.1 available</a></div></td>
+    <td><span class="mono">Industrial OS 1.4</span><div><a href="#update-firmware" class="badge badge--blue" style="margin-top:4px"><i class="ic i-upload"></i> OS 1.5 available</a></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">6 s ago</div></td>
     <td><div class="actions"><a href="device.html?id=GW-02" class="act act--view" title="Open device details"><i class="ic i-eye"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
@@ -265,7 +270,7 @@
     <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-cpu"></i></span><div><a href="device.html?id=GW-03" class="row-link"><strong>Admin Block Gateway</strong></a><small>GW-03 · Schneider Com'X 510</small></div></div></td>
     <td>Admin Building<div class="small muted">Plant 1 · Bengaluru</div></td>
     <td><label for="gw-03" class="count-pill" style="cursor:pointer"><i class="ic i-gauge"></i> 2 meters</label></td>
-    <td data-field="devices.ip"><span class="mono">192.168.2.15</span><div class="small muted">Modbus TCP</div></td>
+    <td data-field="devices.ip"><span class="mono">192.168.2.15</span><div class="small muted">Modbus RTU → HTTPS</div></td>
     <td><div class="bar-cell"><div class="bar"><span style="--w:100%;--c:var(--green)"></span></div><small>100%</small></div><div class="small muted">Ethernet</div></td>
     <td><span class="mono">6.4.2</span><div class="small muted" style="margin-top:4px">Up to date</div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">9 s ago</div></td>
@@ -296,9 +301,9 @@
     <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-cpu"></i></span><div><a href="device.html?id=GW-04" class="row-link"><strong>Server Room Gateway</strong></a><small>GW-04 · Schneider Link150</small></div></div></td>
     <td>Server Room · L2<div class="small muted">Plant 1 · Bengaluru</div></td>
     <td><label for="gw-04" class="count-pill" style="cursor:pointer"><i class="ic i-gauge"></i> 1 meter</label></td>
-    <td data-field="devices.ip"><span class="mono">192.168.3.10</span><div class="small muted">Modbus TCP</div></td>
+    <td data-field="devices.ip"><span class="mono">192.168.3.10</span><div class="small muted">Modbus RTU → TCP</div></td>
     <td><div class="bar-cell"><div class="bar"><span style="--w:100%;--c:var(--green)"></span></div><small>100%</small></div><div class="small muted">Ethernet</div></td>
-    <td><span class="mono">4.1.0</span><div class="small muted" style="margin-top:4px">Up to date</div></td>
+    <td><span class="mono">004.007.000</span><div class="small muted" style="margin-top:4px">Up to date</div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">3 s ago</div></td>
     <td><div class="actions"><a href="device.html?id=GW-04" class="act act--view" title="Open device details"><i class="ic i-eye"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
@@ -320,7 +325,7 @@
     <td><label for="gw-05" class="count-pill" style="cursor:pointer"><i class="ic i-gauge"></i> 1 meter</label></td>
     <td data-field="devices.ip"><span class="mono">10.64.12.8</span><div class="small muted">MQTT over 4G</div></td>
     <td><div class="bar-cell"><div class="bar"><span style="--w:64%;--c:var(--amber)"></span></div><small>64%</small></div><div class="small muted">4G LTE</div></td>
-    <td><span class="mono">7.06</span><div><a href="#update-firmware" class="badge badge--blue" style="margin-top:4px"><i class="ic i-upload"></i> 7.08 available</a></div></td>
+    <td><span class="mono">R_00.07.06</span><div><a href="#update-firmware" class="badge badge--blue" style="margin-top:4px"><i class="ic i-upload"></i> R_00.07.08 available</a></div></td>
     <td><span class="badge badge--success"><span class="dot dot--live"></span> Online</span><div class="small muted" style="margin-top:4px">12 s ago</div></td>
     <td><div class="actions"><a href="device.html?id=GW-05" class="act act--view" title="Open device details"><i class="ic i-eye"></i></a><a href="#edit-device" class="act act--edit" title="Edit"><i class="ic i-edit"></i></a><a href="#reboot-device" class="act act--ok" title="Restart"><i class="ic i-refresh"></i></a><a href="#delete-device" class="act act--del" title="Delete"><i class="ic i-trash"></i></a></div></td>
   </tr>
@@ -484,8 +489,8 @@
       <div class="form-grid form-grid--3">
         <div class="field" data-field="devices.name"><label>Device name <span class="req">*</span></label><input class="input" placeholder="e.g. Block C Gateway" /></div>
         <div class="field"><label>Device ID</label><input class="input mono" value="GW-07" data-device-id /></div>
-        <div class="field" data-field="devices.type"><label>Device type</label><select class="input"><option>Modbus TCP gateway</option><option>Data logger</option><option>4G IoT edge device</option><option>Wireless (LoRaWAN) gateway</option></select></div>
-        <div class="field" data-field="devices.model"><label>Make &amp; model</label><input class="input" placeholder="Moxa MGate MB3170" /></div>
+        <div class="field" data-field="devices.type"><label>Device type</label><select class="input" data-hw-type><option>Modbus TCP gateway</option><option>Energy server / data logger</option><option>Edge device (Node-RED)</option><option>4G IoT edge device</option><option>Wireless (LoRaWAN) gateway</option></select></div>
+        <div class="field" data-field="devices.model"><label>Make &amp; model <span class="req">*</span></label><select class="input" data-hw-device data-value=""></select><span class="hint" data-hw-hint></span></div>
         <div class="field" data-field="devices.serial"><label>Serial number</label><input class="input mono" placeholder="TAGBB1054321" /></div>
         <div class="field" data-field="devices.site"><label>Site</label><select class="input"><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option></select></div>
         <div class="field full" data-field="devices.location"><label>Installed at</label><input class="input" placeholder="e.g. Block C · Panel room" /></div>
@@ -506,11 +511,15 @@
       <div class="form-grid form-grid--3">
         <div class="field" data-field="devices.network"><label>Connectivity</label><select class="input"><option>Ethernet</option><option>Wi-Fi</option><option>4G LTE</option></select></div>
         <div class="field" data-field="devices.ip"><label>IP address</label><input class="input mono" placeholder="192.168.1.70" /></div>
-        <div class="field" data-field="devices.ip"><label>Port</label><input class="input mono" value="502" /></div>
-        <div class="field" data-field="devices.protocol"><label>Field protocol</label><select class="input"><option>Modbus RTU (RS-485)</option><option>Modbus TCP</option><option>LoRaWAN</option></select></div>
-        <div class="field" data-field="devices.protocol"><label>Uplink</label><select class="input"><option>Modbus TCP (polled)</option><option>MQTT (push)</option><option>HTTPS (push)</option></select></div>
+        <div class="field" data-field="devices.ip"><label>Port</label><input class="input mono" value="502" data-hw-port /></div>
+        <div class="field" data-field="devices.protocol"><label>Field protocol</label><select class="input" data-hw-field><option>Modbus RTU (RS-485)</option><option>Modbus TCP</option><option>LoRaWAN</option></select></div>
+        <div class="field" data-field="devices.protocol"><label>Uplink</label><select class="input" data-hw-uplink><option>Modbus TCP (polled)</option><option>MQTT (push)</option><option>HTTPS (push)</option></select></div>
         <div class="field" data-field="devices.polling"><label>Polling interval</label><select class="input"><option>15 s</option><option>30 s</option><option>1 min</option><option>5 min</option></select></div>
-        <div class="field" data-field="devices.polling"><label>RS-485 baud rate</label><select class="input"><option>9600</option><option>19200</option><option>38400</option></select></div>
+        <div class="field" data-field="devices.polling"><label>RS-485 baud rate</label><select class="input"><option>4800</option><option selected>9600</option><option>19200</option><option>38400</option><option>57600</option><option>115200</option></select></div>
+        <div class="field" data-field="devices.polling"><label>Parity</label><select class="input"><option>None</option><option selected>Even</option><option>Odd</option></select></div>
+        <div class="field" data-field="devices.polling"><label>Data bits · stop bits</label><select class="input"><option selected>8 data · 1 stop</option><option>8 data · 2 stop</option><option>7 data · 1 stop</option></select><span class="hint">Must match every meter on the RS-485 line</span></div>
+        <div class="field" data-field="devices.polling"><label>Reply timeout</label><div class="input-icon"><i class="ic i-clock"></i><input class="input mono" value="1000" /><span class="suffix">ms</span></div></div>
+        <div class="field" data-field="devices.polling"><label>Retries</label><select class="input"><option>0</option><option>1</option><option selected>2</option><option>3</option></select></div>
         <div class="field"><label>Time sync</label><select class="input"><option>NTP · pool.ntp.org</option><option>Server time</option></select></div>
         <label class="switch" style="align-self:end"><input type="checkbox" checked /> Alert me if the device goes offline</label>
       </div>
@@ -536,8 +545,8 @@
       <div class="form-grid form-grid--3">
         <div class="field" data-field="devices.name"><label>Device name <span class="req">*</span></label><input class="input" value="Main LT Panel Gateway" /></div>
         <div class="field"><label>Device ID</label><input class="input mono" value="GW-01" readonly /></div>
-        <div class="field" data-field="devices.type"><label>Device type</label><select class="input"><option selected>Modbus TCP gateway</option><option>Data logger</option><option>4G IoT edge device</option><option>Wireless (LoRaWAN) gateway</option></select></div>
-        <div class="field" data-field="devices.model"><label>Make &amp; model</label><input class="input" value="Moxa MGate MB3170" /></div>
+        <div class="field" data-field="devices.type"><label>Device type</label><select class="input" data-hw-type><option selected>Modbus TCP gateway</option><option>Energy server / data logger</option><option>Edge device (Node-RED)</option><option>4G IoT edge device</option><option>Wireless (LoRaWAN) gateway</option></select></div>
+        <div class="field" data-field="devices.model"><label>Make &amp; model <span class="req">*</span></label><select class="input" data-hw-device data-value="Moxa MGate MB3170"></select><span class="hint" data-hw-hint></span></div>
         <div class="field" data-field="devices.serial"><label>Serial number</label><input class="input mono" value="TAGBB1054321" /></div>
         <div class="field" data-field="devices.site"><label>Site</label><select class="input"><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option></select></div>
         <div class="field full" data-field="devices.location"><label>Installed at</label><input class="input" value="Main LT Panel" /></div>
@@ -563,11 +572,15 @@
       <div class="form-grid form-grid--3">
         <div class="field" data-field="devices.network"><label>Connectivity</label><select class="input"><option selected>Ethernet</option><option>Wi-Fi</option><option>4G LTE</option></select></div>
         <div class="field" data-field="devices.ip"><label>IP address</label><input class="input mono" value="192.168.1.21" /></div>
-        <div class="field" data-field="devices.ip"><label>Port</label><input class="input mono" value="502" /></div>
-        <div class="field" data-field="devices.protocol"><label>Field protocol</label><select class="input"><option>Modbus RTU (RS-485)</option><option>Modbus TCP</option><option>LoRaWAN</option></select></div>
-        <div class="field" data-field="devices.protocol"><label>Uplink</label><select class="input"><option>Modbus TCP (polled)</option><option>MQTT (push)</option><option>HTTPS (push)</option></select></div>
+        <div class="field" data-field="devices.ip"><label>Port</label><input class="input mono" value="502" data-hw-port /></div>
+        <div class="field" data-field="devices.protocol"><label>Field protocol</label><select class="input" data-hw-field><option>Modbus RTU (RS-485)</option><option>Modbus TCP</option><option>LoRaWAN</option></select></div>
+        <div class="field" data-field="devices.protocol"><label>Uplink</label><select class="input" data-hw-uplink><option>Modbus TCP (polled)</option><option>MQTT (push)</option><option>HTTPS (push)</option></select></div>
         <div class="field" data-field="devices.polling"><label>Polling interval</label><select class="input"><option>15 s</option><option>30 s</option><option>1 min</option><option>5 min</option></select></div>
-        <div class="field" data-field="devices.polling"><label>RS-485 baud rate</label><select class="input"><option>9600</option><option>19200</option><option>38400</option></select></div>
+        <div class="field" data-field="devices.polling"><label>RS-485 baud rate</label><select class="input"><option>4800</option><option selected>9600</option><option>19200</option><option>38400</option><option>57600</option><option>115200</option></select></div>
+        <div class="field" data-field="devices.polling"><label>Parity</label><select class="input"><option>None</option><option selected>Even</option><option>Odd</option></select></div>
+        <div class="field" data-field="devices.polling"><label>Data bits · stop bits</label><select class="input"><option selected>8 data · 1 stop</option><option>8 data · 2 stop</option><option>7 data · 1 stop</option></select><span class="hint">Must match every meter on the RS-485 line</span></div>
+        <div class="field" data-field="devices.polling"><label>Reply timeout</label><div class="input-icon"><i class="ic i-clock"></i><input class="input mono" value="1000" /><span class="suffix">ms</span></div></div>
+        <div class="field" data-field="devices.polling"><label>Retries</label><select class="input"><option>0</option><option>1</option><option selected>2</option><option>3</option></select></div>
         <div class="field"><label>Time sync</label><select class="input"><option>NTP · pool.ntp.org</option><option>Server time</option></select></div>
         <label class="switch" style="align-self:end"><input type="checkbox" checked /> Alert me if the device goes offline</label>
       </div>

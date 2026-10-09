@@ -20,10 +20,11 @@
     ],
     meter: [
       { key: "live", label: "Live", icon: "i-gauge", match: /^(Live gauges|Electrical parameters)/ },
-      { key: "energy", label: "Energy", icon: "i-chart", match: /^(Power today|Generation today|Daily energy|Daily generation)/ },
+      { key: "energy", label: "Energy", icon: "i-chart", match: /^(Power today|Generation today|Import \/ export energy|Daily energy|Daily generation)/ },
+      { key: "trends", label: "Trends", icon: "i-activity", match: /^(kW and kVA|Power factor|Voltage harmonics|Current harmonics)/ },
       { key: "subs", label: "Sub-meters", icon: "i-layers", match: /^(Sub-meters|Actual vs sub-meters|Share by sub-meter)/ },
       { key: "alerts", label: "Alerts", icon: "i-bell", match: /^Alert rules/ },
-      { key: "device", label: "Device & connections", icon: "i-cpu", match: /^(Reporting device|Connections)/ },
+      { key: "device", label: "Device & connections", icon: "i-cpu", match: /^(Reporting device|Connections|Meter specification|Modbus register map)/ },
     ],
   };
 

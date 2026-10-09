@@ -6,8 +6,8 @@
    outside sane limits, flagged). Filters by meter, status and time range; new
    messages arrive live every polling interval (pause with the Live switch);
    "Raw" shows the payload as the device sent it; Export CSV saves the view.
-   Demo mode: messages are generated from the meter registry, steadily (the same
-   history on every visit). A backend replaces history() with
+   Demo mode: messages come from telemetry-core.js (the same history on every
+   visit, and the same as Device Management → Telemetry logs). A backend replaces history() with
    GET /devices/:id/telemetry and live updates with the WebSocket 'reading' event.
    ========================================================================== */
 (function () {
@@ -16,63 +16,14 @@
   var id = new URLSearchParams(location.search).get("id") || "GW-01";
   var dev = (window.ED_DEVICES || []).filter(function (d) { return d.id === id; })[0];
   if (!dev) return;
-  var ORG = (function () { var s = window.EDStore && EDStore.session(); return s && s.status === "ok" ? s.tenant.id : "ORG"; })();
-  var meters = dev.meters.map(function (x) {
-    var m = (window.ED_METERS || []).filter(function (mm) { return mm.id === x[0]; })[0];
-    return m ? { m: m, slave: x[1] } : null;
-  }).filter(Boolean);
+  var T = window.EDTelemetry.forDevice(dev), meters = T.meters;
   if (!meters.length) return;
 
   function $(s, r) { return (r || document).querySelector(s); }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function fx(n, d) { return Number(n).toLocaleString("en-IN", { minimumFractionDigits: d, maximumFractionDigits: d }); }
   function pad(n, w) { n = String(n); while (n.length < (w || 2)) n = "0" + n; return n; }
-  // steady pseudo-random number in [0,1) for a key
-  function rnd(key) { var h = 2166136261; for (var i = 0; i < key.length; i++) { h ^= key.charCodeAt(i); h = Math.imul(h, 16777619); } h ^= h >>> 13; h = Math.imul(h, 0x5bd1e995); return ((h ^ (h >>> 15)) >>> 0) / 4294967296; }
-
-  var EPOCH = Date.UTC(2026, 0, 1);
-  var POLL = (function (p) { var m = /([\d.]+)\s*(s|min)/.exec(p || ""); return m ? (+m[1]) * (m[2] === "min" ? 60 : 1) * 1000 : 15000; })(dev.polling);
-  var SOURCE = /MQTT/i.test(dev.uplink) ? "MQTT · ed/" + ORG + "/" + dev.id + "/readings"
-    : /HTTPS/i.test(dev.uplink) ? "HTTPS · POST /ingest/v1/readings" : "Modbus TCP poll · " + dev.ip + ":" + dev.port;
-  var weak = dev.status === "weak" || dev.signal < 40, offline = dev.status === "offline";
-  var STATUS = {
-    ok: ["success", "OK"], late: ["warn", "Late"], timeout: ["danger", "Timeout"], crc: ["danger", "CRC error"], range: ["violet", "Out of range"],
-  };
-
-  // One message: meter x at time t (ms)
-  function message(x, t) {
-    var m = x.m, k = dev.id + x.slave + t, r = rnd(k);
-    var st = "ok";
-    if (offline || m.status === "Offline") st = "timeout";
-    else if (r < (weak ? 0.035 : 0.002)) st = "timeout";
-    else if (r < (weak ? 0.05 : 0.004)) st = "crc";
-    else if (r < (weak ? 0.14 : 0.02)) st = "late";
-    else if (r > 0.9985) st = "range";
-    var row = { t: t, x: x, status: st, latency: Math.round((st === "late" ? 5200 + rnd(k + "l") * 9000 : (weak ? 380 : 90) + rnd(k + "l") * (weak ? 900 : 160))) };
-    if (st === "timeout" || st === "crc") { row.latency = st === "timeout" ? 1000 : row.latency; return row; }
-    var hour = new Date(t).getHours() + new Date(t).getMinutes() / 60;
-    var shape = m.power < 0 ? Math.max(0, Math.sin((hour - 6) / 12 * Math.PI)) : 0.82 + 0.18 * Math.sin((hour - 8) / 24 * 2 * Math.PI);
-    // smooth drift (minutes-scale waves) plus a little sample noise, as a real feeder behaves
-    var wave = Math.sin(t / 7.2e5 + rnd(m.id + "w") * 6) * 0.6 + Math.sin(t / 2.1e5 + rnd(m.id + "z") * 6) * 0.4;
-    var kw = Math.abs(m.power) * shape * (1 + 0.05 * wave + 0.02 * (rnd(k + "p") - 0.5));
-    var pf = Math.min(0.99, 0.84 + 0.12 * rnd(m.id + "pf") + 0.02 * (rnd(k + "f") - 0.5));
-    var three = m.phase !== 1, vln = 230.5 + (rnd(m.id + "v") - 0.5) * 3 + 1.6 * Math.sin(t / 1.5e6) + 0.6 * wave + 0.3 * (rnd(k + "v") - 0.5);
-    var i = three ? kw * 1000 / (Math.sqrt(3) * vln * Math.sqrt(3) * pf) : kw * 1000 / (vln * pf);
-    row.kw = m.power < 0 ? -kw : kw; row.pf = pf; row.v = vln; row.i = i * (1 + 0.015 * (rnd(k + "i") - 0.5)); row.hz = 50 + 0.05 * Math.sin(t / 3e5) + 0.02 * (rnd(k + "h") - 0.5);
-    row.three = three;
-    // voltage THD: steady per meter (UPS / drive loads distort more) with a slow drift
-    row.thdv = (/MTR-1004/.test(m.id) ? 4.6 : 1.6 + 1.6 * rnd(m.id + "thd")) + 0.35 * Math.sin(t / 9e5 + rnd(m.id + "tw") * 6) + 0.1 * (rnd(k + "td") - 0.5);
-    // cumulative register: grows with time since a fixed epoch at roughly the meter's average power
-    row.kwh = Math.abs(m.energy) * 140 + (t - EPOCH) / 36e5 * Math.abs(m.power) * 0.8; // only ever rises
-    if (st === "range") row.v = 289.4; // flagged: above 1.25 × nominal
-    return row;
-  }
-
-  function history(spanMs, end) {
-    var out = [], start = Math.floor((end - spanMs) / POLL) * POLL;
-    for (var t = Math.floor(end / POLL) * POLL; t > start; t -= POLL) meters.forEach(function (x) { out.push(message(x, t)); });
-    return out;
-  }
+  var POLL = T.POLL, SOURCE = T.SOURCE, STATUS = EDTelemetry.STATUS, message = T.message, history = T.history;
 
   /* ---------- markup ---------- */
   var opts = meters.map(function (x) { return '<option value="' + x.slave + '">Slave ' + x.slave + " · " + esc(x.m.name) + "</option>"; }).join("");
@@ -90,7 +41,7 @@
     '<select class="input" id="tl-status" style="width:auto" aria-label="Status"><option value="">Any status</option><option value="problem">Problems only</option><option value="ok">OK</option><option value="late">Late</option><option value="timeout">Timeout</option><option value="crc">CRC error</option><option value="range">Out of range</option></select>' +
     '<select class="input" id="tl-span" style="width:auto" aria-label="Time range"><option value="900000">Last 15 min</option><option value="3600000" selected>Last 1 hour</option><option value="21600000">Last 6 hours</option></select>' +
     '<div class="row wrap" id="tl-chips" style="gap:8px;margin-left:auto"></div></div></div>' +
-    '<div class="table-wrap"><table class="table"><thead><tr><th>Time</th><th>Meter</th><th class="num">kW</th><th class="num">Voltage</th><th class="num">Current</th><th class="num">PF</th><th class="num">Hz</th><th class="num">V-THD</th><th class="num">kWh register</th><th class="num">Latency</th><th>Status</th><th></th></tr></thead>' +
+    '<div class="table-wrap"><table class="table"><thead id="tl-head"></thead>' +
     '<tbody id="tl-rows"></tbody></table></div>';
   // under "Connected meters"
   var anchor = Array.prototype.filter.call(page.querySelectorAll("section.card"), function (s) { return /Connected meters/.test(s.textContent); })[0];
@@ -102,9 +53,7 @@
   chartSec.id = "telemetry-chart";
   chartSec.innerHTML =
     '<div class="card__head"><div><h3 class="card__title"><i class="ic i-chart"></i> Telemetry chart</h3><p class="card__sub" id="tc-sub"></p></div>' +
-    '<div class="seg" id="tc-measure" role="group" aria-label="Measure">' +
-    '<button type="button" data-m="kw" class="is-on">Power</button><button type="button" data-m="v">Voltage</button><button type="button" data-m="i">Current</button>' +
-    '<button type="button" data-m="pf">Power factor</button><button type="button" data-m="thdv">Voltage THD</button><button type="button" data-m="lat">Latency</button></div></div>' +
+    '<div class="seg" id="tc-measure" role="group" aria-label="Measure"></div></div>' +
     '<div class="card__body"><div class="tchart__legend" id="tc-legend"></div><div class="chart-box tchart__box" id="tc-box"></div>' +
     '<div class="tchart__legend tchart__legend--status"><span class="tchart__st"><i style="background:var(--st-late)"></i>Late</span>' +
     '<span class="tchart__st"><i style="background:var(--st-range)"></i>Out of range</span><span class="tchart__st"><i style="background:var(--st-lost)"></i>Lost (timeout / CRC)</span>' +
@@ -119,14 +68,8 @@
     var time = pad(d.getHours()) + ":" + pad(d.getMinutes()) + ":" + pad(d.getSeconds());
     var key = r.t + "-" + x.slave;
     return '<tr' + (fresh[key] ? ' class="is-new"' : "") + '><td class="mono nowrap">' + time + '<div class="small muted" style="font-family:var(--font)">' + d.toLocaleDateString(undefined, { day: "numeric", month: "short" }) + "</div></td>" +
-      '<td><strong>' + esc(x.m.name) + '</strong><div class="small muted">Slave ' + x.slave + " · " + esc(x.m.id) + " · " + (x.m.phase === 1 ? "1φ" : "3φ") + "</div></td>" +
-      '<td class="num mono">' + (bad ? "—" : fx(r.kw, 1)) + "</td>" +
-      '<td class="num mono"' + (r.status === "range" ? ' style="color:var(--rose)"' : "") + ">" + (bad ? "—" : fx(r.v, 1) + " V") + "</td>" +
-      '<td class="num mono">' + (bad ? "—" : fx(r.i, 1) + " A") + "</td>" +
-      '<td class="num mono">' + (bad ? "—" : fx(r.pf, 2)) + "</td>" +
-      '<td class="num mono">' + (bad ? "—" : fx(r.hz, 2)) + "</td>" +
-      '<td class="num mono"' + (!bad && r.thdv > 5 ? ' style="color:var(--amber)"' : "") + ">" + (bad ? "—" : fx(r.thdv, 1) + " %") + "</td>" +
-      '<td class="num mono">' + (bad ? "—" : fx(r.kwh, 1)) + "</td>" +
+      '<td><strong>' + esc(x.m.name) + '</strong><div class="small muted">Slave ' + x.slave + " · " + esc(x.m.id) + " · " + (x.m.phase === 1 ? "1φ" : "3φ") + " · " + esc(x.cls.label) + "</div></td>" +
+      F.map(function (f) { return EDTelemetry.cell(r, f); }).join("") +
       '<td class="num mono">' + (r.status === "timeout" ? "> 1,000 ms" : fx(r.latency, 0) + " ms") + "</td>" +
       '<td><span class="badge badge--' + s[0] + '"><span class="dot"></span> ' + s[1] + "</span></td>" +
       '<td><button type="button" class="btn btn--sm btn--ghost" data-raw="' + key + '"><i class="ic i-file"></i> Raw</button></td></tr>';
@@ -144,12 +87,21 @@
       '<span class="tag">avg ' + fx(avg, 0) + " ms</span>";
   }
 
+  // fields of the meters in view (their classes decide which columns and chart tabs exist)
+  var F = [];
+  function scope() { return meters.filter(function (x) { return !fMeter.value || String(x.slave) === fMeter.value; }); }
+  function head() {
+    F = EDTelemetry.fieldsFor(scope());
+    $("#tl-head").innerHTML = "<tr><th>Time</th><th>Meter</th>" + F.map(function (f) { return '<th class="num">' + esc(f.col) + "</th>"; }).join("") + '<th class="num">Latency</th><th>Status</th><th></th></tr>';
+    tabs();
+  }
   function render() {
+    head();
     var sl = fMeter.value, st = fStatus.value;
     view = all.filter(function (r) {
       return (!sl || String(r.x.slave) === sl) && (!st || (st === "problem" ? r.status !== "ok" : r.status === st));
     });
-    tbody.innerHTML = view.length ? view.map(cells).join("") : '<tr><td colspan="12" class="muted" style="text-align:center;padding:28px">No messages match these filters.</td></tr>';
+    tbody.innerHTML = view.length ? view.map(cells).join("") : '<tr><td colspan="' + (F.length + 5) + '" class="muted" style="text-align:center;padding:28px">No messages match these filters.</td></tr>';
     chips();
     drawChart();
   }
@@ -175,15 +127,7 @@
   function raw(key) {
     var r = all.filter(function (x) { return x.t + "-" + x.x.slave === key; })[0];
     if (!r) return;
-    var iso = new Date(r.t).toISOString().replace(/\.\d+Z$/, "Z"), body;
-    if (r.status === "timeout") body = { ts: iso, slave: r.x.slave, error: "timeout", detail: "no reply within 1000 ms" };
-    else if (r.status === "crc") body = { ts: iso, slave: r.x.slave, error: "crc", detail: "frame checksum mismatch · discarded" };
-    else {
-      body = { ts: iso, slave: r.x.slave, kw: +r.kw.toFixed(2), pf: +r.pf.toFixed(3), hz: +r.hz.toFixed(2), thd_v: +r.thdv.toFixed(1), kwh_imp: +r.kwh.toFixed(1) };
-      if (r.three) { body.v = [r.v, r.v * 0.993, r.v * 1.004].map(function (n) { return +n.toFixed(1); }); body.i = [r.i, r.i * 0.95, r.i * 0.92].map(function (n) { return +n.toFixed(1); }); }
-      else { body.v = [+r.v.toFixed(1)]; body.i = [+r.i.toFixed(1)]; }
-    }
-    var envelope = { device: dev.id, seq: Math.floor(r.t / POLL) % 1000000, readings: [body] };
+    var envelope = T.envelope(r);
     var M = $("#telemetry-raw");
     $("#telemetry-raw-t", M).textContent = "Raw message";
     $("#tr-sub", M).textContent = r.x.m.name + " · slave " + r.x.slave + " · " + new Date(r.t).toLocaleString();
@@ -195,26 +139,28 @@
   }
 
   function exportCsv() {
-    var lines = [["Time", "Meter ID", "Meter", "Slave", "Phase", "kW", "Voltage (V)", "Current (A)", "PF", "Hz", "Voltage THD (%)", "kWh register", "Latency (ms)", "Status"].join(",")];
+    // columns = fields of the meters in view; blank where a meter class has no such field or the message was lost
+    var lines = [["Time", "Meter ID", "Meter", "Meter class", "Slave", "Phase"].concat(F.map(function (f) { return f.label + (f.unit ? " (" + f.unit + ")" : ""); }), ["Latency (ms)", "Status"]).join(",")];
     view.forEach(function (r) {
       var bad = r.status === "timeout" || r.status === "crc";
-      lines.push([new Date(r.t).toISOString(), r.x.m.id, '"' + r.x.m.name.replace(/"/g, '""') + '"', r.x.slave, r.x.m.phase === 1 ? "1" : "3",
-        bad ? "" : r.kw.toFixed(2), bad ? "" : r.v.toFixed(1), bad ? "" : r.i.toFixed(1), bad ? "" : r.pf.toFixed(3), bad ? "" : r.hz.toFixed(2), bad ? "" : r.thdv.toFixed(1), bad ? "" : r.kwh.toFixed(1),
-        r.status === "timeout" ? "" : r.latency, STATUS[r.status][1]].join(","));
+      lines.push([new Date(r.t).toISOString(), r.x.m.id, '"' + r.x.m.name.replace(/"/g, '""') + '"', '"' + r.x.cls.label + '"', r.x.slave, r.x.m.phase === 1 ? "1" : "3"]
+        .concat(F.map(function (f) { return bad || r[f.k] == null ? "" : r[f.k].toFixed(Math.max(f.d, f.k === "kw" ? 2 : f.d)); }), [r.status === "timeout" ? "" : r.latency, STATUS[r.status][1]]).join(","));
     });
     var a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob(["﻿" + lines.join("\r\n")], { type: "text/csv" }));
     a.download = dev.id + "-telemetry.csv"; document.body.appendChild(a); a.click(); a.remove();
   }
 
-  var MEASURES = {
-    kw: { label: "Power", unit: "kW", d: 1, zero: true, get: function (r) { return r.kw; } },
-    v: { label: "Voltage", unit: "V", d: 1, get: function (r) { return r.v; } },
-    i: { label: "Current", unit: "A", d: 1, zero: true, get: function (r) { return r.i; } },
-    pf: { label: "Power factor", unit: "", d: 2, get: function (r) { return r.pf; } },
-    thdv: { label: "Voltage THD", unit: "%", d: 1, zero: true, get: function (r) { return r.thdv; } },
-    lat: { label: "Latency", unit: "ms", d: 0, zero: true, get: function (r) { return r.latency; } },
-  };
+  var LAT = { k: "lat", label: "Latency", unit: "ms", d: 0, zero: true };
+  function MEASURE(k) { return k === "lat" ? LAT : EDTelemetry.FIELDS.filter(function (f) { return f.k === k; })[0]; }
+  function valueOf(r, k) { return k === "lat" ? r.latency : r[k]; }
+  // chart tabs: the chartable fields of the meters in view, plus latency
+  function tabs() {
+    var list = F.filter(function (f) { return f.chart !== false; }).concat([LAT]);
+    if (!list.some(function (f) { return f.k === measure; })) measure = list[0].k;
+    var bar = $("#tc-measure"), html = list.map(function (f) { return '<button type="button" data-m="' + f.k + '"' + (f.k === measure ? ' class="is-on" aria-pressed="true"' : ' aria-pressed="false"') + ">" + esc(f.label) + "</button>"; }).join("");
+    if (bar.innerHTML !== html) bar.innerHTML = html;
+  }
   var measure = "kw";
   var SEV = { ok: 0, late: 1, range: 2, crc: 3, timeout: 3 };
   var SEVVAR = ["--st-ok", "--st-late", "--st-range", "--st-lost"];
@@ -229,14 +175,15 @@
   function hm(t) { var d = new Date(t); return pad(d.getHours()) + ":" + pad(d.getMinutes()); }
 
   function drawChart() {
-    var box = $("#tc-box"), M = MEASURES[measure];
+    var box = $("#tc-box"), M = MEASURE(measure);
     var span = +fSpan.value, end = Math.floor(Date.now() / POLL) * POLL, start = end - span + POLL;
-    var shown = meters.filter(function (x) { return !fMeter.value || String(x.slave) === fMeter.value; });
+    // only meters whose class reports this measure get a line
+    var shown = scope().filter(function (x) { return measure === "lat" || x.cls.fields.indexOf(measure) >= 0; });
     // per meter: points ascending in time; value null when the message was lost
     var series = shown.map(function (x) {
       var pts = all.filter(function (r) { return r.x === x; }).sort(function (p, q) { return p.t - q.t; }).map(function (r) {
         var lost = r.status === "timeout" || r.status === "crc" || r.status === "range"; // flagged values stay off the line (see status strip)
-        return { t: r.t, r: r, y: measure === "lat" ? (r.status === "timeout" ? null : r.latency) : lost ? null : M.get(r) };
+        return { t: r.t, r: r, y: measure === "lat" ? (r.status === "timeout" ? null : r.latency) : lost ? null : valueOf(r, measure) };
       });
       return { x: x, slot: meters.indexOf(x), pts: pts };
     });

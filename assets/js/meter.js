@@ -40,6 +40,9 @@
   }
   var isSub = !!parent, main = parent || meter;
   var kind = main.kind, gen = kind === "generator";
+  // incoming meter = import energy (default), outgoing meter = export energy
+  var DIR = meter.dir || (isSub ? "import" : gen ? "export" : "import");
+  var DIR_LABEL = DIR === "export" ? "Outgoing · Export" : "Incoming · Import";
   document.title = meter.name + " · " + meter.id + " · Energy Dashboard";
   var crumb = document.querySelector(".topbar__crumbs strong");
   if (crumb) crumb.textContent = meter.name;
@@ -81,6 +84,11 @@
   }
   var daily = weights.map(function (w, i) { return { x: i + 1, y: wsum ? rest * w / wsum : 0 }; });
   daily.push({ x: day, y: todayKwh, partial: true });
+  // an incoming meter has an import register, an outgoing meter an export register
+  var EN = {
+    imp: DIR === "export" ? null : { today: todayKwh, month: monthKwh, reg: monthKwh * 14.3 + 18250 },
+    exp: DIR === "export" ? { today: todayKwh, month: monthKwh, reg: monthKwh * 9.6 + 4120 } : null,
+  };
 
   /* ---------- electrical parameters (demo, consistent with power) ---------- */
   var pf = meter.id === "MTR-1001" ? 0.86 : gen ? 0.99 : +(0.9 + 0.08 * R()).toFixed(2);
@@ -94,6 +102,43 @@
   var hz = live ? 49.95 + 0.1 * R() : null;
   var thdV = live ? (meter.id === "MTR-1004" ? 4.2 + 2.4 * R() : 1.8 + 1.5 * R()) : null, // data centre UPS loads distort the voltage more
       thdI = live ? 4 + (meter.id === "MTR-1004" ? 5 : 3) * R() : null;
+  // current leads the voltage on capacitive loads (UPS / data centre), lags on motors and most other loads
+  var pfLead = meter.id === "MTR-1004", LL = pfLead ? "Lead" : "Lag";
+  // per-phase values, spread a little around the meter totals (no extra random draws, so other demo numbers stay the same)
+  var pfPh = v.map(function (vv, i) { return Math.min(0.999, Math.max(0.5, pf + (j3[i] - 0.5) * 0.03)); });
+  var kvaPh = v.map(function (vv, i) { return vv * iPh[i] / 1000; });
+  var kwPh = kvaPh.map(function (x, i) { return x * pfPh[i]; });
+  var thdVPh = v.map(function (vv, i) { return live ? thdV * (0.9 + 0.2 * j3[(i + 1) % 3]) : null; });
+  var thdIPh = v.map(function (vv, i) { return live ? thdI * (0.9 + 0.2 * j3[(i + 2) % 3]) : null; });
+
+  /* ---------- trends through the day (same 15-minute points as Power today) ---------- */
+  // deterministic wobble so the history never shifts the other demo numbers
+  var seed = meter.id.split("").reduce(function (a, c) { return a + c.charCodeAt(0); }, 0);
+  var nz = function (t, k) { var x = Math.sin(t * 12.9898 + k * 78.233 + seed) * 43758.5453; return x - Math.floor(x); };
+  var pkW = Math.max(peak.y, 1e-6), lfNow = absPower / pkW;
+  var baseV = thdV != null ? thdV : (meter.id === "MTR-1004" ? 5.4 : 3), baseI = thdI != null ? thdI : (meter.id === "MTR-1004" ? 6.5 : 5.5);
+  var TR = { kw: [], kva: [], pf: [], vthd: PHASES.map(function () { return []; }), ithd: PHASES.map(function () { return []; }) };
+  hourly.forEach(function (p, n) {
+    var isNow = n === hourly.length - 1, on = p.y != null && p.y > 0, lf = on ? p.y / pkW : 0;
+    var pft = !on ? null : isNow && live ? pf : Math.min(0.999, Math.max(0.6, pf + 0.03 * (nz(p.x, 1) - 0.5) - 0.04 * (lfNow - lf)));
+    TR.kw.push(p.y); TR.kva.push(p.y == null ? null : on ? p.y / pft : 0); TR.pf.push(pft);
+    PHASES.forEach(function (l, k) {
+      TR.vthd[k].push(!on ? null : isNow && live ? thdVPh[k] : baseV * (0.9 + 0.2 * j3[(k + 1) % 3]) * (0.85 + 0.3 * lf) * (0.92 + 0.16 * nz(p.x, 10 + k)));
+      TR.ithd[k].push(!on ? null : isNow && live ? thdIPh[k] : baseI * (0.9 + 0.2 * j3[(k + 2) % 3]) * (1.25 - 0.4 * lf) * (0.9 + 0.2 * nz(p.x, 20 + k)));
+    });
+  });
+  var PHC = PH === 1 ? ["var(--primary)"] : ["var(--rose)", "var(--amber)", "var(--blue)"]; // L1 red, L2 yellow, L3 blue
+  var phSeries = function (arr) { return PHASES.map(function (l, k) { return { name: l, color: PHC[k], vals: arr[k] }; }); };
+  var CH = [
+    { id: "chart-kwkva", title: "kW and kVA", sub: "Active and apparent power · 15-minute readings", unit: "kW·kVA", dp: 1, min: 0,
+      series: [{ name: "kW", color: "var(--primary)", vals: TR.kw, u: "kW" }, { name: "kVA", color: "var(--amber)", vals: TR.kva, u: "kVA" }] },
+    { id: "chart-pf", title: "Power factor", sub: (pfLead ? "Leading" : "Lagging") + " · target 0.95 or better", unit: "PF", dp: 2, min: 0.6, max: 1, limit: [0.95, "Target 0.95"], suffix: " " + LL,
+      series: [{ name: "Power factor", color: "var(--green)", vals: TR.pf }] },
+    { id: "chart-vthd", title: "Voltage harmonics", sub: "Voltage THD per phase · limit 8 % (IEEE 519)", unit: "%", dp: 1, min: 0, limit: [8, "Limit 8 %"], u: "%",
+      series: phSeries(TR.vthd) },
+    { id: "chart-ithd", title: "Current harmonics", sub: "Current THD per phase · limit 8 %", unit: "%", dp: 1, min: 0, limit: [8, "Limit 8 %"], u: "%",
+      series: phSeries(TR.ithd) },
+  ];
 
   /* ---------- rules watching this meter (from Alerts → Alert rules) ---------- */
   var RULES = [
@@ -130,7 +175,7 @@
     '<span class="dev-icon" style="--c:var(' + (isSub ? "--primary" : main.color) + ')"><i class="ic ' + (isSub ? "i-layers" : main.icon) + '"></i></span>' +
     '<div style="min-width:0"><span class="eyebrow">' + (isSub ? "Sub-meter of " + esc(parent.name) : gen ? "Main meter · generation" : "Main meter") + "</span>" +
     '<h1 class="page-title" style="margin-top:2px">' + esc(meter.name) + "</h1>" +
-    '<div class="meter-meta"><span class="tag">' + esc(meter.id) + "</span>" + badge(meter.status) + ' <span class="tag tag--phase" title="' + (PH === 1 ? "Single-phase supply · 2-wire · 230 V" : "Three-phase supply · 4-wire · 415 V") + '">' + (PH === 1 ? "1φ Single-phase" : "3φ Three-phase") + "</span>" +
+    '<div class="meter-meta"><span class="tag">' + esc(meter.id) + "</span>" + badge(meter.status) + ' <span class="tag tag--phase" title="' + (PH === 1 ? "Single-phase supply · 2-wire · 230 V" : "Three-phase supply · 4-wire · 415 V") + '">' + (PH === 1 ? "1φ Single-phase" : "3φ Three-phase") + "</span>" + ' <span class="tag tag--phase" title="Energy measured">' + (DIR === "export" ? "↑ " : "↓ ") + esc(DIR_LABEL) + "</span>" +
     '<span class="page-sub" style="margin:0">' + esc(isSub ? meter.ct + " · via parent meter" : meter.model + " · " + meter.location) + "</span>" +
     '<a href="device.html?id=' + esc(main.device) + '" class="device-chip' + (isSub ? " device-chip--inherited" : "") + '" title="' + esc(main.deviceName) + '"><span class="dot dot--live" style="--c:var(--green)"></span>' + esc(main.device) + "</a></div></div></div>" +
     '<div class="page-actions">' +
@@ -174,20 +219,48 @@
     '<div class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-activity"></i> ' + (gen ? "Generation" : "Power") + ' today</h3><p class="card__sub">15-minute readings · kW · hover for values</p></div></div>' +
     '<div class="card__body"><div class="chart-box" id="chart-power"></div>' + tableFor(hourly.filter(function (p, i) { return i % 4 === 0; }), "Time", "kW", function (p) { return hhmm(p.x); }, 1) + "</div></div>" +
     '<div class="card" data-field="meters.electrical"><div class="card__head"><div><h3 class="card__title"><i class="ic i-gauge"></i> Electrical parameters</h3><p class="card__sub">' + esc(lastSeen) + "</p></div></div>" +
-    '<div class="card__body"><table class="table param-table"><thead><tr><th>Phase</th><th>Voltage</th><th>Current</th></tr></thead><tbody>' +
-    PHASES.map(function (l, i) { return "<tr><td>" + l + "</td><td>" + fmt(v[i], 1) + " V</td><td>" + fmt(iPh[i], 1) + " A</td></tr>"; }).join("") +
-    (PH === 3 ? '<tr class="muted"><td>L–L</td><td>' + fmt(avg3(v) * Math.sqrt(3), 0) + " V</td><td>imbalance " + fmt(imb3(iPh), 1) + " %</td></tr>" : "") +
-    '</tbody></table><dl class="kv" style="margin-top:16px">' +
-    "<dt>Power factor</dt><dd" + (pf < 0.95 && live ? ' class="tc-rose"' : "") + ">" + (live ? pf.toFixed(2) : "—") + "</dd>" +
+    '<div class="card__body"><div class="table-wrap"><table class="table param-table"><thead><tr><th>Phase</th><th>Voltage</th><th>Current</th><th>Power factor</th><th>kVA</th><th>kW</th><th>VTHD</th><th>ITHD</th></tr></thead><tbody>' +
+    PHASES.map(function (l, i) {
+      var dash = "<td>—</td>";
+      return "<tr><td>" + l + "</td><td>" + fmt(v[i], 1) + " V</td><td>" + fmt(iPh[i], 1) + " A</td>" +
+        (live ? "<td" + (pfPh[i] < 0.95 ? ' class="tc-rose"' : "") + ">" + pfPh[i].toFixed(2) + " " + LL + "</td><td>" + fmt(kvaPh[i], 1) + " kVA</td><td>" + fmt(kwPh[i], 1) + " kW</td>" +
+          "<td" + (thdVPh[i] > 8 ? ' class="tc-rose"' : "") + ">" + thdVPh[i].toFixed(1) + " %</td><td" + (thdIPh[i] > 8 ? ' class="tc-rose"' : "") + ">" + thdIPh[i].toFixed(1) + " %</td>"
+              : dash + dash + dash + dash + dash) + "</tr>";
+    }).join("") +
+    (PH === 3 ? '<tr class="param-total"><td>Total</td><td></td><td></td>' +
+      (live ? "<td" + (pf < 0.95 ? ' class="tc-rose"' : "") + ">" + pf.toFixed(2) + " " + LL + "</td><td>" + fmt(kva, 1) + " kVA</td><td>" + fmt(absPower, 1) + " kW</td><td>" + thdV.toFixed(1) + " %</td><td>" + thdI.toFixed(1) + " %</td>"
+            : "<td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>") + "</tr>" +
+      '<tr class="muted"><td>L–L</td><td>' + fmt(avg3(v) * Math.sqrt(3), 0) + " V</td><td>imbalance " + fmt(imb3(iPh), 1) + ' %</td><td colspan="5"></td></tr>' : "") +
+    '</tbody></table></div><dl class="kv" style="margin-top:16px">' +
+    "<dt>Power factor</dt><dd" + (pf < 0.95 && live ? ' class="tc-rose"' : "") + ">" + (live ? pf.toFixed(2) + " " + LL : "—") + "</dd>" +
     "<dt>Apparent power</dt><dd>" + (live ? fmt(kva, 1) + " kVA" : "—") + "</dd>" +
+    "<dt>Active power</dt><dd>" + (live ? fmt(absPower, 1) + " kW" : "—") + "</dd>" +
+    "<dt>Voltage THD</dt><dd" + (live && thdV > 8 ? ' class="tc-rose"' : "") + ">" + (live ? thdV.toFixed(1) + " %" : "—") + "</dd>" +
+    "<dt>Current THD</dt><dd" + (live && thdI > 8 ? ' class="tc-rose"' : "") + ">" + (live ? thdI.toFixed(1) + " %" : "—") + "</dd>" +
     "<dt>Reactive power</dt><dd>" + (live ? fmt(kvar, 1) + " kVAr" : "—") + "</dd>" +
     "<dt>Frequency</dt><dd>" + (live ? hz.toFixed(2) + " Hz" : "—") + "</dd>" +
-    "<dt>THD (V / I)</dt><dd>" + (live ? thdV.toFixed(1) + " % / " + thdI.toFixed(1) + " %" : "—") + "</dd>" +
+    "<dt>Energy import</dt><dd>" + (EN.imp ? fmt(EN.imp.reg, 1) + " kWh" : '<span class="muted">Not measured</span>') + "</dd>" +
+    "<dt>Energy export</dt><dd>" + (EN.exp ? fmt(EN.exp.reg, 1) + " kWh" : '<span class="muted">Not measured</span>') + "</dd>" +
     (isSub ? "" : '<dt data-field="meters.ratedLoad">Rated load</dt><dd data-field="meters.ratedLoad">' + fmt(rated, 0) + " kW</dd>") +
     "</dl></div></div></section>";
 
+  var enCell = function (o, k) { return o ? '<td class="num"><b>' + fmt(o[k], k === "reg" ? 1 : 0) + "</b></td>" : '<td class="num muted">Not measured</td>'; };
+  html += '<section class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-swap"></i> Import / export energy</h3><p class="card__sub">' + esc(DIR_LABEL) + " meter · " +
+    (DIR === "export" ? "measures energy sent out" : "measures energy taken from the supply") + '</p></div></div>' +
+    '<div class="card__body"><div class="table-wrap"><table class="table"><thead><tr><th></th><th class="num">Import (kWh)</th><th class="num">Export (kWh)</th></tr></thead><tbody>' +
+    [["Today", "today"], ["This month · " + esc(monthLabel), "month"], ["Meter register (total)", "reg"]].map(function (r) {
+      return "<tr><td>" + r[0] + "</td>" + enCell(EN.imp, r[1]) + enCell(EN.exp, r[1]) + "</tr>";
+    }).join("") + "</tbody></table></div></div></section>";
+
   html += '<section class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-chart"></i> ' + (gen ? "Daily generation" : "Daily energy") + " · " + esc(monthLabel) + '</h3><p class="card__sub">kWh per day · today is still running (lighter bar)</p></div></div>' +
     '<div class="card__body"><div class="chart-box" id="chart-daily"></div>' + tableFor(daily, "Day", "kWh", function (p) { return p.x + " " + monthLabel.slice(0, 3) + (p.partial ? " (today)" : ""); }, 0) + "</div></section>";
+
+  html += '<section class="grid grid-2">' + CH.map(function (c) {
+    return '<div class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-activity"></i> ' + esc(c.title) + '</h3><p class="card__sub">' + esc(c.sub) + "</p></div></div>" +
+      '<div class="card__body"><div class="legend" style="margin-bottom:6px">' + c.series.map(function (sr) { return '<span><i class="line" style="--c:' + sr.color + '"></i>' + esc(sr.name) + "</span>"; }).join("") +
+      (c.limit ? '<span><i class="dash" style="--c:var(--rose)"></i>' + esc(c.limit[1]) + "</span>" : "") + "</div>" +
+      '<div class="chart-box" id="' + c.id + '"></div>' + tableMulti(c) + "</div></div>";
+  }).join("") + "</section>";
 
   // Node-RED style view of this meter's connections (connections.js fills it)
   html += '<section class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-flow"></i> Connections</h3><p class="card__sub">' + (isSub ? "The meter this sub-meter sits under, and the device that reads it" : "Sub-meters under this meter, and the device that collects it") + "</p></div>" +
@@ -238,6 +311,34 @@
     '<div class="card__body"><dl class="kv"><dt>Device</dt><dd><a href="device.html?id=' + esc(main.device) + '" class="tc-primary">' + esc(main.device) + " · " + esc(main.deviceName) + "</a></dd><dt>Status</dt><dd>" + esc(lastSeen) + "</dd></dl></div></div>" +
     '<div class="card" id="meter-rules"></div>' + // filled by meter-alerts.js
     "</div></section>";
+
+  /* ---------- meter specification & register map (real product data from hw-catalog.js) ---------- */
+  var HWM = window.ED_HW && ED_HW.meters[main.model], DEV = (window.ED_DEVICES || []).filter(function (d) { return d.id === main.device; })[0];
+  var slaveOf = DEV ? (DEV.meters.filter(function (x) { return x[0] === main.id; })[0] || [])[1] : null, SL = DEV && DEV.serialLine;
+  var dt = function (d) { return d ? new Date(d).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }) : "—"; };
+  var kvl = function (rows) { return '<dl class="kv">' + rows.map(function (r) { return "<dt>" + r[0] + "</dt><dd>" + r[1] + "</dd>"; }).join("") + "</dl>"; };
+  var spec = isSub
+    ? kvl([["Measured by", "A channel of " + esc(parent.name) + " · " + esc(main.model)], ["Connection", esc(meter.ct || "—")], ["Supply", PH === 1 ? "1P2W · single-phase 230 V" : "3P4W · three-phase 415 V"],
+           ["Meter class", esc(((window.ED_METER_CLASSES || {})[meter.mclass || "multi"] || {}).label || "Multifunction meter")], ["Incoming / Outgoing", esc(DIR_LABEL)]])
+    : kvl([["Make &amp; model", esc(main.model) + (HWM ? '<div class="small muted">' + esc(HWM.kind) + "</div>" : "")],
+           ["Serial number", '<span class="mono">' + esc(main.serialNo || "—") + "</span>"],
+           ["Accuracy class", HWM ? esc(HWM.accuracy) : "—"],
+           ["Communication", HWM ? esc(HWM.comms) : "—"],
+           ["Wiring", esc(main.wiring || "—") + (HWM ? ' <span class="small muted">supports ' + esc(HWM.wiring.join(", ")) + "</span>" : "")],
+           ["CT ratio", main.ct === "Direct" ? "Direct connected" + (HWM ? " · " + esc(HWM.inputs) : "") : '<span class="mono">' + esc(main.ct || "—") + "</span> A · programmed in the meter (multiplying factor 1)"],
+           ["PT ratio", esc(main.pt || "—")],
+           ["Modbus address", DEV ? "Slave ID " + slaveOf + " on " + '<a href="device.html?id=' + esc(DEV.id) + '" class="tc-primary">' + esc(DEV.id) + "</a>" + (SL ? ' · <span class="mono">' + SL.baud + " " + SL.dataBits + SL.parity.charAt(0) + SL.stopBits + "</span>" : "") : "—"],
+           ["Meter class", esc(((window.ED_METER_CLASSES || {})[meter.mclass] || {}).label || "—")], ["Incoming / Outgoing", esc(DIR_LABEL)],
+           ["Commissioned", dt(main.commissioned)], ["Calibration due", dt(main.calDue)]].concat(HWM && HWM.extras ? [["Features", esc(HWM.extras)]] : []));
+  var regs = HWM && HWM.registers;
+  var regCard = '<div class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-sliders"></i> Modbus register map</h3><p class="card__sub">' +
+    (HWM ? esc(HWM.map) + " · function code 03 · read by " + esc(main.device) : "No catalogue entry for this model") + "</p></div></div>" +
+    (regs ? '<div class="table-wrap"><table class="table"><thead><tr><th>Parameter</th><th class="num">Register</th><th>Data type</th><th>Unit</th></tr></thead><tbody>' +
+      regs.map(function (r) { return "<tr><td>" + esc(r[0]) + '</td><td class="num mono">' + r[1] + '</td><td class="mono small">' + esc(r[2]) + "</td><td>" + esc(r[3]) + "</td></tr>"; }).join("") +
+      '</tbody></table></div><div class="card__body"><p class="hint">Addresses as in the manufacturer\'s register list (1-based; subtract 1 for 0-based tools) · Float32 big-endian, high word first · check against the meter\'s own register list before commissioning.</p></div>'
+      : '<div class="card__body"><p class="muted">' + (HWM ? "Load the register list for <b>" + esc(HWM.map) + "</b> from the manufacturer's Modbus documentation and map: voltage, current, active / reactive / apparent power, PF, frequency" + (HWM.mclass === "pq" ? ", THD" : "") + (HWM.mclass === "dg" ? ", fuel level, run hours" : "") + " and the kWh register." : "Choose a catalogued make & model to see its register map.") + "</p></div>") + "</div>";
+  html += '<section class="grid grid-2"><div class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-file"></i> Meter specification</h3><p class="card__sub">' +
+    (isSub ? "Sub-meter channel · inherits its meter's communication" : "Hardware and commissioning record") + "</p></div></div><div class=\"card__body\">" + spec + "</div></div>" + (isSub ? "" : regCard) + "</section>";
 
   page.innerHTML = html;
 
@@ -367,7 +468,50 @@
     svg.addEventListener("mouseleave", function () { t.hidden = true; svg.querySelectorAll(".series-bar.is-hover").forEach(function (b) { b.classList.remove("is-hover"); }); });
   }
 
-  function drawAll() { drawPower(); drawDaily(); }
+  function tableMulti(c) {
+    var rows = hourly.map(function (p, n) { return n; }).filter(function (n) { return n % 4 === 0 || n === hourly.length - 1; });
+    return '<details class="chart-table"><summary>View as table</summary><div class="table-wrap"><table class="table"><thead><tr><th>Time</th>' +
+      c.series.map(function (sr) { var u = sr.u || c.u; return '<th class="num">' + esc(sr.name + (u ? " (" + u + ")" : "")) + "</th>"; }).join("") + "</tr></thead><tbody>" +
+      rows.map(function (n) { return "<tr><td>" + hhmm(hourly[n].x) + "</td>" + c.series.map(function (sr) { var y = sr.vals[n]; return '<td class="num">' + (y == null ? "—" : fmt(y, c.dp)) + "</td>"; }).join("") + "</tr>"; }).join("") +
+      "</tbody></table></div></details>";
+  }
+  // multi-line chart over the day: series share one y axis; optional dashed limit line
+  function drawLines(c) {
+    var el = document.getElementById(c.id); if (!el) return;
+    var f = frame(el, 220), all = [];
+    c.series.forEach(function (sr) { sr.vals.forEach(function (y) { if (y != null) all.push(y); }); });
+    var lo = c.min || 0, hi = c.max != null ? c.max : lo + niceMax((Math.max.apply(null, all.concat([c.limit ? c.limit[0] : 0, lo + 1e-6])) - lo) * 1.12);
+    var X = function (x) { return f.pad.l + f.iw * x / 24; }, Y = function (y) { return f.pad.t + f.ih - f.ih * (Math.min(hi, Math.max(lo, y)) - lo) / (hi - lo); };
+    var ax = "";
+    for (var i = 0; i <= 4; i++) {
+      var val = lo + (hi - lo) * i / 4, y = f.pad.t + f.ih - f.ih * i / 4;
+      ax += '<line class="grid-line" x1="' + f.pad.l + '" x2="' + (f.W - f.pad.r) + '" y1="' + y + '" y2="' + y + '"/><text class="axis-text" x="' + (f.pad.l - 8) + '" y="' + (y + 4) + '" text-anchor="end">' + fmt(val, c.dp > 1 ? 2 : (hi - lo) / 4 % 1 ? 1 : 0) + "</text>";
+    }
+    ax += '<text class="axis-text" x="' + (f.pad.l - 8) + '" y="' + (f.pad.t - 12) + '" text-anchor="end">' + esc(c.unit) + "</text>";
+    for (var h = 0; h <= 24; h += 3) ax += '<text class="axis-text" x="' + X(h) + '" y="' + (f.H - 6) + '" text-anchor="middle">' + ("0" + h).slice(-2) + "</text>";
+    var lim = c.limit ? '<line class="limit-line" x1="' + f.pad.l + '" x2="' + (f.W - f.pad.r) + '" y1="' + Y(c.limit[0]) + '" y2="' + Y(c.limit[0]) + '"/>' : "";
+    var lines = c.series.map(function (sr) {
+      var d = "", pen = false;
+      sr.vals.forEach(function (y, n) { if (y == null) { pen = false; return; } d += (pen ? "L" : "M") + X(hourly[n].x).toFixed(1) + "," + Y(y).toFixed(1); pen = true; });
+      return d ? '<path class="multi-line" style="stroke:' + sr.color + '" d="' + d + '"/>' : "";
+    }).join("");
+    var none = all.length ? "" : '<text class="gap-note" x="' + (f.pad.l + 10) + '" y="' + (f.pad.t + 16) + '">No readings today</text>';
+    el.innerHTML = '<svg width="' + f.W + '" height="' + f.H + '" role="img" aria-label="' + esc(c.title + " today") + '">' + ax + lim + lines + none +
+      '<line class="cross" y1="' + f.pad.t + '" y2="' + (f.pad.t + f.ih) + '" visibility="hidden"/>' +
+      '<rect x="' + f.pad.l + '" y="' + f.pad.t + '" width="' + f.iw + '" height="' + f.ih + '" fill="transparent"/></svg>';
+    var svg = el.querySelector("svg"), cross = svg.querySelector(".cross"), t = tip(el);
+    svg.lastChild.addEventListener("mousemove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left - f.pad.l) / f.iw * 24, best = -1;
+      hourly.forEach(function (p, n) { if (best < 0 || Math.abs(p.x - x) < Math.abs(hourly[best].x - x)) best = n; });
+      if (best < 0 || x > H + 0.3) { t.hidden = true; cross.setAttribute("visibility", "hidden"); return; }
+      cross.setAttribute("x1", X(hourly[best].x)); cross.setAttribute("x2", X(hourly[best].x)); cross.setAttribute("visibility", "visible");
+      t.innerHTML = hhmm(hourly[best].x) + c.series.map(function (sr) { var y = sr.vals[best], u = sr.u || c.u; return '<br><span style="color:' + sr.color + '">●</span> ' + esc(sr.name) + " <b>" + (y == null ? "—" : fmt(y, c.dp) + (u ? " " + u : c.suffix || "")) + "</b>"; }).join("");
+      t.style.left = X(hourly[best].x) + "px"; t.style.top = (f.pad.t + 30) + "px"; t.hidden = false;
+    });
+    svg.lastChild.addEventListener("mouseleave", function () { t.hidden = true; cross.setAttribute("visibility", "hidden"); });
+  }
+
+  function drawAll() { drawPower(); drawDaily(); CH.forEach(drawLines); }
   drawAll();
   var rt;
   window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(drawAll, 150); });

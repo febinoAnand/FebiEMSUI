@@ -12,8 +12,10 @@
   <script src="assets/js/store.js"></script>
   <script src="assets/js/app.js"></script>
   <script src="assets/js/workspace.js" defer></script>
+  <script src="assets/js/hw-catalog.js" defer></script>
   <script src="assets/js/meter-data.js" defer></script>
   <script src="assets/js/phase.js" defer></script>
+  <script src="assets/js/hw-forms.js" defer></script>
   <script src="assets/js/export.js" defer></script>
   <script src="assets/js/alert-rules-text.js" defer></script>
   <script src="assets/js/meter-alerts.js" defer></script>
@@ -284,7 +286,7 @@
 <tbody class="device" data-page="1">
   <tr class="device-row">
     <td><input type="checkbox" class="tree-toggle" id="mtr-1003" aria-label="Show sub-meters of Office" /><label for="mtr-1003" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
-    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--amber)"><i class="ic i-building"></i></span><div><a href="meter.html?id=MTR-1003" class="row-link"><strong>Office</strong></a><small>MTR-1003 · L&T WL4405</small></div></div></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--amber)"><i class="ic i-building"></i></span><div><a href="meter.html?id=MTR-1003" class="row-link"><strong>Office</strong></a><small>MTR-1003 · Schneider EM6400NG</small></div></div></td>
     <td>Admin Building</td>
     <td><a href="device.html?id=GW-03" class="device-chip" title="Admin Block Gateway"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a><div class="small muted">Admin Block Gateway</div></td>
     <td><label for="mtr-1003" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 5 sub-meters</label></td>
@@ -400,7 +402,7 @@
 <tbody class="device" data-page="2">
   <tr class="device-row">
     <td><input type="checkbox" class="tree-toggle" id="mtr-1005" aria-label="Show sub-meters of Lighting" /><label for="mtr-1005" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
-    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--amber)"><i class="ic i-sun"></i></span><div><a href="meter.html?id=MTR-1005" class="row-link"><strong>Lighting</strong></a><small>MTR-1005 · Elmeasure LG+ 1129</small></div></div></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--amber)"><i class="ic i-sun"></i></span><div><a href="meter.html?id=MTR-1005" class="row-link"><strong>Lighting</strong></a><small>MTR-1005 · Schneider iEM3255</small></div></div></td>
     <td>Plant-wide</td>
     <td><a href="device.html?id=GW-01" class="device-chip" title="Main LT Panel Gateway"><span class="dot dot--live" style="--c:var(--green)"></span>GW-01</a><div class="small muted">Main LT Panel Gateway</div></td>
     <td><label for="mtr-1005" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 6 sub-meters</label></td>
@@ -516,7 +518,7 @@
 <tbody class="device" data-page="2">
   <tr class="device-row">
     <td><input type="checkbox" class="tree-toggle" id="mtr-1007" aria-label="Show sub-meters of Rooftop Solar" /><label for="mtr-1007" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
-    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--blue)"><i class="ic i-sun"></i></span><div><a href="meter.html?id=MTR-1007" class="row-link"><strong>Rooftop Solar</strong></a><small>MTR-1007 · Fronius Smart Meter</small></div></div></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--blue)"><i class="ic i-sun"></i></span><div><a href="meter.html?id=MTR-1007" class="row-link"><strong>Rooftop Solar</strong></a><small>MTR-1007 · Fronius Smart Meter TS 65A-3</small></div></div></td>
     <td>Roof · Block A</td>
     <td><a href="device.html?id=GW-05" class="device-chip" title="Rooftop Solar Edge Device"><span class="dot dot--live" style="--c:var(--green)"></span>GW-05</a><div class="small muted">Rooftop Solar Edge Device</div></td>
     <td><label for="mtr-1007" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 2 sub-meters</label></td>
@@ -549,7 +551,7 @@
 <tbody class="device" data-page="2">
   <tr class="device-row">
     <td><input type="checkbox" class="tree-toggle" id="mtr-1008" aria-label="Show sub-meters of DG Set 1" /><label for="mtr-1008" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
-    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--rose)"><i class="ic i-battery"></i></span><div><a href="meter.html?id=MTR-1008" class="row-link"><strong>DG Set 1</strong></a><small>MTR-1008 · Deepsea DSE7320</small></div></div></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--rose)"><i class="ic i-battery"></i></span><div><a href="meter.html?id=MTR-1008" class="row-link"><strong>DG Set 1</strong></a><small>MTR-1008 · Deep Sea DSE7320 MKII</small></div></div></td>
     <td>DG Yard</td>
     <td><a href="device.html?id=GW-06" class="device-chip" title="DG & EV Yard Gateway"><span class="dot" style="--c:var(--amber)"></span>GW-06</a><div class="small muted">DG & EV Yard Gateway</div></td>
     <td><label for="mtr-1008" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 1 sub-meters</label></td>
@@ -572,7 +574,7 @@
 <tbody class="device" data-page="3">
   <tr class="device-row">
     <td><input type="checkbox" class="tree-toggle" id="mtr-1009" aria-label="Show sub-meters of Water Pumps" /><label for="mtr-1009" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
-    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-activity"></i></span><div><a href="meter.html?id=MTR-1009" class="row-link"><strong>Water Pumps</strong></a><small>MTR-1009 · Elmeasure LG+ 5310</small></div></div></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--cyan)"><i class="ic i-activity"></i></span><div><a href="meter.html?id=MTR-1009" class="row-link"><strong>Water Pumps</strong></a><small>MTR-1009 · Schneider EM6400NG</small></div></div></td>
     <td>Pump House</td>
     <td><a href="device.html?id=GW-02" class="device-chip" title="Utility Block Data Logger"><span class="dot dot--live" style="--c:var(--green)"></span>GW-02</a><div class="small muted">Utility Block Data Logger</div></td>
     <td><label for="mtr-1009" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 4 sub-meters</label></td>
@@ -625,7 +627,7 @@
 <tbody class="device" data-page="3">
   <tr class="device-row">
     <td><input type="checkbox" class="tree-toggle" id="mtr-1010" aria-label="Show sub-meters of Canteen" /><label for="mtr-1010" class="expander" title="Show sub-meters"><i class="ic i-chev-right"></i></label></td>
-    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--violet)"><i class="ic i-building"></i></span><div><a href="meter.html?id=MTR-1010" class="row-link"><strong>Canteen</strong></a><small>MTR-1010 · L&T WL4405</small></div></div></td>
+    <td><div class="cell-device"><span class="dev-icon" style="--c:var(--violet)"><i class="ic i-building"></i></span><div><a href="meter.html?id=MTR-1010" class="row-link"><strong>Canteen</strong></a><small>MTR-1010 · Schneider EM6400NG</small></div></div></td>
     <td>Amenities Block</td>
     <td><a href="device.html?id=GW-03" class="device-chip" title="Admin Block Gateway"><span class="dot dot--live" style="--c:var(--green)"></span>GW-03</a><div class="small muted">Admin Block Gateway</div></td>
     <td><label for="mtr-1010" class="count-pill" style="cursor:pointer"><i class="ic i-layers"></i> 3 sub-meters</label></td>
@@ -866,7 +868,9 @@
         <div class="field"><label>Meter ID</label><input class="input mono" value="MTR-1013" /></div>
         <div class="field" data-field="meters.category"><label>Category</label><select class="input"><option>Incomer</option><option>HVAC</option><option>Lighting</option><option>Process</option><option>Utility</option><option>Generation (Solar/DG)</option></select></div>
         <div class="field" data-field="meters.phase"><label>Supply</label><select class="input" data-phase-select><option value="3" selected>3φ Three-phase · 4-wire · 415 V</option><option value="1">1φ Single-phase · 2-wire · 230 V</option></select><span class="hint" data-phase-hint>Measures L1, L2, L3 and phase imbalance</span></div>
-        <div class="field" data-field="meters.model"><label>Make &amp; model</label><input class="input" placeholder="Schneider PM5560" /></div>
+        <div class="field" data-field="meters.model"><label>Make &amp; model <span class="req">*</span></label><select class="input" data-hw-meter data-value=""></select><span class="hint" data-hw-hint></span></div>
+        <div class="field" data-field="meters.serialNo"><label>Serial number</label><input class="input mono" placeholder="From the meter label" /></div>
+        <div class="field" data-field="meters.mclass"><label>Meter class <span class="req">*</span></label><select class="input" data-class-select required><option value="" disabled selected>Select…</option><option value="basic">Basic energy meter</option><option value="multi">Multifunction meter</option><option value="pq">Power quality analyser</option><option value="dc">DC energy meter</option><option value="dg">DG set controller</option></select><span class="hint" data-class-hint></span></div>
         <div class="field" data-field="meters.site"><label>Site</label><select class="input"><option>Plant 1 · Bengaluru</option><option>Plant 2 · Hosur</option><option>Corporate Office</option></select></div>
         <div class="field" data-field="meters.location"><label>Location / panel</label><input class="input" placeholder="Main LT Panel" /></div>
       </div>
@@ -874,10 +878,16 @@
       <div class="form-grid form-grid--3">
         <div class="field" data-field="meters.device"><label>Reports via device <span class="req">*</span></label><select class="input"><option selected>GW-01 · Main LT Panel Gateway</option><option>GW-02 · Utility Block Data Logger</option><option>GW-03 · Admin Block Gateway</option><option>GW-04 · Server Room Gateway</option><option>GW-05 · Rooftop Solar Edge Device</option><option>GW-06 · DG & EV Yard Gateway</option></select><span class="hint">Protocol, IP and polling are set on the device · <a href="devices.html#add-device" class="tc-primary">add a device</a></span></div>
         <div class="field" data-field="meters.slave"><label>Modbus slave ID</label><input class="input mono" placeholder="4" /></div>
-        <div class="field" data-field="meters.registerMap"><label>Register map</label><select class="input"><option>Schneider PM5xxx</option><option>Secure Elite 4xx</option><option>L&amp;T WL44xx</option><option>Elmeasure LG+</option><option>Generic IEC 62053</option></select></div>
-        <div class="field" data-field="meters.type"><label>Meter type</label><select class="input"><option>Consumer</option><option>Generator (Solar / DG)</option></select></div>
+        <div class="field" data-field="meters.registerMap"><label>Register map</label><select class="input" data-hw-map></select><span class="hint">Set by the make &amp; model · Custom = upload the register list</span></div>
+        <div class="field" data-field="meters.type"><label>Meter type</label><select class="input" data-type-select><option>Consumer</option><option>Generator (Solar / DG)</option></select></div>
+        <div class="field" data-field="meters.direction"><label>Incoming / Outgoing <span class="req">*</span></label><select class="input" data-dir-select required><option value="" disabled selected>Select…</option><option value="import">↓ Incoming · Import</option><option value="export">↑ Outgoing · Export</option></select><span class="hint" data-dir-hint></span></div>
         <div class="field" data-field="meters.ratedLoad"><label>Rated load</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" placeholder="90" /><span class="suffix">kW</span></div></div>
-        <div class="field" data-field="meters.ct"><label>CT ratio</label><input class="input mono" placeholder="400/5" /></div>
+        <div class="field" data-field="meters.ct"><label>CT primary</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" placeholder="400" /><span class="suffix">A</span></div></div>
+        <div class="field" data-field="meters.ct"><label>CT secondary</label><select class="input" data-hw-cts><option selected>5 A</option><option>1 A</option><option>Direct connected</option></select></div>
+        <div class="field" data-field="meters.wiring"><label>Wiring</label><select class="input" data-hw-wiring><option selected>3P4W · 3-phase 4-wire</option><option>3P3W · 3-phase 3-wire</option><option>1P2W · single-phase</option></select></div>
+        <div class="field" data-field="meters.pt"><label>PT ratio</label><input class="input mono" placeholder="e.g. 11000/110" /><span class="hint">Leave empty for LT (415 V) direct voltage</span></div>
+        <div class="field" data-field="meters.calibration"><label>Commissioned on</label><input class="input" type="date"  /></div>
+        <div class="field" data-field="meters.calibration"><label>Calibration due</label><input class="input" type="date"  /></div>
       </div>
       <div class="form-section" style="margin-top:18px">Sub-meters <span class="count-pill" style="letter-spacing:0;text-transform:none">optional</span></div>
       <div class="sub-editor">
@@ -907,11 +917,19 @@
         <div class="field"><label>Meter ID</label><input class="input mono" value="MTR-1001" readonly /></div>
         <div class="field" data-field="meters.category"><label>Category</label><select class="input"><option selected>Incomer</option><option>HVAC</option><option>Lighting</option><option>Process</option></select></div>
         <div class="field" data-field="meters.phase"><label>Supply</label><select class="input" data-phase-select><option value="3" selected>3φ Three-phase · 4-wire · 415 V</option><option value="1">1φ Single-phase · 2-wire · 230 V</option></select><span class="hint" data-phase-hint>Measures L1, L2, L3 and phase imbalance</span></div>
-        <div class="field" data-field="meters.model"><label>Make &amp; model</label><input class="input" value="Schneider PM5560" /></div>
+        <div class="field" data-field="meters.model"><label>Make &amp; model <span class="req">*</span></label><select class="input" data-hw-meter data-value="Schneider PM5560"></select><span class="hint" data-hw-hint></span></div>
+        <div class="field" data-field="meters.serialNo"><label>Serial number</label><input class="input mono" value="SN-PM5560-23A0418" /></div>
+        <div class="field" data-field="meters.mclass"><label>Meter class <span class="req">*</span></label><select class="input" data-class-select required><option value="" disabled>Select…</option><option value="basic">Basic energy meter</option><option value="multi">Multifunction meter</option><option value="pq" selected>Power quality analyser</option><option value="dc">DC energy meter</option><option value="dg">DG set controller</option></select><span class="hint" data-class-hint></span></div>
         <div class="field" data-field="meters.location"><label>Location / panel</label><input class="input" value="Main LT Panel" /></div>
         <div class="field" data-field="meters.status"><label>Status</label><select class="input"><option selected>Online</option><option>Maintenance</option><option>Disabled</option></select></div>
+        <div class="field" data-field="meters.direction"><label>Incoming / Outgoing <span class="req">*</span></label><select class="input" data-dir-select required><option value="" disabled>Select…</option><option value="import" selected>↓ Incoming · Import</option><option value="export">↑ Outgoing · Export</option></select><span class="hint" data-dir-hint></span></div>
         <div class="field" data-field="meters.ratedLoad"><label>Rated load</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" value="90" /><span class="suffix">kW</span></div></div>
-        <div class="field" data-field="meters.ct"><label>CT ratio</label><input class="input mono" value="400/5" /></div>
+        <div class="field" data-field="meters.ct"><label>CT primary</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" value="200" /><span class="suffix">A</span></div></div>
+        <div class="field" data-field="meters.ct"><label>CT secondary</label><select class="input" data-hw-cts><option selected>5 A</option><option>1 A</option><option>Direct connected</option></select></div>
+        <div class="field" data-field="meters.wiring"><label>Wiring</label><select class="input" data-hw-wiring><option selected>3P4W · 3-phase 4-wire</option><option>3P3W · 3-phase 3-wire</option><option>1P2W · single-phase</option></select></div>
+        <div class="field" data-field="meters.pt"><label>PT ratio</label><input class="input mono" placeholder="e.g. 11000/110" /><span class="hint">Leave empty for LT (415 V) direct voltage</span></div>
+        <div class="field" data-field="meters.calibration"><label>Commissioned on</label><input class="input" type="date" value="2025-11-18" /></div>
+        <div class="field" data-field="meters.calibration"><label>Calibration due</label><input class="input" type="date" value="2027-11-18" /></div>
         <div class="field" data-field="meters.device"><label>Reports via device <span class="req">*</span></label><select class="input"><option selected>GW-01 · Main LT Panel Gateway</option><option>GW-02 · Utility Block Data Logger</option><option>GW-03 · Admin Block Gateway</option><option>GW-04 · Server Room Gateway</option><option>GW-05 · Rooftop Solar Edge Device</option><option>GW-06 · DG & EV Yard Gateway</option></select></div>
       </div>
       <div class="form-section" style="margin-top:18px">Sub-meters (4)</div>
@@ -946,6 +964,8 @@
         <div class="field"><label>Sub-meter ID</label><input class="input mono" value="SM-1001-05" /></div>
         <div class="field" data-field="meters.ct"><label>Connection</label><select class="input"><option>CT 100/5</option><option>CT 200/5</option><option>CT 400/5</option><option>Direct 32 A</option><option>Direct 63 A</option></select></div>
         <div class="field" data-field="meters.phase"><label>Supply</label><select class="input" data-phase-select><option value="3">3φ Three-phase · 4-wire · 415 V</option><option value="1" selected>1φ Single-phase · 2-wire · 230 V</option></select><span class="hint" data-phase-hint>Measures L1, L2, L3 and phase imbalance</span></div>
+        <div class="field" data-field="meters.mclass"><label>Meter class <span class="req">*</span></label><select class="input" data-class-select required><option value="" disabled selected>Select…</option><option value="basic">Basic energy meter</option><option value="multi">Multifunction meter</option><option value="pq">Power quality analyser</option><option value="dc">DC energy meter</option><option value="dg">DG set controller</option></select><span class="hint" data-class-hint></span></div>
+        <div class="field" data-field="meters.direction"><label>Incoming / Outgoing <span class="req">*</span></label><select class="input" data-dir-select required><option value="" disabled selected>Select…</option><option value="import">↓ Incoming · Import</option><option value="export">↑ Outgoing · Export</option></select><span class="hint" data-dir-hint></span></div>
         <div class="field" data-field="meters.ratedLoad"><label>Rated load</label><div class="input-icon"><i class="ic i-bolt"></i><input class="input mono" placeholder="20" /><span class="suffix">kW</span></div></div>
         <div class="field" data-field="meters.costCentre"><label>Cost centre</label><select class="input"><option>CC-PROD</option><option>CC-UTIL</option><option>CC-ADMIN</option><option>CC-IT</option></select></div>
         <div class="field" data-field="meters.slave"><label>Modbus register offset</label><input class="input mono" placeholder="3000" /></div>
