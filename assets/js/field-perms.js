@@ -9,7 +9,7 @@ window.ED_FIELD_MODULES = [
   { key: "meters", label: "Energy Meters", desc: "Meter & sub-meter forms, meter dashboards", fields: [
     ["name", "Meter name"], ["category", "Category"], ["model", "Make & model"], ["site", "Site"], ["location", "Location / panel"],
     ["device", "Reports via device", "Which gateway the meter reports through"], ["slave", "Modbus slave ID / register offset"], ["registerMap", "Register map"],
-    ["type", "Meter type (consumer / generator)"], ["ratedLoad", "Rated load"], ["ct", "CT ratio / connection"], ["costCentre", "Cost centre"], ["status", "Status"],
+    ["type", "Meter type (consumer / generator)"], ["mclass", "Meter class (what it measures)"], ["serialNo", "Serial number"], ["wiring", "Wiring"], ["pt", "PT ratio"], ["calibration", "Commissioning & calibration dates"], ["direction", "Incoming / Outgoing (import / export)"], ["ratedLoad", "Rated load"], ["ct", "CT ratio / connection"], ["costCentre", "Cost centre"], ["status", "Status"],
     ["cost", "Energy cost (₹)", "Cost figures on meter dashboards", true], ["electrical", "Electrical parameters", "Voltage, current, PF, THD on meter dashboards", true]] },
   { key: "devices", label: "Device Management", desc: "Device forms and device details", fields: [
     ["name", "Device name"], ["type", "Device type"], ["model", "Make & model"], ["serial", "Serial number"], ["site", "Site"], ["location", "Installed at"],

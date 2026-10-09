@@ -107,12 +107,23 @@
     tile("i-clock", "--blue", dev.uptimeDays + ' <small class="muted" style="font-size:13px">days</small>', "Uptime", "since last restart") +
     "</section>";
 
+  // real product facts (hw-catalog.js) and the configured serial line / uplink
+  var HW = window.ED_HW && ED_HW.devices[dev.model], SL = dev.serialLine;
+  var ORG = (function () { var s = window.EDStore && EDStore.session && EDStore.session(); return s && s.status === "ok" ? s.tenant.id : "ORG"; })();
+  var UPLINK = /MQTT/i.test(dev.uplink) ? '<span class="mono">mqtts://broker:' + dev.port + "</span> · topic <span class=\"mono\">ed/" + esc(ORG) + "/" + esc(dev.id) + "/readings</span> · client ID <span class=\"mono\">" + esc(dev.id) + "</span> · TLS 1.2"
+    : /HTTPS/i.test(dev.uplink) ? '<span class="mono">POST /ingest/v1/readings</span> · port ' + dev.port + " · device token"
+    : "Platform polls <span class=\"mono\">" + esc(dev.ip) + ":" + dev.port + "</span> (Modbus TCP, unit ID = meter slave ID)";
+
   html += '<section class="grid grid-main">' +
     '<div class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-wifi"></i> Signal strength · last 24 h</h3><p class="card__sub">% · every 15 minutes · hover for values' + (wired ? " · wired connection stays at 100%" : "") + '</p></div></div>' +
     '<div class="card__body"><div class="chart-box" id="chart-signal"></div></div></div>' +
     '<div class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-sliders"></i> Network &amp; protocol</h3></div></div><div class="card__body">' +
     kv([["IP address", '<span class="mono">' + esc(dev.ip) + ":" + dev.port + "</span>"], ["MAC", '<span class="mono">' + esc(dev.mac) + "</span>"], ["Connectivity", esc(dev.link)],
-      ["Field protocol", esc(dev.fieldProtocol)], ["Uplink", esc(dev.uplink)], ["Polling interval", esc(dev.polling)], ["RS-485 baud rate", dev.baud ? dev.baud : "—"], ["Time sync", "NTP · pool.ntp.org"]]) +
+      ["Field protocol", esc(dev.fieldProtocol)],
+      ["Serial line", SL ? esc(SL.std) + ' · <span class="mono">' + SL.baud + " " + SL.dataBits + SL.parity.charAt(0) + SL.stopBits + "</span> (" + SL.baud + " baud, " + SL.dataBits + " data, " + esc(SL.parity.toLowerCase()) + " parity, " + SL.stopBits + " stop)" : "—"],
+      ["Modbus timing", dev.timeoutMs ? "Reply timeout " + dev.timeoutMs + " ms · " + dev.retries + " retries · polled every " + esc(dev.polling) : esc(dev.polling)],
+      ["Uplink", esc(dev.uplink)], ["Uplink endpoint", UPLINK],
+      ["Time sync", "NTP · pool.ntp.org"]]) +
     "</div></div></section>";
 
   var rows = meters.map(function (x) {
@@ -138,7 +149,12 @@
     '<div class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-cpu"></i> Hardware &amp; firmware</h3></div></div><div class="card__body">' +
     kv([["Device ID", '<span class="mono">' + esc(dev.id) + "</span>"], ["Type", esc(dev.type)], ["Make &amp; model", esc(dev.model)], ["Serial number", '<span class="mono">' + esc(dev.serial) + "</span>"],
       ["Firmware", '<span class="mono">' + esc(dev.firmware) + "</span>" + (dev.firmwareNew ? ' <span class="badge badge--blue">' + esc(dev.firmwareNew) + " available</span>" : ' <span class="small muted">up to date</span>')],
-      ["Installed at", esc(dev.location) + " · " + esc(dev.site)], ["Installed on", new Date(dev.installed).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })]]) +
+      ["Manufacturer", HW ? esc(HW.maker) + " · " + esc(HW.kind) : "—"],
+      ["Ethernet", HW ? esc(HW.ethernet) : "—"], ["Serial ports", HW && HW.serial ? esc(HW.serial) : "—"]]
+      .concat(HW && HW.cellular ? [["Cellular", esc(HW.cellular)]] : []).concat(HW && HW.wireless ? [["Wireless", esc(HW.wireless)]] : []).concat(HW && HW.io ? [["I/O", esc(HW.io)]] : [])
+      .concat(HW ? [["Protocols", esc(HW.protocols.join(" · "))], ["Power supply", esc(HW.power)]] : []).concat(HW && HW.fieldNode ? [["Field nodes", esc(HW.fieldNode)]] : []).concat([
+      ["Installed at", esc(dev.location) + " · " + esc(dev.site)], ["Installed on", new Date(dev.installed).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })]])) +
+    (HW ? '<p class="hint" style="margin-top:12px">' + esc(HW.note) + "</p>" : "") +
     "</div></div>" +
     '<div class="card"><div class="card__head"><div><h3 class="card__title"><i class="ic i-clock"></i> Event log</h3><p class="card__sub">Recent device events</p></div></div><div class="card__body"><div class="timeline" id="device-events">' +
     ev.map(function (e) { return '<div class="timeline__item" style="--c:var(' + e[2] + ')"><strong>' + esc(e[1]) + "</strong><time>" + new Date(e[0]).toLocaleString(undefined, { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) + "</time></div>"; }).join("") +

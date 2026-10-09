@@ -2229,3 +2229,12 @@ p.flow-msg.is-shown { display: block !important; }
 .ops-cmd-params > .field { flex: 1 1 150px; min-width: 0; margin: 0; }
 .ops-cmd-row > .btn { flex: none; height: 44px; }
 @media (max-width: 640px) { .ops-cmd-row > .btn { width: 100%; } }
+
+.param-table .param-total td { font-weight: 700; border-top: 1px solid var(--line); }
+.chart-box .multi-line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.chart-box .limit-line { stroke: var(--rose); stroke-width: 1.4; stroke-dasharray: 6 5; }
+.ph--in, .ph--out { white-space: nowrap; }
+.ph--in { color: var(--blue); border-color: color-mix(in srgb, var(--blue) 35%, transparent); background: color-mix(in srgb, var(--blue) 10%, transparent); }
+.ph--out { color: var(--green); border-color: color-mix(in srgb, var(--green) 35%, transparent); background: color-mix(in srgb, var(--green) 10%, transparent); }
+.field.is-invalid .input { border-color: var(--rose); box-shadow: 0 0 0 3px color-mix(in srgb, var(--rose) 18%, transparent); }
+.field.is-invalid [data-dir-hint], .field.is-invalid [data-class-hint] { color: var(--rose); }
